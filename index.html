@@ -174,12 +174,12 @@
             <button class="todo-index topcoat-button todo-small">&larr;</button>
         </div>
         <div class="topcoat-navigation-bar__item center half todo-padded">
-            <button class="topcoat-button todo-top">Register</button>
+            <button class="topcoat-button todo-register">Register</button>
         </div>
     </div>
     <div class="topcoat-navigation-bar">
          <div class="topcoat-navigation-bar__item center full">
-            <h1 class="topcoat-navigation-bar__title">Server Login:</h1>
+            <h1 class="topcoat-navigation-bar__title">Server Login</h1>
         </div>
     </div>
 </header>
@@ -195,6 +195,37 @@
 				</li>
 				<li class="topcoat-list__item" data-id="login_submit">
 					<input type="submit" class="topcoat-button" name="login" value=" Login " /> 
+				</li>
+    		</ul>
+ 		</form>
+	</div>
+</div>
+</script>
+<script type="text/mustache" id="register-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+		<div class="topcoat-navigation-bar__item left quarter todo-padded">
+            <button class="todo-index topcoat-button todo-small">&larr;</button>
+        </div>
+    </div>
+    <div class="topcoat-navigation-bar">
+         <div class="topcoat-navigation-bar__item center full">
+            <h1 class="topcoat-navigation-bar__title">Registration</h1>
+        </div>
+    </div>
+</header>
+<div id="scrollable">
+	<div class="topcoat-list__container">
+		<form>
+			<ul class="topcoat-list">
+        		<li class="topcoat-list__item" data-id="email">
+            		<input type="text" class="topcoat-text-input" name="email" value="" placeholder="Email" /> 
+				</li>
+				<li class="topcoat-list__item" data-id="password">
+					<input type="password" class="topcoat-text-input" name="password" value="" placeholder="Password" /> 
+				</li>
+				<li class="topcoat-list__item" data-id="login_submit">
+					<input type="submit" class="topcoat-button" name="login" value=" Register " /> 
 				</li>
     		</ul>
  		</form>

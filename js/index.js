@@ -412,6 +412,12 @@ function goServerLogin( callBack ) {
 	$("#content .todo-index").click(function(){
         goIndex()
     })
+    
+    $("#content .todo-register").click(function(){
+    	goServerRegistration(function () {
+    		goIndex()
+    	})
+    })
 	
 	$( "#content form" ).submit( function(e) {
 		e.preventDefault()
@@ -426,6 +432,55 @@ function goServerLogin( callBack ) {
 			callBack()
 		} )
 	} )
+}
+
+/*
+ * Register User Page
+ */
+
+function goServerRegistration( callBack ) {
+	drawContent( config.t.register() )
+	$("#content .todo-index").click(function(){
+        goServerLogin()
+    })
+    
+    $( "#content form" ).submit( function(e) {
+		e.preventDefault()
+		var doc = jsonform( this );
+		config.user = {};
+		config.user.name = doc.email;
+		config.user.password = doc.password;
+		doRegistration( function(error, result) {
+			if (error) { return loginErr( error ) }
+			$( "#content form input" ).val( "" ) // Clear Form
+			// Login Success 
+			callBack()
+		} )
+	} )
+}
+
+/*
+ * Do Registration
+ */
+
+function doRegistration( callBack ) {
+	doServerRegistration( function( error, data ) {
+		if (error) { return callBack( error ) }
+		config.setUser( data, function(error, ok) {
+			if (error) { return cb( error ) }
+            createMyProfile(function(err){
+                log("createMyProfile done "+JSON.stringify(err))
+                addMyUsernameToAllLists(function(err) {
+                    log("addMyUsernameToAllLists done "+JSON.stringify(err))
+                    if (err) {return cb(err)}
+					config.syncReference = triggerSync( function(error, ok) {
+						log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
+						cb( error, ok )
+					} )
+                } )
+            } )
+		} )
+	})
 }
 
 /*
@@ -502,6 +557,38 @@ function doServerLogin( callBack ) {
 		login.post( JSON.parse( credentials ), function(error, result) {
 			if (error) { return callBack( error ) }
 			log( "Server Login Result:" + JSON.stringify( result ) )
+			callBack( false, result )
+		} )
+	} else {
+		return callBack( {
+			reason : "Configuration User is not Set!"
+		} )
+	}
+}
+
+/*
+ * Custom Indirect Server Regisration 
+ * parameters are REMOTE_SERVER_LOGIN_URL, username and password
+ * result returned is set as user
+ */
+
+function doServerRegistration( callBack ) {
+	log( "Do Server Regisrtation" );
+	// check for internet connection
+	if (navigator && navigator.connection) {
+		log( "connection " + navigator.connection.type )
+		if (navigator.connection.type == "none") { return callBack( {
+			reason : "No network connection"
+		} ) }
+	}
+	if (config && config.user) {
+		var url = REMOTE_SERVER_LOGIN_URL;
+		var login = coax( url );
+		var credentials = '{ "username" : "' + config.user.name + '", "password" : "' + config.user.password + '" }';
+		log( "http " + url + " " + credentials )
+		login.post( JSON.parse( credentials ), function(error, result) {
+			if (error) { return callBack( error ) }
+			log( "Server Regisration Result:" + JSON.stringify( result ) )
 			callBack( false, result )
 		} )
 	} else {
