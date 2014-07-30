@@ -11,8 +11,8 @@ First create an empty PhoneGap app container using the [PhoneGap npm package](ht
 
 ```sh
 npm install -g phonegap
-phonegap create openmoney-mobile com.openmoney.mobile openmoney
-cd openmoney-mobile
+phonegap create openmoney-mobile-phonegap com.openmoney.mobile openmoney
+cd openmoney-mobile-phonegap
 ```
 
 Now install the PhoneGap plugins required to make it run. This activates Couchbase Lite, the camera, and the InAppBrowser.
