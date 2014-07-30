@@ -639,6 +639,8 @@ function registerServer(callBack) {
 	log( "Resister Server SessionID" )
 	if (!config.user.user_id) {
 		doFirstLogin( callBack )
+	} else {
+		callBack()
 	}
 //	doServerLogin( function(error, data) {
 //		if (error) { return callBack( error ) }
