@@ -38,6 +38,7 @@ var REMOTE_SYNC_PORT = "4984"
 var REMOTE_SYNC_DATABASE = "todos"
 var REMOTE_SERVER_LOGIN_URL = "http://couchbase.triskaideca.com/todologin"
 var REMOTE_SERVER_LOGOUT_URL = "http://couchbase.triskaideca.com/todologout"
+var REMOTE_SERVER_LOST_PASSWORD_URL = "http://couchbase.triskaideca.com/lostpw"
 	
 var SERVER_LOGIN = true
 var FACEBOOK_LOGIN = false
@@ -481,6 +482,61 @@ function doRegistration( callBack ) {
             } )
 		} )
 	})
+}
+
+/*
+ * Lost Password Page
+ */
+
+function goLostPassword( callBack ) {
+	drawContent( config.t.lost() )
+	$("#content .todo-index").click(function(){
+        goServerLogin()
+    })
+    
+    $( "#content form" ).submit( function(e) {
+		e.preventDefault()
+		var doc = jsonform( this );
+		config.user = {};
+		config.user.name = doc.email;
+		doLostPassword( function(error, result) {
+			if (error) { return loginErr( error ) }
+			$( "#content form input" ).val( "" ) // Clear Form
+			alert( "A password reset token has been emailed to you!" );
+			// Login Success 
+			callBack()
+		} )
+	} )
+}
+
+/*
+ * Do Lost Password
+ */
+
+function doLostPassword( callBack ) {
+	log( "Do Lost Password" );
+	// check for internet connection
+	if (navigator && navigator.connection) {
+		log( "connection " + navigator.connection.type )
+		if (navigator.connection.type == "none") { return callBack( {
+			reason : "No network connection"
+		} ) }
+	}
+	if (config && config.user) {
+		var url = REMOTE_SERVER_LOST_PASSWORD_URL;
+		var login = coax( url );
+		var credentials = '{ "username" : "' + config.user.name + '" }';
+		log( "http " + url + " " + credentials )
+		login.post( JSON.parse( credentials ), function(error, result) {
+			if (error) { return callBack( error ) }
+			log( "Server Login Result:" + JSON.stringify( result ) )
+			callBack( false, result )
+		} )
+	} else {
+		return callBack( {
+			reason : "Configuration User is not Set!"
+		} )
+	}
 }
 
 /*
