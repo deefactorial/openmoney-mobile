@@ -85,6 +85,12 @@ br.clear {
 	letter-spacing: 0;
 }
 
+.topcoat-button.todo-top {
+	line-height: 2rem;
+	padding: 2px 0.6rem 2px 0.6rem;
+	letter-spacing: 0;
+}
+
 .topcoat-navigation-bar__item.todo-padded {
 	padding-top:1rem;
 }

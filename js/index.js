@@ -409,6 +409,10 @@ function toggleShare(doc, user, cb) {
 
 function goServerLogin( callBack ) {
 	drawContent( config.t.login() )
+	$("#content .todo-index").click(function(){
+        goIndex()
+    })
+	
 	$( "#content form" ).submit( function(e) {
 		e.preventDefault()
 		var doc = jsonform( this );
