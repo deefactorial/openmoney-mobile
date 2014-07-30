@@ -420,6 +420,10 @@ function goServerLogin( callBack ) {
     	})
     })
 	
+    $("#content .todo-lost").click(function(){
+        goLostPassword()
+    })
+    
 	$( "#content form" ).submit( function(e) {
 		e.preventDefault()
 		var doc = jsonform( this );
