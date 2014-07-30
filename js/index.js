@@ -640,6 +640,7 @@ function registerServer(callBack) {
 	if (!config.user.user_id) {
 		doFirstLogin( callBack )
 	} else {
+		//TODO: check if ttl has passed ie if session has expired.
 		callBack()
 	}
 //	doServerLogin( function(error, data) {
