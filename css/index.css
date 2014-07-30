@@ -91,6 +91,12 @@ br.clear {
 	letter-spacing: 0;
 }
 
+.topcoat-button.todo-lost {
+	line-height: 2rem;
+	padding: 0 0.6rem 2px 0;
+	letter-spacing: 0;
+}
+
 .topcoat-navigation-bar__item.todo-padded {
 	padding-top:1rem;
 }
