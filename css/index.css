@@ -87,7 +87,7 @@ br.clear {
 
 .topcoat-button.todo-top {
 	line-height: 2rem;
-	padding: 2px 0.6rem 2px 0.6rem; 
+	padding: 0 0.6rem 2px 0.6rem;
 	letter-spacing: 0;
 }
 
