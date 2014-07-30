@@ -467,7 +467,7 @@ function doRegistration( callBack ) {
 	doServerRegistration( function( error, data ) {
 		if (error) { return callBack( error ) }
 		config.setUser( data, function(error, ok) {
-			if (error) { return cb( error ) }
+			if (error) { return callBack( error ) }
             createMyProfile(function(err){
                 log("createMyProfile done "+JSON.stringify(err))
                 addMyUsernameToAllLists(function(err) {
@@ -475,7 +475,7 @@ function doRegistration( callBack ) {
                     if (err) {return cb(err)}
 					config.syncReference = triggerSync( function(error, ok) {
 						log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
-						cb( error, ok )
+						callBack( error, ok )
 					} )
                 } )
             } )
