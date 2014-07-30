@@ -97,6 +97,10 @@ br.clear {
 	letter-spacing: 0;
 }
 
+.third {
+	width:33%
+}
+
 .topcoat-navigation-bar__item.todo-padded {
 	padding-top:1rem;
 }
