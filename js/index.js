@@ -421,7 +421,9 @@ function goServerLogin( callBack ) {
     })
 	
     $("#content .todo-lost").click(function(){
-        goLostPassword()
+        goLostPassword(function () {
+    		goIndex()
+    	})
     })
     
 	$( "#content form" ).submit( function(e) {
@@ -504,7 +506,7 @@ function goLostPassword( callBack ) {
 		config.user = {};
 		config.user.name = doc.email;
 		doLostPassword( function(error, result) {
-			if (error) { return loginErr( error ) }
+			if (error) { return alert( error.msg ) }
 			$( "#content form input" ).val( "" ) // Clear Form
 			alert( "A password reset token has been emailed to you!" );
 			// Login Success 
