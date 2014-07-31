@@ -114,8 +114,8 @@ function goIndex() {
     
     // when the database changes, update the UI to reflect new lists
     window.dbChanged = function() {
-        config.views(["lists", {descending : true}], function(err, view) {
-            log("lists " + JSON.stringify( view ) , view)
+        config.views(["accounts", {descending : true}], function(err, view) {
+            log("accounts " + JSON.stringify( view ) , view)
             $("#scrollable").html(config.t.indexList(view))
             $("#scrollable li").on("swipeRight", function() {
                 var id = $(this).attr("data-id")
@@ -691,7 +691,7 @@ function registerFacebookToken(cb) {
 }
 
 function addMyUsernameToAllLists(cb) {
-    config.views(["lists", {include_docs : true}], function(err, view) {
+    config.views(["accounts", {include_docs : true}], function(err, view) {
         if (err) {return cb(err)}
         var docs = [];
         view.rows.forEach(function(row) {
@@ -1055,13 +1055,18 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/todo9"
+        var design = "_design/openmoney"
         db.put(design, {
             views : {
-                lists : {
+                accounts : {
                     map : function(doc) {
-                        if (doc.type == "list" && doc.created_at && doc.title) {
-                            emit(doc.created_at, doc.title)
+                        if (doc.type == "trading_name" && doc.trading_name && doc.trading_name_space && doc.currency && doc.steward && doc.balance && doc.volume ) {
+                            emit([ doc.type , doc.trading_name + "." + doc.trading_name_space , doc.currency], 
+                            		{ trading_name: doc.trading_name + "." + doc.trading_name_space,
+                            		  balance: doc.balance + " " + doc.currency,
+                            		  volume: doc.volume + " " + doc.volume
+                            		}
+                            	)
                         }
                     }.toString()
                 },
