@@ -1010,10 +1010,10 @@ function setupConfig(done) {
     									} else {
     										/* We Got a New Session */
     										log( "New Session setUser " + JSON.stringify( newUser ) )
-    										config.user.sessionID = newUser.sessionID
-    										config.user.name = newUser.username;
-    										config.user.user_id = newUser.username;
-    										config.user.email = newUser.username;
+    										config.user.sessionID = newUser.sessionID;
+    										config.user.expires = newUser.expires;
+    										config.user.user_id = config.user.name;
+    										config.user.email = config.user.name;
     										db.put( "_local/user", config.user, function(err, ok) {
     											if (err) { return cb( err ) }
     											log( "updateUser ok: " + JSON.stringify( ok ) )
@@ -1023,10 +1023,10 @@ function setupConfig(done) {
     									}
     								} else {
     									log( "Initialize setUser " + JSON.stringify( newUser ) )
-    									config.user.sessionID = newUser.sessionID
-    									config.user.name = newUser.username;
-    									config.user.user_id = newUser.username;
-    									config.user.email = newUser.username;
+    									config.user.sessionID = newUser.sessionID;
+    									config.user.expires = newUser.expires;
+    									config.user.user_id = config.user.name;
+    									config.user.email = config.user.name;
     									db.put( "_local/user", config.user, function(err, ok) {
     										if (err) { return cb( err ) }
     										log( "setUser ok: " + JSON.stringify( ok ) )
