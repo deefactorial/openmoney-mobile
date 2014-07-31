@@ -64,17 +64,17 @@ function connectToChanges() {
 Error handling UI
 */
 
-function loginErr(err) {
-    if (err.reason) {
-        alert("Can't login: "+err.reason);
+function loginErr(error) {
+    if (error.msg) {
+        alert( "Can Not Login: " + error.msg )
     } else {
-        alert("Login error: "+JSON.stringify(err))
+        alert( "Login error: " + JSON.stringify( error ) )
     }
 }
 
 function logoutError(error) {
-    if (error.reason) {
-        alert( "Can't Logout: " + error.reason )
+    if (error.msg) {
+        alert( "Can Not Logout: " + error.msg )
     } else {
         alert( "Logout Error: " + JSON.stringify( error ) )
     }
