@@ -36,8 +36,8 @@ var REMOTE_SYNC_SERVER = "couchbase.triskaideca.com"
 var REMOTE_SYNC_PORT = "4984"
 //var REMOTE_SYNC_DATABASE = "todolite-phonegap"
 var REMOTE_SYNC_DATABASE = "todos"
-var REMOTE_SERVER_LOGIN_URL = "http://couchbase.triskaideca.com/todologin"
-var REMOTE_SERVER_LOGOUT_URL = "http://couchbase.triskaideca.com/todologout"
+var REMOTE_SERVER_LOGIN_URL = "http://couchbase.triskaideca.com/login"
+var REMOTE_SERVER_LOGOUT_URL = "http://couchbase.triskaideca.com/logout"
 var REMOTE_SERVER_LOST_PASSWORD_URL = "http://couchbase.triskaideca.com/lostpw"
 	
 var SERVER_LOGIN = true
