@@ -407,7 +407,8 @@ function goServerLogin( callBack ) {
 		config.user.name = doc.email;
 		config.user.password = doc.password;
 		doFirstLogin( function(error, result) {
-			$( "#content form input" ).val( "" ) // Clear Form
+			$( "#content form input[name='email']" ).val( "" ) // Clear email
+			$( "#content form input[name='password']" ).val( "" ) // Clear password
 			callBack( error )
 		} )
 	} )
@@ -420,7 +421,7 @@ function goServerLogin( callBack ) {
 function goServerRegistration( callBack ) {
 	drawContent( config.t.register() )
 	$("#content .todo-index").click(function(){
-        goServerLogin()
+        callBack()
     })
     
     $( "#content form" ).submit( function(e) {
@@ -431,9 +432,10 @@ function goServerRegistration( callBack ) {
 		config.user.password = doc.password;
 		doRegistration( function(error, result) {
 			if (error) { return loginErr( error ) }
-			$( "#content form input" ).val( "" ) // Clear Form
+			$( "#content form input[name='email']" ).val( "" ) // Clear email
+			$( "#content form input[name='password']" ).val( "" ) // Clear password
 			// Login Success 
-			callBack()
+			callBack( error, result)
 		} )
 	} )
 }
@@ -479,7 +481,7 @@ function goLostPassword( callBack ) {
 		config.user.name = doc.email;
 		doLostPassword( function(error, result) {
 			if (error) { return alert( error.msg ) }
-			$( "#content form input" ).val( "" ) // Clear Form
+			$( "#content form input[name='email']" ).val( "" ) // Clear email
 			alert( "A password reset token has been emailed to you!" );
 			// Login Success 
 			callBack()
