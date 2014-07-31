@@ -673,22 +673,11 @@ function doServerLogout( callBack ) {
 
 function registerServer(callBack) {
 	log( "Resister Server SessionID" )
-	if (!config.user.user_id) {
+	if (!config.user.expires || Date(config.user.expires) < Date()) {
 		doFirstLogin( callBack )
 	} else {
-		//TODO: check if ttl has passed ie if session has expired.
 		callBack()
 	}
-//	doServerLogin( function(error, data) {
-//		if (error) { return callBack( error ) }
-//		config.setUser( data, function(error, ok) {
-//			if (error) { return callBack( error ) }
-//			config.syncReference = triggerSync( function(error, ok) {
-//				log( "triggerSync done " + JSON.stringify( error ) )
-//				callBack( error, ok )
-//			} )
-//		} )
-//	} )
 }
 
 function registerFacebookToken(cb) {
