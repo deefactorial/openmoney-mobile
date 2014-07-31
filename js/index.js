@@ -1014,7 +1014,6 @@ function setupConfig(done) {
     										config.user.name = newUser.username;
     										config.user.user_id = newUser.username;
     										config.user.email = newUser.username;
-    										config.user.password = newUser.password;
     										db.put( "_local/user", config.user, function(err, ok) {
     											if (err) { return cb( err ) }
     											log( "updateUser ok: " + JSON.stringify( ok ) )
@@ -1028,7 +1027,6 @@ function setupConfig(done) {
     									config.user.name = newUser.username;
     									config.user.user_id = newUser.username;
     									config.user.email = newUser.username;
-    									config.user.password = newUser.password;
     									db.put( "_local/user", config.user, function(err, ok) {
     										if (err) { return cb( err ) }
     										log( "setUser ok: " + JSON.stringify( ok ) )
