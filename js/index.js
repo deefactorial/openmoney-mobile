@@ -19,6 +19,7 @@ var REMOTE_SYNC_DATABASE = "todos"
 var REMOTE_SERVER_LOGIN_URL = "http://couchbase.triskaideca.com/login"
 var REMOTE_SERVER_LOGOUT_URL = "http://couchbase.triskaideca.com/logout"
 var REMOTE_SERVER_LOST_PASSWORD_URL = "http://couchbase.triskaideca.com/lostpw"
+var REMOTE_SERVER_REGISTRATION_URL = "http://couchbase.triskaideca.com/registration"
 	
 var SERVER_LOGIN = true
 var FACEBOOK_LOGIN = false
@@ -615,7 +616,7 @@ function doServerRegistration( callBack ) {
 		} ) }
 	}
 	if (config && config.user) {
-		var url = REMOTE_SERVER_LOGIN_URL;
+		var url = REMOTE_SERVER_REGISTRATION_URL;
 		var login = coax( url );
 		var credentials = '{ "username" : "' + config.user.name + '", "password" : "' + config.user.password + '" }';
 		log( "http " + url + " " + credentials )
