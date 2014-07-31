@@ -78,6 +78,31 @@ br.clear {
 	clear: both;
 }
 
+.topcoat-button.om-small {
+	line-height: 2rem;
+	padding: 0 0.6rem 2px 0.6rem;
+	font-size: 28px;
+	letter-spacing: 0;
+}
+
+.topcoat-button.om-accounts {
+	line-height: 2rem;
+	padding: 0 0.6rem 2px 0.6rem;
+	letter-spacing: 0;
+}
+
+.topcoat-button.om-payments {
+	line-height: 2rem;
+	padding: 0 0.6rem 2px 0.6rem;
+	letter-spacing: 0;
+}
+
+.topcoat-button.om-settings {
+	line-height: 2rem;
+	padding: 0 0.6rem 2px 0.6rem;
+	letter-spacing: 0;
+}
+
 .topcoat-button.todo-small {
 	line-height: 2rem;
 	padding: 0 0.6rem 2px 0.6rem;
