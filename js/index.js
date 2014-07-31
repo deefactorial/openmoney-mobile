@@ -135,7 +135,6 @@ function goIndex() {
     window.dbChanged = function() {
         config.views(["lists", {descending : true}], function(err, view) {
             log("lists " + JSON.stringify( view ) , view)
-            
             $("#scrollable").html(config.t.indexList(view))
             $("#scrollable li").on("swipeRight", function() {
                 var id = $(this).attr("data-id")
@@ -158,11 +157,10 @@ function setLoginLogoutButton() {
     if (!config.user.user_id) {
     	if( SERVER_LOGIN ) {
     		$( ".todo-login" ).show().click( function() {
-    			$( ".todo-login" ).off( "click" );
-            	setLoginLogoutButton()
-				goServerLogin( function () {
+				goServerLogin( function ( error ) {
 					$( ".todo-login" ).off( "click" )
 					setLoginLogoutButton()
+					if (error) { return loginErr( error ) }
 					goIndex()
 				});
 			} )
@@ -180,16 +178,10 @@ function setLoginLogoutButton() {
     	if( SERVER_LOGIN ) {
 			$( ".todo-login" ).show().click( function() {
 				doServerLogout( function(error, data) {
-					if (error) {
-						if (error.reason) {
-							alert( "Can not Logout: " + error.reason )
-						} else {
-							alert( "Logout Error: " + JSON.stringify( error ) )
-						}
-					}
+					if (error) { return logoutError( error ) }
 					// Logout Success
-					alert( "You are now logged out!" )
 					$( ".todo-login" ).off( "click" )
+					alert( "You are now logged out!" )
 					setLoginLogoutButton()
 				} )
 			} )
@@ -198,8 +190,8 @@ function setLoginLogoutButton() {
 	            if (config.user && config.user.access_token) {
 	                doFacebookLogout( config.user.access_token, function(error, data) {
 	                    if (error) { return logoutError( error ) }
-	                    $( ".todo-login" ).off( "click" );
 	                    // Logout Success
+	                    $( ".todo-login" ).off( "click" );
 	                    alert( "You are now logged out!" );
 	                    setLoginLogoutButton()
 	                } )
@@ -410,21 +402,22 @@ function toggleShare(doc, user, cb) {
 
 function goServerLogin( callBack ) {
 	drawContent( config.t.login() )
-	$("#content .todo-index").click(function(){
-        goIndex()
-    })
-    
-    $("#content .todo-register").click(function(){
-    	goServerRegistration(function () {
-    		goIndex()
-    	})
-    })
 	
-    $("#content .todo-lost").click(function(){
-        goLostPassword(function () {
-    		goIndex()
-    	})
-    })
+	$("#content .todo-index").click( function() {
+        callBack( false )
+    } )
+    
+    $("#content .todo-register").click( function() {
+    	goServerRegistration( function() {
+    		callBack( false )
+    	} )
+    } )
+	
+    $("#content .todo-lost").click( function() {
+        goLostPassword( function () {
+    		callBack( false )
+    	} )
+    } )
     
 	$( "#content form" ).submit( function(e) {
 		e.preventDefault()
@@ -433,10 +426,8 @@ function goServerLogin( callBack ) {
 		config.user.name = doc.email;
 		config.user.password = doc.password;
 		doFirstLogin( function(error, result) {
-			if (error) { return loginErr( error ) }
 			$( "#content form input" ).val( "" ) // Clear Form
-			// Login Success 
-			callBack()
+			callBack( error )
 		} )
 	} )
 }
