@@ -604,7 +604,7 @@ function goCurrency() {
 	        doc.type = "currency"
 	        doc.steward = [ config.user.user_id ]
 	        log( "insert new currency" + JSON.stringify( doc ) )
-	        config.db.put( [doc.type, doc.name], doc, function( error, ok ) {
+	        config.db.put( [doc.type, doc.currency], doc, function( error, ok ) {
 	        	$( "#content form input[name='currency']" ).val( "" ) // Clear Currency
 	        	if (error) return alert( JSON.stringify( error ) )
 	            alert( "You successfully created a new currency !" )
