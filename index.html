@@ -282,17 +282,22 @@
             &nbsp;
         </div>
     </div>
+	
     <div class="topcoat-navigation-bar">
-        <div class="topcoat-navigation-bar__item lef third om-padded">
-            <button class="om-accounts topcoat-button">accounts</button>
-        </div>
-        <div class="topcoat-navigation-bar__item third half om-padded">
-            <button class="om-payments topcoat-button">payments</button>
-        </div>
-        <div class="topcoat-navigation-bar__item right third om-padded">
-            <button class="om-settings topcoat-button">settings</button>
-        </div>
-    </div>
+		<div class="topcoat-button-bar">
+   			<label class="topcoat-button-bar__item">
+     			<input type="radio" name="topcoat">
+     			<button class="om-accounts topcoat-button-bar__button">accounts</button>
+   			</label>
+   			<label class="topcoat-button-bar__item">
+     			<input type="radio" name="topcoat">
+     			<button class="om-payments topcoat-button-bar__button">payments</button>
+   			</label>
+   			<label class="topcoat-button-bar__item">
+     			<input type="radio" name="topcoat">
+     			<button class="om-settings topcoat-button-bar__button">settings</button>
+   			</label>
+		</div>
     </div>
 </header>
 <div id="scrollable">
@@ -371,13 +376,12 @@
             		<input type="text" class="topcoat-text-input" name="currency" value="" placeholder="currency name" /> 
 				</li>
 				<li class="topcoat-list__item" data-id="currency_network">
-					<select name="currency_network">
+					<select name="currency_network" style="width:100%">
 						<option name="cc" selected="selected"></value>
 						{{#rows}}
 							<option name="{{id}}">{{name}}</option>
         				{{/rows}}
 					</select>
-            		<input type="text" class="topcoat-text-input" name="currency_network" value="" placeholder="currency network" /> 
 				</li>
 				<li class="topcoat-list__item" data-id="login_submit">
 					<input type="submit" class="topcoat-button" name="create" value=" Create Currency " /> 
