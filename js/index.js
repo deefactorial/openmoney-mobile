@@ -1078,7 +1078,7 @@ function setupConfig(done) {
                             	if (SERVER_LOGIN) {
     								if (config.user.user_id) {
     									if (config.user.user_id !== newUser.username) {
-    										return cb( "already logged in as " + config.user.name )
+    										return cb( "Cannot login as " + newUser.username + " already logged in as " + config.user.name )
     									} else {
     										/* We Got a New Session */
     										log( "New Session setUser " + JSON.stringify( newUser ) )
