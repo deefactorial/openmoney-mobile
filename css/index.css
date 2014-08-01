@@ -85,12 +85,12 @@ br.clear {
 }
 
 .topcoat-navigation-bar {
-	height: 4rem;
+	height: 6rem;
 	padding-bottom: 0;
 	margin-bottom: 0;
 }
 
-.select {
+.om-select {
   height: 3rem;
   padding: 0;
   margin: 0;
