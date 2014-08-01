@@ -85,7 +85,7 @@ br.clear {
 }
 
 .topcoat-navigation-bar {
-	height: 6rem;
+	height: 5rem;
 	padding-bottom: 0;
 	margin-bottom: 0;
 }
@@ -123,17 +123,17 @@ br.clear {
 }
 
 .topcoat-button.om-accounts {
-	padding: 0 0.6rem 2px 0.6rem;
+	
 	letter-spacing: 0;
 }
 
 .topcoat-button.om-payments {
-	padding: 0 0.6rem 2px 0.6rem;
+	
 	letter-spacing: 0;
 }
 
 .topcoat-button.om-settings {
-	padding: 0 0.6rem 2px 0.6rem;
+	
 	letter-spacing: 0;
 }
 
