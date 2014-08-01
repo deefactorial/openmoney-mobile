@@ -603,17 +603,21 @@ function goCurrency() {
 	        var doc = jsonform(this)
 	        doc.type = "currency"
 	        doc.steward = [ config.user.user_id ]
-	        config.db.get( [ doc.type, doc.currency ], function( error, existingdoc ) {
+	        config.db.get( doc.type + "," + doc.currency , function( error, existingdoc ) {
 	            if ( error ) {
 	            	log( "Error: " + JSON.stringify( error ) ) 
-	            	// doc does not exists
-	    	        log( "insert new currency" + JSON.stringify( doc ) )
-	    	        config.db.put( [ doc.type, doc.currency ], doc, function( error, ok ) {
-	    	        	$( "#content form input[name='currency']" ).val( "" ) // Clear Currency
-	    	        	if (error) return alert( JSON.stringify( error ) )
-	    	            alert( "You successfully created a new currency !" )
-	    	            goSettings()
-	    	        } )
+	            	if (error.status == 404) {
+		            	// doc does not exists
+		    	        log( "insert new currency" + JSON.stringify( doc ) )
+		    	        config.db.put( doc.type + "," + doc.currency , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
+		    	        	$( "#content form input[name='currency']" ).val( "" ) // Clear Currency
+		    	        	if (error) return alert( JSON.stringify( error ) )
+		    	            alert( "You successfully created a new currency !" )
+		    	            goSettings()
+		    	        } )
+	            	} else {
+	            		alert ( "Error: " . JSON.stringify( error ) ) 
+	            	}
 	            } else {
 	            	// doc exsits already
 	            	alert( "Currency already exists!" )
