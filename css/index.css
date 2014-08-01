@@ -100,6 +100,16 @@ br.clear {
   background-clip: padding-box;
   vertical-align: top;
   outline: none;
+  line-height: 3rem;
+  font-size: 16px;
+  letter-spacing: 1px;
+  padding: 0 1.25rem;
+  border: 1px solid #9daca9;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: inset 0 1px rgba(0,0,0,0.1);
+  color: #454545;
+  vertical-align: top;
 }
 
 .topcoat-button.om-small {
