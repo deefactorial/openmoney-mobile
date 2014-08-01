@@ -571,13 +571,46 @@ function goSettings() {
  */
 
 function goTradingName() {
-	drawContent( config.t.trading_name() )
-	
-	$("#content .om-index").click(function(){
-        goSettings()
-    })
-	
-	setTabs()
+	window.dbChanged = function() { }
+	config.views( [ "trading_name_spaces", { include_docs : true } ], function( error, view ) {
+        if (error) { return alert( JSON.stringify( error ) ) }
+        
+        drawContent( config.t.trading_name( view ) )
+        
+    	$("#content .om-index").click( function(){
+    			goSettings()
+    	} )
+    	
+    	setTabs()
+    	
+    	$("#content form").submit( function( e ) {
+	        e.preventDefault()
+	        var doc = jsonform(this)
+	        doc.type = "trading_name"
+	        doc.steward = [ config.user.user_id ]
+	        config.db.get( doc.type + "," + doc.name + "," + doc.currency , function( error, existingdoc ) {
+	            if ( error ) {
+	            	log( "Error: " + JSON.stringify( error ) ) 
+	            	if (error.status == 404) {
+		            	// doc does not exists
+		    	        log( "insert new currency" + JSON.stringify( doc ) )
+		    	        config.db.put( doc.type + "," + doc.name + "," + doc.currency , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
+		    	        	$( "#content form input[name='currency']" ).val( "" ) // Clear Currency
+		    	        	if (error) return alert( JSON.stringify( error ) )
+		    	            alert( "You successfully created a new trading name !" )
+		    	            goSettings()
+		    	        } )
+	            	} else {
+	            		alert ( "Error: " . JSON.stringify( error ) ) 
+	            	}
+	            } else {
+	            	// doc exsits already
+	            	alert( "Currency already exists!" )
+	            }
+	        } )
+	                
+	    } )
+	} )
 	
 }
 
@@ -1178,7 +1211,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney1"
+        var design = "_design/openmoney2"
         db.put(design, {
             views : {
                 accounts : {
@@ -1216,6 +1249,13 @@ function setupConfig(done) {
                 	map : function(doc) {
                 		if (doc.type == "currency_network" && doc.name && doc.steward) {
                 			emit(doc.name)
+                		}
+                	}.toString()
+                },
+                trading_name_spaces : {
+                	map : function( doc ) {
+                		if (doc.type == "trading_name_space" && doc.space && doc.steward) {
+                			emit(doc.space)
                 		}
                 	}.toString()
                 }
