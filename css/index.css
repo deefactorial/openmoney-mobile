@@ -38,7 +38,8 @@ header {
 }
 
 form {
-    padding:8px;
+    padding-top:8px;
+    padding-bottom:8px;
 }
 
 form input {
@@ -82,6 +83,24 @@ br.clear {
 	clear: both;
 }
 
+.topcoat-button-bar {
+	padding: 0;
+}
+
+.select {
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background-clip: padding-box;
+  vertical-align: top;
+  outline: none;
+}
+
 .topcoat-button.om-small {
 	line-height: 2rem;
 	padding: 0 0.6rem 2px 0.6rem;
@@ -90,15 +109,18 @@ br.clear {
 }
 
 .topcoat-button.om-accounts {
-
+	padding: 0 0.6rem 2px 0.6rem;
+	letter-spacing: 0;
 }
 
 .topcoat-button.om-payments {
-
+	padding: 0 0.6rem 2px 0.6rem;
+	letter-spacing: 0;
 }
 
 .topcoat-button.om-settings {
-
+	padding: 0 0.6rem 2px 0.6rem;
+	letter-spacing: 0;
 }
 
 .topcoat-button.om-trading_name {
