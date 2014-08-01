@@ -586,32 +586,32 @@ function goTradingName() {
  */
 
 function goCurrency() {
-	
-	$("#content .om-index").click( function(){
-		goSettings()
-    })
-	
-	setTabs()
-	
-	$("#content form").submit( function(e) {
-        e.preventDefault()
-        var doc = jsonform(this)
-        doc.type = "currency"
-        doc.steward = new array( config.user.user_id )
-        log( "insert new currency" + JSON.stringify( doc ) )
-        config.db.put( [doc.type, doc.name], doc, function( error, ok ) {
-        	if (error) return alert( JSON.stringify( error ) )
-            $("#content form input").val("")
-            alert( "You successfully created a new currency " . doc.currency )
-            goSettings()
-        })
-    })
-	
+	window.dbChanged = function(){}
 	config.views(["currency_networks", {include_docs : true}], function( error, view ) {
         if (error) { return alert( JSON.stringify( error ) ) }
+        
         drawContent( config.t.currency(view) )
+        
+    	$("#content .om-index").click( function(){
+    			goSettings()
+    	})
+    	
+    	setTabs()
+    	
+    	$("#content form").submit( function( e ) {
+	        e.preventDefault()
+	        var doc = jsonform(this)
+	        doc.type = "currency"
+	        doc.steward = new array( config.user.user_id )
+	        log( "insert new currency" + JSON.stringify( doc ) )
+	        config.db.put( [doc.type, doc.name], doc, function( error, ok ) {
+	        	if (error) return alert( JSON.stringify( error ) )
+	            $("#content form input").val("")
+	            alert( "You successfully created a new currency " . doc.currency )
+	            goSettings()
+	        } )
+	    } )
 	} )
-	
 }
 
 /*
