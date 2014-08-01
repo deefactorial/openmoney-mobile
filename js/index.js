@@ -597,6 +597,16 @@ function goCurrency() {
         if (error) { return alert( JSON.stringify( error ) ) }
         drawContent( config.t.currency(view) )
 	} )
+	
+    $("#content form").submit(function(e) {
+        e.preventDefault()
+        var doc = jsonform(this)
+        doc.type = "currency"
+        doc.steward = new array( config.user.user_id )
+        config.db.post(doc, function(err, ok) {
+            $("#content form input").val("")
+        })
+    })
 }
 
 /*
