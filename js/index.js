@@ -586,15 +586,15 @@ function goTradingName() {
  */
 
 function goCurrency() {
-	window.dbChanged = function(){}
-	config.views(["currency_networks", {include_docs : true}], function( error, view ) {
+	window.dbChanged = function() { }
+	config.views( [ "currency_networks", { include_docs : true } ], function( error, view ) {
         if (error) { return alert( JSON.stringify( error ) ) }
         
-        drawContent( config.t.currency(view) )
+        drawContent( config.t.currency( view ) )
         
     	$("#content .om-index").click( function(){
     			goSettings()
-    	})
+    	} )
     	
     	setTabs()
     	
@@ -605,9 +605,9 @@ function goCurrency() {
 	        doc.steward = [ config.user.user_id ]
 	        log( "insert new currency" + JSON.stringify( doc ) )
 	        config.db.put( [doc.type, doc.name], doc, function( error, ok ) {
+	        	$( "#content form input[name='currency']" ).val( "" ) // Clear Currency
 	        	if (error) return alert( JSON.stringify( error ) )
-	            $("#content form input").val("")
-	            alert( "You successfully created a new currency " . doc.currency )
+	            alert( "You successfully created a new currency !" )
 	            goSettings()
 	        } )
 	    } )
