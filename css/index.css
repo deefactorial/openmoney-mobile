@@ -34,11 +34,12 @@ header {
 }
 
 #scrollable {
-    margin-top:8rem;
+    /*margin-top:8rem;*/
+    margin-top: 0;
 }
 
 form {
-    padding-top:8px;
+    padding-top: 0;
     padding-bottom:8px;
 }
 
@@ -83,9 +84,9 @@ br.clear {
 	clear: both;
 }
 
-.topcoat-button-bar {
-	padding: 0;
-	margin: 0;
+.topcoat-navigation-bar {
+	padding-bottom: 0;
+	margin-bottom: 0;
 }
 
 .select {
