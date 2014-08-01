@@ -114,6 +114,21 @@ br.clear {
 	width: 100%;
 }
 
+.topcoat-button.om-currency {
+	line-height: 2rem;
+	padding: 0 0.6rem 2px 0.6rem;
+	letter-spacing: 0;
+	width: 100%;
+}
+
+.topcoat-button.om-profile {
+	line-height: 2rem;
+	padding: 0 0.6rem 2px 0.6rem;
+	letter-spacing: 0;
+	width: 100%;
+}
+
+
 .topcoat-button.todo-small {
 	line-height: 2rem;
 	padding: 0 0.6rem 2px 0.6rem;
