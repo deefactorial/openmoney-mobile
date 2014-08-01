@@ -586,13 +586,17 @@ function goTradingName() {
  */
 
 function goCurrency() {
-	drawContent( config.t.currency() )
 	
 	$("#content .om-index").click(function(){
 		goSettings()
     })
 	
 	setTabs()
+	
+	config.views(["currency_networks", {include_docs : true}], function( error, view ) {
+        if (error) { return alert( JSON.stringify( error ) ) }
+        drawContent( config.t.currency(view) )
+	} )
 }
 
 /*
@@ -1178,6 +1182,13 @@ function setupConfig(done) {
                             emit(doc.name)
                         }
                     }.toString()
+                },
+                currency_networks : {
+                	map : function(doc) {
+                		if (doc.type == "currency_network" && doc.name && doc.steward) {
+                			emit(doc.name)
+                		}
+                	}.toString()
                 }
             }
         }, function(){

@@ -365,7 +365,25 @@
 </header>
 <div id="scrollable">
 	<div class="topcoat-list__container">
-
+		<form>
+			<ul class="topcoat-list">
+        		<li class="topcoat-list__item" data-id="currency">
+            		<input type="text" class="topcoat-text-input" name="currency" value="" placeholder="currency name" /> 
+				</li>
+				<li class="topcoat-list__item" data-id="currency_network">
+					<select name="currency_network">
+						<option name="cc" selected="selected"></value>
+						{{#rows}}
+							<option name="{{id}}">{{name}}</option>
+        				{{/rows}}
+					</select>
+            		<input type="text" class="topcoat-text-input" name="currency_network" value="" placeholder="currency network" /> 
+				</li>
+				<li class="topcoat-list__item" data-id="login_submit">
+					<input type="submit" class="topcoat-button" name="create" value=" Create Currency " /> 
+				</li>
+    		</ul>
+ 		</form>
 	</div>
 </div>
 </script>
