@@ -1154,7 +1154,7 @@ function setupConfig(done) {
                         server : url,
                         t : t
                     }
-                    if (window.config.user) {
+                    if (config.user && config.user.user_id) {
                     	if (SERVER_LOGIN) {
 							registerServer( done )
 						} else if (FACEBOOK_LOGIN) {
