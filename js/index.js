@@ -112,6 +112,8 @@ function goIndex() {
     
     setLoginLogoutButton();
     
+    setTabs();
+    
     // when the database changes, update the UI to reflect new lists
     window.dbChanged = function() {
         config.views(["accounts", {descending : true}], function(err, view) {
@@ -182,6 +184,24 @@ function setLoginLogoutButton() {
 	        } )
     	}
     }
+}
+
+/*
+ * Set Menu Tabs
+ */
+
+function setTabs() {
+    $("#content .om-accounts").click(function(){
+        goIndex()
+    })
+    
+    $("#content .om-payments").click(function(){
+        goPayments()
+    })
+    
+    $("#content .om-settings").click(function(){
+        goSettings()
+    })
 }
 
 /*
@@ -517,6 +537,76 @@ function doLostPassword( callBack ) {
 			reason : "Configuration User is not Set!"
 		} )
 	}
+}
+
+/*
+ * Settings Page
+ */
+
+function goSettings() {
+	drawContent( config.t.settings() )
+	
+	$("#content .om-index").click(function(){
+        goIndex()
+    })
+	
+	setTabs()
+	
+	$("#content .om-trading_name").click(function(){
+        goTradingName()
+    })
+    
+    $("#content .om-currency").click(function(){
+        goCurrency()
+    })
+    
+    $("#content .om-profile").click(function(){
+        goProfile()
+    })
+	
+}
+
+/*
+ * Join a Currency (trading name) Page
+ */
+
+function goTradingName() {
+	drawContent( config.t.trading_name() )
+	
+	$("#content .om-index").click(function(){
+        goSettings()
+    })
+	
+	setTabs()
+	
+}
+
+/*
+ * Create a Currency Page
+ */
+
+function goCurrency() {
+	drawContent( config.t.currency() )
+	
+	$("#content .om-index").click(function(){
+		goSettings()
+    })
+	
+	setTabs()
+}
+
+/*
+ * Profile Settings Page
+ */
+
+function goProfile() {
+	drawContent( config.t.profile() )
+	
+	$("#content .om-index").click(function(){
+		goSettings()
+    })
+	
+	setTabs()
 }
 
 /*

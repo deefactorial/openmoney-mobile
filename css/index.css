@@ -16,6 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+ 
+ /*
+ This has been modified by Dominique Legault
+ */
 
 body {
 	/*font-size:200%;*/
@@ -127,6 +131,10 @@ br.clear {
 }
 
 .topcoat-navigation-bar__item.todo-padded {
+	padding-top:1rem;
+}
+
+.topcoat-navigation-bar__item.om-padded {
 	padding-top:1rem;
 }
 
