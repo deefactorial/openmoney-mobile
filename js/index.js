@@ -603,8 +603,11 @@ function goCurrency() {
         var doc = jsonform(this)
         doc.type = "currency"
         doc.steward = new array( config.user.user_id )
-        config.db.post(doc, function(err, ok) {
+        config.db.post( doc, function( error, ok ) {
+        	if (error) alert( JSON.stringify( error ) )
             $("#content form input").val("")
+            alert( "You successfully created a new currency " . doc.currency )
+            goSettings()
         })
     })
 }
