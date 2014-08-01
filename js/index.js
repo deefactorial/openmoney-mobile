@@ -593,11 +593,12 @@ function goCurrency() {
 	
 	setTabs()
 	
-	$("#content form").submit(function(e) {
+	$("#content form").submit( function(e) {
         e.preventDefault()
         var doc = jsonform(this)
         doc.type = "currency"
         doc.steward = new array( config.user.user_id )
+        log( "insert new currency" + JSON.stringify( doc ) )
         config.db.put( [doc.type, doc.name], doc, function( error, ok ) {
         	if (error) return alert( JSON.stringify( error ) )
             $("#content form input").val("")
@@ -611,7 +612,6 @@ function goCurrency() {
         drawContent( config.t.currency(view) )
 	} )
 	
-
 }
 
 /*
