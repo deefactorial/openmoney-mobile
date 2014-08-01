@@ -34,7 +34,7 @@ header {
 }
 
 #scrollable {
-    margin-top: 8rem;
+    margin-top: 7.375rem;
    /* margin-top: 0; */
 }
 
@@ -86,7 +86,7 @@ br.clear {
 
 .topcoat-navigation-bar {
 	padding-bottom: 0;
-	margin-bottom: 0.625rem;
+	margin-bottom: 0;
 }
 
 .om-select {

@@ -587,18 +587,13 @@ function goTradingName() {
 
 function goCurrency() {
 	
-	$("#content .om-index").click(function(){
+	$("#content .om-index").click( function(){
 		goSettings()
     })
 	
 	setTabs()
 	
-	config.views(["currency_networks", {include_docs : true}], function( error, view ) {
-        if (error) { return alert( JSON.stringify( error ) ) }
-        drawContent( config.t.currency(view) )
-	} )
-	
-    $("#content form").submit(function(e) {
+	$("#content form").submit(function(e) {
         e.preventDefault()
         var doc = jsonform(this)
         doc.type = "currency"
@@ -610,6 +605,13 @@ function goCurrency() {
             goSettings()
         })
     })
+	
+	config.views(["currency_networks", {include_docs : true}], function( error, view ) {
+        if (error) { return alert( JSON.stringify( error ) ) }
+        drawContent( config.t.currency(view) )
+	} )
+	
+
 }
 
 /*
