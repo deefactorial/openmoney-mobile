@@ -107,6 +107,13 @@ br.clear {
 	letter-spacing: 0;
 }
 
+.topcoat-button.om-trading_name {
+	line-height: 2rem;
+	padding: 0 0.6rem 2px 0.6rem;
+	letter-spacing: 0;
+	width: 100%;
+}
+
 .topcoat-button.todo-small {
 	line-height: 2rem;
 	padding: 0 0.6rem 2px 0.6rem;
@@ -128,6 +135,10 @@ br.clear {
 
 .third {
 	width:33%
+}
+
+.three-quarter {
+	width:75%
 }
 
 .topcoat-navigation-bar__item.todo-padded {
