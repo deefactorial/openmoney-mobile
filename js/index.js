@@ -1220,18 +1220,13 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney2"
+        var design = "_design/openmoney3"
         db.put(design, {
             views : {
                 accounts : {
                     map : function(doc) {
-                        if (doc.type == "trading_name" && doc.trading_name && doc.trading_name_space && doc.currency && doc.steward && doc.balance && doc.volume ) {
-                            emit([ doc.type , doc.trading_name + "." + doc.trading_name_space , doc.currency], 
-                            		{ trading_name: doc.trading_name + "." + doc.trading_name_space,
-                            		  balance: doc.balance + " " + doc.currency,
-                            		  volume: doc.volume + " " + doc.volume
-                            		}
-                            	)
+                        if (doc.type == "trading_name" && doc.trading_name && doc.trading_name_space && doc.currency && doc.steward ) {
+                            emit( { trading_name: doc.trading_name + "." + doc.trading_name_space, currency: doc.currency } )
                         }
                     }.toString()
                 },
