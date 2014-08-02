@@ -94,11 +94,20 @@
             <button class="todo-share topcoat-button todo-small">&#9786;</button>
         </div>
     </div>
-    <div class="topcoat-navigation-bar" style="height:3.75rem">
-        <form>
-            <input type="text" class="topcoat-text-input" name="title" value="" placeholder="Add a task">
-        </form>
-    </div>
+        <div class="topcoat-button-bar">
+   			<label class="topcoat-button-bar__item">
+     			<input type="radio" name="topcoat">
+     			<button class="om-accounts topcoat-button-bar__button">accounts</button>
+   			</label>
+   			<label class="topcoat-button-bar__item">
+     			<input type="radio" name="topcoat">
+     			<button class="om-payments topcoat-button-bar__button">payment</button>
+   			</label>
+   			<label class="topcoat-button-bar__item">
+     			<input type="radio" name="topcoat">
+     			<button class="om-settings topcoat-button-bar__button">settings</button>
+   			</label>
+		</div>
 </header>
 <div id="scrollable">
 </div>
@@ -109,12 +118,7 @@
     {{#rows}}
         <li class="topcoat-list__item" data-id="{{id}}">
         {{#value}}
-            <label class="todo-list-item topcoat-checkbox__label">
-
-                    <input {{checked}} type="checkbox">
-                    <div class="topcoat-checkbox"></div>
-                    {{title}}
-            </label>
+            {{from}} -> {{to}} in {{amount}} {{currency}}
             <div class="camera {{#image}}image{{/image}}"></div>
             <button class="todo-delete topcoat-button">Delete</button>
             <br class="clear"/>

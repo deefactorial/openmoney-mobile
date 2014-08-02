@@ -221,17 +221,6 @@ function goList(id) {
             doShare(id)
         })
 
-        $("#content form").submit(function(e) {
-            e.preventDefault()
-            var doc = jsonform(this)
-            doc.type = "task"
-            doc.list_id = id
-            doc.updated_at = doc.created_at = new Date()
-            config.db.post(doc, function(err, ok) {
-                $("#content form input").val("")
-            })
-        })
-
         $("#scrollable").on("click", "li", function(e) {
             var id = $(this).attr("data-id")
             if ($(e.target).hasClass("camera")) {
@@ -251,7 +240,7 @@ function goList(id) {
                 endkey : [id],
                 descending : true
             }], function(err, view) {
-                log("account_details", view)
+                log("account_details" + JSON.stringify(view), view)
                 $("#scrollable").html(config.t.listItems(view))
                 $("#scrollable li").on("swipeRight", function() {
                     var id = $(this).attr("data-id")
