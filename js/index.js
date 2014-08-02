@@ -1220,7 +1220,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney3"
+        var design = "_design/openmoney4"
         db.put(design, {
             views : {
                 accounts : {
@@ -1230,6 +1230,13 @@ function setupConfig(done) {
                         }
                     }.toString()
                 },
+                account_details : {
+                	map : function( doc ) {
+                		if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
+                			emit( { from : doc.from, to : doc.to, amount: doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
+                		}
+                	}.toString()
+                }
                 tasks : {
                     map : function(doc) {
                         if (doc.type == "task" && doc.created_at && doc.title && doc.list_id) {
