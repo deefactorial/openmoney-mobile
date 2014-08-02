@@ -605,7 +605,7 @@ function goTradingName() {
 	            	}
 	            } else {
 	            	// doc exsits already
-	            	alert( "Currency already exists!" )
+	            	alert( "Trading name already exists!" )
 	            }
 	        } )
 	                
