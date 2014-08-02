@@ -246,12 +246,12 @@ function goList(id) {
         })
 
         window.dbChanged = function() {
-            config.views(["tasks", {
+            config.views(["account_details", {
                 startkey : [id, {}],
                 endkey : [id],
                 descending : true
             }], function(err, view) {
-                log("tasks", view)
+                log("account_details", view)
                 $("#scrollable").html(config.t.listItems(view))
                 $("#scrollable li").on("swipeRight", function() {
                     var id = $(this).attr("data-id")
@@ -1220,7 +1220,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney4"
+        var design = "_design/openmoney5"
         db.put(design, {
             views : {
                 accounts : {
@@ -1233,7 +1233,8 @@ function setupConfig(done) {
                 account_details : {
                 	map : function( doc ) {
                 		if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
-                			emit( { from : doc.from, to : doc.to, amount: doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
+                			emit( [ doc.from + "," + doc.currency , doc.timestamp ] , { from : doc.from, to : doc.to, amount: -doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
+                			emit( [ doc.to + "," + doc.currency , doc.timestamp ] , { from : doc.from, to : doc.to, amount: doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
                 		}
                 	}.toString()
                 },
