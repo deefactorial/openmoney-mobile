@@ -588,28 +588,36 @@ function goTradingName() {
 	        var doc = jsonform(this)
 	        doc.type = "trading_name"
 	        doc.steward = [ config.user.user_id ]
-	        config.db.get( doc.type + "," + doc.trading_name + "," + doc.currency , function( error, existingdoc ) {
-	            if ( error ) {
-	            	log( "Error: " + JSON.stringify( error ) ) 
-	            	if (error.status == 404) {
-		            	// doc does not exists
-		    	        log( "insert new trading name" + JSON.stringify( doc ) )
-		    	        config.db.put( doc.type + "," + doc.trading_name + "," + doc.currency , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
-		    	        	$( "#content form input[name='trading_name']" ).val( "" ) // Clear trading name
-		    	        	$( "#content form input[name='currency']" ).val( "" ) // Clear trading name
-		    	        	if (error) return alert( JSON.stringify( error ) )
-		    	            alert( "You successfully created a new trading name !" )
-		    	            goSettings()
-		    	        } )
-	            	} else {
-	            		alert ( "Error: " . JSON.stringify( error ) ) 
-	            	}
-	            } else {
-	            	// doc exsits already
-	            	alert( "Trading name already exists!" )
-	            }
-	        } )
-	                
+	        config.db.get( "currency," + doc.currency , function( error, currency ) { 
+	        	if (error) { 
+	        		if (error.status == 404) {
+	        			return alert( "Currency Does Not Exist!" )
+	        		} else {
+	        			return alert( JSON.stringify( error ) )
+	        		}
+	        	}
+		        config.db.get( doc.type + "," + doc.trading_name + "," + doc.currency , function( error, existingdoc ) {
+		            if (error) {
+		            	log( "Error: " + JSON.stringify( error ) ) 
+		            	if (error.status == 404) {
+			            	// doc does not exists
+			    	        log( "insert new trading name" + JSON.stringify( doc ) )
+			    	        config.db.put( doc.type + "," + doc.trading_name + "," + doc.currency , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
+			    	        	$( "#content form input[name='trading_name']" ).val( "" ) // Clear trading name
+			    	        	$( "#content form input[name='currency']" ).val( "" ) // Clear trading name
+			    	        	if (error) return alert( JSON.stringify( error ) )
+			    	            alert( "You successfully created a new trading name !" )
+			    	            goSettings()
+			    	        } )
+		            	} else {
+		            		alert ( "Error: " . JSON.stringify( error ) ) 
+		            	}
+		            } else {
+		            	// doc exsits already
+		            	alert( "Trading name already exists!" )
+		            }
+		        } )
+	        } )  
 	    } )
 	} )
 	
