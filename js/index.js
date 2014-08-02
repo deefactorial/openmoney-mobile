@@ -696,6 +696,7 @@ function goPayment() {
 	        e.preventDefault()
 	        var doc = jsonform(this)
 	        doc.type = "trading_name_journal"
+	        doc.amount = parseInt(doc.amount)
 	        doc.timestamp = new Date()
 	        doc.timestamp = doc.timestamp.toJSON()
 	        config.db.get( doc.from , function( error, from ) { 
