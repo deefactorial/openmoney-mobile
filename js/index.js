@@ -196,7 +196,7 @@ function setTabs() {
     })
     
     $("#content .om-payments").click(function(){
-        goPayments()
+        goPayment()
     })
     
     $("#content .om-settings").click(function(){
@@ -682,6 +682,72 @@ function goProfile() {
     })
 	
 	setTabs()
+}
+
+/*
+ * Payment Page
+ */
+
+function goPayment() {
+	window.dbChanged = function() { }
+	config.views( [ "accounts", { include_docs : true } ], function( error, view ) {
+        if (error) { return alert( JSON.stringify( error ) ) }
+        
+        drawContent( config.t.payment( view ) )
+        
+    	$("#content .om-index").click( function(){
+    			goSettings()
+    	} )
+    	
+    	setTabs()
+    	
+    	$("#content form").submit( function( e ) {
+	        e.preventDefault()
+	        var doc = jsonform(this)
+	        doc.type = "trading_name_journal"
+	        doc.timestamp = new Date()
+	        config.db.get( doc.from , function( error, from ) { 
+	        	if (error) { 
+	        		if (error.status == 404) {
+	        			return alert( "Your trading account doesn't exist!" )
+	        		} else {
+	        			return alert( JSON.stringify( error ) )
+	        		}
+	        	}	        
+	        	config.db.get( "trading_name," + doc.to + "," + from.currency, function( error, to ) { 
+		        	if (error) { 
+		        		if (error.status == 404) {
+		        			return alert( "Receipient trading account doesn't exist!" )
+		        		} else {
+		        			return alert( JSON.stringify( error ) )
+		        		}
+		        	}
+			        config.db.get( doc.type + "," + from.trading_name + "," + doc.to + "," + doc.timestamp , function( error, existingdoc ) {
+			            if (error) {
+			            	log( "Error: " + JSON.stringify( error ) ) 
+			            	if (error.status == 404) {
+				            	// doc does not exists
+				    	        log( "insert new trading name journal" + JSON.stringify( doc ) )
+				    	        config.db.put( doc.type + "," + from.trading_name + "," + doc.to + "," + doc.timestamp , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
+				    	        	if (error) return alert( JSON.stringify( error ) )
+				    	        	$( "#content form input[name='to']" ).val( "" ) // Clear
+				    	        	$( "#content form input[name='amount']" ).val( "" ) // Clear 
+				    	        	$( "#content form textarea" ).val( "" ) // Clear
+				    	            alert( "You successfully made a payment !" )
+				    	            goIndex()
+				    	        } )
+			            	} else {
+			            		alert ( "Error: " . JSON.stringify( error ) ) 
+			            	}
+			            } else {
+			            	// doc exsits already
+			            	alert( "Payment already exists!" )
+			            }
+			        } )
+	        	} )
+	        } )  
+	    } )
+	} )
 }
 
 /*

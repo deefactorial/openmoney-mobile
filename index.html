@@ -56,7 +56,7 @@
    			</label>
    			<label class="topcoat-button-bar__item">
      			<input type="radio" name="topcoat">
-     			<button class="om-payments topcoat-button-bar__button">payments</button>
+     			<button class="om-payments topcoat-button-bar__button">payment</button>
    			</label>
    			<label class="topcoat-button-bar__item">
      			<input type="radio" name="topcoat">
@@ -295,7 +295,7 @@
    			</label>
    			<label class="topcoat-button-bar__item">
      			<input type="radio" name="topcoat">
-     			<button class="om-payments topcoat-button-bar__button">payments</button>
+     			<button class="om-payments topcoat-button-bar__button">payment</button>
    			</label>
    			<label class="topcoat-button-bar__item">
      			<input type="radio" name="topcoat" checked="checked">
@@ -337,7 +337,7 @@
    			</label>
    			<label class="topcoat-button-bar__item">
      			<input type="radio" name="topcoat">
-     			<button class="om-payments topcoat-button-bar__button">payments</button>
+     			<button class="om-payments topcoat-button-bar__button">payment</button>
    			</label>
    			<label class="topcoat-button-bar__item">
      			<input type="radio" name="topcoat">
@@ -391,7 +391,7 @@
    			</label>
    			<label class="topcoat-button-bar__item">
      			<input type="radio" name="topcoat">
-     			<button class="om-payments topcoat-button-bar__button">payments</button>
+     			<button class="om-payments topcoat-button-bar__button">payment</button>
    			</label>
    			<label class="topcoat-button-bar__item">
      			<input type="radio" name="topcoat">
@@ -443,7 +443,7 @@
    			</label>
    			<label class="topcoat-button-bar__item">
      			<input type="radio" name="topcoat">
-     			<button class="om-payments topcoat-button-bar__button">payments</button>
+     			<button class="om-payments topcoat-button-bar__button">payment</button>
    			</label>
    			<label class="topcoat-button-bar__item">
      			<input type="radio" name="topcoat">
@@ -454,6 +454,60 @@
 <div id="scrollable">
 	<div class="topcoat-list__container">
 
+	</div>
+</div>
+</script>
+<script type="text/mustache" id="payment-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+		<div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item left three-quarter om-padded">
+           <h1 class="topcoat-navigation-bar__title">Make Payment</h1>
+        </div>
+    </div>
+        <div class="topcoat-button-bar">
+   			<label class="topcoat-button-bar__item">
+     			<input type="radio" name="topcoat">
+     			<button class="om-accounts topcoat-button-bar__button">accounts</button>
+   			</label>
+   			<label class="topcoat-button-bar__item">
+     			<input type="radio" name="topcoat" checked="checked">
+     			<button class="om-payments topcoat-button-bar__button">payment</button>
+   			</label>
+   			<label class="topcoat-button-bar__item">
+     			<input type="radio" name="topcoat">
+     			<button class="om-settings topcoat-button-bar__button">settings</button>
+   			</label>
+		</div>
+</header>
+<div id="scrollable">
+	<div class="topcoat-list__container">
+		<form>
+			<ul class="topcoat-list">
+				<li class="topcoat-list__item" data-id="from">
+					<select name="from" class="om-select-dark" >
+						{{#rows}}
+							<option value="{{id}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
+        				{{/rows}}
+					</select>
+				</li>
+				<li class="topcoat-list__item" data-id="to">
+            		<input type="text" class="topcoat-text-input" name="to" value="" placeholder="Receipient Trading Name" /> 
+				</li>
+        		<li class="topcoat-list__item" data-id="amount">
+            		<input type="number" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
+				</li>
+				<li class="topcoat-list__item" data-id="description">
+            		<textarea class="topcoat-textarea" name="description" rows="2" style="width:100%" placeholder="Description"></textarea> 
+				</li>
+				
+				<li class="topcoat-list__item" data-id="submit">
+					<input type="submit" class="topcoat-button" name="create" value=" Create Currency " /> 
+				</li>
+    		</ul>
+ 		</form>
 	</div>
 </div>
 </script>
