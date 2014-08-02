@@ -72,8 +72,10 @@
     <ul class="topcoat-list">
     {{#rows}}
         <li class="todo-list-name topcoat-list__item" data-id="{{id}}">
-            {{trading_name}} {{currency}}
-            <button class="todo-delete topcoat-button">Delete</button>
+			{{#value}}
+            	{{trading_name}} {{currency}}
+            	<button class="todo-delete topcoat-button">Delete</button>
+			{{/value}}
         </li>
     {{/rows}}
     </ul>
@@ -92,7 +94,7 @@
             <button class="todo-share topcoat-button todo-small">&#9786;</button>
         </div>
     </div>
-    <div class="topcoat-navigation-bar">
+    <div class="topcoat-navigation-bar" style="height:3.75rem">
         <form>
             <input type="text" class="topcoat-text-input" name="title" value="" placeholder="Add a task">
         </form>
