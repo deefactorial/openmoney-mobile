@@ -704,6 +704,7 @@ function goPayment() {
 	        			return alert( JSON.stringify( error ) )
 	        		}
 	        	}	        
+	        	doc.from = from.trading_name
 	        	config.db.get( "trading_name," + doc.to + "," + from.currency, function( error, to ) { 
 		        	if (error) { 
 		        		if (error.status == 404) {
