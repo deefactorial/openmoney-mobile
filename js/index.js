@@ -694,6 +694,7 @@ function goPayment() {
 	        e.preventDefault()
 	        var doc = jsonform(this)
 	        doc.type = "trading_name_journal"
+	        doc.amount = (int) doc.amount
 	        doc.timestamp = new Date()
 	        doc.timestamp = doc.timestamp.toJSON()
 	        config.db.get( doc.from , function( error, from ) { 
@@ -705,6 +706,7 @@ function goPayment() {
 	        		}
 	        	}	        
 	        	doc.from = from.trading_name
+	        	doc.currency = from.currency
 	        	config.db.get( "trading_name," + doc.to + "," + from.currency, function( error, to ) { 
 		        	if (error) { 
 		        		if (error.status == 404) {
