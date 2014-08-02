@@ -706,6 +706,7 @@ function goPayment() {
 	        var doc = jsonform(this)
 	        doc.type = "trading_name_journal"
 	        doc.timestamp = new Date()
+	        doc.timestamp = doc.timestamp.toJSON()
 	        config.db.get( doc.from , function( error, from ) { 
 	        	if (error) { 
 	        		if (error.status == 404) {
