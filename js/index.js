@@ -593,9 +593,10 @@ function goTradingName() {
 	            	log( "Error: " + JSON.stringify( error ) ) 
 	            	if (error.status == 404) {
 		            	// doc does not exists
-		    	        log( "insert new currency" + JSON.stringify( doc ) )
+		    	        log( "insert new trading name" + JSON.stringify( doc ) )
 		    	        config.db.put( doc.type + "," + doc.name + "," + doc.currency , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
-		    	        	$( "#content form input[name='currency']" ).val( "" ) // Clear Currency
+		    	        	$( "#content form input[name='trading_name']" ).val( "" ) // Clear trading name
+		    	        	$( "#content form input[name='currency']" ).val( "" ) // Clear trading name
 		    	        	if (error) return alert( JSON.stringify( error ) )
 		    	            alert( "You successfully created a new trading name !" )
 		    	            goSettings()
