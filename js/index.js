@@ -1236,7 +1236,7 @@ function setupConfig(done) {
                 			emit( { from : doc.from, to : doc.to, amount: doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
                 		}
                 	}.toString()
-                }
+                },
                 tasks : {
                     map : function(doc) {
                         if (doc.type == "task" && doc.created_at && doc.title && doc.list_id) {
