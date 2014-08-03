@@ -712,7 +712,7 @@ function goPayment() {
 	        	config.db.get( "trading_name," + doc.to + "," + from.currency, function( error, to ) { 
 		        	if (error) { 
 		        		if (error.status == 404) {
-		        			return alert( "Receipient trading account doesn't exist!" )
+		        			return alert( "Recipient trading account " + doc.to + " in currency " from.currency " does not exist!" )
 		        		} else {
 		        			return alert( JSON.stringify( error ) )
 		        		}
