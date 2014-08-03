@@ -887,7 +887,9 @@ function doServerLogout( callBack ) {
             if (error) { return callBack( error ) }
             config.syncReference.cancelSync( function ( error, ok ) {
             	log( "Sync Replication Canceled" )
-                callBack( error , result )
+            	setupConfig(function ( error, ok ) {
+            		callBack( error , result )
+            	} ) 
             } )
         } )
 	} )
