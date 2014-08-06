@@ -123,14 +123,16 @@ function goIndex() {
             for (var i = view.rows.length - 1; i >= 0; i--) {
                 var row = view.rows[i]
                 var stewards = row.steward
-                for (var j = stewards.length - 1; j >= 0; j--) {
-                    var steward = stewards[j]
-                    log("row", row.id, steward)
-                    if (steward == config.user.user_id) {
-                    	thisUsersAccounts.rows.push( row )
-                    }
-                };
-            };
+                if (stewards) {
+	                for (var j = stewards.length - 1; j >= 0; j--) {
+	                    var steward = stewards[j]
+	                    log("row", row.id, steward)
+	                    if (steward == config.user.user_id) {
+	                    	thisUsersAccounts.rows.push( row )
+	                    }
+	                }
+                }
+            }
             
             thisUsersAccounts.offset = view.offset
             thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
