@@ -717,13 +717,13 @@ function goPayment() {
 		        			return alert( JSON.stringify( error ) )
 		        		}
 		        	}
-			        config.db.get( doc.type + "," + from.trading_name + "," + doc.to + "," + doc.timestamp , function( error, existingdoc ) {
+			        config.db.get( doc.type + "," + from.trading_name + "." + from.trading_name_space + "," + to.trading_name + "." + to.trading_name_space + "," + doc.timestamp , function( error, existingdoc ) {
 			            if (error) {
 			            	log( "Error: " + JSON.stringify( error ) ) 
 			            	if (error.status == 404) {
 				            	// doc does not exists
 				    	        log( "insert new trading name journal" + JSON.stringify( doc ) )
-				    	        config.db.put( doc.type + "," + from.trading_name + "," + doc.to + "," + doc.timestamp , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
+				    	        config.db.put( doc.type + "," + from.trading_name + "." + from.trading_name_space + "," + to.trading_name + "." + to.trading_name_space + "," + doc.timestamp , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
 				    	        	if (error) return alert( JSON.stringify( error ) )
 				    	        	$( "#content form input[name='to']" ).val( "" ) // Clear
 				    	        	$( "#content form input[name='amount']" ).val( "" ) // Clear 
