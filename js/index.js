@@ -587,13 +587,13 @@ function goTradingName() {
 	        			return alert( JSON.stringify( error ) )
 	        		}
 	        	}
-		        config.db.get( doc.type + "," + doc.trading_name + "," + doc.currency , function( error, existingdoc ) {
+		        config.db.get( doc.type + "," + doc.trading_name + "." + doc.trading_name_space + "," + doc.currency , function( error, existingdoc ) {
 		            if (error) {
 		            	log( "Error: " + JSON.stringify( error ) ) 
 		            	if (error.status == 404) {
 			            	// doc does not exists
 			    	        log( "insert new trading name" + JSON.stringify( doc ) )
-			    	        config.db.put( doc.type + "," + doc.trading_name + "," + doc.currency , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
+			    	        config.db.put( doc.type + "," + doc.trading_name + "." + doc.trading_name_space + "," + doc.currency , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
 			    	        	$( "#content form input[name='trading_name']" ).val( "" ) // Clear trading name
 			    	        	$( "#content form input[name='currency']" ).val( "" ) // Clear trading name
 			    	        	if (error) return alert( JSON.stringify( error ) )
