@@ -1302,13 +1302,13 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney5"
+        var design = "_design/openmoney6"
         db.put(design, {
             views : {
                 accounts : {
                     map : function(doc) {
                         if (doc.type == "trading_name" && doc.trading_name && doc.trading_name_space && doc.currency && doc.steward ) {
-                            emit( { trading_name: doc.trading_name + "." + doc.trading_name_space, currency: doc.currency } )
+                            emit( { trading_name: doc.trading_name + "." + doc.trading_name_space, currency: doc.currency , steward: doc.steward} )
                         }
                     }.toString()
                 },
