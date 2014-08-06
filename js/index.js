@@ -124,11 +124,11 @@ function goIndex() {
                 var row = view.rows[i]
                 var stewards = row.steward
                 log( "row:" + JSON.stringify( row ) )
-                if (stewards) {
-	                for (var j = stewards.length - 1; j >= 0; j--) {
-	                    var steward = stewards[j]
-	                    log("row", row.id, steward)
-	                    if (steward == config.user.user_id) {
+                if (row.steward) {
+	                for (var j = row.steward.length - 1; j >= 0; j--) {
+	                    var steward = row.steward[j]
+	                    log("row", row.id, row.steward[j])
+	                    if (row.steward[j] == config.user.user_id) {
 	                    	thisUsersAccounts.rows.push( row )
 	                    }
 	                }
