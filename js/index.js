@@ -121,15 +121,12 @@ function goIndex() {
         	var thisUsersAccounts = { rows: []}
         	
             for (var i = view.rows.length - 1; i >= 0; i--) {
-                var row = view.rows[i]
-                var stewards = row.steward
-                log( "row:" + JSON.stringify( row ) )
-                if (row.steward) {
-	                for (var j = row.steward.length - 1; j >= 0; j--) {
-	                    var steward = row.steward[j]
-	                    log("row", row.id, row.steward[j])
-	                    if (row.steward[j] == config.user.user_id) {
-	                    	thisUsersAccounts.rows.push( row )
+                log( "row:" + JSON.stringify( view.rows[i] ) )
+                if (view.rows[i].steward.length) {
+	                for (var j = view.rows[i].steward.length - 1; j >= 0; j--) {
+	                    log("row", view.rows[i].id, view.rows[i].steward[j])
+	                    if (view.rows[i].steward[j] == config.user.user_id) {
+	                    	thisUsersAccounts.rows.push( view.rows[i] )
 	                    }
 	                }
                 }
