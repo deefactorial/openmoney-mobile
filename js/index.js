@@ -123,6 +123,7 @@ function goIndex() {
             for (var i = view.rows.length - 1; i >= 0; i--) {
                 var row = view.rows[i]
                 var stewards = row.steward
+                log( "row:" + JSON.stringify( row ) )
                 if (stewards) {
 	                for (var j = stewards.length - 1; j >= 0; j--) {
 	                    var steward = stewards[j]
