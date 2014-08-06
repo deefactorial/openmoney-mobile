@@ -117,8 +117,26 @@ function goIndex() {
     // when the database changes, update the UI to reflect new lists
     window.dbChanged = function() {
         config.views(["accounts", {descending : true}], function(err, view) {
-            log("accounts " + JSON.stringify( view ) , view)
-            $("#scrollable").html(config.t.indexList(view))
+        	
+        	var thisUsersAccounts = { rows: []}
+        	
+            for (var i = view.rows.length - 1; i >= 0; i--) {
+                var row = view.rows[i]
+                var stewards = row.steward
+                for (var j = stewards.length - 1; j >= 0; j--) {
+                    var steward = stewards[j]
+                    log("row", row.id, steward)
+                    if (steward == config.user.user_id) {
+                    	thisUsersAccounts.rows.push( row )
+                    }
+                };
+            };
+            
+            thisUsersAccounts.offset = view.offset
+            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+        	
+            log("accounts " + JSON.stringify( thisUsersAccounts ) , thisUsersAccounts)
+            $("#scrollable").html( config.t.indexList( thisUsersAccounts ) )
             $("#scrollable li").on("swipeRight", function() {
                 var id = $(this).attr("data-id")
                 $(this).find("button").show().click(function(){
@@ -707,7 +725,7 @@ function goPayment() {
 	        			return alert( JSON.stringify( error ) )
 	        		}
 	        	}	        
-	        	doc.from = from.trading_name
+	        	doc.from = from.trading_name + "." + from.trading_name_space
 	        	doc.currency = from.currency
 	        	config.db.get( "trading_name," + doc.to + "," + doc.currency, function( error, to ) { 
 		        	if (error) { 
@@ -717,13 +735,14 @@ function goPayment() {
 		        			return alert( JSON.stringify( error ) )
 		        		}
 		        	}
-			        config.db.get( doc.type + "," + from.trading_name + "." + from.trading_name_space + "," + to.trading_name + "." + to.trading_name_space + "," + doc.timestamp , function( error, existingdoc ) {
+		        	doc.to = to.trading_name + "." + to.trading_name_space
+			        config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp , function( error, existingdoc ) {
 			            if (error) {
 			            	log( "Error: " + JSON.stringify( error ) ) 
 			            	if (error.status == 404) {
 				            	// doc does not exists
 				    	        log( "insert new trading name journal" + JSON.stringify( doc ) )
-				    	        config.db.put( doc.type + "," + from.trading_name + "." + from.trading_name_space + "," + to.trading_name + "." + to.trading_name_space + "," + doc.timestamp , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
+				    	        config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp , JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
 				    	        	if (error) return alert( JSON.stringify( error ) )
 				    	        	$( "#content form input[name='to']" ).val( "" ) // Clear
 				    	        	$( "#content form input[name='amount']" ).val( "" ) // Clear 
