@@ -886,6 +886,7 @@ function doServerLogout( callBack ) {
         	log( "User is Set to Null" )
             if (error) { return callBack( error ) }
             config.syncReference.cancelSync( function ( error, ok ) {
+            	if (error) { log( JSON.stringify( error ) ) }
             	log( "Sync Replication Canceled" )
             	setupConfig(function ( error, ok ) {
             		callBack( error , result )
@@ -1105,9 +1106,8 @@ function triggerSync(cb, retryCount) {
     
     function cancelSync( callBack ) {
         pushSync.cancel(function(err, ok) {
-            if (err) {return log("pushSync Cancel Error: " + JSON.stringify(err) ) }
+            if (err) { return callBack( log("pushSync Cancel Error: " + JSON.stringify(err) ) ) }
             pullSync.cancel(function(err, ok) {
-                if (err) {return log("pullSync Cancel Error: " + JSON.stringify(err) ) }
                 callBack( err, ok )
             })
         })
