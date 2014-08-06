@@ -122,6 +122,7 @@ function goIndex() {
         	
             for (var i = view.rows.length - 1; i >= 0; i--) {
                 log( "row:" + JSON.stringify( view.rows[i] ) )
+                log( "stewards:" + JSON.stringify( view.rows[i].steward.length ) + "Last:" + JSON.stringify( view.rows[i].steward[view.rows[i].steward.length] ))
                 if (view.rows[i].steward.length) {
 	                for (var j = view.rows[i].steward.length - 1; j >= 0; j--) {
 	                    log("row", view.rows[i].id, view.rows[i].steward[j])
