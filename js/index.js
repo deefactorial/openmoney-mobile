@@ -909,6 +909,7 @@ function doServerLogout( callBack ) {
             config.syncReference.cancelSync( function ( error, ok ) {
             	if (error) { log( JSON.stringify( error ) ) }
             	log( "Sync Replication Canceled" )
+            	config.db = null;
             	setupConfig(function ( error, ok ) {
             		callBack( error , result )
             	} ) 
@@ -1317,7 +1318,7 @@ function setupConfig(done) {
                 account_details : {
                 	map : function( doc ) {
                 		if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
-                			emit( [  "trading_name," + doc.from + "," + doc.currency , doc.timestamp ] , { from : doc.from, to : doc.to, amount: -doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
+                			emit( [ "trading_name," + doc.from + "," + doc.currency , doc.timestamp ] , { from : doc.from, to : doc.to, amount: -doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
                 			emit( [ "trading_name," + doc.to + "," + doc.currency , doc.timestamp ] , { from : doc.from, to : doc.to, amount: doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
                 		}
                 	}.toString()
