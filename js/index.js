@@ -185,6 +185,7 @@ function setLoginLogoutButton() {
 					$( ".todo-login" ).off( "click" )
 					alert( "You are now logged out!" )
 					setLoginLogoutButton()
+					window.dbChanged()
 				} )
 			} )
     	} else if( FACEBOOK_LOGIN ) {
@@ -1305,7 +1306,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney6"
+        var design = "_design/openmoney7"
         db.put(design, {
             views : {
                 accounts : {
