@@ -63,6 +63,7 @@ form input {
 
 .who {
 	float:left;
+	text-overflow: ellipsis;
 }
 
 .what {
