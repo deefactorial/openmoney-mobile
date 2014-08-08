@@ -65,13 +65,14 @@ form input {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
+	width:66%
 }
 
 .what {
 	width: 33%;
 	height: 30px;
 	position:absolute;
-	right:1rem;
+	right:0;
 }
 
 .when {
