@@ -62,19 +62,19 @@ form input {
 }
 
 .who {
-	position: absolute;
+	position: relative;
 	left:0;
 	top:0;
 }
 
 .what {
-	position: absolute;
+	position: relative;
 	right:0;
 	top:0;
 }
 
 .when {
-	position: absolute;
+	position: relative;
 	left:0;
 	bottom:0;
 }
