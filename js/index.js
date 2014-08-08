@@ -231,6 +231,8 @@ function setTabs() {
 
 function goList(id) {
     config.db.get(id, function(err, doc){
+    	log("Display Account Details:" + JSON.stringify( doc ) )
+    	
         drawContent(config.t.list(doc))
 
         $("#content .todo-index").click(function(){
