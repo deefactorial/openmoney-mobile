@@ -62,16 +62,21 @@ form input {
 }
 
 .who {
-	
+	position: absolute;
+	left:1rem;
 }
 
 .what {
-	
+	position: absolute;
+	right:1rem;
 }
 
 .when {
-	
+	position: absolute;
+	top:1rem;
+	left:1rem;
 }
+
 .todo-list-name {
 	text-overflow: ellipsis;
 	overflow: hidden;
