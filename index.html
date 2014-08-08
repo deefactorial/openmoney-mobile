@@ -88,7 +88,7 @@
             <button class="todo-index topcoat-button todo-small">&larr;</button>
         </div>
         <div class="topcoat-navigation-bar__item center half">
-            <h3 class="topcoat-navigation-bar__title">{{trading_name}}.{{trading_name_space}} {{currency}}</h3>
+            <h1 class="topcoat-navigation-bar__title" style="font-size:16px">{{trading_name}}.{{trading_name_space}} {{currency}}</h1>
         </div>
         <div class="topcoat-navigation-bar__item right quarter todo-padded">
             <button class="todo-share topcoat-button todo-small">&#9786;</button>
@@ -118,7 +118,7 @@
     {{#rows}}
         <li class="topcoat-list__item" data-id="{{id}}">
         {{#value}}
-            {{ if(amount){from}else{to} }} in {{amount}} {{currency}} @ {{timestamp}}
+            {{#amount}}{{to}}{{/amount}}{{^amount}}{{from}}{{/amount}} in {{amount}} {{currency}} @ {{timestamp}}
             <div class="camera {{#image}}image{{/image}}"></div>
             <button class="todo-delete topcoat-button">Delete</button>
             <br class="clear"/>
