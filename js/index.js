@@ -233,6 +233,8 @@ function goList(id) {
     config.db.get(id, function(err, doc){
     	log("Display Account Details:" + JSON.stringify( doc ) )
     	
+    	doc.balance = 0;
+    	
         drawContent(config.t.list(doc))
 
         $("#content .todo-index").click(function(){
@@ -273,6 +275,14 @@ function goList(id) {
                         deleteItem(id)
                     })
                 })
+            })
+            config.views(["account_balance", {
+                startkey : [id, {}],
+                endkey : [id],
+                descending : true
+            }], function(err, view) {
+                log("account_balance" + JSON.stringify(view), view)
+                doc.balance = view.key
             })
         }
         window.dbChanged()
@@ -1308,7 +1318,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney10"
+        var design = "_design/openmoney11"
         db.put(design, {
             views : {
                 accounts : {
@@ -1329,10 +1339,11 @@ function setupConfig(done) {
                 account_balance : {
                 	map : function( doc ) {
                 		if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
-                			emit( [ "trading_name," + doc.from + "," + doc.currency , doc.timestamp ] , { subject: doc.to, from : doc.from, to : doc.to, isPositive: false , amount: -doc.amount, currency: doc.currency, timestamp: doc.timestamp ,description: doc.description } )
-                			emit( [ "trading_name," + doc.to + "," + doc.currency , doc.timestamp ] , { subject: doc.from, from : doc.from, to : doc.to, isPositive: true , amount: doc.amount, currency: doc.currency, timestamp: doc.timestamp ,description: doc.description } )
+                			emit( [ "trading_name," + doc.from + "," + doc.currency , doc.timestamp ] , -doc.amount )
+                			emit( [ "trading_name," + doc.to + "," + doc.currency , doc.timestamp ] , doc.amount )
                 		}
-                	}.toString()
+                	}.toString(),
+                	reduce : _sum
                 },
                 tasks : {
                     map : function(doc) {
