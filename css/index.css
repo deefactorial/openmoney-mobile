@@ -61,6 +61,17 @@ form input {
 	background: transparent url(../img/camera-highlight.svg);
 }
 
+.who {
+	
+}
+
+.what {
+	
+}
+
+.when {
+	
+}
 .todo-list-name {
 	text-overflow: ellipsis;
 	overflow: hidden;
