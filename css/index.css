@@ -64,6 +64,8 @@ form input {
 .who {
 	float:left;
 	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .what {

@@ -1326,6 +1326,14 @@ function setupConfig(done) {
                 		}
                 	}.toString()
                 },
+                account_balance : {
+                	map : function( doc ) {
+                		if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
+                			emit( [ "trading_name," + doc.from + "," + doc.currency , doc.timestamp ] , { subject: doc.to, from : doc.from, to : doc.to, isPositive: false , amount: -doc.amount, currency: doc.currency, timestamp: doc.timestamp ,description: doc.description } )
+                			emit( [ "trading_name," + doc.to + "," + doc.currency , doc.timestamp ] , { subject: doc.from, from : doc.from, to : doc.to, isPositive: true , amount: doc.amount, currency: doc.currency, timestamp: doc.timestamp ,description: doc.description } )
+                		}
+                	}.toString()
+                },
                 tasks : {
                     map : function(doc) {
                         if (doc.type == "task" && doc.created_at && doc.title && doc.list_id) {
