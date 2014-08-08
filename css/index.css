@@ -62,21 +62,14 @@ form input {
 }
 
 .who {
-	position: relative;
-	left:0;
-	top:0;
+	float:left;
 }
 
 .what {
-	position: relative;
-	right:0;
-	top:0;
+	float:right;
 }
 
 .when {
-	position: relative;
-	left:0;
-	bottom:0;
 }
 
 .todo-list-name {
