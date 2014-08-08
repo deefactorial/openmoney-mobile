@@ -62,13 +62,14 @@ form input {
 }
 
 .who {
-	float:left;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	white-space: nowrap;
 }
 
 .what {
-	float:right;
+	position:absolute;
+	right:1rem;
 }
 
 .when {
