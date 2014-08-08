@@ -1321,8 +1321,8 @@ function setupConfig(done) {
                 account_details : {
                 	map : function( doc ) {
                 		if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
-                			emit( [ "trading_name," + doc.from + "," + doc.currency , doc.timestamp ] , { subject: doc.to, from : doc.from, to : doc.to, amount: -doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
-                			emit( [ "trading_name," + doc.to + "," + doc.currency , doc.timestamp ] , { subject: doc.from, from : doc.from, to : doc.to, amount: doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
+                			emit( [ "trading_name," + doc.from + "," + doc.currency , doc.timestamp ] , { subject: doc.to, from : doc.from, to : doc.to, isPositive: false , amount: -doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
+                			emit( [ "trading_name," + doc.to + "," + doc.currency , doc.timestamp ] , { subject: doc.from, from : doc.from, to : doc.to, isPositive: true , amount: doc.amount, currency: doc.currency, timestamp: doc.timestamp } )
                 		}
                 	}.toString()
                 },

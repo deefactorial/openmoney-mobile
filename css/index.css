@@ -72,6 +72,14 @@ form input {
 .when {
 }
 
+.isPositive {
+	color: #5E4789;
+}
+
+.isNegative {
+	color: #C89E5E;
+}
+
 .todo-list-name {
 	text-overflow: ellipsis;
 	overflow: hidden;
