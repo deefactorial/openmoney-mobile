@@ -1343,7 +1343,13 @@ function setupConfig(done) {
                 			emit( [ "trading_name," + doc.to + "," + doc.currency , doc.timestamp ] , doc.amount )
                 		}
                 	}.toString(),
-                	reduce : _sum
+                	reduce : function(keys, values, rereduce) {
+                		  		return values.reduce(
+                		           function(prev,current){
+                		             return  +(current) + prev;
+                		           }, 0
+                		        )
+                		}.toString()
                 },
                 tasks : {
                     map : function(doc) {
