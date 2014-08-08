@@ -118,7 +118,7 @@
     {{#rows}}
         <li class="topcoat-list__item" data-id="{{id}}">
         {{#value}}
-            <div class="who">{{#amount}}TO:{{to}}{{/amount}}{{^amount}}FROM:{{from}}{{/amount}}<br/><div class="when">{{timestamp}}</div></div> <div class="what">{{amount}} {{currency}}</div> 
+            <div class="who">{{subject}}<br/><div class="when">{{timestamp}}</div></div> <div class="what">{{amount}} {{currency}}</div> 
             <div class="camera {{#image}}image{{/image}}"></div>
             <button class="todo-delete topcoat-button">Delete</button>
             <br class="clear"/>
