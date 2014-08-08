@@ -68,6 +68,8 @@ form input {
 }
 
 .what {
+	width: 30px;
+	height: 30px;
 	position:absolute;
 	right:1rem;
 }

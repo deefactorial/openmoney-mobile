@@ -1318,7 +1318,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney14"
+        var design = "_design/openmoney15"
         db.put(design, {
             views : {
                 accounts : {
@@ -1344,16 +1344,16 @@ function setupConfig(done) {
                 		}
                 	}.toString(),
                 	reduce : function(keys, values, rereduce) {
+                				var result = null;
                 				if (rereduce) {
-                					return values;
+	                				
                 				} else {
-	                				if (values) 
-	                					return values.reduce(
-	                						function(prev,current){
-	                							return  +(current) + prev;
-	                						}, 0)
-	                				else return values;
+                					result = values.reduce(
+                						function(prev,current){
+                							return  +(current) + prev;
+                						}, 0)
                 				}
+                				return result;
                 		}.toString()
                 },
                 tasks : {
