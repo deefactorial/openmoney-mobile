@@ -63,20 +63,20 @@ form input {
 
 .who {
 	position: absolute;
-	left:1rem;
-	top:1rem;
+	left:0;
+	top:0;
 }
 
 .what {
 	position: absolute;
-	right:1rem;
-	top:1rem;
+	right:0;
+	top:0;
 }
 
 .when {
 	position: absolute;
-	top:1rem;
-	bottom:1rem;
+	left:0;
+	bottom:0;
 }
 
 .todo-list-name {
