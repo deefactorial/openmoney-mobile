@@ -1318,7 +1318,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney18"
+        var design = "_design/openmoney19"
         db.put(design, {
             views : {
                 accounts : {
@@ -1348,8 +1348,8 @@ function setupConfig(done) {
                 				if (rereduce) {
 	                				
                 				} else {
-                					if (values instanceof Array)
-	                					result = values.reduce(
+                					if (values.value instanceof Array)
+	                					result = values.value.reduce(
 	                						function(prev,current){
 	                							return  +(current) + prev;
 	                						}, 0)
