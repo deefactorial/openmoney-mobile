@@ -50,5 +50,6 @@
     <gap:plugin name="org.apache.cordova.camera" />
     <gap:plugin name="org.apache.cordova.inappbrowser" />
     <gap:plugin name="org.apache.cordova.network-information" />
+    <gap:plugin name="com.couchbase.lite.phonegap" />
     <access origin="*" />
 </widget>
