@@ -1318,7 +1318,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney16"
+        var design = "_design/openmoney17"
         db.put(design, {
             views : {
                 accounts : {
