@@ -265,6 +265,7 @@ br.clear {
 
 .topcoat-icon-button.openmoney-login {
 	display:none;
+	background: transparent url(../img/login-64.png);
 }
 
 .topcoat-icon.openmoney-login-icon {
@@ -274,8 +275,7 @@ br.clear {
 .topcoat-icon-button.openmoney-small {
 	line-height: 2rem;
 	padding: 0 0.6rem 2px 0.6rem;
-	font-size: 28px;
-	letter-spacing: 0;
+	margin: 0;
 }
 
 .topcoat-icon-button.openmoney-logout {
