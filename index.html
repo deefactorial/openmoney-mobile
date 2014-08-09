@@ -118,14 +118,10 @@
     {{#rows}}
         <li class="topcoat-list__item" data-id="{{id}}">
         {{#value}}
-			<div class="table>
-			<div class="row">
-            	<div class="who"><b>{{subject}}</b> <i>{{description}}</i><br/>{{timestamp}}</div><div class="what {{#isPositive}}isPositive{{/isPositive}}{{^isPositive}}isNegative{{/isPositive}}">{{amount}} {{currency}}</div> 
-            	<div class="camera {{#image}}image{{/image}}"></div>
-            	<button class="todo-delete topcoat-button">Delete</button>
-            	<br class="clear"/>
-			</div>
-			</div>
+            <div class="who"><b>{{subject}}</b> <i>{{description}}</i><br/>{{timestamp}}</div><div class="what {{#isPositive}}isPositive{{/isPositive}}{{^isPositive}}isNegative{{/isPositive}}">{{amount}} {{currency}}</div> 
+            <div class="camera {{#image}}image{{/image}}"></div>
+            <button class="todo-delete topcoat-button">Delete</button>
+            <br class="clear"/>
         {{/value}}
         </li>
     {{/rows}}

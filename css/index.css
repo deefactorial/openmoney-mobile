@@ -61,27 +61,18 @@ form input {
 	background: transparent url(../img/camera-highlight.svg);
 }
 
-.table {
-	width:100%;
-	display:inline-table;
-}
-
-.row {
-	width:100%;
-	display:table-row;
-}
 
 .who {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
 	width:80%;
-	display:table-column;
+	display:inline-block;
 }
 
 .what {
 	width: 20%;
-	display:table-column;
+	display:inline-block;
 }
 
 .when {

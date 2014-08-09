@@ -283,6 +283,7 @@ function goList(id) {
             }], function(err, view) {
                 log("account_balance" + JSON.stringify(view), view)
                 doc.balance = view.value;
+                drawContent(config.t.list(doc))
             })
         }
         window.dbChanged()
