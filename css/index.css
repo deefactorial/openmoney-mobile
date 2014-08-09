@@ -222,6 +222,8 @@ br.clear {
 	letter-spacing: 0;
 }
 
+
+
 .topcoat-button.todo-register {
 	line-height: 2rem;
 	padding: 0 0.6rem 2px 0.6rem;
@@ -270,11 +272,18 @@ br.clear {
 	background: transparent url(../img/login-64.png);
 }
 
+.topcoat-icon-button.openmoney-small {
+	line-height: 2rem;
+	padding: 0 0.6rem 2px 0.6rem;
+	font-size: 28px;
+	letter-spacing: 0;
+}
+
 .topcoat-icon-button.openmoney-logoff {
 	display:none;
 }
 
-.topcoat-icon-button.openmoney-logoff-icon {
+.topcoat-icon.openmoney-logoff-icon {
 	background-color:#A5A7A7;
 	background: transparent url(../img/login-64.png);
 }
