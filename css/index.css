@@ -270,6 +270,15 @@ br.clear {
 	background: transparent url(../img/login-64.png);
 }
 
+.topcoat-icon-button.openmoney-logoff {
+	display:none;
+}
+
+.topcoat-icon-button.openmoney-logoff-icon {
+	background-color:#A5A7A7;
+	background: transparent url(../img/login-64.png);
+}
+
 .topcoat-navigation-bar__title.todo-unbold {
 	font-weight: 100;
 }
