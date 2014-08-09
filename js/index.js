@@ -169,7 +169,7 @@ function setLoginLogoutButton() {
 		if (SERVER_LOGIN) {
 			$( ".openmoney-login" ).show().click( function() {
 				goServerLogin( function(error) {
-					$( ".openmoney-login" ).off( "click" )
+					$( ".openmoney-login" ).hide().off( "click" )
 					setLoginLogoutButton()
 					if (error) { return loginErr( error ) }
 					goIndex()
@@ -178,7 +178,7 @@ function setLoginLogoutButton() {
 		} else if (FACEBOOK_LOGIN) {
 			$( ".openmoney-login" ).show().click( function() {
 				doFirstLogin( function(error) {
-					$( ".openmoney-login" ).off( "click" );
+					$( ".openmoney-login" ).hide().off( "click" );
 					setLoginLogoutButton()
 					if (error) { return loginErr( error ) }
 					goIndex()
@@ -187,23 +187,23 @@ function setLoginLogoutButton() {
 		}
 	} else {
 		if (SERVER_LOGIN) {
-			$( ".openmoney-logoff" ).show().click( function() {
+			$( ".openmoney-logout" ).show().click( function() {
 				doServerLogout( function(error, data) {
 					if (error) { return logoutError( error ) }
 					// Logout Success
-					$( ".openmoney-logoff" ).off( "click" )
+					$( ".openmoney-logout" ).hide().off( "click" )
 					alert( "You are now logged out!" )
 					setLoginLogoutButton()
 					window.dbChanged()
 				} )
 			} )
 		} else if (FACEBOOK_LOGIN) {
-			$( ".openmoney-logoff" ).show().click( function() {
+			$( ".openmoney-logout" ).show().click( function() {
 				if (config.user && config.user.access_token) {
 					doFacebookLogout( config.user.access_token, function(error, data) {
 						if (error) { return logoutError( error ) }
 						// Logout Success
-						$( ".openmoney-logoff" ).off( "click" );
+						$( ".openmoney-logout" ).hide().off( "click" );
 						alert( "You are now logged out!" );
 						setLoginLogoutButton()
 					} )
