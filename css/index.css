@@ -270,12 +270,12 @@ br.clear {
 .topcoat-icon.openmoney-login-icon {
 	width:32px;
 	height:32px;
-	background: transparent url(../img/login-64.png);
+	background: transparent url(../img/login-32.png);
 }
 
 .topcoat-icon-button.openmoney-small {
+	padding: 0 0.6rem 0 0.6rem;
 	margin: 0;
-	padding: 0;
 }
 
 .topcoat-icon-button.openmoney-logout {
@@ -283,7 +283,7 @@ br.clear {
 }
 
 .topcoat-icon.openmoney-logout-icon {
-	background: transparent url(../img/logout-64.png);
+	background: transparent url(../img/logout-32.png);
 }
 
 .topcoat-navigation-bar__title.todo-unbold {
