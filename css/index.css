@@ -267,8 +267,7 @@ br.clear {
 	display:none;
 }
 
-.topcoat-icon-button.openmoney-login-icon {
-	background-color:#A5A7A7;
+.topcoat-icon.openmoney-login-icon {
 	background: transparent url(../img/login-64.png);
 }
 
@@ -279,13 +278,12 @@ br.clear {
 	letter-spacing: 0;
 }
 
-.topcoat-icon-button.openmoney-logoff {
+.topcoat-icon-button.openmoney-logout {
 	display:none;
 }
 
-.topcoat-icon.openmoney-logoff-icon {
-	background-color:#A5A7A7;
-	background: transparent url(../img/login-64.png);
+.topcoat-icon.openmoney-logout-icon {
+	background: transparent url(../img/logout-64.png);
 }
 
 .topcoat-navigation-bar__title.todo-unbold {
