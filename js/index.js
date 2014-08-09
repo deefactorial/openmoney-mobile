@@ -786,7 +786,7 @@ function goPayment() {
 									$( "#content form input[name='amount']" ).val( "" ) // Clear
 									$( "#content form textarea" ).val( "" ) // Clear
 									alert( "You successfully made a payment !" )
-									goIndex()
+									goList( "trading_name," + doc.from + "," + doc.currency )
 								} )
 							} else {
 								alert( "Error: ".JSON.stringify( error ) )
