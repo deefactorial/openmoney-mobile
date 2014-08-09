@@ -262,6 +262,15 @@ function goList(id) {
 
         window.dbChanged = function() {
         	log( "Get Account Details for:" + id)
+        	config.views(["account_balance", {
+                startkey : [id, {}],
+                endkey : [id],
+                descending : true
+            }], function(err, view) {
+                log("account_balance" + JSON.stringify(view), view)
+                doc.balance = view.value;
+                drawContent(config.t.list(doc))
+            })
             config.views(["account_details", {
                 startkey : [id, {}],
                 endkey : [id],
@@ -275,15 +284,6 @@ function goList(id) {
                         deleteItem(id)
                     })
                 })
-            })
-            config.views(["account_balance", {
-                startkey : [id, {}],
-                endkey : [id],
-                descending : true
-            }], function(err, view) {
-                log("account_balance" + JSON.stringify(view), view)
-                doc.balance = view.value;
-                drawContent(config.t.list(doc))
             })
         }
         window.dbChanged()
