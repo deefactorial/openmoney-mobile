@@ -84,11 +84,11 @@ form input {
 }
 
 .isPositive {
-	color: #40661E;
+	color: #6C9D40;
 }
 
 .isNegative {
-	color: #651E35;
+	color: #9C3F5D;
 }
 
 .todo-list-name {

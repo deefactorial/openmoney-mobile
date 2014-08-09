@@ -246,7 +246,9 @@ function goList(id) {
 			startkey : [ id, {} ], endkey : [ id ], descending : true
 		} ], function(err, view) {
 			log( "account_balance" + JSON.stringify( view ), view )
-			doc.balance = view.rows[0].value;
+			if (view.total_rows > 0)
+				doc.balance = view.rows[0].value;
+			
 			drawContent( config.t.list( doc ) )
 
 			$( "#content .todo-index" ).click( function() {
