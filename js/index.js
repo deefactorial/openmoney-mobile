@@ -255,6 +255,8 @@ function goList(id) {
 				goIndex()
 			} )
 
+			setLoginLogoutButton();
+			
 			setTabs()
 
 			$( "#content .todo-share" ).click( function() {
@@ -582,6 +584,8 @@ function goSettings() {
 		goIndex()
 	} )
 
+	setLoginLogoutButton();
+	
 	setTabs()
 
 	$( "#content .om-trading_name" ).click( function() {
@@ -744,8 +748,10 @@ function goPayment() {
 		drawContent( config.t.payment( view ) )
 
 		$( "#content .om-index" ).click( function() {
-			goSettings()
+			goIndex()
 		} )
+		
+		setLoginLogoutButton();
 
 		setTabs()
 
