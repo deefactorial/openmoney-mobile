@@ -283,6 +283,8 @@ br.clear {
 }
 
 .topcoat-icon.openmoney-logout-icon {
+	width:32px;
+	height:32px;
 	background: transparent url(../img/logout-32.png);
 }
 
