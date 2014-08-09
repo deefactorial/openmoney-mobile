@@ -88,7 +88,8 @@
             <button class="todo-index topcoat-button todo-small">&larr;</button>
         </div>
         <div class="topcoat-navigation-bar__item center half">
-            <h1 class="topcoat-navigation-bar__title" style="font-size:16px">{{trading_name}}.{{trading_name_space}} {{currency}}<br/>{{balance}} {{currency}}</h1>
+            <h1 class="topcoat-navigation-bar__title" style="font-size:16px">{{trading_name}}.{{trading_name_space}} {{currency}}</h1>
+			<br /><h1 class="topcoat-navigation-bar__title" style="font-size:16px">{{balance}} {{currency}}</h1>
         </div>
         <div class="topcoat-navigation-bar__item right quarter todo-padded">
             <button class="todo-share topcoat-button todo-small">&#9786;</button>
@@ -118,9 +119,11 @@
     {{#rows}}
         <li class="topcoat-list__item" data-id="{{id}}">
         {{#value}}
-            <div class="who"><b>{{subject}}</b> <i>{{description}}</i><br/>{{timestamp}}</div><div class="what {{#isPositive}}isPositive{{/isPositive}}{{^isPositive}}isNegative{{/isPositive}}">{{amount}} {{currency}}</div> 
-            <div class="camera {{#image}}image{{/image}}"></div>
-            <button class="todo-delete topcoat-button">Delete</button>
+            <div class="who"><b>{{subject}}</b> <i>{{description}}</i><br/>{{timestamp}}</div>
+			<div class="what {{#isPositive}}isPositive{{/isPositive}}{{^isPositive}}isNegative{{/isPositive}}">{{amount}} {{currency}}            
+				<div class="camera {{#image}}image{{/image}}"></div>
+            	<button class="todo-delete topcoat-button">Delete</button>
+			</div> 
             <br class="clear"/>
         {{/value}}
         </li>
