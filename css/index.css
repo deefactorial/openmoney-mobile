@@ -62,11 +62,13 @@ form input {
 }
 
 .table {
-	display:table;
+	width:100%;
+	display:inline-table;
 }
 
 .row {
-	display:table-row-group;
+	width:100%;
+	display:table-row;
 }
 
 .who {
