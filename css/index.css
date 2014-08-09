@@ -265,12 +265,12 @@ br.clear {
 
 .topcoat-icon-button.openmoney-login {
 	display:none;
+	margin:0 0.6rem 0 0.6rem; 
 }
 
 .topcoat-icon.openmoney-login-icon {
-	width:64px;
-	height:64px;
-	background: url(../img/login-64.png);
+	width:32px;
+	height:32px;
 }
 
 .topcoat-icon-button.openmoney-small {
