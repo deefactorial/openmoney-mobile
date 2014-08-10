@@ -458,10 +458,12 @@ function goServerLogin(callBack) {
 		config.user.name = doc.email;
 		config.user.password = doc.password;
 		doFirstLogin( function(error, result) {
-			$( "#content form input[name='email']" ).val( "" ) // Clear email
-			$( "#content form input[name='password']" ).val( "" ) // Clear
+			
+			callBack( error ) 
+//			$( "#content form input[name='email']" ).val( "" ) // Clear email
+//			$( "#content form input[name='password']" ).val( "" ) // Clear
 			// password
-			callBack( error )
+			
 		} )
 	} )
 }
@@ -950,6 +952,7 @@ function doServerLogout(callBack) {
 				}
 				log( "Sync Replication Canceled" )
 				config.db = null;
+				config.views = null;
 				setupConfig( function(error, ok) {
 					callBack( error, result )
 				} )
