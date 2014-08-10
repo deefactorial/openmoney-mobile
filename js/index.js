@@ -193,8 +193,7 @@ function setLoginLogoutButton() {
 					// Logout Success
 					$( ".openmoney-logout" ).hide().off( "click" )
 					alert( "You are now logged out!" )
-					setLoginLogoutButton()
-					window.dbChanged()
+					goIndex()
 				} )
 			} )
 		} else if (FACEBOOK_LOGIN) {
@@ -205,7 +204,7 @@ function setLoginLogoutButton() {
 						// Logout Success
 						$( ".openmoney-logout" ).hide().off( "click" );
 						alert( "You are now logged out!" );
-						setLoginLogoutButton()
+						goIndex()
 					} )
 				} else {
 					setLoginLogoutButton();
