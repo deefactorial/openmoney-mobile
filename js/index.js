@@ -1129,7 +1129,7 @@ function triggerSync(cb, retryCount) {
 
 	pushSync = syncManager( config.server, push ), pullSync = syncManager( config.server, pull )
 
-	log( "pushSync", push )
+	//log( "pushSync", push )
 
 	if (typeof retryCount == "undefined") {
 		retryCount = 3
@@ -1233,7 +1233,7 @@ function setupConfig(done) {
 		setupDb( db, function(err, info) {
 			if (err) { return done( err ) }
 			setupViews( db, function(err, views) {
-				// if (err) {return done(err)}
+				if (err) {return done(err)}
 				getUser( db, function(err, user) {
 					if (err) { return done( err ) }
 					window.config = {
@@ -1334,7 +1334,7 @@ function setupConfig(done) {
 	}
 
 	function setupViews(db, cb) {
-		var design = "_design/openmoney20"
+		var design = "_design/openmoney" + new Date.getTime();
 		db.put( design, {
 			views : {
 				accounts : {
