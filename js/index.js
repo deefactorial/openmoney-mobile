@@ -247,7 +247,7 @@ function goList(id) {
 			log( "account_balance" + JSON.stringify( view ), view )
 			if (view.total_rows > 0)
 				doc.balance = view.rows[0].value;
-			
+
 			drawContent( config.t.list( doc ) )
 
 			$( "#content .todo-index" ).click( function() {
@@ -255,7 +255,7 @@ function goList(id) {
 			} )
 
 			setLoginLogoutButton();
-			
+
 			setTabs()
 
 			$( "#content .todo-share" ).click( function() {
@@ -458,12 +458,12 @@ function goServerLogin(callBack) {
 		config.user.name = doc.email;
 		config.user.password = doc.password;
 		doFirstLogin( function(error, result) {
-			
-			callBack( error ) 
-//			$( "#content form input[name='email']" ).val( "" ) // Clear email
-//			$( "#content form input[name='password']" ).val( "" ) // Clear
+
+			callBack( error )
+			// $( "#content form input[name='email']" ).val( "" ) // Clear email
+			// $( "#content form input[name='password']" ).val( "" ) // Clear
 			// password
-			
+
 		} )
 	} )
 }
@@ -586,7 +586,7 @@ function goSettings() {
 	} )
 
 	setLoginLogoutButton();
-	
+
 	setTabs()
 
 	$( "#content .om-trading_name" ).click( function() {
@@ -746,12 +746,32 @@ function goPayment() {
 	} ], function(error, view) {
 		if (error) { return alert( JSON.stringify( error ) ) }
 
-		drawContent( config.t.payment( view ) )
+		var thisUsersAccounts = {
+			rows : []
+		}
+
+		for ( var i = view.rows.length - 1; i >= 0; i--) {
+			log( "row:" + JSON.stringify( view.rows[i] ) )
+			log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+			if (view.rows[i].key.steward.length) {
+				for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
+					log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+					if (view.rows[i].key.steward[j] == config.user.user_id) {
+						thisUsersAccounts.rows.push( view.rows[i] )
+					}
+				}
+			}
+		}
+
+		thisUsersAccounts.offset = view.offset
+		thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+
+		drawContent( config.t.payment( thisUsersAccounts ) )
 
 		$( "#content .om-index" ).click( function() {
 			goIndex()
 		} )
-		
+
 		setLoginLogoutButton();
 
 		setTabs()
@@ -1129,7 +1149,7 @@ function triggerSync(cb, retryCount) {
 
 	pushSync = syncManager( config.server, push ), pullSync = syncManager( config.server, pull )
 
-	//log( "pushSync", push )
+	// log( "pushSync", push )
 
 	if (typeof retryCount == "undefined") {
 		retryCount = 3
@@ -1233,7 +1253,7 @@ function setupConfig(done) {
 		setupDb( db, function(err, info) {
 			if (err) { return done( err ) }
 			setupViews( db, function(err, views) {
-				if (err) {return done(err)}
+				if (err) { return done( err ) }
 				getUser( db, function(err, user) {
 					if (err) { return done( err ) }
 					window.config = {
