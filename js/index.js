@@ -47,13 +47,28 @@ function onDeviceReady() {
 // function placeholder replaced by whatever should be running when the
 // change comes in. Used to trigger display updates.
 window.dbChanged = function() {
+	
+}
+
+window.checkConflicts = function( change ) {
+	//this should check for conflicts that are detected by the system.
+	
+	var documentID = change.id, seq = change.seq, changes = change.changes;
+	for( var i = 0; i < changes.length; i++ ) {
+		var document = changes[i];
+		var rev = document.rev;
+	}
+	//TODO: find out what a conflicting document looks like
+	//TODO: find out how to delete the wrong revision of a document
 }
 
 // call window.dbChanged each time the database changes. Use it to
 // update the display when local or remote updates happen.
 function connectToChanges() {
 	config.db.changes( {
-		since : config.info.update_seq
+		since : config.info.update_seq,
+		conflicts : true,
+		include_docs : true
 	}, function(err, change) {
 		if (err) {
 			log( " Changes Error: " + JSON.stringify( err ) )
@@ -62,6 +77,7 @@ function connectToChanges() {
 			lastSeq = change.seq
 		log( "change" + JSON.stringify( [ err, change ] ), err, change )
 		window.dbChanged()
+		window.checkConflicts( change )
 	} )
 }
 
