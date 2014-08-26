@@ -46,14 +46,14 @@ function onDeviceReady() {
     // Read NDEF formatted NFC Tags
     nfc.addNdefListener (
         function (nfcEvent) {
-        	alert( JSON.stringify( nfcEvent ) )
+        	
             var tag = nfcEvent.tag,
                 ndefMessage = tag.ndefMessage;
 
             // dump the raw json of the message
             // note: real code will need to decode
             // the payload from each record
-            alert(JSON.stringify(ndefMessage));
+            alert(JSON.stringify(tag));
 
             // assuming the first record in the message has 
             // a payload that can be converted to a string.
