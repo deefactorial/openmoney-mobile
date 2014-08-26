@@ -52,11 +52,12 @@ window.dbChanged = function() {
 
 window.checkConflicts = function( change ) {
 	//this should check for conflicts that are detected by the system.
-	
-	var documentID = change.id, seq = change.seq, changes = change.changes;
-	for( var i = 0; i < changes.length; i++ ) {
-		var document = changes[i];
-		var rev = document.rev;
+	if (change) {
+		var documentID = change.id, seq = change.seq, changes = change.changes;
+		for( var i = 0; i < changes.length; i++ ) {
+			var document = changes[i];
+			var rev = document.rev;
+		}
 	}
 	//TODO: find out what a conflicting document looks like
 	//TODO: find out how to delete the wrong revision of a document
@@ -619,6 +620,10 @@ function goSettings() {
 	
 	$( "#content .om-currency_network" ).click( function() {
 		goCurrencyNetwork()
+	} )
+	
+	$( "#content .om-export_transactions" ).click( function() {
+		goExportTransactions()
 	} )
 	
 	$( "#content .om-server" ).click( function() {

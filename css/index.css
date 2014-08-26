@@ -214,6 +214,34 @@ br.clear {
 	width: 100%;
 }
 
+.topcoat-button.om-trading_space {
+    line-height: 2rem;
+    padding: 0 0.6rem 2px 0.6rem;
+    letter-spacing: 0;
+    width: 100%;
+}
+
+.topcoat-button.om-currency_network {
+    line-height: 2rem;
+    padding: 0 0.6rem 2px 0.6rem;
+    letter-spacing: 0;
+    width: 100%;
+}
+
+.topcoat-button.om-server {
+    line-height: 2rem;
+    padding: 0 0.6rem 2px 0.6rem;
+    letter-spacing: 0;
+    width: 100%;
+}
+
+.topcoat-button.om-export_transactions {
+    line-height: 2rem;
+    padding: 0 0.6rem 2px 0.6rem;
+    letter-spacing: 0;
+    width: 100%;
+}
+
 
 .topcoat-button.todo-small {
 	line-height: 2rem;
