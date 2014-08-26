@@ -59,13 +59,13 @@ function onDeviceReady() {
 	            	
 	            	var type = "com.openmoney.mobile/json",
 	                id = config.user.user_id,
-	                payload = ndef.stringToBytes("Welcome to openmoney, " + config.user.user_id),
-	                record = ndef.record(ndef.TNF_MIME_MEDIA, type, id, payload);
+	                payload = nfc.stringToBytes("Welcome to openmoney, " + config.user.user_id),
+	                record = nfc.record(ndef.TNF_MIME_MEDIA, type, id, payload);
 	            	
 	            	var message = [
 	            	               record,
-	            	               ndef.textRecord("Welcome to openmoney"),
-	            	               ndef.uriRecord("http://openmoney.cc")
+	            	               nfc.textRecord("Welcome to openmoney"),
+	            	               nfc.uriRecord("http://openmoney.cc")
 	            	];
 
 	            	nfc.write(message, function () {
