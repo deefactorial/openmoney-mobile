@@ -46,6 +46,7 @@ function onDeviceReady() {
     // Read NDEF formatted NFC Tags
     nfc.addNdefListener (
         function (nfcEvent) {
+        	alert( JSON.stringify( nfcEvent ) )
             var tag = nfcEvent.tag,
                 ndefMessage = tag.ndefMessage;
 
