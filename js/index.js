@@ -816,12 +816,8 @@ function goTradingSpace() {
 					alert( "Trading Space already exists!" )
 				}
 			} )
-		
-		} );
-		
-		
-		
-	} ) ;
+		} )
+	} )
 }
 
 /*
@@ -829,13 +825,55 @@ function goTradingSpace() {
  */
 
 function goCurrencyNetwork() {
-	drawContent( config.t.currency_network() )
+	
 
-	$( "#content .om-index" ).click( function() {
-		goSettings()
+	window.dbChanged = function() {
+	}
+	config.views( [ "currency_networks", {
+		include_docs : true
+	} ], function(error, view) {
+		if (error) { return alert( JSON.stringify( error ) ) }
+		
+		drawContent( config.t.currency_network( view ) )
+	
+		$( "#content .om-index" ).click( function() {
+			goSettings()
+		} )
+	
+		setTabs()
+		
+		$( "#content form" ).submit( function(e) {
+			e.preventDefault()
+			var doc = jsonform( this )
+			doc.type = "currency_network"
+			doc.steward = [ config.user.user_id ]
+			doc.name = doc.currency_network + "." + doc.currency_subnetwork;
+			
+			config.db.get( doc.type + "," + doc.name , function(error, existingdoc) {
+				if (error) {
+					log( "Error: " + JSON.stringify( error ) )
+					if (error.status == 404) {
+						// doc does not exists
+						log( "insert new currency network" + JSON.stringify( doc ) )
+						config.db.put( doc.type + "," + doc.name, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+
+							if (error)
+								return alert( JSON.stringify( error ) )
+							$( "#content form input[name='currency_network']" ).val( "" ) // Clear
+							alert( "You successfully created a new currency network !" )
+							goSettings()
+						} )
+					} else {
+						alert( "Error: ".JSON.stringify( error ) )
+					}
+				} else {
+					// doc exsits already
+					alert( "Currency Network Already Exists!" )
+				}
+			} )
+		} )
 	} )
 
-	setTabs()
 }
 
 /*
