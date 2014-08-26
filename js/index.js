@@ -608,15 +608,26 @@ function goSettings() {
 	$( "#content .om-trading_name" ).click( function() {
 		goTradingName()
 	} )
+	
+	$( "#content .om-trading_space" ).click( function() {
+		goTradingSpace()
+	} )
 
 	$( "#content .om-currency" ).click( function() {
 		goCurrency()
+	} )
+	
+	$( "#content .om-currency_network" ).click( function() {
+		goCurrencyNetwork()
+	} )
+	
+	$( "#content .om-server" ).click( function() {
+		goServer()
 	} )
 
 	$( "#content .om-profile" ).click( function() {
 		goProfile()
 	} )
-
 }
 
 /*
@@ -749,6 +760,64 @@ function goProfile() {
 
 	setTabs()
 }
+
+/*
+ * Create Trading Name Space Settings Page
+ */
+
+function goTradingSpace() {
+	drawContent( config.t.trading_space() )
+
+	$( "#content .om-index" ).click( function() {
+		goSettings()
+	} )
+
+	setTabs()
+}
+
+/*
+ * Create Currency Network Settings Page
+ */
+
+function goCurrencyNetwork() {
+	drawContent( config.t.currency_network() )
+
+	$( "#content .om-index" ).click( function() {
+		goSettings()
+	} )
+
+	setTabs()
+}
+
+/*
+ * Set Syncronization Server Settings Page
+ */
+
+function goServer() {
+	drawContent( config.t.server() )
+
+	$( "#content .om-index" ).click( function() {
+		goSettings()
+	} )
+
+	setTabs()
+}
+
+/*
+ * Export Transactions Settings Page
+ */
+
+function goExportTransactions() {
+	drawContent( config.t.export_transactions() )
+
+	$( "#content .om-index" ).click( function() {
+		goSettings()
+	} )
+
+	setTabs()
+}
+
+
 
 /*
  * Payment Page

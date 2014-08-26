@@ -328,11 +328,20 @@
 	<div class="topcoat-list__container">
 			<ul class="topcoat-list">
         		<li class="topcoat-list__item" data-id="trading_name">
-            		<button class="om-trading_name topcoat-button">Join a Currency</button>
+            		<button class="om-trading_name topcoat-button">Join Currency</button>
 				</li>
+                <li class="topcoat-list__item" data-id="trading_space">
+                    <button class="om-trading_space topcoat-button">Create Trading Space</button>
+                </li>
 				<li class="topcoat-list__item" data-id="currency">
-					<button class="om-currency topcoat-button">Create a Currency</button>
+					<button class="om-currency topcoat-button">Create Currency</button>
 				</li>
+                <li class="topcoat-list__item" data-id="currency_network">
+                    <button class="om-currency_network topcoat-button">Create Currency Network</button>
+                </li>
+                <li class="topcoat-list__item" data-id="server">
+                    <button class="om-server topcoat-button">Syncronization Server</button>
+                </li>
 				<li class="topcoat-list__item" data-id="profile">
 					<button class="om-profile topcoat-button">Profile Settings</button>
 				</li>
@@ -471,6 +480,130 @@
 	<div class="topcoat-list__container">
 
 	</div>
+</div>
+</script>
+<script type="text/mustache" id="trading_space-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item left three-quarter">
+           <h1 class="topcoat-navigation-bar__title">Create Trading Space</h1>
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable">
+    <div class="topcoat-list__container">
+
+    </div>
+</div>
+</script>
+<script type="text/mustache" id="currency_network-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item left three-quarter">
+           <h1 class="topcoat-navigation-bar__title">Create Currency Network</h1>
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable">
+    <div class="topcoat-list__container">
+        
+    </div>
+</div>
+</script>
+<script type="text/mustache" id="server-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item left three-quarter">
+           <h1 class="topcoat-navigation-bar__title">Syncronization Server</h1>
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable">
+    <div class="topcoat-list__container">
+
+    </div>
+</div>
+</script>
+<script type="text/mustache" id="export_transactions-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item left three-quarter">
+           <h1 class="topcoat-navigation-bar__title">Export Transactions</h1>
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable">
+    <div class="topcoat-list__container">
+
+    </div>
 </div>
 </script>
 <script type="text/mustache" id="payment-mu">
