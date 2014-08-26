@@ -657,9 +657,16 @@ function goTradingName() {
 
 		$( "#content form" ).submit( function(e) {
 			e.preventDefault()
-			var doc = jsonform( this )
-			doc.type = "trading_name"
-			doc.steward = [ config.user.user_id ]
+			var doc = jsonform( this );
+			doc.type = "trading_name";
+			doc.steward = [ config.user.user_id ];
+			if (doc.trading_name.match(/[^A-Za-z0-9\-_]/)){
+				return alert('The Trading Name you entered is not valid!');
+			}
+			if (doc.trading_name_space != '')
+				doc.name = doc.trading_name + "." + doc.trading_name_space;
+			else 
+				doc.name = doc.trading_name;
 			config.db.get( "currency," + doc.currency, function(error, currency) {
 				if (error) {
 					if (error.status == 404) {
@@ -668,13 +675,13 @@ function goTradingName() {
 						return alert( JSON.stringify( error ) )
 					}
 				}
-				config.db.get( doc.type + "," + doc.trading_name + "." + doc.trading_name_space + "," + doc.currency, function(error, existingdoc) {
+				config.db.get( doc.type + "," + doc.name + "," + doc.currency, function(error, existingdoc) {
 					if (error) {
 						log( "Error: " + JSON.stringify( error ) )
 						if (error.status == 404) {
 							// doc does not exists
 							log( "insert new trading name" + JSON.stringify( doc ) )
-							config.db.put( doc.type + "," + doc.trading_name + "." + doc.trading_name_space + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+							config.db.put( doc.type + "," + doc.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 								$( "#content form input[name='trading_name']" ).val( "" ) // Clear
 								// trading
 								// name
