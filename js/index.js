@@ -725,7 +725,7 @@ function goCurrency() {
 			var doc = jsonform( this )
 			doc.type = "currency"
 			doc.steward = [ config.user.user_id ]
-			if (doc.currency_network)
+			if (doc.currency_network != '')
 				doc.currency = doc.symbol + "." + doc.currency_network;
 			else 
 				doc.currency = doc.symbol;
@@ -796,7 +796,10 @@ function goTradingSpace() {
 			var doc = jsonform( this )
 			doc.type = "trading_name_space"
 			doc.steward = [ config.user.user_id ]
-			doc.space = doc.trading_space + "." + doc.trading_name_subspace;
+			if (doc.trading_name_subspace != '')
+				doc.space = doc.trading_space + "." + doc.trading_name_subspace;
+			else 
+				doc.space = doc.trading_space;
 			
 			config.db.get( doc.type + "," + doc.space , function(error, existingdoc) {
 				if (error) {
@@ -851,7 +854,11 @@ function goCurrencyNetwork() {
 			var doc = jsonform( this )
 			doc.type = "currency_network"
 			doc.steward = [ config.user.user_id ]
-			doc.name = doc.currency_network + "." + doc.currency_subnetwork;
+			
+			if (doc.currency_subnetwork != '') 
+				doc.name = doc.currency_network + "." + doc.currency_subnetwork;
+			else 
+				doc.name = doc.currency_network;
 			
 			config.db.get( doc.type + "," + doc.name , function(error, existingdoc) {
 				if (error) {
