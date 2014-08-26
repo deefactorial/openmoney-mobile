@@ -450,6 +450,9 @@ function toggleShare(doc, user, cb) {
  */
 
 function goServerLogin(callBack) {
+	window.dbChanged = function() {
+	}
+	
 	drawContent( config.t.login() )
 
 	$( "#content .todo-index" ).click( function() {
@@ -490,6 +493,9 @@ function goServerLogin(callBack) {
  */
 
 function goServerRegistration(callBack) {
+	window.dbChanged = function() {
+	}
+	
 	drawContent( config.t.register() )
 	$( "#content .todo-index" ).click( function() {
 		callBack()
@@ -981,7 +987,7 @@ function goPayment() {
 						return alert( JSON.stringify( error ) )
 					}
 				}
-				doc.from = from.trading_name + "." + from.trading_name_space
+				doc.from = from.name
 				doc.currency = from.currency
 				config.db.get( "trading_name," + doc.to + "," + doc.currency, function(error, to) {
 					if (error) {
@@ -991,7 +997,7 @@ function goPayment() {
 							return alert( JSON.stringify( error ) )
 						}
 					}
-					doc.to = to.trading_name + "." + to.trading_name_space
+					doc.to = to.name
 					config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
 						if (error) {
 							log( "Error: " + JSON.stringify( error ) )
@@ -1549,9 +1555,9 @@ function setupConfig(done) {
 			views : {
 				accounts : {
 					map : function(doc) {
-						if (doc.type == "trading_name" && doc.trading_name && doc.trading_name_space && doc.currency && doc.steward) {
+						if (doc.type == "trading_name" && doc.name && doc.currency && doc.steward) {
 							emit( {
-								trading_name : doc.trading_name + "." + doc.trading_name_space, currency : doc.currency, steward : doc.steward
+								trading_name : doc.name, currency : doc.currency, steward : doc.steward
 							} )
 						}
 					}.toString()
