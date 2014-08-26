@@ -63,9 +63,7 @@ function onDeviceReady() {
 	                record = ndef.record(ndef.TNF_MIME_MEDIA, type, id, payload);
 	            	
 	            	var message = [
-	            	               record,
-	            	               ndef.textRecord("Welcome to openmoney"),
-	            	               ndef.uriRecord("http://openmoney.cc")
+	            	               record
 	            	];
 
 	            	nfc.write(message, function () {
