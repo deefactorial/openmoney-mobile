@@ -725,6 +725,10 @@ function goCurrency() {
 			var doc = jsonform( this )
 			doc.type = "currency"
 			doc.steward = [ config.user.user_id ]
+			if (doc.currency_network)
+				doc.currency = doc.symbol + "." + doc.currency_network;
+			else 
+				doc.currency = doc.symbol;
 			config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
 				if (error) {
 					log( "Error: " + JSON.stringify( error ) )

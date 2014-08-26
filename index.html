@@ -433,14 +433,14 @@
 		<form>
 			<ul class="topcoat-list">
 				<li class="topcoat-list__item" data-id="currency">
-            		<input type="text" class="topcoat-text-input" name="currency" value="" placeholder="currency symbol" /> 
+            		<input type="text" class="topcoat-text-input" name="symbol" value="" placeholder="Currency Symbol" /> 
 				</li>
         		<li class="topcoat-list__item" data-id="currency">
-            		<input type="text" class="topcoat-text-input" name="name" value="" placeholder="currency name" /> 
+            		<input type="text" class="topcoat-text-input" name="name" value="" placeholder="Currency Name" /> 
 				</li>
 				<li class="topcoat-list__item" data-id="currency_network">
 					<select name="currency_network" class="om-select-dark" >
-						<option value="cc" selected="selected">currency network</option>
+						<option value="" selected="selected">Currency Network</option>
 						{{#rows}}
 							<option value="{{id}}">{{key}}</option>
         				{{/rows}}
@@ -519,7 +519,7 @@
                 </li>
                 <li class="topcoat-list__item" data-id="trading_name_subspace">
                     <select name="trading_name_subspace" class="om-select-dark" >
-                        <option value="cc" selected="selected">Sub Space</option>
+                        <option value="" selected="selected">Sub Space</option>
                         {{#rows}}
                             <option value="{{key}}">{{key}}</option>
                         {{/rows}}
@@ -567,7 +567,7 @@
                 </li>
                 <li class="topcoat-list__item" data-id="currency_subnetwork">
                     <select name="currency_subnetwork" class="om-select-dark" >
-                        <option value="cc" selected="selected">Sub Network</option>
+                        <option value="" selected="selected">Sub Network</option>
                         {{#rows}}
                             <option value="{{key}}">{{key}}</option>
                         {{/rows}}
