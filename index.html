@@ -410,7 +410,7 @@
             <button class="om-index topcoat-button todo-small">&larr;</button>
         </div>
         <div class="topcoat-navigation-bar__item left three-quarter">
-           <h1 class="topcoat-navigation-bar__title">Create a Currency</h1>
+           <h1 class="topcoat-navigation-bar__title">Create Currency</h1>
         </div>
     </div>
     <div class="topcoat-tab-bar">
@@ -512,7 +512,24 @@
 </header>
 <div id="scrollable">
     <div class="topcoat-list__container">
-
+        <form>
+            <ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="trading_space">
+                    <input type="text" class="topcoat-text-input" name="trading_space" value="" placeholder="Space Name" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="trading_name_subspace">
+                    <select name="trading_name_subspace" class="om-select-dark" >
+                        <option value="cc" selected="selected">Sub Space</option>
+                        {{#rows}}
+                            <option value="{{key}}">{{key}}</option>
+                        {{/rows}}
+                    </select>
+                </li>
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" name="submit" value=" Create Trading Space " /> 
+                </li>
+            </ul>
+        </form>
     </div>
 </div>
 </script>

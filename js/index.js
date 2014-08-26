@@ -771,13 +771,57 @@ function goProfile() {
  */
 
 function goTradingSpace() {
-	drawContent( config.t.trading_space() )
+	
+	window.dbChanged = function() {
+	}
+	config.views( [ "trading_name_spaces", {
+		include_docs : true
+	} ], function(error, view) {
+		if (error) { return alert( JSON.stringify( error ) ) }
+		
+		drawContent( config.t.trading_space( view ) )
+	
+		$( "#content .om-index" ).click( function() {
+			goSettings()
+		} )
+	
+		setTabs()
+		
+		$( "#content form" ).submit( function(e) {
+			e.preventDefault()
+			var doc = jsonform( this )
+			doc.type = "trading_name_space"
+			doc.steward = [ config.user.user_id ]
+			doc.space = doc.trading_space + "." + doc.trading_name_subspace;
+			
+			config.db.get( doc.type + "," + doc.space , function(error, existingdoc) {
+				if (error) {
+					log( "Error: " + JSON.stringify( error ) )
+					if (error.status == 404) {
+						// doc does not exists
+						log( "insert new trading space" + JSON.stringify( doc ) )
+						config.db.put( doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 
-	$( "#content .om-index" ).click( function() {
-		goSettings()
-	} )
-
-	setTabs()
+							if (error)
+								return alert( JSON.stringify( error ) )
+							$( "#content form input[name='trading_space']" ).val( "" ) // Clear
+							alert( "You successfully created a new trading space !" )
+							goSettings()
+						} )
+					} else {
+						alert( "Error: ".JSON.stringify( error ) )
+					}
+				} else {
+					// doc exsits already
+					alert( "Trading Space already exists!" )
+				}
+			} )
+		
+		} );
+		
+		
+		
+	} ) ;
 }
 
 /*
