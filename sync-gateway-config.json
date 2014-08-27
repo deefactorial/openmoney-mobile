@@ -3,19 +3,6 @@
    "adminInterface":":4985",
    "log":["CRUD", "CRUD+", "HTTP", "HTTP+", "Access", "Cache", "Shadow", "Shadow+", "Changes", "Changes+"],
    "databases":{
-      "sync_gateway":{
-         "server":"http://localhost:8091",
-         "bucket":"sync_gateway",
-         "sync":`function(doc) {channel(doc.channels);}`,
-     "users": {
-                                "deefactorial": {
-                                        "admin_channels": ["all"],
-                                        "admin_roles": ["admin"],
-                                        "password": "rewqasdfvcxz"
-                                },
-                                "GUEST": {"disabled": true}
-                        }
-      },
       "openmoney_shadow":{
         "shadow": { 
     "server": "http://localhost:8091",
