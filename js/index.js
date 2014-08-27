@@ -59,7 +59,7 @@ function onDeviceReady() {
 	            	
 	            	var type = "com.openmoney.mobile/json",
 	                id = config.user.user_id,
-	                payload = nfc.stringToBytes("Welcome to openmoney, " + config.user.user_id),
+	                payload = nfc.stringToBytes( JSON.stringify( { username: config.user.user_id } ) ),
 	                record = ndef.record(ndef.TNF_MIME_MEDIA, type, id, payload);
 	            	
 	            	var message = [

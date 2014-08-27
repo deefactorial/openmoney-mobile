@@ -1,50 +1,291 @@
 {
-  "log": ["CRUD", "REST+", "Access"],
-  "facebook": { "register": true },
-  "databases": {
-    "todos": {
-      "server": "walrus:",
-      "users": {
-        "GUEST": {"disabled": true}
+   "interface":":4984",
+   "adminInterface":":4985",
+   "log":["CRUD", "CRUD+", "HTTP", "HTTP+", "Access", "Cache", "Shadow", "Shadow+", "Changes", "Changes+"],
+   "databases":{
+      "sync_gateway":{
+         "server":"http://localhost:8091",
+         "bucket":"sync_gateway",
+         "sync":`function(doc) {channel(doc.channels);}`,
+     "users": {
+                                "deefactorial": {
+                                        "admin_channels": ["all"],
+                                        "admin_roles": ["admin"],
+                                        "password": "rewqasdfvcxz"
+                                },
+                                "GUEST": {"disabled": true}
+                        }
       },
-      "sync": `
+      "openmoney_shadow":{
+        "shadow": { 
+    "server": "http://localhost:8091",
+    "bucket": "openmoney"},
+        "sync":`function(doc, olddoc) {
+            function base64_decode(data) {
+                  //  discuss at: http://phpjs.org/functions/base64_decode/
+                  // original by: Tyler Akins (http://rumkin.com)
+                  // improved by: Thunder.m
+                  // improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+                  // improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+                  //    input by: Aman Gupta
+                  //    input by: Brett Zamir (http://brett-zamir.me)
+                  // bugfixed by: Onno Marsman
+                  // bugfixed by: Pellentesque Malesuada
+                  // bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+                  //   example 1: base64_decode('S2V2aW4gdmFuIFpvbm5ldmVsZA==');
+                  //   returns 1: 'Kevin van Zonneveld'
+                  //   example 2: base64_decode('YQ===');
+                  //   returns 2: 'a'
 
-function(doc, oldDoc) {
-  if (doc.type == "task") {
-    if (!doc.list_id) {
-      throw({forbidden : "items must have a list_id"})
-    }
-    channel("list-"+doc.list_id);
-  } else if (doc.type == "list") {
-    channel("list-"+doc._id);
-    if (!doc.owner) {
-      throw({forbidden : "list must have an owner"})
-    }
-    if (oldDoc) {
-      var oldOwnerName = oldDoc.owner.substring(oldDoc.owner.indexOf(":")+1);
-      requireUser(oldOwnerName)
-    }
-    var ownerName = doc.owner.substring(doc.owner.indexOf(":")+1);
-    access(ownerName, "list-"+doc._id);
-    if (Array.isArray(doc.members)) {
-      var memberNames = [];
-      for (var i = doc.members.length - 1; i >= 0; i--) {
-        memberNames.push(doc.members[i].substring(doc.members[i].indexOf(":")+1))
-      };
-      access(memberNames, "list-"+doc._id);
-    }
-  } else if (doc.type == "profile") {
-    channel("profiles");
-    var user = doc._id.substring(doc._id.indexOf(":")+1);
-    if (user !== doc.user_id) {
-      throw({forbidden : "profile user_id must match docid"})
-    }
-    requireUser(user);
-    access(user, "profiles"); // TODO this should use roles
-  }
-}
+                  var b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+                  var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
+                    ac = 0,
+                    dec = '',
+                    tmp_arr = [];
 
-`
+                  if (!data) {
+                    return data;
+                  }
+
+                  data += '';
+
+                  do { // unpack four hexets into three octets using index points in b64
+                    h1 = b64.indexOf(data.charAt(i++));
+                    h2 = b64.indexOf(data.charAt(i++));
+                    h3 = b64.indexOf(data.charAt(i++));
+                    h4 = b64.indexOf(data.charAt(i++));
+
+                    bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
+
+                    o1 = bits >> 16 & 0xff;
+                    o2 = bits >> 8 & 0xff;
+                    o3 = bits & 0xff;
+
+                    if (h3 == 64) {
+                      tmp_arr[ac++] = String.fromCharCode(o1);
+                    } else if (h4 == 64) {
+                      tmp_arr[ac++] = String.fromCharCode(o1, o2);
+                    } else {
+                      tmp_arr[ac++] = String.fromCharCode(o1, o2, o3);
+                    }
+                  } while (i < data.length);
+
+                  dec = tmp_arr.join('');
+                  
+                  
+
+                  return dec
+                }
+
+            function base64_encode(data) {
+                  //  discuss at: http://phpjs.org/functions/base64_encode/
+                  // original by: Tyler Akins (http://rumkin.com)
+                  // improved by: Bayron Guevara
+                  // improved by: Thunder.m
+                  // improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+                  // improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+                  // improved by: Rafał Kukawski (http://kukawski.pl)
+                  // bugfixed by: Pellentesque Malesuada
+                  //   example 1: base64_encode('Kevin van Zonneveld');
+                  //   returns 1: 'S2V2aW4gdmFuIFpvbm5ldmVsZA=='
+                  //   example 2: base64_encode('a');
+                  //   returns 2: 'YQ=='
+
+                  var b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+                  var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
+                    ac = 0,
+                    enc = '',
+                    tmp_arr = [];
+
+                  if (!data) {
+                    return data;
+                  }
+
+                  do { // pack three octets into four hexets
+                    o1 = data.charCodeAt(i++);
+                    o2 = data.charCodeAt(i++);
+                    o3 = data.charCodeAt(i++);
+
+                    bits = o1 << 16 | o2 << 8 | o3;
+
+                    h1 = bits >> 18 & 0x3f;
+                    h2 = bits >> 12 & 0x3f;
+                    h3 = bits >> 6 & 0x3f;
+                    h4 = bits & 0x3f;
+
+                    // use hexets to index into b64, and append result to encoded string
+                    tmp_arr[ac++] = b64.charAt(h1) + b64.charAt(h2) + b64.charAt(h3) + b64.charAt(h4);
+                  } while (i < data.length);
+
+                  enc = tmp_arr.join('');
+
+                  var r = data.length % 3;
+
+                  return (r ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3);
+                }
+
+            var channelDelimiter = "@";
+            
+            if (doc._id != null) {
+                var table = doc._id.substring(0,doc._id.indexOf(","));
+                var index = doc._id.substring(doc._id.indexOf(",")+1);
+                if (table == "users") {
+                    channel(table + channelDelimiter + index);
+                    if (olddoc == null) {
+                        if (!doc.username || !doc.email || !doc.password || !doc.password_encryption_algorithm ) {
+                            throw({forbidden: "Missing required properties"});
+                        } else if (doc.username.length < 4) {
+                            throw({forbidden: "Username length has to be greater than 3 characters."});
+                        } else if (doc.password.length < 3) {
+                            throw({forbidden: "password has to be greater than two characters"});
+                        } else if (doc.email.length < 5) { 
+                            throw({forbidden: "Please enter a valid email"});
+                        } else if (! Array.isArray(doc.password_encryption_algorithm) ) { 
+                            throw({forbidden: "provide a valid encryption algorithm"});
+                        }
+                        access(doc.username, table + channelDelimiter + index);
+                    } else {
+                        if (doc._deleted) {
+                            requireUser(olddoc.username);
+                        } else {
+                            if (!doc.username || !doc.email || !doc.password || !doc.password_encryption_algorithm ) {
+                                throw({forbidden: "Missing required properties"});
+                            } else if (doc.username.length < 4) {
+                                throw({forbidden: "Username length has to be greater than 3 characters."});
+                            } else if (doc.password.length < 3) {
+                                throw({forbidden: "password has to be greater than two characters"});
+                            } else if (doc.email.length < 5) { 
+                                throw({forbidden: "Please enter a valid email"});
+                            } else if (! Array.isArray(doc.password_encryption_algorithm) ) { 
+                                throw({forbidden: "provide a valid encryption algorithm"});
+                            }
+                            if (olddoc.username != doc.username) {
+                                throw({forbidden: "Cannot change username! Delete first then create new user!"});
+                            }
+                            requireUser(olddoc.username);
+                        }
+                    }
+                } else if (table == "trading_name") {
+                    var trading_name = index.substring(0,index.indexOf(",")) ;
+                    var currency = base64_encode( index.substring( index.indexOf( "," ) + 1 ) );
+                    channel(table + channelDelimiter + trading_name + channelDelimiter + currency);
+                    channel( "currency_trading_names" + channelDelimiter + currency )
+                    access( doc.steward , "currency_trading_names" + channelDelimiter + currency)
+                    access( doc.steward , "currency" + channelDelimiter + currency)
+                    if (olddoc == null) {
+                        if (!doc.steward || !doc.trading_name || !doc.currency ) {
+                            throw( { forbidden: "Missing required properties" } );
+                        }
+                        access( doc.steward , table + channelDelimiter + trading_name + channelDelimiter + currency )
+                    } else {
+                        if (doc._deleted) {
+                            requireUser(olddoc.steward);
+                        } else {
+                            if (!doc.steward || !doc.trading_name || !doc.currency ) {
+                                throw({forbidden: "Missing required properties"});
+                            }
+                            requireUser(olddoc.steward);
+                        }
+                    }
+                } else if (table == "trading_name_space") {
+                    var trading_name_space = index;                 
+                    channel(table + channelDelimiter + trading_name_space);
+                    if (olddoc == null) {
+                        if (!doc.steward) {
+                            throw({forbidden: "Missing required properties"});
+                        }
+                        access(doc.steward, table + channelDelimiter + trading_name_space);
+                    } else {
+                        if (doc._deleted) {
+                            requireUser(olddoc.steward);
+                        } else {
+                            if (!doc.steward) {
+                                throw({forbidden: "Missing required properties"});
+                            } 
+                            requireUser(olddoc.steward);
+                        }
+                    }
+                } else if (table == "currency") {
+                    var currency = base64_encode( index );
+                    channel(table + channelDelimiter + currency);
+                    if (olddoc == null) {
+                        if (!doc.steward || !doc.currency || !doc.name ) {
+                            throw({forbidden: "Missing required properties"});
+                        } else if (! Array.isArray(doc.steward) ) {
+                            throw({forbidden: "Steward array missing."});
+                        } else if (doc.currency.length < 2) {
+                            throw({forbidden: "Please enter currency"});
+                        } else if (doc.name.length < 2) { 
+                            throw({forbidden: "Please enter a currency name"});
+                        }
+                        access(doc.steward, table + channelDelimiter + currency);
+                    } else {
+                        if (doc._deleted) {
+                            requireUser(olddoc.steward);
+                        } else {
+                            if (!doc.steward || !doc.currency || !doc.name ) {
+                                throw({forbidden: "Missing required properties"});
+                            } else if (! Array.isArray(doc.steward) ) {
+                                throw({forbidden: "Steward array missing."});
+                            } else if (doc.currency.length < 2) {
+                                throw({forbidden: "Please enter currency"});
+                            } else if (doc.name.length < 2) { 
+                                throw({forbidden: "Please enter a currency name"});
+                            }
+                            requireUser(olddoc.steward);
+                        }
+                    }
+                } else if (table == "currency_network") {
+                    var currency_network = index;                   
+                    channel(table + channelDelimiter + currency_network);
+                    if (olddoc == null) {
+                        if (!doc.steward) {
+                            throw({forbidden: "Missing required properties"});
+                        }
+                        access(doc.steward, table + channelDelimiter + currency_network);
+                    } else {
+                        if (doc._deleted) {
+                            requireUser(olddoc.steward);
+                        } else {
+                            if (!doc.steward) {
+                                throw({forbidden: "Missing required properties"});
+                            } 
+                            requireUser(olddoc.steward);
+                        }
+                    }
+                } else if (doc.type == "trading_name_journal") {
+                    var from = doc.from;
+                    var to = doc.to; 
+                    var timestamp = doc.timestamp; 
+                    var channelTimestamp = timestamp.replace(/:/g,'.') // Replace All Colons
+                    
+                    if (olddoc == null) {
+                        if (!doc.from || !doc.to || !doc.amount || !doc.currency || !doc.timestamp ) {
+                            throw({forbidden: "Missing required properties"});
+                        }
+                        channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                        access(doc.from , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                        access(doc.to , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                    } else {
+                        if (doc._deleted) {
+                            requireUser([olddoc.from , olddoc.to]);
+                        } else {
+                            if (!doc.from || !doc.to || !doc.amount || !doc.currency || !doc.timestamp ) {
+                                throw({forbidden: "Missing required properties"});
+                            }
+                            channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                            access(doc.from , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                            access(doc.to , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                            requireUser([olddoc.from , olddoc.to]);
+                        }
+                    }
+                } 
+            }
+    }`,
+        "users": {
+                "GUEST": {"disabled": true}
+        }
+
     }
-  }
+   }
 }
