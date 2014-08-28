@@ -1,6 +1,6 @@
 {
-   "SSLCert": "/etc/ssl/private/openmoney.pem",
-   "SSLKey": "/etc/ssl/private/openmoney.key",
+   //"SSLCert": "/etc/ssl/private/openmoney.pem",
+   //"SSLKey": "/etc/ssl/private/openmoney.key",
    "interface":":4984",
    "adminInterface":":4985",
    "log":["CRUD", "CRUD+", "HTTP", "HTTP+", "Access", "Cache", "Shadow", "Shadow+", "Changes", "Changes+"],

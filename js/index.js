@@ -4,9 +4,9 @@ new fastclick.FastClick( document.body )
 
 document.addEventListener( "deviceready", onDeviceReady, false )
 
-var REMOTE_SYNC_URL = "https://cloud.openmoney.cc:4984/openmoney_shadow"
+var REMOTE_SYNC_URL = "http://cloud.openmoney.cc:4984/openmoney_shadow"
 
-var REMOTE_SYNC_PROTOCOL = "https://"
+var REMOTE_SYNC_PROTOCOL = "http://"
 var REMOTE_SYNC_SERVER = "cloud.openmoney.cc"
 // var REMOTE_SYNC_SERVER = "sync.couchbasecloud.com"
 var REMOTE_SYNC_PORT = "4984"
