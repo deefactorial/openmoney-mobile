@@ -701,6 +701,10 @@ function goSettings() {
 	$( "#content .om-profile" ).click( function() {
 		goProfile()
 	} )
+	
+	$( "#content .om-manage_nfc" ).click( function() {
+		goManageNFC()
+	} )
 }
 
 /*
@@ -988,6 +992,28 @@ function goExportTransactions() {
 	} )
 
 	setTabs()
+}
+
+/*
+ * Export Transactions Settings Page
+ */
+
+function goManageNFC() {
+	window.dbChanged = function() {
+	}
+	config.views( [ "trading_name_spaces", {
+		include_docs : true
+	} ], function(error, view) {
+		if (error) { return alert( JSON.stringify( error ) ) }
+		
+		drawContent( config.t.manage_nfc( view ) )
+	
+		$( "#content .om-index" ).click( function() {
+			goSettings()
+		} )
+	
+		setTabs()
+	} );
 }
 
 
@@ -1640,7 +1666,8 @@ function setupConfig(done) {
 							emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], -doc.amount )
 							emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc.amount )
 						}
-					}.toString(), reduce : function(keys, values, rereduce) {
+					}.toString(),
+					reduce : function(keys, values, rereduce) {
 						var result = 0;
 						if (rereduce) {
 							// do nothing
@@ -1675,6 +1702,12 @@ function setupConfig(done) {
 					map : function(doc) {
 						if (doc.type == "trading_name_space" && doc.space && doc.steward) {
 							emit( doc.space )
+						}
+					}.toString()
+				}, nfc_tags : {
+					map : function( doc ) {
+						if (doc.type == "users" && doc.tag) {
+							emit( doc.tag )
 						}
 					}.toString()
 				}

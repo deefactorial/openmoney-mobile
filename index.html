@@ -348,6 +348,9 @@
 				<li class="topcoat-list__item" data-id="profile">
 					<button class="om-profile topcoat-button">Profile Settings</button>
 				</li>
+                <li class="topcoat-list__item" data-id="profile">
+                    <button class="om-manage_nfc topcoat-button">Manage NFC Tags</button>
+                </li>
     		</ul>
 	</div>
 </div>
@@ -640,6 +643,43 @@
 <div id="scrollable">
     <div class="topcoat-list__container">
 
+    </div>
+</div>
+</script>
+<script type="text/mustache" id="manage_nfc-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item left three-quarter">
+           <h1 class="topcoat-navigation-bar__title">Manage NFC Tags</h1>
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable">
+    <div class="topcoat-list__container">
+        <ul class="topcoat-list">
+            {{#rows}}
+                <li class="topcoat-list__item" data-id="{{key}}">
+                    {{key}}
+                </li>
+            {{/rows}}
+        </ul>
     </div>
 </div>
 </script>
