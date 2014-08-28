@@ -674,11 +674,12 @@
 <div id="scrollable">
     <div class="topcoat-list__container">
         <ul class="topcoat-list">
-            {{#rows}}
-                <li class="topcoat-list__item" data-id="{{key}}">
-                    {{key}}
+            {{#rows}}{{#key}}
+                <li class="topcoat-list__item" data-id="{{tagID}}">
+                    {{name}}
+                        
                 </li>
-            {{/rows}}
+            {{/key}}{{/rows}}
         </ul>
     </div>
 </div>
