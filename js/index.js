@@ -1001,7 +1001,7 @@ function goExportTransactions() {
 function goManageNFC() {
 	window.dbChanged = function() {
 	}
-	config.views( [ "trading_name_spaces", {
+	config.views( [ "nfc_tags", {
 		include_docs : true
 	} ], function(error, view) {
 		if (error) { return alert( JSON.stringify( error ) ) }
@@ -1706,8 +1706,8 @@ function setupConfig(done) {
 					}.toString()
 				}, nfc_tags : {
 					map : function( doc ) {
-						if (doc.type == "users" && doc.tag) {
-							emit( doc.tag )
+						if (doc.type == "users" && doc.tags) {
+							emit( doc.tags )
 						}
 					}.toString()
 				}
