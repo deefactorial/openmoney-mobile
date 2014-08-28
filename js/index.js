@@ -1,23 +1,21 @@
-var coax = require( "coax" ), fastclick = require( "fastclick" ), appDbName = "todo"
+var coax = require( "coax" ), fastclick = require( "fastclick" ), appDbName = "openmoney"
 
 new fastclick.FastClick( document.body )
 
 document.addEventListener( "deviceready", onDeviceReady, false )
 
-// var REMOTE_SYNC_URL = "http://10.0.1.12:4984/todos/"
-// var REMOTE_SYNC_URL = "http://sync.couchbasecloud.com:4984/todos4"
-var REMOTE_SYNC_URL = "http://couchbase.triskaideca.com:4984/todos"
+var REMOTE_SYNC_URL = "https://cloud.openmoney.cc:4984/openmoney_shadow"
 
-var REMOTE_SYNC_PROTOCOL = "http://"
-var REMOTE_SYNC_SERVER = "couchbase.triskaideca.com"
+var REMOTE_SYNC_PROTOCOL = "https://"
+var REMOTE_SYNC_SERVER = "cloud.openmoney.cc"
 // var REMOTE_SYNC_SERVER = "sync.couchbasecloud.com"
 var REMOTE_SYNC_PORT = "4984"
 // var REMOTE_SYNC_DATABASE = "todolite-phonegap"
 var REMOTE_SYNC_DATABASE = "openmoney_shadow"
-var REMOTE_SERVER_LOGIN_URL = "http://couchbase.triskaideca.com/login"
-var REMOTE_SERVER_LOGOUT_URL = "http://couchbase.triskaideca.com/logout"
-var REMOTE_SERVER_LOST_PASSWORD_URL = "http://couchbase.triskaideca.com/lostpw"
-var REMOTE_SERVER_REGISTRATION_URL = "http://couchbase.triskaideca.com/registration"
+var REMOTE_SERVER_LOGIN_URL = "https://cloud.openmoney.cc/login"
+var REMOTE_SERVER_LOGOUT_URL = "https://cloud.openmoney.cc/logout"
+var REMOTE_SERVER_LOST_PASSWORD_URL = "https://cloud.openmoney.cc/lostpw"
+var REMOTE_SERVER_REGISTRATION_URL = "https://cloud.openmoney.cc/registration"
 
 var SERVER_LOGIN = true
 var FACEBOOK_LOGIN = false
