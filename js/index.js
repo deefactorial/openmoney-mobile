@@ -1001,9 +1001,11 @@ function goExportTransactions() {
 function goManageNFC() {
 	window.dbChanged = function() {
 	}
-	config.views( [ "nfc_tags", {
-		include_docs : true
-	} ], function(error, view) {
+	config.views( [ "nfc_tags", 
+		{
+			startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true
+		}
+	], function(error, view) {
 		if (error) { return alert( JSON.stringify( error ) ) }
 		
 		drawContent( config.t.manage_nfc( view ) )
@@ -1706,8 +1708,10 @@ function setupConfig(done) {
 					}.toString()
 				}, nfc_tags : {
 					map : function( doc ) {
-						if (doc.type == "users" && doc.tags) {
-							emit( doc.tags )
+						if (doc.type == "users" && doc.tags && doc.username) {
+							for(var i = 0; i < doc.tags.length; i++) {
+								emit( [doc.username,doc.tags[i].tagID], doc.tags[i] )
+							}
 						}
 					}.toString()
 				}
