@@ -674,12 +674,15 @@
 <div id="scrollable">
     <div class="topcoat-list__container">
         <ul class="topcoat-list">
-            {{#rows}}{{#key}}
-                <li class="topcoat-list__item" data-id="{{tagID}}">
-                    {{name}}
-                        
+            {{#rows}}
+                <li class="topcoat-list__item" data-id="{{id}}">
+                {{#value}}
+                    <div class="who"><b>{{name}}</b></div>
+                    <button class="todo-delete topcoat-button">Delete</button>
+                    <br class="clear"/>
+                {{/value}}   
                 </li>
-            {{/key}}{{/rows}}
+            {{/rows}}
         </ul>
     </div>
 </div>

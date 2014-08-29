@@ -1710,7 +1710,7 @@ function setupConfig(done) {
 					map : function( doc ) {
 						if (doc.type == "users" && doc.tags && doc.username) {
 							for(var i = 0; i < doc.tags.length; i++) {
-								emit( [doc.username,doc.tags[i].tagID], doc.tags[i] )
+								emit( [ doc.username, doc.tags[i].tagID ], doc.tags[i] )
 							}
 						}
 					}.toString()
