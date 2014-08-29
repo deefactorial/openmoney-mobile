@@ -675,17 +675,52 @@
     <div class="topcoat-list__container">
         <ul class="topcoat-list">
             <li class="topcoat-list__item">
-                <button class="om-new_nfc topcoat-tab-bar__button">Create New NFC Tag</button>
+                <button class="om-new_nfc topcoat-button">Create New NFC Tag</button>
             </li>
-            {{#rows}}
-                <li class="topcoat-list__item" data-id="{{id}}">
+            {{#rows}} 
                 {{#value}}
+                <li class="topcoat-list__item nfc_item" data-id="{{tagID}}">
                     <div class="who"><b>{{name}}</b></div>
                     <button class="todo-delete topcoat-button">Delete</button>
                     <br class="clear"/>
-                {{/value}}   
                 </li>
-            {{/rows}}
+                {{/value}}  
+            {{/rows}} 
+        </ul>
+    </div>
+</div>
+</script>
+<script type="text/mustache" id="new_nfc-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item left three-quarter">
+           <h1 class="topcoat-navigation-bar__title">Create NFC Tag</h1>
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable">
+    <div class="topcoat-list__container">
+        <ul class="topcoat-list">
+            <li class="topcoat-list__item">
+                <button class="om-new_nfc topcoat-button">Write Tag</button>
+            </li>
         </ul>
     </div>
 </div>

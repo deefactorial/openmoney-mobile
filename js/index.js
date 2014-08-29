@@ -39,99 +39,84 @@ function onDeviceReady() {
 				console.log( "error on sync" + JSON.stringify( err ) )
 			}
 		} )
-		
+
 		// Read NDEF formatted NFC Tags
-	    nfc.addNdefListener (
-	        function (nfcEvent) {
-	        	
-	            var tag = nfcEvent.tag,
-	                ndefMessage = tag.ndefMessage;
+		nfc.addNdefListener( function(nfcEvent) {
 
-	            // dump the raw json of the message
-	            // note: real code will need to decode
-	            // the payload from each record
-	            
-	            
-	            if (tag.isWritable && tag.canMakeReadOnly) {
-	            	log(JSON.stringify(tag));
-	            	
-	            	var type = "com.openmoney.mobile/json",
-	                id = config.user.user_id,
-	                payload = nfc.stringToBytes( JSON.stringify( { username: config.user.user_id } ) ),
-	                record = ndef.record(ndef.TNF_MIME_MEDIA, type, id, payload);
-	            	
-	            	var message = [
-	            	               record
-	            	];
+			var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
 
-	            	nfc.write(message, function () {
-	            		alert( "Successfully written to NFC Tag!")
-	            	}, function () {
-	            		alert( "Failed to write to NFC Tag!")
-	            	});
-	            }
+			// dump the raw json of the message
+			// note: real code will need to decode
+			// the payload from each record
 
-	            // assuming the first record in the message has 
-	            // a payload that can be converted to a string.
-	            alert(nfc.bytesToString(ndefMessage[0].payload));
-	        }, 
-	        function () { // success callback
-	            log("Waiting for NDEF tag");
-	        },
-	        function (error) { // error callback
-	            alert("Error adding NDEF listener " + JSON.stringify(error));
-	        }
-	    );
+			if (tag.isWritable && tag.canMakeReadOnly) {
+				log( JSON.stringify( tag ) );
+
+				var type = "com.openmoney.mobile/json", id = config.user.user_id, payload = nfc.stringToBytes( JSON.stringify( {
+					username : config.user.user_id
+				} ) ), record = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+
+				var message = [ record ];
+
+				nfc.write( message, function() {
+					alert( "Successfully written to NFC Tag!" )
+				}, function() {
+					alert( "Failed to write to NFC Tag!" )
+				} );
+			}
+
+			// assuming the first record in the message has
+			// a payload that can be converted to a string.
+			alert( nfc.bytesToString( ndefMessage[0].payload ) );
+		}, function() { // success callback
+			log( "Waiting for NDEF tag" );
+		}, function(error) { // error callback
+			alert( "Error adding NDEF listener " + JSON.stringify( error ) );
+		} );
 	} )
-	
-    
-	
-	nfc.addMimeTypeListener("com.openmoney.mobile/json", 
-	function(nfcEvent) {
-        var tag = nfcEvent.tag,
-        ndefMessage = tag.ndefMessage;
 
-	    // dump the raw json of the message
-	    // note: real code will need to decode
-	    // the payload from each record
-	    log(JSON.stringify(tag));
-	
-	    // assuming the first record in the message has 
-	    // a payload that can be converted to a string.
-	    alert(nfc.bytesToString(ndefMessage[0].payload));
-	}, function () {
-		//success callback
-	}, function () {
-		//failure callback
-	});
+	nfc.addMimeTypeListener( "application/com.openmoney.mobile", function(nfcEvent) {
+		var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+
+		// dump the raw json of the message
+		// note: real code will need to decode
+		// the payload from each record
+		log( JSON.stringify( tag ) );
+
+		// assuming the first record in the message has
+		// a payload that can be converted to a string.
+		alert( nfc.bytesToString( ndefMessage[0].payload ) );
+	}, function() {
+		// success callback
+	}, function() {
+		// failure callback
+	} );
 };
 
 // function placeholder replaced by whatever should be running when the
 // change comes in. Used to trigger display updates.
 window.dbChanged = function() {
-	
+
 }
 
-window.checkConflicts = function( change ) {
-	//this should check for conflicts that are detected by the system.
+window.checkConflicts = function(change) {
+	// this should check for conflicts that are detected by the system.
 	if (change) {
 		var documentID = change.id, seq = change.seq, changes = change.changes;
-		for( var i = 0; i < changes.length; i++ ) {
+		for ( var i = 0; i < changes.length; i++) {
 			var document = changes[i];
 			var rev = document.rev;
 		}
 	}
-	//TODO: find out what a conflicting document looks like
-	//TODO: find out how to delete the wrong revision of a document
+	// TODO: find out what a conflicting document looks like
+	// TODO: find out how to delete the wrong revision of a document
 }
 
 // call window.dbChanged each time the database changes. Use it to
 // update the display when local or remote updates happen.
 function connectToChanges() {
 	config.db.changes( {
-		since : config.info.update_seq,
-		conflicts : true,
-		include_docs : true
+		since : config.info.update_seq, conflicts : true, include_docs : true
 	}, function(err, change) {
 		if (err) {
 			log( " Changes Error: " + JSON.stringify( err ) )
@@ -514,7 +499,7 @@ function toggleShare(doc, user, cb) {
 function goServerLogin(callBack) {
 	window.dbChanged = function() {
 	}
-	
+
 	drawContent( config.t.login() )
 
 	$( "#content .todo-index" ).click( function() {
@@ -557,7 +542,7 @@ function goServerLogin(callBack) {
 function goServerRegistration(callBack) {
 	window.dbChanged = function() {
 	}
-	
+
 	drawContent( config.t.register() )
 	$( "#content .todo-index" ).click( function() {
 		callBack()
@@ -677,7 +662,7 @@ function goSettings() {
 	$( "#content .om-trading_name" ).click( function() {
 		goTradingName()
 	} )
-	
+
 	$( "#content .om-trading_space" ).click( function() {
 		goTradingSpace()
 	} )
@@ -685,15 +670,15 @@ function goSettings() {
 	$( "#content .om-currency" ).click( function() {
 		goCurrency()
 	} )
-	
+
 	$( "#content .om-currency_network" ).click( function() {
 		goCurrencyNetwork()
 	} )
-	
+
 	$( "#content .om-export_transactions" ).click( function() {
 		goExportTransactions()
 	} )
-	
+
 	$( "#content .om-server" ).click( function() {
 		goServer()
 	} )
@@ -701,7 +686,7 @@ function goSettings() {
 	$( "#content .om-profile" ).click( function() {
 		goProfile()
 	} )
-	
+
 	$( "#content .om-manage_nfc" ).click( function() {
 		goManageNFC()
 	} )
@@ -732,12 +717,10 @@ function goTradingName() {
 			var doc = jsonform( this );
 			doc.type = "trading_name";
 			doc.steward = [ config.user.user_id ];
-			if (doc.trading_name.match(/[^A-Za-z0-9\-_]/)){
-				return alert('The Trading Name you entered is not valid!');
-			}
+			if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { return alert( 'The Trading Name you entered is not valid!' ); }
 			if (doc.trading_name_space != '')
 				doc.name = doc.trading_name + "." + doc.trading_name_space;
-			else 
+			else
 				doc.name = doc.trading_name;
 			config.db.get( "currency," + doc.currency, function(error, currency) {
 				if (error) {
@@ -806,7 +789,7 @@ function goCurrency() {
 			doc.steward = [ config.user.user_id ]
 			if (doc.currency_network != '')
 				doc.currency = doc.symbol + "." + doc.currency_network;
-			else 
+			else
 				doc.currency = doc.symbol;
 			config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
 				if (error) {
@@ -854,22 +837,22 @@ function goProfile() {
  */
 
 function goTradingSpace() {
-	
+
 	window.dbChanged = function() {
 	}
 	config.views( [ "trading_name_spaces", {
 		include_docs : true
 	} ], function(error, view) {
 		if (error) { return alert( JSON.stringify( error ) ) }
-		
+
 		drawContent( config.t.trading_space( view ) )
-	
+
 		$( "#content .om-index" ).click( function() {
 			goSettings()
 		} )
-	
+
 		setTabs()
-		
+
 		$( "#content form" ).submit( function(e) {
 			e.preventDefault()
 			var doc = jsonform( this )
@@ -877,10 +860,10 @@ function goTradingSpace() {
 			doc.steward = [ config.user.user_id ]
 			if (doc.trading_name_subspace != '')
 				doc.space = doc.trading_space + "." + doc.trading_name_subspace;
-			else 
+			else
 				doc.space = doc.trading_space;
-			
-			config.db.get( doc.type + "," + doc.space , function(error, existingdoc) {
+
+			config.db.get( doc.type + "," + doc.space, function(error, existingdoc) {
 				if (error) {
 					log( "Error: " + JSON.stringify( error ) )
 					if (error.status == 404) {
@@ -911,7 +894,6 @@ function goTradingSpace() {
  */
 
 function goCurrencyNetwork() {
-	
 
 	window.dbChanged = function() {
 	}
@@ -919,27 +901,27 @@ function goCurrencyNetwork() {
 		include_docs : true
 	} ], function(error, view) {
 		if (error) { return alert( JSON.stringify( error ) ) }
-		
+
 		drawContent( config.t.currency_network( view ) )
-	
+
 		$( "#content .om-index" ).click( function() {
 			goSettings()
 		} )
-	
+
 		setTabs()
-		
+
 		$( "#content form" ).submit( function(e) {
 			e.preventDefault()
 			var doc = jsonform( this )
 			doc.type = "currency_network"
 			doc.steward = [ config.user.user_id ]
-			
-			if (doc.currency_subnetwork != '') 
+
+			if (doc.currency_subnetwork != '')
 				doc.name = doc.currency_network + "." + doc.currency_subnetwork;
-			else 
+			else
 				doc.name = doc.currency_network;
-			
-			config.db.get( doc.type + "," + doc.name , function(error, existingdoc) {
+
+			config.db.get( doc.type + "," + doc.name, function(error, existingdoc) {
 				if (error) {
 					log( "Error: " + JSON.stringify( error ) )
 					if (error.status == 404) {
@@ -1001,26 +983,102 @@ function goExportTransactions() {
 function goManageNFC() {
 	window.dbChanged = function() {
 	}
-	config.views( [ "nfc_tags", 
-		{
-			startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true
-		}
-	], function(error, view) {
+	config.views( [ "nfc_tags", {
+		startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true
+	} ], function(error, view) {
 		if (error) { return alert( JSON.stringify( error ) ) }
-		
+
 		log( "nfc_tags: " + JSON.stringify( view ) )
-		
+
 		drawContent( config.t.manage_nfc( view ) )
-	
+
 		$( "#content .om-index" ).click( function() {
 			goSettings()
 		} )
-	
+
+		$( "#content .om-new_nfc" ).click( function() {
+			goNewNFC()
+		} )
+
+		$( "#scrollable li.nfc_item" ).on( "swipeRight", function() {
+			var id = $( this ).attr( "data-id" )
+			$( this ).find( "button" ).show().click( function() {
+				archiveTag( id )
+			} )
+		} )
+
 		setTabs()
 	} );
 }
 
+/*
+ * This is will find the tag on the users account and archive it
+ */
 
+function archiveTag(id) {
+	log( "Archive Tag", id )
+	config.db.get( "users," + config.user.name, function(err, doc) {
+		// find tag by id and archive it
+		for ( var i = 0; i < doc.tags.length; i++) {
+			if (id == doc.tags[i].tagID) {
+				doc.tags[i].archived = true;
+			}
+		}
+		config.db.put( "users," + config.user.name, doc, function() {
+		} )
+	} )
+}
+
+/*
+ * This will store and flash writable nfc tags.
+ */
+
+function goNewNFC() {
+
+	drawContent( config.t.new_nfc() )
+
+	$( "#content .om-index" ).click( function() {
+		goManageNFC()
+	} )
+
+	$( "#content .om-new_nfc" ).click( function() {
+		//write tag
+		// Read NDEF formatted NFC Tags
+		nfc.addNdefListener( function(nfcEvent) {
+
+			var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+
+			if (tag.isWritable && tag.canMakeReadOnly) {
+				log( JSON.stringify( tag ) );
+
+				var type = "application/com.openmoney.mobile",
+				id = config.user.user_id,
+				payload = nfc.stringToBytes( JSON.stringify( { username : config.user.user_id } ) ),
+				mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+				
+				var type = "urn:nfc:ext:android.com:pkg",
+				id = "",
+				payload = nfc.stringToBytes( "com.openmoney.mobile" ),
+				aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload);
+				
+				var message = [ mime, aar ];
+
+				nfc.write( message, function() {
+					alert( "Successfully written to NFC Tag!" )
+				}, function() {
+					alert( "Failed to write to NFC Tag!" )
+				} );
+			}
+
+		}, function() { // success callback
+			log( "Waiting for NDEF tag" );
+		}, function(error) { // error callback
+			alert( "Error adding NDEF listener " + JSON.stringify( error ) );
+		} );
+	} )
+
+	setTabs()
+}
 
 /*
  * Payment Page
@@ -1670,8 +1728,7 @@ function setupConfig(done) {
 							emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], -doc.amount )
 							emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc.amount )
 						}
-					}.toString(),
-					reduce : function(keys, values, rereduce) {
+					}.toString(), reduce : function(keys, values, rereduce) {
 						var result = 0;
 						if (rereduce) {
 							// do nothing
@@ -1709,9 +1766,9 @@ function setupConfig(done) {
 						}
 					}.toString()
 				}, nfc_tags : {
-					map : function( doc ) {
+					map : function(doc) {
 						if (doc.type == "users" && doc.tags && doc.username) {
-							for(var i = 0; i < doc.tags.length; i++) {
+							for ( var i = 0; i < doc.tags.length; i++) {
 								emit( [ doc.username, doc.tags[i].tagID ], doc.tags[i] )
 							}
 						}
