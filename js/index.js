@@ -1008,6 +1008,8 @@ function goManageNFC() {
 	], function(error, view) {
 		if (error) { return alert( JSON.stringify( error ) ) }
 		
+		log( view )
+		
 		drawContent( config.t.manage_nfc( view ) )
 	
 		$( "#content .om-index" ).click( function() {
