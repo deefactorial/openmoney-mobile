@@ -1008,7 +1008,7 @@ function goManageNFC() {
 	], function(error, view) {
 		if (error) { return alert( JSON.stringify( error ) ) }
 		
-		log( JSON.stringiy( view ) )
+		log( "nfc_tags: " + JSON.stringify( view ) )
 		
 		drawContent( config.t.manage_nfc( view ) )
 	
