@@ -1018,12 +1018,16 @@ function goNewNFC() {
 					mutableLock = true;
 				
 					var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
-	
-					var seed = crypto.randomBytes( 20 );
-					var hashTag = crypto.createHash( 'sha1' ).update( seed ).digest( 'hex' );
-	
-					var seed = crypto.randomBytes( 20 );
-					var IV = crypto.createHash( 'sha1' ).update( seed ).digest( 'hex' );
+
+					
+					function randomString(length, chars) {
+					    var result = '';
+					    for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
+					    return result;
+					}
+					
+					var hashTag = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+					var initializationVector = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 	
 					var pinCode = doc.pinCode,
 	
@@ -1031,7 +1035,7 @@ function goNewNFC() {
 					// https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
 					// note the key that should be used instead of the hashID should be
 					// the users private RSA key.
-					encodedString = mcrypt.Encrypt( pinCode, IV, hashTag, 'rijndael-256', 'cbc' );
+					encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
 	
 					var name = config.user.name;
 					if (doc.name) 
@@ -1039,7 +1043,7 @@ function goNewNFC() {
 					var userTag = {
 						"tagID" : tag.id,
 						"hashTag" : hashTag,
-						"IV" : IV,
+						"initializationVector" : initializationVector,
 						"name" : name,
 						"pinCode" : encodedString,
 						"defaultMaxLimitBeforePinRequest": -1,
