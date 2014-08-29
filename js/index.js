@@ -1084,6 +1084,13 @@ function goNewNFC() {
 	setTabs()
 }
 
+//change the type of the input to password
+function changeToPassword() {
+    setTimeout(function () {
+        document.getElementById("pinCode").setAttribute("type", "password")
+    }, 500);
+}
+
 /*
  * Insert Tag In DB
  */
