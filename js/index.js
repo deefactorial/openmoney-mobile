@@ -1049,14 +1049,14 @@ function goNewNFC() {
             var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
 
             if (tag.isWritable && tag.canMakeReadOnly) {
-                log( JSON.stringify( tag ) );
+                log("tag:" + JSON.stringify( tag ) );
 
 //                var type = "application/com.openmoney.mobile",
 //                id = config.user.user_id,
 //                payload = nfc.stringToBytes( JSON.stringify( { username : config.user.user_id } ) ),
 //                mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
                 
-                var type = "urn:nfc:ext:android.com:pkg",
+                var type = "android.com:pkg",
                 id = "",
                 payload = nfc.stringToBytes( "com.openmoney.mobile" ),
                 aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload);
