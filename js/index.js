@@ -948,46 +948,86 @@ function goExportTransactions() {
 
 function goManageNFC() {
 	window.dbChanged = function() {
-	}
-	config.views( [ "nfc_tags", {
-		startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true
-	} ], function(error, view) {
-		if (error) { return alert( JSON.stringify( error ) ) }
-
-		log( "nfc_tags: " + JSON.stringify( view ) )
-
-		drawContent( config.t.manage_nfc( view ) )
-
-		$( "#content .om-index" ).click( function() {
-			goSettings()
-		} )
-
-		$( "#content .om-new_nfc" ).click( function() {
-			goNewNFC()
-		} )
-
-		$( "#scrollable li.nfc_item" ).on( "swipeRight", function() {
-			var id = $( this ).attr( "data-id" )
-			$( this ).find( "button" ).show().click( function() {
-				archiveTag( id )
+		
+		config.views( [ "nfc_tags", {
+			startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true
+		} ], function(error, view) {
+			if (error) { return alert( JSON.stringify( error ) ) }
+	
+			log( "nfc_tags: " + JSON.stringify( view ) )
+	
+			drawContent( config.t.manage_nfc( view ) )
+	
+			$( "#content .om-index" ).click( function() {
+				goSettings()
 			} )
-		} )
-
-		setTabs()
-	} );
+	
+			$( "#content .om-new_nfc" ).click( function() {
+				goNewNFC()
+			} )
+	
+			$( "#scrollable li.nfc_item" ).on( "swipeRight", function() {
+				var id = $( this ).attr( "data-id" )
+				if (isTagArchived( id )) {
+					$( this ).find( "button .om-activate" ).show().click( function() {
+						activateTag( id )
+					} )
+				} else {
+					$( this ).find( "button .om-archive" ).show().click( function() {
+						archiveTag( id )
+					} )
+				}
+			} )
+			setTabs()
+		} );
+		
+	}
+	window.dbChanged()
 }
+
+function isTagArchived( id ) {
+	log( "Archive Tag", id )
+	config.db.get( "users," + config.user.name, function(err, doc) {
+		// find tag by id and archive it
+		for ( var i = 0; i < doc.tags.length; i++) {
+			if (id == doc.tags[i].tagID) {
+				return doc.tags[i].archived
+			}
+		}
+	} )
+	return false;
+}
+
 
 /*
  * This is will find the tag on the users account and archive it
  */
 
-function archiveTag(id) {
+function archiveTag( id ) {
 	log( "Archive Tag", id )
 	config.db.get( "users," + config.user.name, function(err, doc) {
 		// find tag by id and archive it
 		for ( var i = 0; i < doc.tags.length; i++) {
 			if (id == doc.tags[i].tagID) {
 				doc.tags[i].archived = true;
+			}
+		}
+		config.db.put( "users," + config.user.name, doc, function() {
+		} )
+	} )
+}
+
+/*
+ * This is will find the tag on the users account and archive it
+ */
+
+function activateTag( id ) {
+	log( "Activate Tag", id )
+	config.db.get( "users," + config.user.name, function(err, doc) {
+		// find tag by id and archive it
+		for ( var i = 0; i < doc.tags.length; i++) {
+			if (id == doc.tags[i].tagID) {
+				doc.tags[i].archived = false;
 			}
 		}
 		config.db.put( "users," + config.user.name, doc, function() {
@@ -1037,6 +1077,8 @@ function goNewNFC() {
 					// the users private RSA key.
 					encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
 	
+					var base64_encodedString = base64_encode( encodedString )
+					
 					var name = config.user.name;
 					if (doc.name) 
 						name = doc.name;
@@ -1045,7 +1087,7 @@ function goNewNFC() {
 						"hashTag" : hashTag,
 						"initializationVector" : initializationVector,
 						"name" : name,
-						"pinCode" : encodedString,
+						"pinCode" : base64_encodedString,
 						"defaultMaxLimitBeforePinRequest": -1,
 					      "maxLimitBeforePinReuqestPerCurrency": [
 					        {

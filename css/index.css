@@ -301,6 +301,20 @@ br.clear {
 	display:none;
 }
 
+.topcoat-button.om-archive {
+    position:absolute;
+    right:1rem;
+    line-height: 2rem;
+    display:none;
+}
+
+.topcoat-button.om-activate {
+    position:absolute;
+    right:1rem;
+    line-height: 2rem;
+    display:none;
+}
+
 .topcoat-button.todo-login {
 	display:none;
 }

@@ -36,6 +36,7 @@
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/rijndael.js"></script>
         <script type="text/javascript" src="js/mcrypt.js"></script>
+        <script type="text/javascript" src="js/base64.js"></script>
 <!-- mustache templates -->
 <script type="text/mustache" id="index-mu">
 <header>
@@ -682,7 +683,8 @@
                 {{#value}}
                 <li class="topcoat-list__item nfc_item" data-id="{{tagID}}">
                     <div class="who"><b>{{name}}</b></div>
-                    <button class="todo-delete topcoat-button">Delete</button>
+                    <button class="om-archive topcoat-button">Archive</button>
+                    <button class="om-activate topcoat-button">Activate</button>
                     <br class="clear"/>
                 </li>
                 {{/value}}  
@@ -724,7 +726,7 @@
                     <input type="text" class="topcoat-text-input" name="name" value="" placeholder="Name Your Tag" /> 
                 </li>
                 <li class="topcoat-list__item" data-id="pincode">
-                    <input type="tel" class="topcoat-text-input" id="pinCode" name="pinCode" value="" placeholder="Pin Code" onfocus="changeToPassword()"/> 
+                    <input type="number" class="topcoat-text-input" id="pinCode" name="pinCode" value="" placeholder="Pin Code" onfocus="changeToPassword()"/> 
                 </li>
                 <li class="topcoat-list__item" data-id="submit">
                     <input type="submit" class="topcoat-button" name="submit" value=" Write Tag " /> 
