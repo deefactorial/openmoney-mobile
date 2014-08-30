@@ -968,15 +968,17 @@ function goManageNFC() {
 	
 			$( "#scrollable li.nfc_item" ).on( "swipeRight", function() {
 				var id = $( this ).attr( "data-id" )
-				if( isTagArchived( id ) ) {
-					$( this ).find( ".om-activate" ).show().click( function() {
-						activateTag( id )
-					} )
-				} else {
-					$( this ).find( ".om-archive" ).show().click( function() {
-						archiveTag( id )
-					} )
-				}
+				isTagArchived( id, function( result ) {
+					if (result) {
+						$( this ).find( ".om-activate" ).show().click( function() {
+							activateTag( id )
+						} )
+					} else {
+						$( this ).find( ".om-archive" ).show().click( function() {
+							archiveTag( id )
+						} )
+					}
+				} )
 			} )
 			
 			
@@ -991,18 +993,18 @@ function goManageNFC() {
  * check tag for archived status
  */
 
-function isTagArchived( id ) {
+function isTagArchived( id , callback) {
 	var result = false;
 	config.db.get( "users," + config.user.name, function(err, doc) {
 		// find tag by id and return archived
 		for ( var i = 0; i < doc.tags.length; i++) {
 			if (id == doc.tags[i].tagID) {
-				log( "match found " + doc.tags[i].archived)
+				//log( "match found " + doc.tags[i].archived)
 				result = doc.tags[i].archived;
 			}
 		}
 		log( "is Tag (" + id + ") Archived:" + result )
-		return result;
+		callback( result );
 	} )
 }
 
