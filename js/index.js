@@ -969,11 +969,11 @@ function goManageNFC() {
 			$( "#scrollable li.nfc_item" ).on( "swipeRight", function() {
 				var id = $( this ).attr( "data-id" )
 				if (isTagArchived( id )) {
-					$( this ).find( "button .om-activate" ).show().click( function() {
+					$( this ).find( ".om-activate" ).show().click( function() {
 						activateTag( id )
 					} )
 				} else {
-					$( this ).find( "button .om-archive" ).show().click( function() {
+					$( this ).find( ".om-archive" ).show().click( function() {
 						archiveTag( id )
 					} )
 				}
@@ -986,6 +986,10 @@ function goManageNFC() {
 	}
 	window.dbChanged()
 }
+
+/*
+ * check tag for archived status
+ */
 
 function isTagArchived( id ) {
 	var result = false;
