@@ -968,7 +968,7 @@ function goManageNFC() {
 	
 			$( "#scrollable li.nfc_item" ).on( "swipeRight", function() {
 				var id = $( this ).attr( "data-id" )
-				if (isTagArchived( id )) {
+				if( isTagArchived( id ) ) {
 					$( this ).find( ".om-activate" ).show().click( function() {
 						activateTag( id )
 					} )
@@ -994,10 +994,10 @@ function goManageNFC() {
 function isTagArchived( id ) {
 	var result = false;
 	config.db.get( "users," + config.user.name, function(err, doc) {
-		// find tag by id and archive it
+		// find tag by id and return archived
 		for ( var i = 0; i < doc.tags.length; i++) {
 			if (id == doc.tags[i].tagID) {
-				result = doc.tags[i].archived
+				result = doc.tags[i].archived;
 			}
 		}
 	} )
