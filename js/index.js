@@ -1001,9 +1001,9 @@ function isTagArchived( id ) {
 				result = doc.tags[i].archived;
 			}
 		}
+		log( "is Tag (" + id + ") Archived:" + result )
+		return result;
 	} )
-	log( "is Tag (" + id + ") Archived:" + result )
-	return result;
 }
 
 
