@@ -967,15 +967,17 @@ function goManageNFC() {
 			} )
 	
 			$( "#scrollable li.nfc_item" ).on( "swipeRight", function() {
-				var id = $( this ).attr( "data-id" )
+				
+				var id = $( this ).attr( "data-id" ),
+				listItem = this;
 				isTagArchived( id, function( error , result ) {
 					log ( "received result:" + result)
 					if (result) {
-						$( this ).find( ".om-activate" ).show().click( function() {
+						$( listItem ).find( ".om-activate" ).show().click( function() {
 							activateTag( id )
 						} )
 					} else {
-						$( this ).find( ".om-archive" ).show().click( function() {
+						$( listItem ).find( ".om-archive" ).show().click( function() {
 							archiveTag( id )
 						} )
 					}
