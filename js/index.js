@@ -978,6 +978,8 @@ function goManageNFC() {
 					} )
 				}
 			} )
+			
+			
 			setTabs()
 		} );
 		
@@ -986,16 +988,17 @@ function goManageNFC() {
 }
 
 function isTagArchived( id ) {
-	log( "Archive Tag", id )
+	var result = false;
 	config.db.get( "users," + config.user.name, function(err, doc) {
 		// find tag by id and archive it
 		for ( var i = 0; i < doc.tags.length; i++) {
 			if (id == doc.tags[i].tagID) {
-				return doc.tags[i].archived
+				result = doc.tags[i].archived
 			}
 		}
 	} )
-	return false;
+	log( "is Tag (" + id + ") Archived:" + result )
+	return result;
 }
 
 
