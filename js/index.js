@@ -997,6 +997,7 @@ function isTagArchived( id ) {
 		// find tag by id and return archived
 		for ( var i = 0; i < doc.tags.length; i++) {
 			if (id == doc.tags[i].tagID) {
+				log( "match found " + doc.tags[i].archived)
 				result = doc.tags[i].archived;
 			}
 		}
