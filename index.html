@@ -693,7 +693,7 @@
     </div>
 </div>
 </script>
-<script type="text/mustache" id="new_nfc-mu">
+<script type="text/mustache" id="edit_nfc-mu">
 <header>
     <div class="topcoat-navigation-bar">
         <div class="topcoat-navigation-bar__item left quarter om-padded">
@@ -723,11 +723,19 @@
         <form>
             <ul class="topcoat-list">
                 <li class="topcoat-list__item" data-id="name">
-                    <input type="text" class="topcoat-text-input" name="name" value="" placeholder="Name Your Tag" /> 
+                    <input type="text" class="topcoat-text-input" name="name" value="{{name}}" placeholder="Name Your Tag" /> 
                 </li>
                 <li class="topcoat-list__item" data-id="pincode">
                     <input type="number" class="topcoat-text-input" id="pinCode" name="pinCode" value="" placeholder="Pin Code" onfocus="changeToPassword()"/> 
                 </li>
+                <li class="topcoat-list__item" data-id="defaultMaxLimitBeforePinRequest">
+                    <input type="number" class="topcoat-text-input" name="defaultMaxLimitBeforePinRequest" value="{{defaultMaxLimitBeforePinRequest}}" placeholder="Default Max Limit Before Pin Request" /> 
+                </li>
+                {{#maxLimitBeforePinReqestPerCurrency}}
+                <li class="topcoat-list__item" data-id="{{currency}}">
+                    <input type="number" class="topcoat-text-input" name="maxLimitBeforePinReqest" value="{{amount}}" placeholder="Max Limit Before Pin Request" /> in {{currency}}
+                </li>
+                {{/maxLimitBeforePinReqestPerCurrency}}
                 <li class="topcoat-list__item" data-id="submit">
                     <input type="submit" class="topcoat-button" name="submit" value=" Write Tag " /> 
                 </li>

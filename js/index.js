@@ -966,12 +966,17 @@ function goManageNFC() {
 				goNewNFC()
 			} )
 	
+			$( "#scrollable li.nfc_item" ).click( function() {
+				var id = $( this ).attr( "data-id" )
+				goEditNFC( id )
+			} )
+			
 			$( "#scrollable li.nfc_item" ).on( "swipeRight", function() {
 				
 				var id = $( this ).attr( "data-id" ),
 				listItem = this;
 				isTagArchived( id, function( error , result ) {
-					log ( "received result:" + result)
+					//log ( "received result:" + result)
 					if (result) {
 						$( listItem ).find( ".om-activate" ).show().click( function() {
 							activateTag( id )
@@ -984,6 +989,7 @@ function goManageNFC() {
 				} )
 			} )
 			
+
 			
 			setTabs()
 		} );
@@ -1048,99 +1054,155 @@ function activateTag( id ) {
 	} )
 }
 
+function goNewNFC() {
+	goEditNFC( null );
+}
+
 /*
  * This will store and flash writable nfc tags.
  */
 
-function goNewNFC() {
+function goEditNFC( id ) {
 
-	drawContent( config.t.new_nfc() )
 
-	$( "#content .om-index" ).click( function() {
-		goManageNFC()
-	} )
+		
+	config.db.get( "users," + config.user.name, function(err, doc) {
+		
+		var tag = null;
+		// find tag by id 
+		for ( var i = 0; i < doc.tags.length; i++) {
+			if (id == doc.tags[i].tagID) {
+				tag = doc.tags[i];
+			}
+		}
 
-	$( "#content form" ).submit( function(e) {
-			e.preventDefault()
-			var doc = jsonform( this )
-			
-			if (!doc.name) return alert("You must specify a name for your Tag.");
-			var mutableLock = false;
-			nfc.addNdefListener( function(nfcEvent) {
-				if (!mutableLock) {
-					mutableLock = true;
+		drawContent( config.t.edit_nfc( tag ) )
+
+		$( "#content .om-index" ).click( function() {
+			goManageNFC()
+		} )
+
+		$( "#content form" ).submit( function(e) {
+				e.preventDefault()
+				var doc = jsonform( this )
 				
-					var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+				if (!doc.name) return alert("You must specify a name for your Tag.");
+				var mutableLock = false;
+				nfc.addNdefListener( function(nfcEvent) {
+					if (!mutableLock) {
+						mutableLock = true;
+					
+						var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
 
-					
-					function randomString(length, chars) {
-					    var result = '';
-					    for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
-					    return result;
-					}
-					
-					var hashTag = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-					var initializationVector = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-	
-					var pinCode = doc.pinCode,
-	
-					// for more information on mcrypt
-					// https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
-					// note the key that should be used instead of the hashID should be
-					// the users private RSA key.
-					encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
-	
-					var base64_encodedString = base64_encode( encodedString )
-					
-					var name = config.user.name;
-					if (doc.name) 
-						name = doc.name;
-					var userTag = {
-						"tagID" : tag.id,
-						"hashTag" : hashTag,
-						"initializationVector" : initializationVector,
-						"name" : name,
-						"pinCode" : base64_encodedString,
-						"defaultMaxLimitBeforePinRequest": -1,
-					      "maxLimitBeforePinReuqestPerCurrency": [
-					        {
-					          "amount": 100,
-					          "currency": "cc"
-					        }
-					      ]
-					};
-	
-					if (tag.isWritable && tag.canMakeReadOnly) {
-						log( "tag:" + JSON.stringify( tag ) );
-	
-						var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
-							key : hashTag
-						} ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
-	
-						var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
-	
-						var message = [ mime, aar ];
-	
-						nfc.write( message, function() {
-							insertTagInDB( userTag )
-							alert( "Successfully written to NFC Tag!" )
-							mutableLock = false;
-						}, function() {
-							alert( "Failed to write to NFC Tag!" )
-							mutableLock = false;
-						} );
-					}
-				}
+						
+						function randomString(length, chars) {
+						    var result = '';
+						    for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
+						    return result;
+						}
+						
+						var hashTag = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+						var initializationVector = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+		
+						var pinCode = doc.pinCode,
+		
+						// for more information on mcrypt
+						// https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
+						// note the key that should be used instead of the hashID should be
+						// the users private RSA key.
+						encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
+		
+						var base64_encodedString = base64_encode( encodedString )
+						
+						var name = config.user.name;
+						if (doc.name) 
+							name = doc.name;
+						var defaultMasLimitBeforePinRequest = doc.defaultMasLimitBeforePinRequest;
+						var maxLimitBeforePinRequestPerCurrency = doc.maxLimitBeforePinRequestPerCurrency;
+						
+						config.views( [ "accounts", {
+							descending : true
+						} ], function(err, view) {
 
-			}, function() { // success callback
-				alert( "Waiting for NFC tag" );
-			}, function(error) { // error callback
-				alert( "Error adding NDEF listener " + JSON.stringify( error ) );
-			} );
+							var thisUsersAccounts = {
+								rows : []
+							}
+
+							for ( var i = view.rows.length - 1; i >= 0; i--) {
+								log( "row:" + JSON.stringify( view.rows[i] ) )
+								log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+								if (view.rows[i].key.steward.length) {
+									for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
+										log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+										if (view.rows[i].key.steward[j] == config.user.user_id) {
+											thisUsersAccounts.rows.push( view.rows[i] )
+										}
+									}
+								}
+							}
+
+							thisUsersAccounts.offset = view.offset
+							thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+							
+							for( var i = 0; i < thisUsersAccounts.rows.length; i++ ) {
+								var currency = thisUsersAccounts.rows[i].currency;
+								var exist = false;
+								for( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++ ){
+									if( currency == maxLimitBeforePinRequestPerCurrency[i].currency ){
+										exist = true;
+									}
+								}
+								if (!exist) {
+									maxLimitBeforePinRequestPerCurrency.push( { "amount": defaultMasLimitBeforePinRequest, "currency": currency } )
+								}
+							}
+
+							var userTag = {
+								"tagID" : tag.id,
+								"hashTag" : hashTag,
+								"initializationVector" : initializationVector,
+								"name" : name,
+								"pinCode" : base64_encodedString,
+								"defaultMaxLimitBeforePinRequest": defaultMasLimitBeforePinRequest,
+								"maxLimitBeforePinReqestPerCurrency": maxLimitBeforePinReqestPerCurrency
+							};
+			
+							if (tag.isWritable && tag.canMakeReadOnly) {
+								log( "tag:" + JSON.stringify( tag ) );
+			
+								var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
+									key : hashTag
+								} ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+			
+								var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
+			
+								var message = [ mime, aar ];
+			
+								nfc.write( message, function() {
+									insertTagInDB( userTag )
+									alert( "Successfully written to NFC Tag!" )
+									mutableLock = false;
+								}, function() {
+									alert( "Failed to write to NFC Tag!" )
+									mutableLock = false;
+								} );
+							}
+						} ) 
+					}
+
+				}, function() { // success callback
+					alert( "Waiting for NFC tag" );
+				}, function(error) { // error callback
+					alert( "Error adding NDEF listener " + JSON.stringify( error ) );
+				} );
+			
+		} )
+
+		setTabs()
 		
 	} )
+	
 
-	setTabs()
 }
 
 //change the type of the input to password
