@@ -731,11 +731,11 @@
                 <li class="topcoat-list__item" data-id="defaultMaxLimitBeforePinRequest">
                     <input type="number" class="topcoat-text-input" name="defaultMaxLimitBeforePinRequest" value="{{defaultMaxLimitBeforePinRequest}}" placeholder="Default Max Limit Before Pin Request" /> 
                 </li>
-                {{#maxLimitBeforePinReqestPerCurrency}}
+                {{#maxLimitBeforePinRequestPerCurrency}}
                 <li class="topcoat-list__item" data-id="{{currency}}">
-                    <input type="number" class="topcoat-text-input" name="maxLimitBeforePinReqest" value="{{amount}}" placeholder="Max Limit Before Pin Request" /> in {{currency}}
+                    <input type="number" class="topcoat-text-input" name="maxLimitBeforePinRequestPer{{currency}}" value="{{amount}}" placeholder="Max Limit Before Pin Request" /> in {{currency}}
                 </li>
-                {{/maxLimitBeforePinReqestPerCurrency}}
+                {{/maxLimitBeforePinRequestPerCurrency}}
                 <li class="topcoat-list__item" data-id="submit">
                     <input type="submit" class="topcoat-button" name="submit" value=" Write Tag " /> 
                 </li>

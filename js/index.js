@@ -1144,16 +1144,27 @@ function goEditNFC( id ) {
 							thisUsersAccounts.offset = view.offset
 							thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
 							
+							var maxLimitBeforePinRequestPerCurrency = [];
+							
 							for( var i = 0; i < thisUsersAccounts.rows.length; i++ ) {
 								var currency = thisUsersAccounts.rows[i].currency;
 								var exist = false;
-								for( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++ ){
-									if( currency == maxLimitBeforePinRequestPerCurrency[i].currency ){
+								//check if currency exists in currency list.
+								for( var j = 0; i < maxLimitBeforePinRequestPerCurrency.length; j++ ) {
+									if( currency == maxLimitBeforePinRequestPerCurrency[j].currency ) {
 										exist = true;
 									}
 								}
+								
 								if (!exist) {
-									maxLimitBeforePinRequestPerCurrency.push( { "amount": defaultMasLimitBeforePinRequest, "currency": currency } )
+									var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + currency;
+									// check if form defined an amount for this currency
+									if (doc[maxLimitBeforePinRequestPerCurrencyName]) { 
+										maxLimitBeforePinRequestPerCurrency.push( { "amount": doc[maxLimitBeforePinRequestPerCurrencyName], "currency": currency } )
+									} else {
+										// Set the default amount for the currency
+										maxLimitBeforePinRequestPerCurrency.push( { "amount": defaultMasLimitBeforePinRequest, "currency": currency } )
+									}
 								}
 							}
 
