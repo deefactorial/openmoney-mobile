@@ -1213,6 +1213,8 @@ function goEditNFC(id) {
 				thisTag = doc.tags[i];
 			}
 		}
+		
+		log( "This Tag: " + JSON.stringify( thisTag ) ) 
 
 		drawContent( config.t.edit_nfc( thisTag ) )
 
