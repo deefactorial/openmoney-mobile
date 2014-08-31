@@ -1289,13 +1289,16 @@ function goEditNFC(id) {
 					var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + currency;
 
 					var exist = false;
-					// check if currency exists in currency list.
-					for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
-						if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
-							exist = true;
-							if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
-								if (maxLimitBeforePinRequestPerCurrency[j].amount != doc[maxLimitBeforePinRequestPerCurrencyName]) {
-									maxLimitBeforePinRequestPerCurrency[j].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
+					
+					if (typeof maxLimitBeforePinRequestPerCurrency !== 'undefined') {
+						// check if currency exists in currency list.
+						for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
+							if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
+								exist = true;
+								if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
+									if (maxLimitBeforePinRequestPerCurrency[j].amount != doc[maxLimitBeforePinRequestPerCurrencyName]) {
+										maxLimitBeforePinRequestPerCurrency[j].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
+									}
 								}
 							}
 						}
