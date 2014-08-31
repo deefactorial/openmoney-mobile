@@ -1227,8 +1227,6 @@ function goEditNFC(id) {
 			if (!doc.name)
 				return alert( "You must specify a name for your Tag." );
 
-			var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
-
 			function randomString(length, chars) {
 				var result = '';
 				for ( var i = length; i > 0; --i)
@@ -1317,7 +1315,7 @@ function goEditNFC(id) {
 				}
 
 				var userTag = {
-					"tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinReqestPerCurrency
+					"tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinReqestPerCurrency
 				};
 
 				log( " userTag:" + JSON.stringify( userTag ) )
