@@ -1288,7 +1288,7 @@ function goEditNFC(id) {
 
 					var exist = false;
 					// check if currency exists in currency list.
-					for ( var j = 0; i < maxLimitBeforePinRequestPerCurrency.length; j++) {
+					for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
 						if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
 							exist = true;
 							if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
