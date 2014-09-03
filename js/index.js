@@ -1083,7 +1083,7 @@ function goNewNFC() {
             var maxLimitBeforePinRequestPerCurrency = [];
         	
             for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
-                var currency = thisUsersAccounts.rows[i].currency;
+                var currency = thisUsersAccounts.rows[i].key.currency;
                 var exist = false;
                 // check if currency exists in currency list.
                 for ( var j = 0; i < maxLimitBeforePinRequestPerCurrency.length; j++) {
