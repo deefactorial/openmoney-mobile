@@ -1290,7 +1290,7 @@ function goEditNFC(id) {
                 thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
 
                 for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
-                    var currency = thisUsersAccounts.rows[i].currency;
+                    var currency = thisUsersAccounts.rows[i].key.currency;
                     var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + currency;
 
                     var exist = false;
@@ -1325,7 +1325,7 @@ function goEditNFC(id) {
                 }
 
                 var userTag = {
-                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinReqestPerCurrency
+                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
                 };
 
                 log( " userTag:" + JSON.stringify( userTag ) )
