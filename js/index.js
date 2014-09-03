@@ -1099,6 +1099,8 @@ function goNewNFC() {
                     } )
                 }
             }
+            
+            defaultMaxLimitBeforePinRequest = "";
 
 	        var tag = { "name" : "","defaultMaxLimitBeforePinRequest": defaultMaxLimitBeforePinRequest ,"maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency };
 	
