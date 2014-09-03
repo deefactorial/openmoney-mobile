@@ -1599,10 +1599,12 @@ function doServerLogout(callBack) {
                     log( JSON.stringify( error ) )
                 }
                 log( "Sync Replication Canceled" )
-                config.db = null;
-                config.views = null;
-                setupConfig( function(error, ok) {
-                    callBack( error, result )
+                config.destroyDatabase( config.db, function (error, ok) {
+                    config.db = null;
+                    config.views = null;
+                    setupConfig( function(error, ok) {
+                        callBack( error, result )
+                    } )
                 } )
             } )
         } )
@@ -1956,7 +1958,7 @@ function setupConfig(done) {
                                     }
                                 }
                             }
-                        }, db : db, s : coax( url ), info : info, views : views, server : url, t : t
+                        }, db : db, destroyDatabase: destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
                     }
                     if (config.user && config.user.user_id) {
                         if (SERVER_LOGIN) {
@@ -1976,6 +1978,15 @@ function setupConfig(done) {
         db.get( function(err, res, body) {
             console.log( JSON.stringify( [ "before create db put", err, res, body ] ) )
             db.put( function(err, res, body) {
+                db.get( cb )
+            } )
+        } )
+    }
+    
+    function destroyDb(db, cb) {
+    	db.get( function(err, res, body) {
+            console.log( JSON.stringify( [ "before destroy db del", err, res, body ] ) )
+            db.del( function(err, res, body) {
                 db.get( cb )
             } )
         } )
