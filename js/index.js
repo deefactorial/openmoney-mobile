@@ -1053,107 +1053,108 @@ function activateTag(id) {
 function goNewNFC() {
 
     config.db.get( "users," + config.user.name, function(err, doc) {
+    	
+    	config.views( [ "accounts", {
+            descending : true
+        } ], function(err, view) {
 
-        var tag = null;
+            var thisUsersAccounts = {
+                rows : []
+            }
 
-        drawContent( config.t.edit_nfc( tag ) )
-
-        $( "#content .om-index" ).click( function() {
-            goManageNFC()
-        } )
-
-        $( "#content form" ).submit( function(e) {
-            e.preventDefault()
-            var doc = jsonform( this )
-
-            if (!doc.name)
-                return alert( "You must specify a name for your Tag." );
-
-            var mutableLock = false;
-            nfc.addNdefListener( function(nfcEvent) {
-                if (!mutableLock) {
-                    mutableLock = true;
-
-                    var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
-
-                    function randomString(length, chars) {
-                        var result = '';
-                        for ( var i = length; i > 0; --i)
-                            result += chars[Math.round( Math.random() * (chars.length - 1) )];
-                        return result;
+            for ( var i = view.rows.length - 1; i >= 0; i--) {
+                log( "row:" + JSON.stringify( view.rows[i] ) )
+                log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+                if (view.rows[i].key.steward.length) {
+                    for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
+                        log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+                        if (view.rows[i].key.steward[j] == config.user.user_id) {
+                            thisUsersAccounts.rows.push( view.rows[i] )
+                        }
                     }
+                }
+            }
 
-                    var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-                    var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+            thisUsersAccounts.offset = view.offset
+            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+            
+            var defaultMaxLimitBeforePinRequest = 100;
+            
+            var maxLimitBeforePinRequestPerCurrency = [];
+        	
+            for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
+                var currency = thisUsersAccounts.rows[i].currency;
+                var exist = false;
+                // check if currency exists in currency list.
+                for ( var j = 0; i < maxLimitBeforePinRequestPerCurrency.length; j++) {
+                    if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
+                        exist = true;
+                    }
+                }
 
-                    var pinCode = doc.pinCode,
+                if (!exist) {
+                    // Set the default amount for the currency
+                    maxLimitBeforePinRequestPerCurrency.push( {
+                        "amount" : defaultMaxLimitBeforePinRequest, "currency" : currency
+                    } )
+                    
+                }
+            }
 
-                    // for more information on mcrypt
-                    // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
-                    // note the key that should be used instead of the hashID
-                    // should be
-                    // the users private RSA key.
-                    encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
-
-                    var base64_encodedString = base64_encode( encodedString )
-
-                    var name = config.user.name;
-                    if (doc.name)
-                        name = doc.name;
-                    var defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
-
-                    config.views( [ "accounts", {
-                        descending : true
-                    } ], function(err, view) {
-
-                        var thisUsersAccounts = {
-                            rows : []
-                        }
-
-                        for ( var i = view.rows.length - 1; i >= 0; i--) {
-                            log( "row:" + JSON.stringify( view.rows[i] ) )
-                            log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
-                            if (view.rows[i].key.steward.length) {
-                                for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                                    log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
-                                    if (view.rows[i].key.steward[j] == config.user.user_id) {
-                                        thisUsersAccounts.rows.push( view.rows[i] )
-                                    }
-                                }
-                            }
-                        }
-
-                        thisUsersAccounts.offset = view.offset
-                        thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
-
-                        var maxLimitBeforePinRequestPerCurrency = [];
-
-                        for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
-                            var currency = thisUsersAccounts.rows[i].currency;
-                            var exist = false;
-                            // check if currency exists in currency list.
-                            for ( var j = 0; i < maxLimitBeforePinRequestPerCurrency.length; j++) {
-                                if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
-                                    exist = true;
-                                }
-                            }
-
-                            if (!exist) {
-                                var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + currency;
-                                // check if form defined an amount for this
-                                // currency
-                                if (doc[maxLimitBeforePinRequestPerCurrencyName]) {
-                                    maxLimitBeforePinRequestPerCurrency.push( {
-                                        "amount" : doc[maxLimitBeforePinRequestPerCurrencyName], "currency" : currency
-                                    } )
-                                } else {
-                                    // Set the default amount for the currency
-                                    maxLimitBeforePinRequestPerCurrency.push( {
-                                        "amount" : defaultMaxLimitBeforePinRequest, "currency" : currency
-                                    } )
-                                }
-                            }
-                        }
+	        var tag = { "name" : "","defaultMaxLimitBeforePinRequest": defaultMaxLimitBeforePinRequest ,"maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency };
+	
+	        drawContent( config.t.edit_nfc( tag ) )
+	
+	        $( "#content .om-index" ).click( function() {
+	            goManageNFC()
+	        } )
+	
+	        $( "#content form" ).submit( function(e) {
+	            e.preventDefault()
+	            var doc = jsonform( this )
+	
+	            if (!doc.name)
+	                return alert( "You must specify a name for your Tag." );
+	
+	            var mutableLock = false;
+	            nfc.addNdefListener( function(nfcEvent) {
+	                if (!mutableLock) {
+	                    mutableLock = true;
+	
+	                    var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+	
+	                    function randomString(length, chars) {
+	                        var result = '';
+	                        for ( var i = length; i > 0; --i)
+	                            result += chars[Math.round( Math.random() * (chars.length - 1) )];
+	                        return result;
+	                    }
+	
+	                    var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+	                    var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+	
+	                    var pinCode = doc.pinCode,
+	
+	                    // for more information on mcrypt
+	                    // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
+	                    // note the key that should be used instead of the hashID
+	                    // should be
+	                    // the users private RSA key.
+	                    encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
+	
+	                    var base64_encodedString = base64_encode( encodedString )
+	
+	                    var name = config.user.name;
+	                    if (doc.name)
+	                        name = doc.name;
+	                    defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
+	
+	                    for( var i = 0; i < maxLimitBeforePinRequestPerCurrency.length; i++) {
+	                    	var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + maxLimitBeforePinRequestPerCurrency[i].currency;
+		                    if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
+		                        maxLimitBeforePinRequestPerCurrency[i].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
+		                    }
+	                    }
 
                         var userTag = {
                             "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinReqestPerCurrency
@@ -1181,18 +1182,20 @@ function goNewNFC() {
                                 mutableLock = false;
                             } );
                         }
-                    } )
-                }
-
-            }, function() { // success callback
-                alert( "Waiting for NFC tag" );
-            }, function(error) { // error callback
-                alert( "Error adding NDEF listener " + JSON.stringify( error ) );
-            } );
-
-        } )
-
-        setTabs()
+	                    
+	                }
+	
+	            }, function() { // success callback
+	                alert( "Waiting for NFC tag" );
+	            }, function(error) { // error callback
+	                alert( "Error adding NDEF listener " + JSON.stringify( error ) );
+	            } );
+	
+	        } )
+	
+	        setTabs()
+        
+    	} )
 
     } )
 
