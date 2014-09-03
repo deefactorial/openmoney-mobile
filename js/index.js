@@ -1603,6 +1603,7 @@ function doServerLogout(callBack) {
                 }
                 log( "Sync Replication Canceled" )
                 config.destroyDatabase( config.db, function (error, ok) {
+                    log( "Database Destroyed :" , error, ok)
                     config.db = null;
                     config.views = null;
                     setupConfig( function(error, ok) {
