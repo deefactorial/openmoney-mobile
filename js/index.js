@@ -1119,6 +1119,7 @@ function goNewNFC() {
 	
 	            var mutableLock = false;
 	            nfc.addNdefListener( function(nfcEvent) {
+	            	
 	                if (!mutableLock) {
 	                    mutableLock = true;
 	
@@ -1158,7 +1159,7 @@ function goNewNFC() {
 	                    }
 
                         var userTag = {
-                            "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinReqestPerCurrency
+                            "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
                         };
 
                         log( " userTag:" + JSON.stringify( userTag ) )
