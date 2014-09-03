@@ -1358,7 +1358,15 @@ function insertTagInDB(tag) {
     log( "Insert Tag", tag )
     config.db.get( "users," + config.user.name, function(err, doc) {
         if (doc.tags) {
-            doc.tags.push( tag );
+        	var found = false;
+        	for( var i = 0; i < doc.tags.length; i++) {
+        		if( doc.tags[i].tagID == tag.tagID) {
+        			doc.tags[i] = tag;
+        			found = true;
+        		}
+        	} 
+        	if( !found ) 
+        		doc.tags.push( tag );
         } else {
             doc.tags = [ tag ];
         }
