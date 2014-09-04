@@ -16,6 +16,7 @@ var REMOTE_SERVER_LOGIN_URL = "https://cloud.openmoney.cc/login"
 var REMOTE_SERVER_LOGOUT_URL = "https://cloud.openmoney.cc/logout"
 var REMOTE_SERVER_LOST_PASSWORD_URL = "https://cloud.openmoney.cc/lostpw"
 var REMOTE_SERVER_REGISTRATION_URL = "https://cloud.openmoney.cc/registration"
+var REMOTE_SERVER_TAG_LOOKUP_URL = "https://cloud.openmoney.cc/taglookup"
 
 var SERVER_LOGIN = true
 var FACEBOOK_LOGIN = false
@@ -52,12 +53,44 @@ function onDeviceReady() {
         // assuming the first record in the message has
         // a payload that can be converted to a string.
         alert( nfc.bytesToString( ndefMessage[0].payload ) );
+        var payload = JSON.parse( nfc.bytesToString( ndefMessage[0].payload ) )
+        if( typeof payload.key !== 'undefined') {
+        	// do a lookup of the key
+        	doTagLookup( payload.key, function (error, result) {
+        		if( error ) alert( "Error: " + JSON.stringify( error ) ) 
+        		else alert( JSON.stringify( "Result:" + JSON.stringify( result ) ) )
+        	} );
+        }
     }, function() {
         // success callback
     }, function() {
         // failure callback
     } );
 };
+
+function doTagLookup( key, callBack ) {
+    if (navigator && navigator.connection) {
+        log( "connection " + navigator.connection.type )
+        if (navigator.connection.type == "none") { return callBack( {
+            reason : "No network connection"
+        } ) }
+    }
+    if (config && config.user) {
+        var url = REMOTE_SERVER_TAG_LOOKUP_URL;
+        var login = coax( url );
+        var credentials = '{ "username" : "' + config.user.name + '", "password": "' + config.user.password + '", "key": "' + key + '" }';
+        log( "http " + url + " " + credentials )
+        login.post( JSON.parse( credentials ), function(error, result) {
+            if (error) { return callBack( error ) }
+            log( "Key Lookup Result:" + JSON.stringify( result ) )
+            callBack( false, result )
+        } )
+    } else {
+        return callBack( {
+            reason : "Configuration User is not Set!"
+        } )
+    }
+}
 
 // function placeholder replaced by whatever should be running when the
 // change comes in. Used to trigger display updates.
