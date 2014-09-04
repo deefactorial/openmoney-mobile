@@ -16,7 +16,7 @@ var REMOTE_SERVER_LOGIN_URL = "https://cloud.openmoney.cc/login"
 var REMOTE_SERVER_LOGOUT_URL = "https://cloud.openmoney.cc/logout"
 var REMOTE_SERVER_LOST_PASSWORD_URL = "https://cloud.openmoney.cc/lostpw"
 var REMOTE_SERVER_REGISTRATION_URL = "https://cloud.openmoney.cc/registration"
-var REMOTE_SERVER_TAG_LOOKUP_URL = "https://cloud.openmoney.cc/taglookup"
+var REMOTE_SERVER_TAG_LOOKUP_URL = "https://cloud.openmoney.cc/lookupTag"
 
 var SERVER_LOGIN = true
 var FACEBOOK_LOGIN = false
