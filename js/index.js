@@ -1361,7 +1361,7 @@ function insertTagInDB( tag) {
         if (doc.tags) {
         	var found = false;
         	for( var i = 0; i < doc.tags.length; i++) {
-        		if( doc.tags[i].tagID == tag.tagID) {
+        		if( ( doc.tags[i].tagID ).equals( tag.tagID ) ) {
         			found = true;
         			doc.tags[i] = tag;
         		}
