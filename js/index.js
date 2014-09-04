@@ -1354,15 +1354,15 @@ function changeToPassword() {
  * Insert Tag In DB
  */
 
-function insertTagInDB(tag) {
-    log( "Insert Tag", tag )
+function insertTagInDB( tag) {
+    log( "Insert Tag" + JSON.stringify( tag ) )
     config.db.get( "users," + config.user.name, function(err, doc) {
         if (doc.tags) {
         	var found = false;
         	for( var i = 0; i < doc.tags.length; i++) {
         		if( doc.tags[i].tagID == tag.tagID) {
-        			doc.tags[i] = tag;
         			found = true;
+        			doc.tags[i] = tag;
         		}
         	} 
         	if( !found ) 
