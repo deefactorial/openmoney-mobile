@@ -1366,9 +1366,10 @@ function insertTagInDB( tag) {
         			doc.tags[i] = tag;
         		}
         	} 
-        	if( !found ) 
-        		log( "found:" + found )
-        		//doc.tags.push( tag );
+        	if( !found )        		
+        		doc.tags.push( tag );
+        	else 
+        		doc.tags = [ tag ];
         } else {
             doc.tags = [ tag ];
         }
