@@ -1368,8 +1368,6 @@ function insertTagInDB( tag) {
         	} 
         	if( !found )        		
         		doc.tags.push( tag );
-        	else 
-        		doc.tags = [ tag ];
         } else {
             doc.tags = [ tag ];
         }
