@@ -1355,8 +1355,9 @@ function changeToPassword() {
  */
 
 function insertTagInDB( tag) {
-    log( "Insert Tag" + JSON.stringify( tag ) )
+    log( "Insert Tag:" + JSON.stringify( tag ) )
     config.db.get( "users," + config.user.name, function(err, doc) {
+    	log( "user doc:" + JSON.stringify( doc ) )
         if (doc.tags) {
         	var found = false;
         	for( var i = 0; i < doc.tags.length; i++) {
@@ -1366,7 +1367,8 @@ function insertTagInDB( tag) {
         		}
         	} 
         	if( !found ) 
-        		doc.tags.push( tag );
+        		log( "found:" + found )
+        		//doc.tags.push( tag );
         } else {
             doc.tags = [ tag ];
         }
