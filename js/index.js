@@ -1631,6 +1631,7 @@ function updateTo( from ) {
 		if( fromcurrency != tocurrency) {
 			$( this ).attr('disabled','disabled')
 			if( $( this ).attr('selected') ) {
+				$( this ).removeAttr('selected') 
 				$("form select[name='to'] > option:enabled").one( function () {
 					$( this ).attr('selected','selected');
 				} )
