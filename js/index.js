@@ -1528,11 +1528,8 @@ function goTagPayment( tradingNames ) {
         }
 
         for ( var i = view.rows.length - 1; i >= 0; i--) {
-            log( "row:" + JSON.stringify( view.rows[i] ) )
-            log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
             if (view.rows[i].key.steward.length) {
                 for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                    log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
                     if (view.rows[i].key.steward[j] == config.user.user_id) {
                         thisUsersAccounts.rows.push( view.rows[i] )
                     }
@@ -1547,6 +1544,7 @@ function goTagPayment( tradingNames ) {
         
         thisUsersAccounts.rows.forEach( function ( row ) {
         	tradingNames.forEach( function( tradingname ) {
+        		log( "row" + JSON.stringify( row ) + ", tradingname: " + JSON.stringify( tradingname ) ) 
         		if (row.key.currency == tradingname.value.currency){
         			tradingPairs.push( { "from": row.id, "to": tradingname.id, "currency": tradingname.value.currency , "pairname": "From: " + row.key.trading_name + " To: " + tradingname.value.name + " In: " + trading.value.currency } )
         		}
