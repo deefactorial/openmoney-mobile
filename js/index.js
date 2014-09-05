@@ -1626,6 +1626,17 @@ function goTagPayment( tradingNames ) {
 }
 
 /*
+ * 
+ */
+
+function updateTo( from ) {
+	alert( from )
+	$("form select[name='to'] > option").each(function() {
+	    alert(this.text + ' ' + this.value);
+	});
+}
+
+/*
  * Login and setup existing data for user account
  */
 

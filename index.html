@@ -845,9 +845,16 @@
         <form>
             <ul class="topcoat-list__container">
                 <li class="topcoat-list__item" data-id="from">
-                    <select name="pair" class="om-select-dark" >
+                    <select name="from" class="om-select-dark" onchange="updateTo(this.value)">
                         {{#rows}}
-                            <option value="{{from}}:{{to}}:{{currency}}">{{pairname}}</option>
+                            <option value="{{from}}">{{from}} {{currency}}</option>
+                        {{/rows}}
+                    </select>
+                </li>
+                <li class="topcoat-list__item" data-id="from">
+                    <select name="to" class="om-select-dark" >
+                        {{#rows}}
+                            <option value="{{to}}">{{to}} {{currency}}</option>
                         {{/rows}}
                     </select>
                 </li>
@@ -864,6 +871,7 @@
         </form>
     </div>
 </div>
+
 </script>
     </body>
 </html>
