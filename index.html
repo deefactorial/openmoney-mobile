@@ -847,14 +847,14 @@
                 <li class="topcoat-list__item" data-id="from">
                     <select name="from" class="om-select-dark" onchange="updateTo(this.value)">
                         {{#rows}}
-                            <option value="{{from}}">{{from}} {{currency}}</option>
+                            <option value="{{from}}">{{name}}</option>
                         {{/rows}}
                     </select>
                 </li>
                 <li class="topcoat-list__item" data-id="from">
                     <select name="to" class="om-select-dark" >
                         {{#rows}}
-                            <option value="{{to}}">{{to}} {{currency}}</option>
+                            <option value="{{to}}">{{name}}</option>
                         {{/rows}}
                     </select>
                 </li>

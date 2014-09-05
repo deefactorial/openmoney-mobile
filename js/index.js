@@ -1540,18 +1540,16 @@ function goTagPayment( tradingNames ) {
         thisUsersAccounts.offset = view.offset
         thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
         
-        var tradingPairs = [];
+        var fromAccounts = []
+        var toAccounts = [];
         
         thisUsersAccounts.rows.forEach( function ( row ) {
-        	tradingNames.forEach( function( tradingname ) {
-        		//log( "row" + JSON.stringify( row ) + ", tradingname: " + JSON.stringify( tradingname ) ) 
-        		if (row.key.currency == tradingname.value.currency){
-        			tradingPairs.push( { "from": row.id, "to": tradingname.value.name, "currency": tradingname.value.currency , "pairname": "From: " + row.key.trading_name + " To: " + tradingname.value.name + " In: " + tradingname.value.currency } )
-        		}
-        	} )
+        	fromAccounts.push( { "from": row.id, "name": row.key.trading_name + " " + row.key.currency } )
         } )
         
-        
+        tradingNames.forEach( function( tradingname ) {
+   			tradingPairs.push( { "to": tradingname.id, "name": tradingname.value.name + " In: " + tradingname.value.currency } )
+    	} )
 
         drawContent( config.t.tagpayment( { "rows": tradingPairs } ) )
 
@@ -1570,11 +1568,6 @@ function goTagPayment( tradingNames ) {
             doc.amount = parseInt( doc.amount )
             doc.timestamp = new Date()
             doc.timestamp = doc.timestamp.toJSON()
-            doc.from = doc.pair.substring(0,doc.pair.indexOf(":"));
-            remainder = doc.pair.substring(doc.pair.indexOf(":")+1,doc.pair.length);
-            doc.to = remainder.substring(0,remainder.indexOf(":"));
-            remainder = remainder.substring(remainder.indexOf(":")+1,remainder.length);
-            doc.currency = remainder.substring(0,remainder.length);
             delete doc.pair;
             log (" form doc: " + JSON.stringify( doc ) ) 
             config.db.get( doc.from, function(error, from) {
@@ -1587,7 +1580,7 @@ function goTagPayment( tradingNames ) {
                 }
                 doc.from = from.name
                 doc.currency = from.currency
-                config.db.get( "trading_name," + doc.to + "," + doc.currency, function(error, to) {
+                config.db.get( doc.to, function(error, to) {
                     if (error) {
                         if (error.status == 404) {
                             return alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!" )
@@ -1630,9 +1623,14 @@ function goTagPayment( tradingNames ) {
  */
 
 function updateTo( from ) {
-	alert( from )
+	log( from )
+	var fromcurrency = from.substring(from.lastIndexOf(","), from.length)
 	$("form select[name='to'] > option").each(function() {
-	    alert(this.text + ' ' + this.value);
+		log(this.text + ' ' + this.value);
+		var tocurrency = this.value.substring(this.value.lastIndexOf(","), this.value.length)
+		if( fromcurrency != tocurrency) {
+			this.disabled = disabled;
+		}
 	});
 }
 
