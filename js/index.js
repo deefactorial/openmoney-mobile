@@ -1625,15 +1625,20 @@ function goTagPayment( tradingNames ) {
 function updateTo( from ) {
 	log( from )
 	var fromcurrency = from.substring(from.lastIndexOf(","), from.length)
-	$("form select[name='to'] > option").each(function() {
+	$("form select[name='to'] > option").each( function() {
 		log(this.text + ' ' + this.value);
 		var tocurrency = this.value.substring(this.value.lastIndexOf(","), this.value.length)
 		if( fromcurrency != tocurrency) {
 			$( this ).attr('disabled','disabled')
+			if( $( this ).attr('selected') ) {
+				$("form select[name='to'] > option:enabled").one( function () {
+					$( this ).attr('selected','selected');
+				} )
+			}
 		} else {
 			$( this ).removeAttr('disabled')
 		}
-	});
+	} ) ;
 }
 
 /*
