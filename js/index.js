@@ -1546,7 +1546,7 @@ function goTagPayment( tradingNames ) {
         	tradingNames.forEach( function( tradingname ) {
         		//log( "row" + JSON.stringify( row ) + ", tradingname: " + JSON.stringify( tradingname ) ) 
         		if (row.key.currency == tradingname.value.currency){
-        			tradingPairs.push( { "from": row.id, "to": tradingname.id, "currency": tradingname.value.currency , "pairname": "From: " + row.key.trading_name + " To: " + tradingname.value.name + " In: " + tradingname.value.currency } )
+        			tradingPairs.push( { "from": row.key.trading_name, "to": tradingname.value.name, "currency": tradingname.value.currency , "pairname": "From: " + row.key.trading_name + " To: " + tradingname.value.name + " In: " + tradingname.value.currency } )
         		}
         	} )
         } )
