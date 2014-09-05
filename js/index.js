@@ -1515,6 +1515,7 @@ function goPayment() {
  */
 
 function goTagPayment( tradingNames ) {
+	log( "Go Tag Payment Page: " + JSON.stringify( tradingNames ) )
     window.dbChanged = function() {
     }
     config.views( [ "accounts", {
