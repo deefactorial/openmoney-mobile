@@ -807,5 +807,63 @@
 	</div>
 </div>
 </script>
+<script type="text/mustache" id="tagpayment-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item left half">
+           <h1 class="topcoat-navigation-bar__title">Make Payment</h1>
+        </div>
+        <div class="topcoat-navigation-bar__item right quarter">
+            <button class="openmoney-login topcoat-icon-button openmoney-small">
+                <span class="openmoney-login-icon topcoat-icon"></span>
+            </button>
+            <button class="openmoney-logout topcoat-icon-button openmoney-small">
+                <span class="openmoney-logout-icon topcoat-icon"></span>
+            </button>
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar" checked="checked">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable">
+    <div class="topcoat-list">
+        <form>
+            <ul class="topcoat-list__container">
+                <li class="topcoat-list__item" data-id="from">
+                    <select name="pair" class="om-select-dark" >
+                        {{#rows}}
+                            <option value="{{from}}:{{to}}:{{currency}}">{{pairname}}</option>
+                        {{/rows}}
+                    </select>
+                </li>
+                <li class="topcoat-list__item" data-id="amount">
+                    <input type="number" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="description">
+                    <textarea class="topcoat-textarea" name="description" rows="2" style="width:100%;font-size: 1rem;" placeholder="Description"></textarea> 
+                </li>
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" name="create" value=" Make Payment " /> 
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+</script>
     </body>
 </html>

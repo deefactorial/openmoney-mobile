@@ -58,7 +58,10 @@ function onDeviceReady() {
         	// do a lookup of the key
         	doTagLookup( payload.key, function (error, result) {
         		if( error ) alert( "Error: " + JSON.stringify( error ) ) 
-        		else alert( JSON.stringify( "Result:" + JSON.stringify( result ) ) )
+        		else {
+        			log( JSON.stringify( "Result:" + JSON.stringify( result ) ) )
+        			
+        		}
         	} );
         }
     }, function() {
@@ -1458,6 +1461,122 @@ function goPayment() {
             doc.amount = parseInt( doc.amount )
             doc.timestamp = new Date()
             doc.timestamp = doc.timestamp.toJSON()
+            config.db.get( doc.from, function(error, from) {
+                if (error) {
+                    if (error.status == 404) {
+                        return alert( "Your trading account doesn't exist!" )
+                    } else {
+                        return alert( JSON.stringify( error ) )
+                    }
+                }
+                doc.from = from.name
+                doc.currency = from.currency
+                config.db.get( "trading_name," + doc.to + "," + doc.currency, function(error, to) {
+                    if (error) {
+                        if (error.status == 404) {
+                            return alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!" )
+                        } else {
+                            return alert( JSON.stringify( error ) )
+                        }
+                    }
+                    doc.to = to.name
+                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                        if (error) {
+                            log( "Error: " + JSON.stringify( error ) )
+                            if (error.status == 404) {
+                                // doc does not exists
+                                log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                    if (error)
+                                        return alert( JSON.stringify( error ) )
+                                    $( "#content form input[name='to']" ).val( "" ) // Clear
+                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
+                                    $( "#content form textarea" ).val( "" ) // Clear
+                                    alert( "You successfully made a payment !" )
+                                    goList( "trading_name," + doc.from + "," + doc.currency )
+                                } )
+                            } else {
+                                alert( "Error: ".JSON.stringify( error ) )
+                            }
+                        } else {
+                            // doc exsits already
+                            alert( "Payment already exists!" )
+                        }
+                    } )
+                } )
+            } )
+        } )
+    } )
+}
+
+
+/*
+ * Payment Page
+ */
+
+function goTagPayment( tradingNames ) {
+    window.dbChanged = function() {
+    }
+    config.views( [ "accounts", {
+        include_docs : true
+    } ], function(error, view) {
+        if (error) { return alert( JSON.stringify( error ) ) }
+
+        var thisUsersAccounts = {
+            rows : []
+        }
+
+        for ( var i = view.rows.length - 1; i >= 0; i--) {
+            log( "row:" + JSON.stringify( view.rows[i] ) )
+            log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+            if (view.rows[i].key.steward.length) {
+                for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
+                    log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+                    if (view.rows[i].key.steward[j] == config.user.user_id) {
+                        thisUsersAccounts.rows.push( view.rows[i] )
+                    }
+                }
+            }
+        }
+
+        thisUsersAccounts.offset = view.offset
+        thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+        
+        var tradingPairs = [];
+        
+        thisUsersAccounts.rows.forEach( function ( row ) {
+        	tradingNames.forEach( function( tradingname ) {
+        		if (row.key.currency == tradingname.value.currency){
+        			tradingPairs.push( { "from": row.id, "to": tradingname.id, "currency": tradingname.value.currency , "pairname": "From: " + row.key.trading_name + " To: " + tradingname.value.name + " In: " + trading.value.currency } )
+        		}
+        	} )
+        } )
+        
+        
+
+        drawContent( config.t.tagpayment( { "rows": tradingPairs } ) )
+
+        $( "#content .om-index" ).click( function() {
+            goIndex()
+        } )
+
+        setLoginLogoutButton();
+
+        setTabs()
+
+        $( "#content form" ).submit( function(e) {
+            e.preventDefault()
+            var doc = jsonform( this )
+            doc.type = "trading_name_journal"
+            doc.amount = parseInt( doc.amount )
+            doc.timestamp = new Date()
+            doc.timestamp = doc.timestamp.toJSON()
+            doc.from = doc.pair.substring(0,doc.pair.indexOf(":"));
+            remainder = doc.pair.substring(doc.pair.indexOf(":")+1,doc.pair.length);
+            doc.to = remainder.substring(0,remainder.indexOf(":"));
+            remainder = remainder.substring(remainder.indexOf(":")+1,remainder.length);
+            doc.currency = remainder.substring(0,remainder.length);
+            delete doc.pair;
             config.db.get( doc.from, function(error, from) {
                 if (error) {
                     if (error.status == 404) {
