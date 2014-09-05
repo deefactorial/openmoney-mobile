@@ -1546,7 +1546,7 @@ function goTagPayment( tradingNames ) {
         	tradingNames.forEach( function( tradingname ) {
         		//log( "row" + JSON.stringify( row ) + ", tradingname: " + JSON.stringify( tradingname ) ) 
         		if (row.key.currency == tradingname.value.currency){
-        			tradingPairs.push( { "from": row.key.trading_name, "to": tradingname.value.name, "currency": tradingname.value.currency , "pairname": "From: " + row.key.trading_name + " To: " + tradingname.value.name + " In: " + tradingname.value.currency } )
+        			tradingPairs.push( { "from": row.id, "to": tradingname.value.name, "currency": tradingname.value.currency , "pairname": "From: " + row.key.trading_name + " To: " + tradingname.value.name + " In: " + tradingname.value.currency } )
         		}
         	} )
         } )
@@ -1576,6 +1576,7 @@ function goTagPayment( tradingNames ) {
             remainder = remainder.substring(remainder.indexOf(":")+1,remainder.length);
             doc.currency = remainder.substring(0,remainder.length);
             delete doc.pair;
+            log (" form doc: " + JSON.stringify( doc ) ) 
             config.db.get( doc.from, function(error, from) {
                 if (error) {
                     if (error.status == 404) {
