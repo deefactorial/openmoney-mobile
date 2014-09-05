@@ -1548,10 +1548,10 @@ function goTagPayment( tradingNames ) {
         } )
         
         tradingNames.forEach( function( tradingname ) {
-   			tradingPairs.push( { "to": tradingname.id, "name": tradingname.value.name + " In: " + tradingname.value.currency } )
+        	toAccounts.push( { "to": tradingname.id, "name": tradingname.value.name + " In: " + tradingname.value.currency } )
     	} )
 
-        drawContent( config.t.tagpayment( { "rows": tradingPairs } ) )
+        drawContent( config.t.tagpayment( { "fromAccounts": fromAccounts, "toAccounts": toAccounts } ) )
 
         $( "#content .om-index" ).click( function() {
             goIndex()

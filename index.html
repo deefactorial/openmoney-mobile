@@ -846,16 +846,16 @@
             <ul class="topcoat-list__container">
                 <li class="topcoat-list__item" data-id="from">
                     <select name="from" class="om-select-dark" onchange="updateTo(this.value)">
-                        {{#rows}}
+                        {{#fromAccounts}}
                             <option value="{{from}}">{{name}}</option>
-                        {{/rows}}
+                        {{/fromAccounts}}
                     </select>
                 </li>
                 <li class="topcoat-list__item" data-id="from">
                     <select name="to" class="om-select-dark" >
-                        {{#rows}}
+                        {{#toAccounts}}
                             <option value="{{to}}">{{name}}</option>
-                        {{/rows}}
+                        {{/toAccounts}}
                     </select>
                 </li>
                 <li class="topcoat-list__item" data-id="amount">
