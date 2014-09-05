@@ -1629,7 +1629,9 @@ function updateTo( from ) {
 		log(this.text + ' ' + this.value);
 		var tocurrency = this.value.substring(this.value.lastIndexOf(","), this.value.length)
 		if( fromcurrency != tocurrency) {
-			this.disabled = disabled;
+			this.attr('disabled','disabled')
+		} else {
+			this.removeAttr('disabled')
 		}
 	});
 }
