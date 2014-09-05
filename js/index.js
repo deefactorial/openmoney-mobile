@@ -52,7 +52,7 @@ function onDeviceReady() {
 
         // assuming the first record in the message has
         // a payload that can be converted to a string.
-        alert( nfc.bytesToString( ndefMessage[0].payload ) );
+        log( nfc.bytesToString( ndefMessage[0].payload ) );
         var payload = JSON.parse( nfc.bytesToString( ndefMessage[0].payload ) )
         if( typeof payload.key !== 'undefined') {
         	// do a lookup of the key
@@ -1623,21 +1623,21 @@ function goTagPayment( tradingNames ) {
  */
 
 function updateTo( from ) {
-	log( from )
+	log( "from account: " + from )
 	var fromcurrency = from.substring(from.lastIndexOf(","), from.length)
 	$("form select[name='to'] > option").each( function() {
-		log(this.text + ' ' + this.value);
+		log( "to option: " + this.value);
 		var tocurrency = this.value.substring(this.value.lastIndexOf(","), this.value.length)
 		if( fromcurrency != tocurrency) {
-			$( this ).attr('disabled','disabled')
-			if( $( this ).attr('selected') ) {
-				$( this ).removeAttr('selected') 
+			$( this ).prop('disabled',true)
+			if( $( this ).prop('selected')  ) {
+				$( this ).removeProp('selected') 
 				$("form select[name='to'] > option:enabled").one( function () {
-					$( this ).attr('selected','selected');
+					$( this ).prop('selected',true);
 				} )
 			}
 		} else {
-			$( this ).removeAttr('disabled')
+			$( this ).removeProp('disabled')
 		}
 	} ) ;
 }
