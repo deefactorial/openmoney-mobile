@@ -1631,13 +1631,13 @@ function updateTo( from ) {
 		if( fromcurrency != tocurrency) {
 			$( this ).prop('disabled',true)
 			if( $( this ).prop('selected')  ) {
-				$( this ).removeProp('selected') 
+				$( this ).prop('selected',false) 
 				$("form select[name='to'] > option:enabled").one( function () {
 					$( this ).prop('selected',true);
 				} )
 			}
 		} else {
-			$( this ).removeProp('disabled')
+			$( this ).prop('disabled',false)
 		}
 	} ) ;
 }
