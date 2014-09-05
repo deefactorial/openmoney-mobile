@@ -60,7 +60,7 @@ function onDeviceReady() {
         		if( error ) alert( "Error: " + JSON.stringify( error ) ) 
         		else {
         			log( JSON.stringify( "Result:" + JSON.stringify( result ) ) )
-        			
+        			goTagPayment( result )
         		}
         	} );
         }
