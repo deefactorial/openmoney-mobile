@@ -1548,7 +1548,7 @@ function goTagPayment( tradingNames ) {
         } )
         
         tradingNames.forEach( function( tradingname ) {
-        	toAccounts.push( { "to": tradingname.id, "name": tradingname.value.name + " In: " + tradingname.value.currency } )
+        	toAccounts.push( { "to": tradingname.id, "name": tradingname.value.name + " " + tradingname.value.currency } )
     	} )
 
         drawContent( config.t.tagpayment( { "fromAccounts": fromAccounts, "toAccounts": toAccounts } ) )
@@ -1629,9 +1629,9 @@ function updateTo( from ) {
 		log(this.text + ' ' + this.value);
 		var tocurrency = this.value.substring(this.value.lastIndexOf(","), this.value.length)
 		if( fromcurrency != tocurrency) {
-			this.attr('disabled','disabled')
+			$( this ).attr('disabled','disabled')
 		} else {
-			this.removeAttr('disabled')
+			$( this ).removeAttr('disabled')
 		}
 	});
 }
