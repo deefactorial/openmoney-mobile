@@ -852,7 +852,7 @@
                     </select>
                 </li>
                 <li class="topcoat-list__item" data-id="from">
-                    <select name="to" class="om-select-dark" >
+                    <select name="to" class="om-select-dark" onfocus="updateTo()">
                         {{#toAccounts}}
                             <option value="{{to}}">{{name}}</option>
                         {{/toAccounts}}

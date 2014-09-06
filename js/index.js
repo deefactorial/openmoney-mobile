@@ -1552,8 +1552,6 @@ function goTagPayment( tradingNames ) {
     	} )
 
         drawContent( config.t.tagpayment( { "fromAccounts": fromAccounts, "toAccounts": toAccounts } ) )
-        
-        updateTo();
 
         $( "#content .om-index" ).click( function() {
             goIndex()
