@@ -1623,7 +1623,7 @@ function goTagPayment( tradingNames ) {
  */
 
 function updateTo() {
-	var from = $('form select[name="from"] option:selected').val();
+	var from = $("form select[name='from'] option:selected").val();
 	log( "from account: " + from )
 	var fromcurrency = from.substring(from.lastIndexOf(","), from.length)
 	$("form select[name='to'] > option").each( function() {
