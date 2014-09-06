@@ -1739,7 +1739,7 @@ function goMerchantPayment() {
                 doc.currency = to.currency
                 
                
-                nfc.removeNdefListener( window.nfcListner, function () {}, function () {});
+                var oldNfcListner = window.nfcLisner;
                 
                 window.nfcListner = function(nfcEvent) {
                     var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
@@ -1796,6 +1796,8 @@ function goMerchantPayment() {
 				                                    $( "#content form input[name='to']" ).val( "" ) // Clear
 				                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
 				                                    $( "#content form textarea" ).val( "" ) // Clear
+				                                    
+				                                    window.nfcLisner = oldNfcListner;
 				                                    alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" )
 				                                    goList( "trading_name," + doc.to + "," + doc.currency )
 				                                } )
@@ -1813,19 +1815,7 @@ function goMerchantPayment() {
                     }
                 };
                     
-                    
-                    
-                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner                	
-            	, function() {
-                    // success callback
-                	alert( "Pass terminal to the customer or scan tag." );
-                }, function() {
-                    // failure callback
-                	alert( "Pass terminal to the customer." );
-                } );
-                
-                
-                
+                alert( "Pass terminal to the customer or scan tag." );
                 
                 drawContent( config.t.customer_payment( { "amount": doc.amount, "currency": doc.currency } ) )
                 
@@ -1875,6 +1865,7 @@ function goMerchantPayment() {
 		                                    $( "#content form input[name='to']" ).val( "" ) // Clear
 		                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
 		                                    $( "#content form textarea" ).val( "" ) // Clear
+		                                    window.nfcLisnter = oldNfcListner;
 		                                    alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" )
 		                                    goList( "trading_name," + doc.to + "," + doc.currency )
 		                                } )
