@@ -17,7 +17,8 @@ var REMOTE_SERVER_LOGOUT_URL = "https://cloud.openmoney.cc/logout"
 var REMOTE_SERVER_LOST_PASSWORD_URL = "https://cloud.openmoney.cc/lostpw"
 var REMOTE_SERVER_REGISTRATION_URL = "https://cloud.openmoney.cc/registration"
 var REMOTE_SERVER_TAG_LOOKUP_URL = "https://cloud.openmoney.cc/lookupTag"
-
+var REMOTE_CUSTOMER_TRADINGNAME_LOOKUP_URL = "https://cloud.openmoney.cc/customerLookup"
+	
 var SERVER_LOGIN = true
 var FACEBOOK_LOGIN = false
 
@@ -1740,45 +1741,89 @@ function goMerchantPayment() {
                 $( "#content form" ).submit( function(e) {
 		            e.preventDefault()
 		            var customer = jsonform( this )
-                
-	                config.db.get( "trading_name," + customer.from + "," + doc.currency, function(error, from) {
-	                    if (error) {
-	                        if (error.status == 404) {
-	                            return alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!" )
-	                        } else {
-	                            return alert( JSON.stringify( error ) )
-	                        }
-	                    }
-	                    doc.from = from.name
-	                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-	                        if (error) {
-	                            log( "Error: " + JSON.stringify( error ) )
-	                            if (error.status == 404) {
-	                                // doc does not exists
-	                                log( "insert new trading name journal" + JSON.stringify( doc ) )
-	                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-	                                    if (error)
-	                                        return alert( JSON.stringify( error ) )
-	                                    $( "#content form input[name='to']" ).val( "" ) // Clear
-	                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
-	                                    $( "#content form textarea" ).val( "" ) // Clear
-	                                    alert( "You successfully made a payment !" )
-	                                    goList( "trading_name," + doc.from + "," + doc.currency )
-	                                } )
-	                            } else {
-	                                alert( "Error: ".JSON.stringify( error ) )
-	                            }
-	                        } else {
-	                            // doc exsits already
-	                            alert( "Payment already exists!" )
-	                        }
-	                    } )
-	                } )
+		            
+		            doc.description = customer.description;
+		            
+		            var credentials = '{ "username" : "' + customer.email + '", "password" : "' + customer.password + '" }';
+		            doCustomerTradingNameLookup( credentials, function ( error, tradingnames ) {
+		            	if (error) return alert( JSON.stringify( error ) )
+		            	
+		            	//select a trading name in the same currency.
+		            	// TODO: have default currency accounts
+		            	var once = 1;
+		            	tradingnames.forEach( function( tradingname ) {
+		            		if (once == 1 && tradingname.currency == doc.currency) {
+		            			customer.from = tradingname.name;
+		            			once = 0;
+		            		}
+		            	} )
+		            	
+		            	config.db.get( "trading_name," + customer.from + "," + doc.currency, function(error, from) {
+		                    if (error) {
+		                        if (error.status == 404) {
+		                            return alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!" )
+		                        } else {
+		                            return alert( JSON.stringify( error ) )
+		                        }
+		                    }
+		                    doc.from = from.name
+		                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+		                        if (error) {
+		                            log( "Error: " + JSON.stringify( error ) )
+		                            if (error.status == 404) {
+		                                // doc does not exists
+		                                log( "insert new trading name journal" + JSON.stringify( doc ) )
+		                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+		                                    if (error)
+		                                        return alert( JSON.stringify( error ) )
+		                                    $( "#content form input[name='to']" ).val( "" ) // Clear
+		                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
+		                                    $( "#content form textarea" ).val( "" ) // Clear
+		                                    alert( "You successfully made a payment !" )
+		                                    goList( "trading_name," + doc.from + "," + doc.currency )
+		                                } )
+		                            } else {
+		                                alert( "Error: ".JSON.stringify( error ) )
+		                            }
+		                        } else {
+		                            // doc exsits already
+		                            alert( "Payment already exists!" )
+		                        }
+		                    } )
+		                } )
+		            } )
 	            } )
             } )
         } )
     } )
 }
+
+function doCustomerTradingNameLookup(credentials, callBack) {
+    log( "Do Customer Trading Name Lookup" );
+    // check for internet connection
+    if (navigator && navigator.connection) {
+        log( "connection " + navigator.connection.type )
+        if (navigator.connection.type == "none") { return callBack( {
+            reason : "No network connection"
+        } ) }
+    }
+    if (config && config.user) {
+        var url = REMOTE_CUSTOMER_TRADINGNAME_LOOKUP_URL;
+        var login = coax( url );
+        
+        log( "http " + url + " " + credentials )
+        login.post( JSON.parse( credentials ), function(error, result) {
+            if (error) { return callBack( error ) }
+            log( "Server Login Result:" + JSON.stringify( result ) )
+            callBack( false, result )
+        } )
+    } else {
+        return callBack( {
+            reason : "Configuration User is not Set!"
+        } )
+    }
+}
+
 
 /*
  * Login and setup existing data for user account
