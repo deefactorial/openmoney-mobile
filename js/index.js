@@ -1631,7 +1631,7 @@ function updateTo( from ) {
 		if( fromcurrency != tocurrency) {
 			$( this ).prop('disabled',true)
 			if( $( this ).prop('selected')  ) {
-				$( this ).prop('selected',false) 
+				$( this ).removeAttr('selected') 
 			}
 		} else {
 			$( this ).removeAttr('disabled')
