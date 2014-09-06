@@ -43,10 +43,10 @@ function onDeviceReady() {
         } )
     } )
 
-    window.nfc();
+    window.nfcListner();
 };
 
-window.nfc = function () {
+window.nfcListner = function () {
 	nfc.addMimeTypeListener( "application/com.openmoney.mobile", function(nfcEvent) {
         var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
 
@@ -1737,10 +1737,7 @@ function goMerchantPayment() {
                 doc.to = to.name
                 doc.currency = to.currency
                 
-               
-                
-                
-                window.nfc = function () {
+                window.nfcListner = function () {
                 	nfc.addMimeTypeListener( "application/com.openmoney.mobile", function(nfcEvent) {
                         var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
 
@@ -1818,9 +1815,9 @@ function goMerchantPayment() {
                         // failure callback
                     	alert( "Pass terminal to the customer." );
                     } );
-                }
+                };
                 
-                window.nfc()
+                window.nfcListner()
                 
                 drawContent( config.t.customer_payment( { "amount": doc.amount, "currency": doc.currency } ) )
                 
