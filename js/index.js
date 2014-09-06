@@ -1784,8 +1784,8 @@ function goMerchantPayment() {
 		                                    $( "#content form input[name='to']" ).val( "" ) // Clear
 		                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
 		                                    $( "#content form textarea" ).val( "" ) // Clear
-		                                    alert( "Customer successfully made a payment !" )
-		                                    goList( "trading_name," + doc.from + "," + doc.currency )
+		                                    alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" )
+		                                    goList( "trading_name," + doc.to + "," + doc.currency )
 		                                } )
 		                            } else {
 		                                alert( "Error: ".JSON.stringify( error ) )
