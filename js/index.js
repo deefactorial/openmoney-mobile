@@ -1553,7 +1553,7 @@ function goTagPayment( tradingNames ) {
 
         drawContent( config.t.tagpayment( { "fromAccounts": fromAccounts, "toAccounts": toAccounts } ) )
         
-        updateTo($('form select[name="to"] option:selected').val());
+        updateTo($('form select[name="from"] option:selected').val());
 
         $( "#content .om-index" ).click( function() {
             goIndex()
