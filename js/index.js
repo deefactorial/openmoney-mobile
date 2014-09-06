@@ -1753,8 +1753,8 @@ function goMerchantPayment() {
 		            	// TODO: have default currency accounts
 		            	var once = 1;
 		            	tradingnames.forEach( function( tradingname ) {
-		            		if (once == 1 && tradingname.currency == doc.currency) {
-		            			customer.from = tradingname.name;
+		            		if (once == 1 && tradingname.value.currency == doc.currency) {
+		            			customer.from = tradingname.id;
 		            			once = 0;
 		            		}
 		            	} )
