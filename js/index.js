@@ -1748,6 +1748,7 @@ function goMerchantPayment() {
 		            doCustomerTradingNameLookup( credentials, function ( error, tradingnames ) {
 		            	if (error) return alert( JSON.stringify( error ) )
 		            	
+		            	log( "Trading names: " + JSON.strigify( tradingnames ) )
 		            	//select a trading name in the same currency.
 		            	// TODO: have default currency accounts
 		            	var once = 1;
