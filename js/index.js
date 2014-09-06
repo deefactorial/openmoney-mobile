@@ -1758,10 +1758,14 @@ function goMerchantPayment() {
 		            		}
 		            	} )
 		            	
-		            	config.db.get( "trading_name," + customer.from + "," + doc.currency, function(error, from) {
+		            	if (!customer.from) {
+		            		return alert( "No trading name found for that currency." ) 
+		            	}
+		            	
+		            	config.db.get(  customer.from , function(error, from) {
 		                    if (error) {
 		                        if (error.status == 404) {
-		                            return alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!" )
+		                            return alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" )
 		                        } else {
 		                            return alert( JSON.stringify( error ) )
 		                        }
@@ -1779,7 +1783,7 @@ function goMerchantPayment() {
 		                                    $( "#content form input[name='to']" ).val( "" ) // Clear
 		                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
 		                                    $( "#content form textarea" ).val( "" ) // Clear
-		                                    alert( "You successfully made a payment !" )
+		                                    alert( "Customer successfully made a payment !" )
 		                                    goList( "trading_name," + doc.from + "," + doc.currency )
 		                                } )
 		                            } else {
