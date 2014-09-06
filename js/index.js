@@ -1453,6 +1453,8 @@ function goPayment() {
         setLoginLogoutButton();
 
         setTabs()
+        
+        setModes()
 
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
@@ -1509,6 +1511,19 @@ function goPayment() {
     } )
 }
 
+/*
+ * Set Personal and Merchant Modes
+ */
+
+function setModes() {
+    $( "#content .om-personal" ).click( function() {
+        goPayment()
+    } )
+
+    $( "#content .om-merchant" ).click( function() {
+        goMerchantPayment()
+    } )
+}
 
 /*
  * Payment Page
@@ -1628,7 +1643,7 @@ function updateTo() {
 		if ( $(this).prop('selected') ) {
 			from = this.value;
 		}
-	} ) ;
+	} )
 	log( "from account: " + from )
 	var fromcurrency = from.substring(from.lastIndexOf(","), from.length)
 	$("form select[name='to'] > option").each( function() {
@@ -1653,6 +1668,105 @@ function updateTo() {
 			once = 0;
 		}
 	} )
+}
+
+/*
+ * Payment Page
+ */
+
+function goMerchantPayment() {
+    window.dbChanged = function() {
+    }
+    config.views( [ "accounts", {
+        include_docs : true
+    } ], function(error, view) {
+        if (error) { return alert( JSON.stringify( error ) ) }
+
+        var thisUsersAccounts = {
+            rows : []
+        }
+
+        for ( var i = view.rows.length - 1; i >= 0; i--) {
+            log( "row:" + JSON.stringify( view.rows[i] ) )
+            log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+            if (view.rows[i].key.steward.length) {
+                for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
+                    log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+                    if (view.rows[i].key.steward[j] == config.user.user_id) {
+                        thisUsersAccounts.rows.push( view.rows[i] )
+                    }
+                }
+            }
+        }
+
+        thisUsersAccounts.offset = view.offset
+        thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+
+        drawContent( config.t.merchant_payment( thisUsersAccounts ) )
+
+        $( "#content .om-index" ).click( function() {
+            goIndex()
+        } )
+
+        setLoginLogoutButton();
+
+        setTabs()
+        
+        setModes()
+
+        $( "#content form" ).submit( function(e) {
+            e.preventDefault()
+            var doc = jsonform( this )
+            doc.type = "trading_name_journal"
+            doc.amount = parseInt( doc.amount )
+            doc.timestamp = new Date()
+            doc.timestamp = doc.timestamp.toJSON()
+            config.db.get( doc.from, function(error, from) {
+                if (error) {
+                    if (error.status == 404) {
+                        return alert( "Your trading account doesn't exist!" )
+                    } else {
+                        return alert( JSON.stringify( error ) )
+                    }
+                }
+                doc.from = from.name
+                doc.currency = from.currency
+                config.db.get( "trading_name," + doc.to + "," + doc.currency, function(error, to) {
+                    if (error) {
+                        if (error.status == 404) {
+                            return alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!" )
+                        } else {
+                            return alert( JSON.stringify( error ) )
+                        }
+                    }
+                    doc.to = to.name
+                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                        if (error) {
+                            log( "Error: " + JSON.stringify( error ) )
+                            if (error.status == 404) {
+                                // doc does not exists
+                                log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                    if (error)
+                                        return alert( JSON.stringify( error ) )
+                                    $( "#content form input[name='to']" ).val( "" ) // Clear
+                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
+                                    $( "#content form textarea" ).val( "" ) // Clear
+                                    alert( "You successfully made a payment !" )
+                                    goList( "trading_name," + doc.from + "," + doc.currency )
+                                } )
+                            } else {
+                                alert( "Error: ".JSON.stringify( error ) )
+                            }
+                        } else {
+                            // doc exsits already
+                            alert( "Payment already exists!" )
+                        }
+                    } )
+                } )
+            } )
+        } )
+    } )
 }
 
 /*
