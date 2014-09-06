@@ -1705,7 +1705,7 @@ function goMerchantPayment() {
         drawContent( config.t.merchant_payment( thisUsersAccounts ) )
 
         $( "#content .om-index" ).click( function() {
-            goIndex()
+            goMerchantPayment()
         } )
 
         setLoginLogoutButton();
@@ -1721,7 +1721,7 @@ function goMerchantPayment() {
             doc.amount = parseInt( doc.amount )
             doc.timestamp = new Date()
             doc.timestamp = doc.timestamp.toJSON()
-            config.db.get( doc.from, function(error, from) {
+            config.db.get( doc.to, function(error, to) {
                 if (error) {
                     if (error.status == 404) {
                         return alert( "Your trading account doesn't exist!" )
@@ -1729,41 +1729,52 @@ function goMerchantPayment() {
                         return alert( JSON.stringify( error ) )
                     }
                 }
-                doc.from = from.name
-                doc.currency = from.currency
-                config.db.get( "trading_name," + doc.to + "," + doc.currency, function(error, to) {
-                    if (error) {
-                        if (error.status == 404) {
-                            return alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!" )
-                        } else {
-                            return alert( JSON.stringify( error ) )
-                        }
-                    }
-                    doc.to = to.name
-                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-                        if (error) {
-                            log( "Error: " + JSON.stringify( error ) )
-                            if (error.status == 404) {
-                                // doc does not exists
-                                log( "insert new trading name journal" + JSON.stringify( doc ) )
-                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                                    if (error)
-                                        return alert( JSON.stringify( error ) )
-                                    $( "#content form input[name='to']" ).val( "" ) // Clear
-                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
-                                    $( "#content form textarea" ).val( "" ) // Clear
-                                    alert( "You successfully made a payment !" )
-                                    goList( "trading_name," + doc.from + "," + doc.currency )
-                                } )
-                            } else {
-                                alert( "Error: ".JSON.stringify( error ) )
-                            }
-                        } else {
-                            // doc exsits already
-                            alert( "Payment already exists!" )
-                        }
-                    } )
-                } )
+                doc.to = to.name
+                doc.currency = to.currency
+                
+                // TODO: scan tag
+                alert( "Pass terminal to the customer or scan tag." );
+                
+                drawContent( config.t.customer_payment( { "amount": doc.amount, "currency": doc.currency } ) )
+                
+                $( "#content form" ).submit( function(e) {
+		            e.preventDefault()
+		            var customer = jsonform( this )
+                
+	                config.db.get( "trading_name," + customer.from + "," + doc.currency, function(error, from) {
+	                    if (error) {
+	                        if (error.status == 404) {
+	                            return alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!" )
+	                        } else {
+	                            return alert( JSON.stringify( error ) )
+	                        }
+	                    }
+	                    doc.from = from.name
+	                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+	                        if (error) {
+	                            log( "Error: " + JSON.stringify( error ) )
+	                            if (error.status == 404) {
+	                                // doc does not exists
+	                                log( "insert new trading name journal" + JSON.stringify( doc ) )
+	                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	                                    if (error)
+	                                        return alert( JSON.stringify( error ) )
+	                                    $( "#content form input[name='to']" ).val( "" ) // Clear
+	                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
+	                                    $( "#content form textarea" ).val( "" ) // Clear
+	                                    alert( "You successfully made a payment !" )
+	                                    goList( "trading_name," + doc.from + "," + doc.currency )
+	                                } )
+	                            } else {
+	                                alert( "Error: ".JSON.stringify( error ) )
+	                            }
+	                        } else {
+	                            // doc exsits already
+	                            alert( "Payment already exists!" )
+	                        }
+	                    } )
+	                } )
+	            } )
             } )
         } )
     } )
