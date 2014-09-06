@@ -1631,16 +1631,21 @@ function updateTo( from ) {
 		if( fromcurrency != tocurrency) {
 			$( this ).prop('disabled',true)
 			if( $( this ).prop('selected')  ) {
+				$( this ).prop('selected',false) 
 				$( this ).removeAttr('selected') 
 			}
 		} else {
+			$( this ).prop('disabled',false) 
 			$( this ).removeAttr('disabled')
 		}
 		log( "After to option: " + this.value + " disabled: " + $(this).prop('disabled') + " Selected: " + $(this).prop('selected') );
 	} )
-	
-	$("form select[name='to'] > option:enabled").one( function () {
-		$( this ).prop('selected',true);
+	var once = 1;
+	$("form select[name='to'] > option").each( function () {
+		if( once == 1 && ! $( this ).prop( 'disabled' ) ) {
+			$( this ).prop('selected',true);
+			once = 0;
+		}
 	} )
 }
 
