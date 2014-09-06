@@ -1636,7 +1636,8 @@ function updateTo( from ) {
 		} else {
 			$( this ).removeAttr('disabled')
 		}
-	} ) ;
+	} )
+	
 	$("form select[name='to'] > option:enabled").one( function () {
 		$( this ).prop('selected',true);
 	} )
