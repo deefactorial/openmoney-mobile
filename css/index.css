@@ -171,6 +171,14 @@ br.clear {
   vertical-align: top;
 }
 
+.topcoat-tab-bar {
+	width:100%;
+}
+
+.topcoat-tab-bar__button {
+	width:100%;
+}
+
 .topcoat-button.om-small {
 	line-height: 2rem;
 	padding: 0 0.6rem 2px 0.6rem;
