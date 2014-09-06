@@ -1552,6 +1552,8 @@ function goTagPayment( tradingNames ) {
     	} )
 
         drawContent( config.t.tagpayment( { "fromAccounts": fromAccounts, "toAccounts": toAccounts } ) )
+        
+        updateTo($('form select[name="to"] option:selected').val());
 
         $( "#content .om-index" ).click( function() {
             goIndex()
@@ -1626,7 +1628,7 @@ function updateTo( from ) {
 	log( "from account: " + from )
 	var fromcurrency = from.substring(from.lastIndexOf(","), from.length)
 	$("form select[name='to'] > option").each( function() {
-		log( "Before to option: " + this.value + " disabled: " + $(this).prop('disabled') + " Selected: " + $(this).prop('selected') );
+		//log( "Before to option: " + this.value + " disabled: " + $(this).prop('disabled') + " Selected: " + $(this).prop('selected') );
 		var tocurrency = this.value.substring(this.value.lastIndexOf(","), this.value.length)
 		if( fromcurrency != tocurrency) {
 			$( this ).prop('disabled',true)
@@ -1638,7 +1640,7 @@ function updateTo( from ) {
 			$( this ).prop('disabled',false) 
 			$( this ).removeAttr('disabled')
 		}
-		log( "After to option: " + this.value + " disabled: " + $(this).prop('disabled') + " Selected: " + $(this).prop('selected') );
+		//log( "After to option: " + this.value + " disabled: " + $(this).prop('disabled') + " Selected: " + $(this).prop('selected') );
 	} )
 	var once = 1;
 	$("form select[name='to'] > option").each( function () {
