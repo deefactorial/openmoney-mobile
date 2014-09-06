@@ -1626,7 +1626,7 @@ function updateTo( from ) {
 	log( "from account: " + from )
 	var fromcurrency = from.substring(from.lastIndexOf(","), from.length)
 	$("form select[name='to'] > option").each( function() {
-		log( "to option: " + this.value);
+		log( "to option: " + this.value + " disabled: " + $(this).prop('disabled') + " Selected: " + $(this).prop('selected') );
 		var tocurrency = this.value.substring(this.value.lastIndexOf(","), this.value.length)
 		if( fromcurrency != tocurrency) {
 			$( this ).prop('disabled',true)
