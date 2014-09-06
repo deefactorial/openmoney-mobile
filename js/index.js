@@ -1632,14 +1632,14 @@ function updateTo( from ) {
 			$( this ).prop('disabled',true)
 			if( $( this ).prop('selected')  ) {
 				$( this ).prop('selected',false) 
-				$("form select[name='to'] > option:enabled").one( function () {
-					$( this ).prop('selected',true);
-				} )
 			}
 		} else {
 			$( this ).removeAttr('disabled')
 		}
 	} ) ;
+	$("form select[name='to'] > option:enabled").one( function () {
+		$( this ).prop('selected',true);
+	} )
 }
 
 /*
