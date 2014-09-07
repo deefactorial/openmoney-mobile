@@ -1803,7 +1803,13 @@ function goMerchantPayment() {
 				                                    $( "#content form input[name='to']" ).val( "" ) // Clear
 				                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
 				                                    $( "#content form textarea" ).val( "" ) // Clear
-				                                    
+				                                    nfc.removeMimeTypeListener( "application/com.openmoney.mobile",
+				                                    		customerListner
+									                , function() {
+									                    // success callback
+									                }, function() {
+									                    // failure callback
+									                } );
 				                                    nfc.addMimeTypeListener( "application/com.openmoney.mobile",
 									                		window.nfcListner
 									                , function() {
@@ -1889,6 +1895,15 @@ function goMerchantPayment() {
 		                                    $( "#content form input[name='to']" ).val( "" ) // Clear
 		                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
 		                                    $( "#content form textarea" ).val( "" ) // Clear
+		                                    
+		                                    nfc.removeMimeTypeListener( "application/com.openmoney.mobile",
+				                                    		customerListner
+							                , function() {
+							                    // success callback
+							                }, function() {
+							                    // failure callback
+							                } );
+		                                    
 		                                    nfc.addMimeTypeListener( "application/com.openmoney.mobile",
 							                		window.nfcListner
 							                , function() {
