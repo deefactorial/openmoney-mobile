@@ -1581,6 +1581,8 @@ function goTagPayment( tradingNames ) {
         setLoginLogoutButton();
 
         setTabs()
+        
+        setModes()
 
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
