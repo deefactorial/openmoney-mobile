@@ -51,13 +51,7 @@ function onDeviceReady() {
         // failure callback
     } );
 
-    //this needs to share a hashtag for the users account.
-    nfc.share(window.beamer, [onSuccess], [onFailure]);
 };
-
-window.beamer = [
-                 ndef.textRecord("hello, world")
-                 ];
 
 /*
  * This Is The Event listner for nfc events with a mime type that matches the openmoney application
