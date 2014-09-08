@@ -2181,14 +2181,12 @@ function createBeamTag(cb) {
     beamData.hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
     beamData.initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 
-    var pinCode = config.user.session_id
+    var pinCode = config.user.sessionID
     
     // for more information on mcrypt
     // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
-    // note the key that should be used instead of the hashID
-    // should be
-    // the users private RSA key.
-    encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
+    // note the key that should be used instead of the hashID should be the users private RSA key.
+    encodedString = mcrypt.Encrypt( pinCode, beamData.initializationVector, beamData.hashTag, 'rijndael-256', 'cbc' );
 
     beamData.base64_encodedString = base64_encode( encodedString )
 
