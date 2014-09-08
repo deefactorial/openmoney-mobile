@@ -1980,8 +1980,8 @@ function doFirstLogin(cb) {
             if (error) { return cb( error ) }
             config.setUser( data, function(error, ok) {
                 if (error) { return cb( error ) }
-                createMyProfile( function(err) {
-                    log( "createMyProfile done " + JSON.stringify( err ) )
+                createBeamTag( function(err) {
+                    log( "createBeamTag done " + JSON.stringify( err ) )
                     addMyUsernameToAllLists( function(err) {
                         log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
                         if (err) { return cb( err ) }
@@ -2004,8 +2004,8 @@ function doFirstLogin(cb) {
                         log( "registerFacebookToken err " + JSON.stringify( [ err, ok ] ) )
                         return cb( err )
                     }
-                    createMyProfile( function(err) {
-                        log( "createMyProfile done " + JSON.stringify( err ) )
+                    createBeamTag( function(err) {
+                        log( "createBeamTag done " + JSON.stringify( err ) )
                         addMyUsernameToAllLists( function(err) {
                             log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
                             if (err) { return cb( err ) }
@@ -2214,7 +2214,7 @@ function createBeamTag(cb) {
         } )
         alert( "You are now able to use android beam to share app and transact!" )
     }, function() {
-        cb( null, log( "Failed to initialize android beam!" ) )
+        cb( { "error": "Failed to initialize android beam!" } )
     } );
     
 
