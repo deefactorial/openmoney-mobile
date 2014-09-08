@@ -2199,22 +2199,23 @@ function createBeamTag(cb) {
     var message = [ mime, aar ];
 
     nfc.share( message, function() {
-        log( "createBeamTag put " + JSON.stringify( beamData ) )
-        // Check if Profile Document Exists
-        config.db.get( "beamtag," + beamData.username + "," + beamData.hashTag, function(error, doc) {
-            if (error) {
-                // doc does not exists
-                config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
-            } else {
-                beamData = doc;
-                config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
-            }
-        } )
-        alert( "You are now able to use android beam to share app and transact!" )
+    	alert( "openmoney transmit identity complete!" )
     }, function() {
-        cb( { "error": "Failed to initialize android beam!" } )
+    	log( "Failed to beam!" )
     } );
     
+    log( "createBeamTag put " + JSON.stringify( beamData ) )
+    // Check if Profile Document Exists
+    config.db.get( "beamtag," + beamData.username + "," + beamData.hashTag, function(error, doc) {
+        if (error) {
+            // doc does not exists
+            config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
+        } else {
+            beamData = doc;
+            config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
+        }
+        alert( "You are now able to use android beam to share app and transact!" )
+    } )
 
 }
 
