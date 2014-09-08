@@ -268,13 +268,30 @@
                             requireUser([olddoc.from , olddoc.to]);
                         }
                     }
-                } 
+                } else if (table == "beamtag") {                  
+                    //var username = index.substring(0,index.indexOf(",")) ;
+                    //var beamTag = index.substring( index.indexOf( "," ) + 1 );
+                    if (!doc.username && !doc.beamTag && !doc.type) {
+                        throw({forbidden: "Missing required properties"});
+                    }
+                    channel(table + channelDelimiter + doc.username + channelDelimiter + doc.beamtag);
+                    if (olddoc == null) {
+                        access(doc.username, table + channelDelimiter + doc.username + channelDelimiter + doc.beamtag);
+                    } else {
+                        if (doc._deleted) {
+                            requireUser(olddoc.username);
+                        } else {
+                            if (!doc.username) {
+                                throw( { forbidden: "Missing required properties" } );
+                            } 
+                            requireUser(olddoc.username);
+                        }
+                    }
+                }
             }
-    }`,
-        "users": {
+    }`, "users": {
                 "GUEST": {"disabled": true}
         }
-
     }
    }
 }

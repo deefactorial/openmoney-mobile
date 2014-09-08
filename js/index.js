@@ -50,7 +50,18 @@ function onDeviceReady() {
     }, function() {
         // failure callback
     } );
+
+    //this needs to share a hashtag for the users account.
+    nfc.share(window.beamer, [onSuccess], [onFailure]);
 };
+
+window.beamer = [
+                 ndef.textRecord("hello, world")
+                 ];
+
+/*
+ * This Is The Event listner for nfc events with a mime type that matches the openmoney application
+ */
 
 window.nfcListner = function(nfcEvent) {
     var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
@@ -2140,7 +2151,9 @@ function addMyUsernameToAllLists(cb) {
         if (err) { return cb( err ) }
         var docs = [];
         view.rows.forEach( function(row) {
-            row.doc.owner = "p:" + config.user.user_id
+        	if (!row.doc.steward) {
+        		row.doc.steward = [ config.user.name ];
+        	}
             docs.push( row.doc )
         } )
         config.db.post( "_bulk_docs", {
@@ -2152,23 +2165,59 @@ function addMyUsernameToAllLists(cb) {
     } )
 }
 
-function createMyProfile(cb) {
-    log( "createMyProfile user " + JSON.stringify( config.user ) )
-    var profileData = JSON.parse( JSON.stringify( config.user ) )
-    profileData.type = "profile"
-    profileData.user_id = profileData.email
-    delete profileData.email
-    log( "createMyProfile put " + JSON.stringify( profileData ) )
-    // Check if Profile Document Exists
-    config.db.get( "p:" + profileData.user_id, function(error, doc) {
-        if (error) {
-            // doc does not exists
-            config.db.put( "p:" + profileData.user_id, profileData, cb )
-        } else {
-            profileData = doc;
-            config.db.put( "p:" + profileData.user_id, profileData, cb )
-        }
-    } )
+function createBeamTag(cb) {
+    log( "createBeamTag user " + JSON.stringify( config.user ) )
+    var beamData = JSON.parse( JSON.stringify( config.user ) )
+    beamData.type = "beamtag";
+    beamData.username = config.user.name;
+    
+    function randomString(length, chars) {
+        var result = '';
+        for ( var i = length; i > 0; --i)
+            result += chars[Math.round( Math.random() * (chars.length - 1) )];
+        return result;
+    }
+
+    beamData.hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+    beamData.initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+
+    var pinCode = config.user.session_id
+    
+    // for more information on mcrypt
+    // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
+    // note the key that should be used instead of the hashID
+    // should be
+    // the users private RSA key.
+    encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
+
+    beamData.base64_encodedString = base64_encode( encodedString )
+
+    log( " BeamTag: " + JSON.stringify( beamData ) )
+
+    var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( { key : beamData.hashTag } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+
+    var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
+
+    var message = [ mime, aar ];
+
+    nfc.share( message, function() {
+        log( "createBeamTag put " + JSON.stringify( beamData ) )
+        // Check if Profile Document Exists
+        config.db.get( "beamtag," + beamData.username + "," + beamData.hashTag, function(error, doc) {
+            if (error) {
+                // doc does not exists
+                config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
+            } else {
+                beamData = doc;
+                config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
+            }
+        } )
+        alert( "You are now able to use android beam to share app and transact!" )
+    }, function() {
+        cb( null, log( "Failed to initialize android beam!" ) )
+    } );
+    
+
 }
 
 /*
