@@ -587,8 +587,8 @@ function doRegistration(callBack) {
         if (error) { return callBack( error ) }
         config.setUser( data, function(error, ok) {
             if (error) { return callBack( error ) }
-            createMyProfile( function(err) {
-                log( "createMyProfile done " + JSON.stringify( err ) )
+            createBeamTag( function(err) {
+                log( "Create Beam Tag done " + JSON.stringify( err ) )
                 addMyUsernameToAllLists( function(err) {
                     log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
                     if (err) { return cb( err ) }
