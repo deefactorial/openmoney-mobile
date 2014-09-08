@@ -118,7 +118,7 @@ window.dbChanged = function() {
 
 }
 
-window.checkConflicts = function(change) {
+window.checkConflicts = function( change ) {
     // this should check for conflicts that are detected by the system.
     if (change) {
         var documentID = change.id, seq = change.seq, changes = change.changes;
@@ -144,7 +144,7 @@ function connectToChanges() {
             lastSeq = change.seq
         log( "change" + JSON.stringify( [ err, change ] ), err, change )
         window.dbChanged()
-        window.checkConflicts( change )
+        //window.checkConflicts( change )
     } )
 }
 
