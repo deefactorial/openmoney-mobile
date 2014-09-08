@@ -2126,6 +2126,7 @@ function registerFacebookToken(cb) {
 }
 
 function addMyUsernameToAllLists(cb) {
+	// TODO: update for currencies and currency_networks created as well
     config.views( [ "accounts", {
         include_docs : true
     } ], function(err, view) {
@@ -2134,6 +2135,16 @@ function addMyUsernameToAllLists(cb) {
         view.rows.forEach( function(row) {
         	if (!row.doc.steward) {
         		row.doc.steward = [ config.user.name ];
+        	} else {
+        		if(Array.isArray(row.doc.steward)) {
+        			var newStewardList = [];
+	        		row.doc.steward.forEach( function (steward) {
+	        			if( steward == null ) {
+	        				newStewardList.push( config.user.name );
+	        				row.doc.steward = newStewardList;
+	        			}
+	        		} )
+        		}
         	}
             docs.push( row.doc )
         } )
