@@ -154,18 +154,18 @@
                             requireUser(olddoc.username);
                         }
                     }
-                } else if (table == "trading_name") {
+                } else if (doc.type == "trading_name") {
                     var trading_name = doc.name ;
                     var currency = base64_encode( doc.currency );
                     channel(table + channelDelimiter + trading_name + channelDelimiter + currency);
-                    channel( "currency_trading_names" + channelDelimiter + currency )
-
+                    channel( "currency" + channelDelimiter + currency )
                     if (olddoc == null) {
                         if (!doc.steward || !doc.name || !doc.currency ) {
                             throw( { forbidden: "Missing required properties" } );
                         }
                         access( doc.steward , "currency" + channelDelimiter + currency)
                         access( doc.steward , table + channelDelimiter + trading_name + channelDelimiter + currency )
+                        requireUser( doc.steward )
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
@@ -197,7 +197,6 @@
                 } else if (table == "currency") {
                     var currency = base64_encode( doc.currency );
                     channel(table + channelDelimiter + currency);
-                    
                     if (olddoc == null) {
                         if (!doc.steward || !doc.currency || !doc.name || !doc.currency_network) {
                             throw({forbidden: "Missing required properties"});
