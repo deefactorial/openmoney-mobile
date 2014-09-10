@@ -268,7 +268,7 @@
                             requireUser([olddoc.from , olddoc.to]);
                         }
                     }
-                } else if (table == "beamtag") {                  
+                } else if (doc.type == "beamtag") {                  
                     //var username = index.substring(0,index.indexOf(",")) ;
                     //var beamTag = index.substring( index.indexOf( "," ) + 1 );
                     if (!doc.username && !doc.beamTag && !doc.type) {

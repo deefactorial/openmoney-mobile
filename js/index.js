@@ -100,9 +100,12 @@ function doTagLookup( key, callBack ) {
             callBack( false, result )
         } )
     } else {
-        return callBack( {
-            reason : "Configuration User is not Set!"
-        } )
+        goServerLogin( function(error) {
+            $( ".openmoney-login" ).hide().off( "click" )
+            setLoginLogoutButton()
+            if (error) { return loginErr( error ) }
+            goIndex()
+        } );
     }
 }
 
