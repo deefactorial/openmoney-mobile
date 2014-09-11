@@ -1,5 +1,5 @@
 {
-   "SSLCert": "/etc/ssl/private/2b9628d15ee84c.crt",
+   "SSLCert": "/etc/ssl/private/cloud.openmoney.cc.sync.crt",
    "SSLKey": "/etc/ssl/private/cloud.openmoney.cc.key.insecure",
    "interface":":4984",
    "adminInterface":":4985",

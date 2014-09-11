@@ -227,13 +227,13 @@ function goIndex() {
 
             log( "accounts " + JSON.stringify( thisUsersAccounts ), thisUsersAccounts )
             $( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
-            $( "#scrollable li" ).on( "swipeRight", function() {
-                var id = $( this ).attr( "data-id" )
-                $( this ).find( "button" ).show().click( function() {
-                    deleteItem( id )
-                    return false;
-                } )
-            } )
+//            $( "#scrollable li" ).on( "swipeRight", function() {
+//                var id = $( this ).attr( "data-id" )
+//                $( this ).find( "button" ).show().click( function() {
+//                    deleteItem( id )
+//                    return false;
+//                } )
+//            } )
         } )
     }
     window.dbChanged()
