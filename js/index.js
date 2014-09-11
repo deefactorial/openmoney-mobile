@@ -2162,9 +2162,12 @@ function addMyUsernameToAllLists(cb) {
 
 function createBeamTag(cb) {
     log( "createBeamTag user " + JSON.stringify( config.user ) )
-    var beamData = JSON.parse( JSON.stringify( config.user ) )
+    var userData = JSON.parse( JSON.stringify( config.user ) );
+    var beamData = { };
     beamData.type = "beamtag";
     beamData.username = config.user.name;
+    beamData.sessionID = userData.sessionID;
+    beamData.expires = userData.expires;
     
     function randomString(length, chars) {
         var result = '';
@@ -2203,13 +2206,17 @@ function createBeamTag(cb) {
     // Check if Profile Document Exists
     config.db.get( "beamtag," + beamData.username + "," + beamData.hashTag, function(error, doc) {
         if (error) {
-            // doc does not exists
-            config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
+        	log( "Error: " + JSON.stringify( error ) )
+            if (error.status == 404) {
+            	// doc does not exists
+            	config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
+            } else {
+            	alert(" Error Posting Beam Tag:" + JSON.stringify( error ) )
+            }
         } else {
             beamData = doc;
             config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
         }
-        alert( "You are now able to use android beam to share app and transact!" )
     } )
 
 }
