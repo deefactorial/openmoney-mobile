@@ -321,6 +321,8 @@ function goList(id) {
     config.db.get( id, function(err, doc) {
         log( "Display Account Details:" + JSON.stringify( doc ) )
 
+        window.dbChanged = function() {
+        
         config.views( [ "account_balance", {
             startkey : [ id, {} ], endkey : [ id ], descending : true
         } ], function(err, view) {
@@ -355,7 +357,7 @@ function goList(id) {
                 }
             } )
 
-            window.dbChanged = function() {
+            
                 log( "Get Account Details for:" + id )
 
                 config.views( [ "account_details", {
@@ -370,10 +372,9 @@ function goList(id) {
                         } )
                     } )
                 } )
-            }
-            window.dbChanged()
-        } )
-
+        	} )
+        }
+        window.dbChanged()
     } )
 }
 
