@@ -166,7 +166,7 @@
                         requireUser( doc.steward )
                         access( doc.steward , "currency" + channelDelimiter + currency)
                         access( doc.steward , table + channelDelimiter + trading_name + channelDelimiter + currency )
-                        role( doc.steward, "role:trading_name," + doc.name + "," + doc.currency)
+                        role( doc.steward, "role:" + doc.name + "_" + doc.currency)
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
@@ -254,8 +254,8 @@
                             throw({forbidden: "Missing required properties"});
                         }
                         channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
-                        access("role:trading_name," + doc.from + "," + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
-                        access("role:trading_name," + doc.to + "," + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                        access("role:" + doc.from + "_" + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                        access("role:" + doc.to + "_" + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                     } else {
                         if (doc._deleted) {
                             //requireUser([olddoc.from , olddoc.to]);
@@ -264,8 +264,8 @@
                                 throw({forbidden: "Missing required properties"});
                             }
                             channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
-                            access("role:trading_name," + doc.from + "," + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
-                            access("role:trading_name," + doc.to + "," + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                            access("role:" + doc.from + "_" + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                            access("role:" + doc.to + "_" + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                             //requireUser([olddoc.from , olddoc.to]);
                         }
                     }
