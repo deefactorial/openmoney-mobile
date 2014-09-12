@@ -166,7 +166,7 @@
                         requireUser( doc.steward )
                         access( doc.steward , "currency" + channelDelimiter + currency)
                         access( doc.steward , table + channelDelimiter + trading_name + channelDelimiter + currency )
-                        role( doc.steward, "role:" + doc.name + "_" + doc.currency)
+                        //role( doc.steward, "role:" + doc.name + "_" + doc.currency)
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
@@ -248,14 +248,15 @@
                     var to = doc.to; 
                     var timestamp = doc.timestamp; 
                     var channelTimestamp = timestamp.replace(/:/g,'.') // Replace All Colons
+                    var currency = base64_encode( doc.currency );
                     
                     if (olddoc == null) {
                         if (!doc.from || !doc.to || !doc.amount || !doc.currency || !doc.timestamp ) {
                             throw({forbidden: "Missing required properties"});
                         }
-                        channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
-                        access("role:" + doc.from + "_" + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
-                        access("role:" + doc.to + "_" + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                        channel("trading_name" + channelDelimiter + from + channelDelimiter + currency)
+                        channel("trading_name" + channelDelimiter + to + channelDelimiter + currency)
+                        //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                     } else {
                         if (doc._deleted) {
                             //requireUser([olddoc.from , olddoc.to]);
@@ -263,9 +264,9 @@
                             if (!doc.from || !doc.to || !doc.amount || !doc.currency || !doc.timestamp ) {
                                 throw({forbidden: "Missing required properties"});
                             }
-                            channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
-                            access("role:" + doc.from + "_" + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
-                            access("role:" + doc.to + "_" + doc.currency , table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                            //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
+                            channel("trading_name" + channelDelimiter + from + channelDelimiter + currency)
+                            channel("trading_name" + channelDelimiter + to + channelDelimiter + currency)
                             //requireUser([olddoc.from , olddoc.to]);
                         }
                     }
