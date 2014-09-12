@@ -165,6 +165,7 @@
                         }
                         access( doc.steward , "currency" + channelDelimiter + currency)
                         access( doc.steward , table + channelDelimiter + trading_name + channelDelimiter + currency )
+                        role( doc.steward, "role:trading_name," + doc.name + "," + doc.currency)
                         requireUser( doc.steward )
                     } else {
                         if (doc._deleted) {
