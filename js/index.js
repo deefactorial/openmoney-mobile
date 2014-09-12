@@ -174,7 +174,9 @@ function drawContent(html) {
 }
 
 function goIndex() {
+	
     drawContent( config.t.index() )
+    
     $( "#content form" ).submit( function(e) {
         e.preventDefault()
         var doc = jsonform( this )
