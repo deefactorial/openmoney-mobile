@@ -18,7 +18,7 @@ var REMOTE_SERVER_LOST_PASSWORD_URL = "https://cloud.openmoney.cc/lostpw"
 var REMOTE_SERVER_REGISTRATION_URL = "https://cloud.openmoney.cc/registration"
 var REMOTE_SERVER_TAG_LOOKUP_URL = "https://cloud.openmoney.cc/lookupTag"
 var REMOTE_CUSTOMER_TRADINGNAME_LOOKUP_URL = "https://cloud.openmoney.cc/customerLookup"
-	
+
 var SERVER_LOGIN = true
 var FACEBOOK_LOGIN = false
 
@@ -43,9 +43,7 @@ function onDeviceReady() {
         } )
     } )
 
-    nfc.addMimeTypeListener( "application/com.openmoney.mobile",
-    		window.nfcListner
-    , function() {
+    nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
         // success callback
     }, function() {
         // failure callback
@@ -54,7 +52,8 @@ function onDeviceReady() {
 };
 
 /*
- * This Is The Event listner for nfc events with a mime type that matches the openmoney application
+ * This Is The Event listner for nfc events with a mime type that matches the
+ * openmoney application
  */
 
 window.nfcListner = function(nfcEvent) {
@@ -69,20 +68,20 @@ window.nfcListner = function(nfcEvent) {
     // a payload that can be converted to a string.
     log( nfc.bytesToString( ndefMessage[0].payload ) );
     var payload = JSON.parse( nfc.bytesToString( ndefMessage[0].payload ) )
-    if( typeof payload.key !== 'undefined') {
-    	// do a lookup of the key
-    	doTagLookup( payload.key, function (error, result) {
-    		if( error ) alert( "Error: " + JSON.stringify( error ) ) 
-    		else {
-    			log( JSON.stringify( "Result:" + JSON.stringify( result ) ) )
-    			goTagPayment( result )
-    		}
-    	} );
+    if (typeof payload.key !== 'undefined') {
+        // do a lookup of the key
+        doTagLookup( payload.key, function(error, result) {
+            if (error)
+                alert( "Error: " + JSON.stringify( error ) )
+            else {
+                log( JSON.stringify( "Result:" + JSON.stringify( result ) ) )
+                goTagPayment( result )
+            }
+        } );
     }
 }
 
-
-function doTagLookup( key, callBack ) {
+function doTagLookup(key, callBack) {
     if (navigator && navigator.connection) {
         log( "connection " + navigator.connection.type )
         if (navigator.connection.type == "none") { return callBack( {
@@ -115,7 +114,7 @@ window.dbChanged = function() {
 
 }
 
-window.checkConflicts = function( change ) {
+window.checkConflicts = function(change) {
     // this should check for conflicts that are detected by the system.
     if (change) {
         var documentID = change.id, seq = change.seq, changes = change.changes;
@@ -141,7 +140,7 @@ function connectToChanges() {
             lastSeq = change.seq
         log( "change" + JSON.stringify( [ err, change ] ), err, change )
         window.dbChanged()
-        //window.checkConflicts( change )
+        // window.checkConflicts( change )
     } )
 }
 
@@ -227,13 +226,13 @@ function goIndex() {
 
             log( "accounts " + JSON.stringify( thisUsersAccounts ), thisUsersAccounts )
             $( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
-//            $( "#scrollable li" ).on( "swipeRight", function() {
-//                var id = $( this ).attr( "data-id" )
-//                $( this ).find( "button" ).show().click( function() {
-//                    deleteItem( id )
-//                    return false;
-//                } )
-//            } )
+            // $( "#scrollable li" ).on( "swipeRight", function() {
+            // var id = $( this ).attr( "data-id" )
+            // $( this ).find( "button" ).show().click( function() {
+            // deleteItem( id )
+            // return false;
+            // } )
+            // } )
         } )
     }
     window.dbChanged()
@@ -318,46 +317,46 @@ function setTabs() {
  */
 
 function goList(id) {
-    config.db.get( id, function(err, doc) {
-        log( "Display Account Details:" + JSON.stringify( doc ) )
-
-        window.dbChanged = function() {
+	
+	window.dbChanged = function() {
+		
+	    config.db.get( id, function(err, doc) {
+	        log( "Display Account Details:" + JSON.stringify( doc ) )
         
-        config.views( [ "account_balance", {
-            startkey : [ id, {} ], endkey : [ id ], descending : true
-        } ], function(err, view) {
-            log( "account_balance" + JSON.stringify( view ), view )
-            if (view.total_rows > 0)
-                doc.balance = view.rows[0].value;
+            config.views( [ "account_balance", {
+                startkey : [ id, {} ], endkey : [ id ], descending : true
+            } ], function(err, view) {
+                log( "account_balance" + JSON.stringify( view ), view )
+                if (view.total_rows > 0)
+                    doc.balance = view.rows[0].value;
 
-            drawContent( config.t.list( doc ) )
+                drawContent( config.t.list( doc ) )
 
-            $( "#content .todo-index" ).click( function() {
-                goIndex()
-            } )
+                $( "#content .todo-index" ).click( function() {
+                    goIndex()
+                } )
 
-            setLoginLogoutButton();
+                setLoginLogoutButton();
 
-            setTabs()
+                setTabs()
 
-            $( "#content .todo-share" ).click( function() {
-                doShare( id )
-            } )
+                $( "#content .todo-share" ).click( function() {
+                    doShare( id )
+                } )
 
-            $( "#scrollable" ).on( "click", "li", function(e) {
-                var id = $( this ).attr( "data-id" )
-                if ($( e.target ).hasClass( "camera" )) {
-                    if ($( e.target ).hasClass( "image" )) {
-                        goImage( id )
+                $( "#scrollable" ).on( "click", "li", function(e) {
+                    var id = $( this ).attr( "data-id" )
+                    if ($( e.target ).hasClass( "camera" )) {
+                        if ($( e.target ).hasClass( "image" )) {
+                            goImage( id )
+                        } else {
+                            doCamera( id )
+                        }
                     } else {
-                        doCamera( id )
+                        toggleChecked( id )
                     }
-                } else {
-                    toggleChecked( id )
-                }
-            } )
+                } )
 
-            
                 log( "Get Account Details for:" + id )
 
                 config.views( [ "account_details", {
@@ -372,10 +371,10 @@ function goList(id) {
                         } )
                     } )
                 } )
-        	} )
-        }
-        window.dbChanged()
-    } )
+            } )
+    	} )
+	}
+    window.dbChanged()
 }
 
 function deleteItem(id) {
@@ -1091,8 +1090,8 @@ function activateTag(id) {
 function goNewNFC() {
 
     config.db.get( "users," + config.user.name, function(err, doc) {
-    	
-    	config.views( [ "accounts", {
+
+        config.views( [ "accounts", {
             descending : true
         } ], function(err, view) {
 
@@ -1115,11 +1114,11 @@ function goNewNFC() {
 
             thisUsersAccounts.offset = view.offset
             thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
-            
+
             var defaultMaxLimitBeforePinRequest = 100;
-            
+
             var maxLimitBeforePinRequestPerCurrency = [];
-        	
+
             for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
                 var currency = thisUsersAccounts.rows[i].key.currency;
                 var exist = false;
@@ -1137,64 +1136,67 @@ function goNewNFC() {
                     } )
                 }
             }
-            
+
             defaultMaxLimitBeforePinRequest = "";
 
-	        var tag = { "name" : "","defaultMaxLimitBeforePinRequest": defaultMaxLimitBeforePinRequest ,"maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency };
-	
-	        drawContent( config.t.edit_nfc( tag ) )
-	
-	        $( "#content .om-index" ).click( function() {
-	            goManageNFC()
-	        } )
-	
-	        $( "#content form" ).submit( function(e) {
-	            e.preventDefault()
-	            var doc = jsonform( this )
-	
-	            if (!doc.name)
-	                return alert( "You must specify a name for your Tag." );
-	
-	            var mutableLock = false;
-	            nfc.addNdefListener( function(nfcEvent) {
-	            	
-	                if (!mutableLock) {
-	                    mutableLock = true;
-	
-	                    var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
-	
-	                    function randomString(length, chars) {
-	                        var result = '';
-	                        for ( var i = length; i > 0; --i)
-	                            result += chars[Math.round( Math.random() * (chars.length - 1) )];
-	                        return result;
-	                    }
-	
-	                    var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-	                    var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-	
-	                    var pinCode = doc.pinCode,
-	
-	                    // for more information on mcrypt
-	                    // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
-	                    // note the key that should be used instead of the hashID
-	                    // should be
-	                    // the users private RSA key.
-	                    encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
-	
-	                    var base64_encodedString = base64_encode( encodedString )
-	
-	                    var name = config.user.name;
-	                    if (doc.name)
-	                        name = doc.name;
-	                    defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
-	
-	                    for( var i = 0; i < maxLimitBeforePinRequestPerCurrency.length; i++) {
-	                    	var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + maxLimitBeforePinRequestPerCurrency[i].currency;
-		                    if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
-		                        maxLimitBeforePinRequestPerCurrency[i].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
-		                    }
-	                    }
+            var tag = {
+                "name" : "", "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
+            };
+
+            drawContent( config.t.edit_nfc( tag ) )
+
+            $( "#content .om-index" ).click( function() {
+                goManageNFC()
+            } )
+
+            $( "#content form" ).submit( function(e) {
+                e.preventDefault()
+                var doc = jsonform( this )
+
+                if (!doc.name)
+                    return alert( "You must specify a name for your Tag." );
+
+                var mutableLock = false;
+                nfc.addNdefListener( function(nfcEvent) {
+
+                    if (!mutableLock) {
+                        mutableLock = true;
+
+                        var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+
+                        function randomString(length, chars) {
+                            var result = '';
+                            for ( var i = length; i > 0; --i)
+                                result += chars[Math.round( Math.random() * (chars.length - 1) )];
+                            return result;
+                        }
+
+                        var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+                        var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+
+                        var pinCode = doc.pinCode,
+
+                        // for more information on mcrypt
+                        // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
+                        // note the key that should be used instead of the
+                        // hashID
+                        // should be
+                        // the users private RSA key.
+                        encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
+
+                        var base64_encodedString = base64_encode( encodedString )
+
+                        var name = config.user.name;
+                        if (doc.name)
+                            name = doc.name;
+                        defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
+
+                        for ( var i = 0; i < maxLimitBeforePinRequestPerCurrency.length; i++) {
+                            var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + maxLimitBeforePinRequestPerCurrency[i].currency;
+                            if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
+                                maxLimitBeforePinRequestPerCurrency[i].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
+                            }
+                        }
 
                         var userTag = {
                             "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
@@ -1222,20 +1224,20 @@ function goNewNFC() {
                                 mutableLock = false;
                             } );
                         }
-	                    
-	                }
-	
-	            }, function() { // success callback
-	                alert( "Waiting for NFC tag" );
-	            }, function(error) { // error callback
-	                alert( "Error adding NDEF listener " + JSON.stringify( error ) );
-	            } );
-	
-	        } )
-	
-	        setTabs()
-        
-    	} )
+
+                    }
+
+                }, function() { // success callback
+                    alert( "Waiting for NFC tag" );
+                }, function(error) { // error callback
+                    alert( "Error adding NDEF listener " + JSON.stringify( error ) );
+                } );
+
+            } )
+
+            setTabs()
+
+        } )
 
     } )
 
@@ -1256,8 +1258,8 @@ function goEditNFC(id) {
                 thisTag = doc.tags[i];
             }
         }
-        
-        log( "This Tag: " + JSON.stringify( thisTag ) ) 
+
+        log( "This Tag: " + JSON.stringify( thisTag ) )
 
         drawContent( config.t.edit_nfc( thisTag ) )
 
@@ -1332,7 +1334,7 @@ function goEditNFC(id) {
                     var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + currency;
 
                     var exist = false;
-                    
+
                     if (typeof maxLimitBeforePinRequestPerCurrency !== 'undefined') {
                         // check if currency exists in currency list.
                         for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
@@ -1370,7 +1372,7 @@ function goEditNFC(id) {
 
                 insertTagInDB( userTag )
                 alert( "Successfully updated NFC Tag!" )
-                        
+
             } )
 
         } )
@@ -1392,20 +1394,20 @@ function changeToPassword() {
  * Insert Tag In DB
  */
 
-function insertTagInDB( tag) {
+function insertTagInDB(tag) {
     log( "Insert Tag:" + JSON.stringify( tag ) )
     config.db.get( "users," + config.user.name, function(err, doc) {
-    	log( "user doc:" + JSON.stringify( doc ) )
+        log( "user doc:" + JSON.stringify( doc ) )
         if (doc.tags) {
-        	var found = false;
-        	for( var i = 0; i < doc.tags.length; i++) {
-        		if( ( doc.tags[i].tagID ).equals( tag.tagID ) ) {
-        			found = true;
-        			doc.tags[i] = tag;
-        		}
-        	} 
-        	if( !found )        		
-        		doc.tags.push( tag );
+            var found = false;
+            for ( var i = 0; i < doc.tags.length; i++) {
+                if ((doc.tags[i].tagID).equals( tag.tagID )) {
+                    found = true;
+                    doc.tags[i] = tag;
+                }
+            }
+            if (!found)
+                doc.tags.push( tag );
         } else {
             doc.tags = [ tag ];
         }
@@ -1455,7 +1457,7 @@ function goPayment() {
         setLoginLogoutButton();
 
         setTabs()
-        
+
         setModes()
 
         $( "#content form" ).submit( function(e) {
@@ -1531,8 +1533,8 @@ function setModes() {
  * Payment Page
  */
 
-function goTagPayment( tradingNames ) {
-	log( "Go Tag Payment Page: " + JSON.stringify( tradingNames ) )
+function goTagPayment(tradingNames) {
+    log( "Go Tag Payment Page: " + JSON.stringify( tradingNames ) )
     window.dbChanged = function() {
     }
     config.views( [ "accounts", {
@@ -1556,19 +1558,25 @@ function goTagPayment( tradingNames ) {
 
         thisUsersAccounts.offset = view.offset
         thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
-        
+
         var fromAccounts = []
         var toAccounts = [];
-        
-        thisUsersAccounts.rows.forEach( function ( row ) {
-        	fromAccounts.push( { "from": row.id, "name": row.key.trading_name + " " + row.key.currency } )
-        } )
-        
-        tradingNames.forEach( function( tradingname ) {
-        	toAccounts.push( { "to": tradingname.id, "name": tradingname.value.name + " " + tradingname.value.currency } )
-    	} )
 
-        drawContent( config.t.tagpayment( { "fromAccounts": fromAccounts, "toAccounts": toAccounts } ) )
+        thisUsersAccounts.rows.forEach( function(row) {
+            fromAccounts.push( {
+                "from" : row.id, "name" : row.key.trading_name + " " + row.key.currency
+            } )
+        } )
+
+        tradingNames.forEach( function(tradingname) {
+            toAccounts.push( {
+                "to" : tradingname.id, "name" : tradingname.value.name + " " + tradingname.value.currency
+            } )
+        } )
+
+        drawContent( config.t.tagpayment( {
+            "fromAccounts" : fromAccounts, "toAccounts" : toAccounts
+        } ) )
 
         $( "#content .om-index" ).click( function() {
             goIndex()
@@ -1577,7 +1585,7 @@ function goTagPayment( tradingNames ) {
         setLoginLogoutButton();
 
         setTabs()
-        
+
         setModes()
 
         $( "#content form" ).submit( function(e) {
@@ -1588,7 +1596,7 @@ function goTagPayment( tradingNames ) {
             doc.timestamp = new Date()
             doc.timestamp = doc.timestamp.toJSON()
             delete doc.pair;
-            log (" form doc: " + JSON.stringify( doc ) ) 
+            log( " form doc: " + JSON.stringify( doc ) )
             config.db.get( doc.from, function(error, from) {
                 if (error) {
                     if (error.status == 404) {
@@ -1642,36 +1650,40 @@ function goTagPayment( tradingNames ) {
  */
 
 function updateTo() {
-	var from = '';
-	$("form select[name='from'] > option").each( function () {
-		if ( $(this).prop('selected') ) {
-			from = this.value;
-		}
-	} )
-	log( "from account: " + from )
-	var fromcurrency = from.substring(from.lastIndexOf(","), from.length)
-	$("form select[name='to'] > option").each( function() {
-		//log( "Before to option: " + this.value + " disabled: " + $(this).prop('disabled') + " Selected: " + $(this).prop('selected') );
-		var tocurrency = this.value.substring(this.value.lastIndexOf(","), this.value.length)
-		if( fromcurrency != tocurrency) {
-			$( this ).prop('disabled',true)
-			if( $( this ).prop('selected')  ) {
-				$( this ).prop('selected',false) 
-				$( this ).removeAttr('selected') 
-			}
-		} else {
-			$( this ).prop('disabled',false) 
-			$( this ).removeAttr('disabled')
-		}
-		//log( "After to option: " + this.value + " disabled: " + $(this).prop('disabled') + " Selected: " + $(this).prop('selected') );
-	} )
-	var once = 1;
-	$("form select[name='to'] > option").each( function () {
-		if( once == 1 && ! $( this ).prop( 'disabled' ) ) {
-			$( this ).prop('selected',true);
-			once = 0;
-		}
-	} )
+    var from = '';
+    $( "form select[name='from'] > option" ).each( function() {
+        if ($( this ).prop( 'selected' )) {
+            from = this.value;
+        }
+    } )
+    log( "from account: " + from )
+    var fromcurrency = from.substring( from.lastIndexOf( "," ), from.length )
+    $( "form select[name='to'] > option" ).each( function() {
+        // log( "Before to option: " + this.value + " disabled: " +
+        // $(this).prop('disabled') + " Selected: " + $(this).prop('selected')
+        // );
+        var tocurrency = this.value.substring( this.value.lastIndexOf( "," ), this.value.length )
+        if (fromcurrency != tocurrency) {
+            $( this ).prop( 'disabled', true )
+            if ($( this ).prop( 'selected' )) {
+                $( this ).prop( 'selected', false )
+                $( this ).removeAttr( 'selected' )
+            }
+        } else {
+            $( this ).prop( 'disabled', false )
+            $( this ).removeAttr( 'disabled' )
+        }
+        // log( "After to option: " + this.value + " disabled: " +
+        // $(this).prop('disabled') + " Selected: " + $(this).prop('selected')
+        // );
+    } )
+    var once = 1;
+    $( "form select[name='to'] > option" ).each( function() {
+        if (once == 1 && !$( this ).prop( 'disabled' )) {
+            $( this ).prop( 'selected', true );
+            once = 0;
+        }
+    } )
 }
 
 /*
@@ -1715,7 +1727,7 @@ function goMerchantPayment() {
         setLoginLogoutButton();
 
         setTabs()
-        
+
         setModes()
 
         $( "#content form" ).submit( function(e) {
@@ -1735,17 +1747,13 @@ function goMerchantPayment() {
                 }
                 doc.to = to.name
                 doc.currency = to.currency
-                
-               
-                nfc.removeMimeTypeListener( "application/com.openmoney.mobile",
-                		window.nfcListner
-                , function() {
+
+                nfc.removeMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
                     // success callback
                 }, function() {
                     // failure callback
                 } );
-                
-                
+
                 var customerListner = function(nfcEvent) {
                     var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
 
@@ -1758,171 +1766,157 @@ function goMerchantPayment() {
                     // a payload that can be converted to a string.
                     log( nfc.bytesToString( ndefMessage[0].payload ) );
                     var payload = JSON.parse( nfc.bytesToString( ndefMessage[0].payload ) )
-                    if( typeof payload.key !== 'undefined') {
-                    	// do a lookup of the key
-                    	doTagLookup( payload.key, function (error, tradingnames) {
-                    		if( error ) alert( "Error: " + JSON.stringify( error ) ) 
-                    		else {
-                    			
-                    			
-                    			log( "Trading names: " + JSON.stringify( tradingnames ) )
-				            	//select a trading name in the same currency.
-				            	// TODO: have default currency accounts
-				            	var once = 1;
-				            	tradingnames.forEach( function( tradingname ) {
-				            		if (once == 1 && tradingname.value.currency == doc.currency) {
-				            			doc.from = tradingname.id;
-				            			once = 0;
-				            		}
-				            	} )
-				            	
-				            	if (!doc.from) {
-				            		return alert( "No trading name found for that currency." ) 
-				            	}
-				            	
-				            	config.db.get(  doc.from , function(error, from) {
-				                    if (error) {
-				                        if (error.status == 404) {
-				                            return alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" )
-				                        } else {
-				                            return alert( JSON.stringify( error ) )
-				                        }
-				                    }
-				                    doc.from = from.name
-				                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-				                        if (error) {
-				                            log( "Error: " + JSON.stringify( error ) )
-				                            if (error.status == 404) {
-				                                // doc does not exists
-				                                log( "insert new trading name journal" + JSON.stringify( doc ) )
-				                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-				                                    if (error)
-				                                        return alert( JSON.stringify( error ) )
-				                                    $( "#content form input[name='to']" ).val( "" ) // Clear
-				                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
-				                                    $( "#content form textarea" ).val( "" ) // Clear
-				                                    nfc.removeMimeTypeListener( "application/com.openmoney.mobile",
-				                                    		customerListner
-									                , function() {
-									                    // success callback
-									                }, function() {
-									                    // failure callback
-									                } );
-				                                    nfc.addMimeTypeListener( "application/com.openmoney.mobile",
-									                		window.nfcListner
-									                , function() {
-									                    // success callback
-									                }, function() {
-									                    // failure callback
-									                } );
-				                                    alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" )
-				                                    goList( "trading_name," + doc.to + "," + doc.currency )
-				                                } )
-				                            } else {
-				                                alert( "Error: ".JSON.stringify( error ) )
-				                            }
-				                        } else {
-				                            // doc exsits already
-				                            alert( "Payment already exists!" )
-				                        }
-				                    } )
-				                } )
-                    		}
-                    	} );
+                    if (typeof payload.key !== 'undefined') {
+                        // do a lookup of the key
+                        doTagLookup( payload.key, function(error, tradingnames) {
+                            if (error)
+                                alert( "Error: " + JSON.stringify( error ) )
+                            else {
+
+                                log( "Trading names: " + JSON.stringify( tradingnames ) )
+                                // select a trading name in the same currency.
+                                // TODO: have default currency accounts
+                                var once = 1;
+                                tradingnames.forEach( function(tradingname) {
+                                    if (once == 1 && tradingname.value.currency == doc.currency) {
+                                        doc.from = tradingname.id;
+                                        once = 0;
+                                    }
+                                } )
+
+                                if (!doc.from) { return alert( "No trading name found for that currency." ) }
+
+                                config.db.get( doc.from, function(error, from) {
+                                    if (error) {
+                                        if (error.status == 404) {
+                                            return alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" )
+                                        } else {
+                                            return alert( JSON.stringify( error ) )
+                                        }
+                                    }
+                                    doc.from = from.name
+                                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                                        if (error) {
+                                            log( "Error: " + JSON.stringify( error ) )
+                                            if (error.status == 404) {
+                                                // doc does not exists
+                                                log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                                    if (error)
+                                                        return alert( JSON.stringify( error ) )
+                                                    $( "#content form input[name='to']" ).val( "" ) // Clear
+                                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
+                                                    $( "#content form textarea" ).val( "" ) // Clear
+                                                    nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
+                                                        // success callback
+                                                    }, function() {
+                                                        // failure callback
+                                                    } );
+                                                    nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                                        // success callback
+                                                    }, function() {
+                                                        // failure callback
+                                                    } );
+                                                    alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" )
+                                                    goList( "trading_name," + doc.to + "," + doc.currency )
+                                                } )
+                                            } else {
+                                                alert( "Error: ".JSON.stringify( error ) )
+                                            }
+                                        } else {
+                                            // doc exsits already
+                                            alert( "Payment already exists!" )
+                                        }
+                                    } )
+                                } )
+                            }
+                        } );
                     }
                 };
-                    
-                
-                nfc.addMimeTypeListener( "application/com.openmoney.mobile",
-                		customerListner
-                , function() {
+
+                nfc.addMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
                     // success callback
-                	alert( "Pass terminal to the customer or scan tag." );
+                    alert( "Pass terminal to the customer or scan tag." );
                 }, function() {
                     // failure callback
-                	alert( "Pass terminal to the customer." );
+                    alert( "Pass terminal to the customer." );
                 } );
-                
-                
-                
-                drawContent( config.t.customer_payment( { "amount": doc.amount, "currency": doc.currency } ) )
-                
+
+                drawContent( config.t.customer_payment( {
+                    "amount" : doc.amount, "currency" : doc.currency
+                } ) )
+
                 $( "#content form" ).submit( function(e) {
-		            e.preventDefault()
-		            var customer = jsonform( this )
-		            
-		            doc.description = customer.description;
-		            
-		            var credentials = '{ "username" : "' + customer.email + '", "password" : "' + customer.password + '" }';
-		            doCustomerTradingNameLookup( credentials, function ( error, tradingnames ) {
-		            	if (error) return alert( JSON.stringify( error ) )
-		            	
-		            	log( "Trading names: " + JSON.stringify( tradingnames ) )
-		            	//select a trading name in the same currency.
-		            	// TODO: have default currency accounts
-		            	var once = 1;
-		            	tradingnames.forEach( function( tradingname ) {
-		            		if (once == 1 && tradingname.value.currency == doc.currency) {
-		            			customer.from = tradingname.id;
-		            			once = 0;
-		            		}
-		            	} )
-		            	
-		            	if (!customer.from) {
-		            		return alert( "No trading name found for that currency." ) 
-		            	}
-		            	
-		            	config.db.get(  customer.from , function(error, from) {
-		                    if (error) {
-		                        if (error.status == 404) {
-		                            return alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" )
-		                        } else {
-		                            return alert( JSON.stringify( error ) )
-		                        }
-		                    }
-		                    doc.from = from.name
-		                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-		                        if (error) {
-		                            log( "Error: " + JSON.stringify( error ) )
-		                            if (error.status == 404) {
-		                                // doc does not exists
-		                                log( "insert new trading name journal" + JSON.stringify( doc ) )
-		                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-		                                    if (error)
-		                                        return alert( JSON.stringify( error ) )
-		                                    $( "#content form input[name='to']" ).val( "" ) // Clear
-		                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
-		                                    $( "#content form textarea" ).val( "" ) // Clear
-		                                    
-		                                    nfc.removeMimeTypeListener( "application/com.openmoney.mobile",
-				                                    		customerListner
-							                , function() {
-							                    // success callback
-							                }, function() {
-							                    // failure callback
-							                } );
-		                                    
-		                                    nfc.addMimeTypeListener( "application/com.openmoney.mobile",
-							                		window.nfcListner
-							                , function() {
-							                    // success callback
-							                }, function() {
-							                    // failure callback
-							                } );
-		                                    alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" )
-		                                    goList( "trading_name," + doc.to + "," + doc.currency )
-		                                } )
-		                            } else {
-		                                alert( "Error: ".JSON.stringify( error ) )
-		                            }
-		                        } else {
-		                            // doc exsits already
-		                            alert( "Payment already exists!" )
-		                        }
-		                    } )
-		                } )
-		            } )
-	            } )
+                    e.preventDefault()
+                    var customer = jsonform( this )
+
+                    doc.description = customer.description;
+
+                    var credentials = '{ "username" : "' + customer.email + '", "password" : "' + customer.password + '" }';
+                    doCustomerTradingNameLookup( credentials, function(error, tradingnames) {
+                        if (error)
+                            return alert( JSON.stringify( error ) )
+
+                        log( "Trading names: " + JSON.stringify( tradingnames ) )
+                        // select a trading name in the same currency.
+                        // TODO: have default currency accounts
+                        var once = 1;
+                        tradingnames.forEach( function(tradingname) {
+                            if (once == 1 && tradingname.value.currency == doc.currency) {
+                                customer.from = tradingname.id;
+                                once = 0;
+                            }
+                        } )
+
+                        if (!customer.from) { return alert( "No trading name found for that currency." ) }
+
+                        config.db.get( customer.from, function(error, from) {
+                            if (error) {
+                                if (error.status == 404) {
+                                    return alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" )
+                                } else {
+                                    return alert( JSON.stringify( error ) )
+                                }
+                            }
+                            doc.from = from.name
+                            config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                                if (error) {
+                                    log( "Error: " + JSON.stringify( error ) )
+                                    if (error.status == 404) {
+                                        // doc does not exists
+                                        log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                        config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                            if (error)
+                                                return alert( JSON.stringify( error ) )
+                                            $( "#content form input[name='to']" ).val( "" ) // Clear
+                                            $( "#content form input[name='amount']" ).val( "" ) // Clear
+                                            $( "#content form textarea" ).val( "" ) // Clear
+
+                                            nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
+                                                // success callback
+                                            }, function() {
+                                                // failure callback
+                                            } );
+
+                                            nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                                // success callback
+                                            }, function() {
+                                                // failure callback
+                                            } );
+                                            alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" )
+                                            goList( "trading_name," + doc.to + "," + doc.currency )
+                                        } )
+                                    } else {
+                                        alert( "Error: ".JSON.stringify( error ) )
+                                    }
+                                } else {
+                                    // doc exsits already
+                                    alert( "Payment already exists!" )
+                                }
+                            } )
+                        } )
+                    } )
+                } )
             } )
         } )
     } )
@@ -1940,7 +1934,7 @@ function doCustomerTradingNameLookup(credentials, callBack) {
     if (config && config.user) {
         var url = REMOTE_CUSTOMER_TRADINGNAME_LOOKUP_URL;
         var login = coax( url );
-        
+
         log( "http " + url + " " + credentials )
         login.post( JSON.parse( credentials ), function(error, result) {
             if (error) { return callBack( error ) }
@@ -1953,7 +1947,6 @@ function doCustomerTradingNameLookup(credentials, callBack) {
         } )
     }
 }
-
 
 /*
  * Login and setup existing data for user account
@@ -2095,8 +2088,8 @@ function doServerLogout(callBack) {
                     log( JSON.stringify( error ) )
                 }
                 log( "Sync Replication Canceled" )
-                config.destroyDatabase( config.db, function (error, ok) {
-                    log( "Database Destroyed :" , error, ok)
+                config.destroyDatabase( config.db, function(error, ok) {
+                    log( "Database Destroyed :", error, ok )
                     config.db = null;
                     config.views = null;
                     setupConfig( function(error, ok) {
@@ -2130,26 +2123,26 @@ function registerFacebookToken(cb) {
 }
 
 function addMyUsernameToAllLists(cb) {
-	// TODO: update for currencies and currency_networks created as well
+    // TODO: update for currencies and currency_networks created as well
     config.views( [ "accounts", {
         include_docs : true
     } ], function(err, view) {
         if (err) { return cb( err ) }
         var docs = [];
         view.rows.forEach( function(row) {
-        	if (!row.doc.steward) {
-        		row.doc.steward = [ config.user.name ];
-        	} else {
-        		if(Array.isArray(row.doc.steward)) {
-        			var newStewardList = [];
-	        		row.doc.steward.forEach( function (steward) {
-	        			if( steward == null ) {
-	        				newStewardList.push( config.user.name );
-	        				row.doc.steward = newStewardList;
-	        			}
-	        		} )
-        		}
-        	}
+            if (!row.doc.steward) {
+                row.doc.steward = [ config.user.name ];
+            } else {
+                if (Array.isArray( row.doc.steward )) {
+                    var newStewardList = [];
+                    row.doc.steward.forEach( function(steward) {
+                        if (steward == null) {
+                            newStewardList.push( config.user.name );
+                            row.doc.steward = newStewardList;
+                        }
+                    } )
+                }
+            }
             docs.push( row.doc )
         } )
         config.db.post( "_bulk_docs", {
@@ -2164,12 +2157,12 @@ function addMyUsernameToAllLists(cb) {
 function createBeamTag(cb) {
     log( "createBeamTag user " + JSON.stringify( config.user ) )
     var userData = JSON.parse( JSON.stringify( config.user ) );
-    var beamData = { };
+    var beamData = {};
     beamData.type = "beamtag";
     beamData.username = config.user.name;
     beamData.sessionID = userData.sessionID;
     beamData.expires = userData.expires;
-    
+
     function randomString(length, chars) {
         var result = '';
         for ( var i = length; i > 0; --i)
@@ -2181,38 +2174,41 @@ function createBeamTag(cb) {
     beamData.initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 
     var pinCode = config.user.sessionID
-    
+
     // for more information on mcrypt
     // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
-    // note the key that should be used instead of the hashID should be the users private RSA key.
+    // note the key that should be used instead of the hashID should be the
+    // users private RSA key.
     encodedString = mcrypt.Encrypt( pinCode, beamData.initializationVector, beamData.hashTag, 'rijndael-256', 'cbc' );
 
     beamData.base64_encodedString = base64_encode( encodedString )
 
     log( " BeamTag: " + JSON.stringify( beamData ) )
 
-    var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( { key : beamData.hashTag } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+    var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
+        key : beamData.hashTag
+    } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
 
     var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
 
     var message = [ mime, aar ];
 
     nfc.share( message, function() {
-    	alert( "openmoney transmit identity complete!" )
+        alert( "openmoney transmit identity complete!" )
     }, function() {
-    	log( "Failed to beam!" )
+        log( "Failed to beam!" )
     } );
-    
+
     log( "createBeamTag put " + JSON.stringify( beamData ) )
     // Check if Profile Document Exists
     config.db.get( "beamtag," + beamData.username + "," + beamData.hashTag, function(error, doc) {
         if (error) {
-        	log( "Error: " + JSON.stringify( error ) )
+            log( "Error: " + JSON.stringify( error ) )
             if (error.status == 404) {
-            	// doc does not exists
-            	config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
+                // doc does not exists
+                config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
             } else {
-            	alert(" Error Posting Beam Tag:" + JSON.stringify( error ) )
+                alert( " Error Posting Beam Tag:" + JSON.stringify( error ) )
             }
         } else {
             beamData = doc;
@@ -2510,7 +2506,7 @@ function setupConfig(done) {
                                     }
                                 }
                             }
-                        }, db : db, destroyDatabase: destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
+                        }, db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
                     }
                     if (config.user && config.user.user_id) {
                         if (SERVER_LOGIN) {
@@ -2534,9 +2530,9 @@ function setupConfig(done) {
             } )
         } )
     }
-    
+
     function destroyDb(db, cb) {
-    	db.get( function(err, res, body) {
+        db.get( function(err, res, body) {
             console.log( JSON.stringify( [ "before destroy db del", err, res, body ] ) )
             db.del( function(err, res, body) {
                 db.get( cb )
