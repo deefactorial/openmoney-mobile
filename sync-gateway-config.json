@@ -163,10 +163,10 @@
                         if (!doc.steward || !doc.name || !doc.currency ) {
                             throw( { forbidden: "Missing required properties" } );
                         }
+                        requireUser( doc.steward )
                         access( doc.steward , "currency" + channelDelimiter + currency)
                         access( doc.steward , table + channelDelimiter + trading_name + channelDelimiter + currency )
                         role( doc.steward, "role:trading_name," + doc.name + "," + doc.currency)
-                        requireUser( doc.steward )
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
