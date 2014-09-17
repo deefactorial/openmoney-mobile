@@ -786,66 +786,75 @@ function goCurrency() {
     }
     config.views( [ "spaces", {
         include_docs : true
-    } ], function(error, view) {
+    } ], function(error, spacesData) {
         if (error) { return alert( JSON.stringify( error ) ) }
 
-        drawContent( config.t.currency( view ) )
-
-        $( "#content .om-index" ).click( function() {
-            goSettings()
-        } )
-
-        setTabs()
-
-        $( "#content form" ).submit( function(e) {
-            e.preventDefault()
-            var doc = jsonform( this )
-            doc.type = "currency"
-            doc.steward = [ config.user.user_id ]
-            if (doc.space != '')
-                doc.currency = doc.symbol + "." + doc.space;
-            else
-                doc.currency = doc.symbol;
-            config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
-                if (error) {
-                    log( "Error: " + JSON.stringify( error ) )
-                    if (error.status == 404) {
-                        // doc does not exists
-                        log( "insert new currency" + JSON.stringify( doc ) )
-                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                            if (error)
-                                return alert( JSON.stringify( error ) )
-                        	$( "#content form input[name='currency']" ).val( "" ) // Clear
-                        	goSettings()
-                            alert( "You successfully created a new currency !" )
-                            
-                        } )
-
-                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
-                        
-	                        var tradingNameDoc = { "type":"trading_name", "name": doc.currency, "space": doc.space, "currency": doc.space, "steward": [ config.user.name ] };
-	                        config.db.put( tradingNameDoc.type + "," + tradingNameDoc.name,  JSON.parse( JSON.stringify( tradingNameDoc ) ), function (error, ok) { 
-	                        	if (error)
+        var currencyPage = {"spaces": spacesData.rows }
+        
+        config.views( [ "currencies", {
+            include_docs : true
+        } ], function(error, currenciesData) {
+            if (error) { return alert( JSON.stringify( error ) ) }
+            
+            currencyPage.currencies = currenciesData.rows;
+        
+	        drawContent( config.t.currency( currencyPage ) )
+	
+	        $( "#content .om-index" ).click( function() {
+	            goSettings()
+	        } )
+	
+	        setTabs()
+	
+	        $( "#content form" ).submit( function(e) {
+	            e.preventDefault()
+	            var doc = jsonform( this )
+	            doc.type = "currency"
+	            doc.steward = [ config.user.user_id ]
+	            if (doc.space != '')
+	                doc.currency = doc.symbol + "." + doc.space;
+	            else
+	                doc.currency = doc.symbol;
+	            config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
+	                if (error) {
+	                    log( "Error: " + JSON.stringify( error ) )
+	                    if (error.status == 404) {
+	                        // doc does not exists
+	                        log( "insert new currency" + JSON.stringify( doc ) )
+	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	                            if (error)
 	                                return alert( JSON.stringify( error ) )
+	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear
+	                        	goSettings()
+	                            alert( "You successfully created a new currency !" )
+	                            
 	                        } )
+	
+	                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
 	                        
-	                        var spaceDoc = {"type":"space", "space": doc.currency, "subspace": doc.space, "steward": [ config.user.name ] };
-	                    	config.db.put( "space," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
-	                    		 if (error)
-	                                 return alert( JSON.stringify( error ) )
-	                    	} );
-                    	
-                        }
-                        
-                    } else {
-                        alert( "Error: ".JSON.stringify( error ) )
-                    }
-                } else {
-                    // doc exsits already
-                    alert( "Currency already exists!" )
-                }
-            } )
-
+		                        var tradingNameDoc = { "type":"trading_name", "name": doc.currency, "space": doc.space, "currency": doc.space, "steward": [ config.user.name ] };
+		                        config.db.put( tradingNameDoc.type + "," + tradingNameDoc.name,  JSON.parse( JSON.stringify( tradingNameDoc ) ), function (error, ok) { 
+		                        	if (error)
+		                                return alert( JSON.stringify( error ) )
+		                        } )
+		                        
+		                        var spaceDoc = {"type":"space", "space": doc.currency, "subspace": doc.space, "steward": [ config.user.name ] };
+		                    	config.db.put( "space," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
+		                    		 if (error)
+		                                 return alert( JSON.stringify( error ) )
+		                    	} );
+	                    	
+	                        }
+	                        
+	                    } else {
+	                        alert( "Error: ".JSON.stringify( error ) )
+	                    }
+	                } else {
+	                    // doc exsits already
+	                    alert( "Currency already exists!" )
+	                }
+	            } )
+	        } )
         } )
     } )
 }
@@ -931,64 +940,6 @@ function goSpace() {
             } )
         } )
     } )
-}
-
-/*
- * Create Currency Network Settings Page
- */
-
-function goCurrencyNetwork() {
-
-    window.dbChanged = function() {
-    }
-    config.views( [ "currency_networks", {
-        include_docs : true
-    } ], function(error, view) {
-        if (error) { return alert( JSON.stringify( error ) ) }
-
-        drawContent( config.t.currency_network( view ) )
-
-        $( "#content .om-index" ).click( function() {
-            goSettings()
-        } )
-
-        setTabs()
-
-        $( "#content form" ).submit( function(e) {
-            e.preventDefault()
-            var doc = jsonform( this )
-            doc.type = "currency_network"
-            doc.steward = [ config.user.user_id ]
-
-            if (doc.currency_subnetwork != '')
-                doc.name = doc.currency_network + "." + doc.currency_subnetwork;
-            else
-                doc.name = doc.currency_network;
-
-            config.db.get( doc.type + "," + doc.name, function(error, existingdoc) {
-                if (error) {
-                    log( "Error: " + JSON.stringify( error ) )
-                    if (error.status == 404) {
-                        // doc does not exists
-                        log( "insert new currency network" + JSON.stringify( doc ) )
-                        config.db.put( doc.type + "," + doc.name, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                            if (error)
-                                return alert( JSON.stringify( error ) )
-                            $( "#content form input[name='currency_network']" ).val( "" ) // Clear
-                            alert( "You successfully created a new currency network !" )
-                            goSettings()
-                        } )
-                    } else {
-                        alert( "Error: ".JSON.stringify( error ) )
-                    }
-                } else {
-                    // doc exsits already
-                    alert( "Currency Network Already Exists!" )
-                }
-            } )
-        } )
-    } )
-
 }
 
 /*
@@ -2622,6 +2573,12 @@ function setupConfig(done) {
                             }
                         }
                         return result;
+                    }.toString()
+                }, currencies : {
+                    map : function(doc) {
+                        if (doc.type == "currency" && doc.currency && doc.steward) {
+                            emit( doc.currency, { "currency": doc.currency, "name": doc.name } )
+                        }
                     }.toString()
                 }, spaces : {
                     map : function(doc) {

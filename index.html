@@ -450,9 +450,9 @@
 				<li class="topcoat-list__item" data-id="space">
 					<select name="space" class="om-select-dark" >
 						<option value="" selected="selected">Space</option>
-						{{#rows}}
+						{{#spaces}}
 							<option value="{{id}}">{{key}}</option>
-        				{{/rows}}
+        				{{/spaces}}
 					</select>
 				</li>
 				<li class="topcoat-list__item" data-id="submit">
@@ -467,7 +467,7 @@
                 <h1 style="text-align:center">Currency List</h1>
             </li>
         {{#currencies}}
-            <li class="om-list-name topcoat-list__item" data-id="{{key}}">{{key}}</li>
+            <li class="om-list-name topcoat-list__item" data-id="{{key}}">{{key}} - {{#value}}{{name}}{{/value}}</li>
         {{/currencies}}
         </ul>
     </div>
