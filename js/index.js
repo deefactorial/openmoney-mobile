@@ -177,7 +177,7 @@ function goIndex() {
 	
     drawContent( config.t.index() )
     
-    navigator.notification.activityStop();
+    window.plugins.spinnerDialog.hide();
     
     $( "#content form" ).submit( function(e) {
         e.preventDefault()
@@ -303,7 +303,7 @@ function setLoginLogoutButton() {
 
 function setTabs() {
     $( "#content .om-accounts" ).click( function() {
-    	navigator.notification.activityStart("Going to Accounts...", "loading");
+    	window.plugins.spinnerDialog.show();
         goIndex()
     } )
 
