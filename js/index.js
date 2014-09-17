@@ -639,10 +639,15 @@ function goLostPassword(callBack) {
 
     $( "#content form" ).submit( function(e) {
         e.preventDefault()
+        
+        window.plugins.spinnerDialog.show();
+        
         var doc = jsonform( this );
+        
         config.user = {};
         config.user.name = doc.email;
         doLostPassword( function(error, result) {
+        	window.plugins.spinnerDialog.hide();
             if (error) { return alert( error.msg ) }
             $( "#content form input[name='email']" ).val( "" ) // Clear email
             alert( "A password reset token has been emailed to you!" );
