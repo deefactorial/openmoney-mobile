@@ -698,6 +698,7 @@ function goSettings() {
     drawContent( config.t.settings() )
 
     $( "#content .om-index" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goIndex()
     } )
 
@@ -706,26 +707,32 @@ function goSettings() {
     setTabs()
 
     $( "#content .om-trading_name" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goTradingName()
     } )
 
     $( "#content .om-currency" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goCurrency()
     } )
     
     $( "#content .om-space" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goSpace()
     } )
 
     $( "#content .om-export_transactions" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goExportTransactions()
     } )
 
     $( "#content .om-server" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goServer()
     } )
 
     $( "#content .om-profile" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goProfile()
     } )
 
@@ -755,6 +762,8 @@ function goTradingName() {
         } )
 
         setTabs()
+        
+        window.plugins.spinnerDialog.hide();
 
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
@@ -831,10 +840,13 @@ function goCurrency() {
 	        drawContent( config.t.currency( currencyPage ) )
 	
 	        $( "#content .om-index" ).click( function() {
+	        	window.plugins.spinnerDialog.show();
 	            goSettings()
 	        } )
 	
 	        setTabs()
+	        
+	        window.plugins.spinnerDialog.hide();
 	
 	        $( "#content form" ).submit( function(e) {
 	            e.preventDefault()
@@ -897,6 +909,7 @@ function goProfile() {
     drawContent( config.t.profile() )
 
     $( "#content .om-index" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goSettings()
     } )
 
@@ -919,10 +932,13 @@ function goSpace() {
         drawContent( config.t.space( view ) )
 
         $( "#content .om-index" ).click( function() {
+        	window.plugins.spinnerDialog.show();
             goSettings()
         } )
 
         setTabs()
+        
+        window.plugins.spinnerDialog.hide();
 
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
@@ -980,6 +996,7 @@ function goServer() {
     drawContent( config.t.server() )
 
     $( "#content .om-index" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goSettings()
     } )
 
@@ -994,6 +1011,7 @@ function goExportTransactions() {
     drawContent( config.t.export_transactions() )
 
     $( "#content .om-index" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goSettings()
     } )
 
@@ -1006,10 +1024,11 @@ function goExportTransactions() {
 
 function goManageNFC() {
     window.dbChanged = function() {
-
+    	window.plugins.spinnerDialog.show();
         config.views( [ "nfc_tags", {
             startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true
         } ], function(error, view) {
+        	window.plugins.spinnerDialog.hide();
             if (error) { return alert( JSON.stringify( error ) ) }
 
             log( "nfc_tags: " + JSON.stringify( view ) )
