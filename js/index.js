@@ -784,7 +784,7 @@ function goTradingName() {
 function goCurrency() {
     window.dbChanged = function() {
     }
-    config.views( [ "space", {
+    config.views( [ "spaces", {
         include_docs : true
     } ], function(error, view) {
         if (error) { return alert( JSON.stringify( error ) ) }
