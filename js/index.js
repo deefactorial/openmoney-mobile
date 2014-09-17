@@ -177,6 +177,8 @@ function goIndex() {
 	
     drawContent( config.t.index() )
     
+    navigator.notification.activityStop();
+    
     $( "#content form" ).submit( function(e) {
         e.preventDefault()
         var doc = jsonform( this )
@@ -301,6 +303,7 @@ function setLoginLogoutButton() {
 
 function setTabs() {
     $( "#content .om-accounts" ).click( function() {
+    	navigator.notification.activityStart("Going to Accounts...", "loading");
         goIndex()
     } )
 
