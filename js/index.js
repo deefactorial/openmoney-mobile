@@ -547,12 +547,17 @@ function goServerLogin(callBack) {
 
     $( "#content form" ).submit( function(e) {
         e.preventDefault()
+        
+        window.plugins.spinnerDialog.show();
+        
         var doc = jsonform( this );
         config.user = {};
         config.user.name = doc.email;
         config.user.password = doc.password;
         doFirstLogin( function(error, result) {
-
+        	
+        	window.plugins.spinnerDialog.hide();
+        	
             callBack( error )
             // $( "#content form input[name='email']" ).val( "" ) // Clear email
             // $( "#content form input[name='password']" ).val( "" ) // Clear
@@ -577,11 +582,17 @@ function goServerRegistration(callBack) {
 
     $( "#content form" ).submit( function(e) {
         e.preventDefault()
+        
+        window.plugins.spinnerDialog.show();
+        
         var doc = jsonform( this );
         config.user = {};
         config.user.name = doc.email;
         config.user.password = doc.password;
         doRegistration( function(error, result) {
+        	
+        	window.plugins.spinnerDialog.hide();
+        	
             if (error) { return loginErr( error ) }
             $( "#content form input[name='email']" ).val( "" ) // Clear email
             $( "#content form input[name='password']" ).val( "" ) // Clear
@@ -1525,10 +1536,12 @@ function goPayment() {
 
 function setModes() {
     $( "#content .om-personal" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goPayment()
     } )
 
     $( "#content .om-merchant" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goMerchantPayment()
     } )
 }
@@ -1592,6 +1605,8 @@ function goTagPayment(tradingNames) {
 
         setModes()
 
+        window.plugins.spinnerDialog.hide();
+        
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
@@ -1733,6 +1748,8 @@ function goMerchantPayment() {
         setTabs()
 
         setModes()
+        
+        window.plugins.spinnerDialog.hide();
 
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
