@@ -202,8 +202,10 @@ function goIndex() {
 
     setTabs();
 
+    window.plugins.spinnerDialog.hide();
     // when the database changes, update the UI to reflect new lists
     window.dbChanged = function() {
+    	window.plugins.spinnerDialog.show();
         config.views( [ "accounts", {
             descending : true
         } ], function(err, view) {
@@ -310,10 +312,12 @@ function setTabs() {
     } )
 
     $( "#content .om-payments" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goPayment()
     } )
 
     $( "#content .om-settings" ).click( function() {
+    	window.plugins.spinnerDialog.show();
         goSettings()
     } )
 }
@@ -709,6 +713,8 @@ function goSettings() {
     $( "#content .om-manage_nfc" ).click( function() {
         goManageNFC()
     } )
+    
+    window.plugins.spinnerDialog.hide();
 }
 
 /*
@@ -1456,6 +1462,8 @@ function goPayment() {
 
         setModes()
 
+        window.plugins.spinnerDialog.hide();
+        
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
