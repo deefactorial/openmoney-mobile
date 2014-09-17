@@ -177,14 +177,14 @@
                             requireUser(olddoc.steward);
                         }
                     }
-                } else if (table == "trading_name_space") {
-                    var trading_name_space = index;                 
-                    channel(table + channelDelimiter + trading_name_space);
+                } else if (doc.type == "space") {
+                    var space = doc.space;              
+                    channel(table + channelDelimiter + space);
                     if (olddoc == null) {
                         if (!doc.steward) {
                             throw({forbidden: "Missing required properties"});
                         }
-                        access(doc.steward, table + channelDelimiter + trading_name_space);
+                        access(doc.steward, table + channelDelimiter + space);
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
@@ -199,7 +199,7 @@
                     var currency = base64_encode( doc.currency );
                     channel(table + channelDelimiter + currency);
                     if (olddoc == null) {
-                        if (!doc.steward || !doc.currency || !doc.name || !doc.currency_network) {
+                        if (!doc.steward || !doc.currency || !doc.name ) {
                             throw({forbidden: "Missing required properties"});
                         } else if (! Array.isArray(doc.steward) ) {
                             throw({forbidden: "Steward array missing."});
@@ -222,24 +222,6 @@
                             } else if (doc.name.length < 2) { 
                                 throw({forbidden: "Please enter a currency name"});
                             }
-                            requireUser(olddoc.steward);
-                        }
-                    }
-                } else if (table == "currency_network") {
-                    var currency_network = index;                   
-                    channel(table + channelDelimiter + currency_network);
-                    if (olddoc == null) {
-                        if (!doc.steward) {
-                            throw({forbidden: "Missing required properties"});
-                        }
-                        access(doc.steward, table + channelDelimiter + currency_network);
-                    } else {
-                        if (doc._deleted) {
-                            requireUser(olddoc.steward);
-                        } else {
-                            if (!doc.steward) {
-                                throw({forbidden: "Missing required properties"});
-                            } 
                             requireUser(olddoc.steward);
                         }
                     }

@@ -109,6 +109,20 @@ label.todo-list-item {
 	float:left;
 }
 
+.om-list-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+label.om-list-item {
+    width: -webkit-calc(100% - 30px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    float:left;
+}
+
 br.clear {
 	height: 0;
 	clear: both;
@@ -222,7 +236,7 @@ br.clear {
 	width: 100%;
 }
 
-.topcoat-button.om-trading_space {
+.topcoat-button.om-space {
     line-height: 2rem;
     padding: 0 0.6rem 2px 0.6rem;
     letter-spacing: 0;

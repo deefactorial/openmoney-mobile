@@ -24,7 +24,7 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/topcoat-mobile-dark.min.css">
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Todo Lite</title>
+        <title>openmoney</title>
     </head>
     <body>
         <div id="content"></div>
@@ -79,7 +79,7 @@
 <div class="topcoat-list__container">
     <ul class="topcoat-list">
     {{#rows}}
-        <li class="todo-list-name topcoat-list__item" data-id="{{id}}">
+        <li class="om-list-name topcoat-list__item" data-id="{{id}}">
 			{{#key}}
             	{{trading_name}} {{currency}}
             	<button class="todo-delete topcoat-button">Delete</button>
@@ -333,14 +333,11 @@
         		<li class="topcoat-list__item" data-id="trading_name">
             		<button class="om-trading_name topcoat-button">Join Currency</button>
 				</li>
-                <li class="topcoat-list__item" data-id="trading_space">
-                    <button class="om-trading_space topcoat-button">Create Trading Space</button>
-                </li>
 				<li class="topcoat-list__item" data-id="currency">
 					<button class="om-currency topcoat-button">Create Currency</button>
 				</li>
-                <li class="topcoat-list__item" data-id="currency_network">
-                    <button class="om-currency_network topcoat-button">Create Currency Network</button>
+                <li class="topcoat-list__item" data-id="space">
+                    <button class="om-space topcoat-button">Create Space</button>
                 </li>
                 <li class="topcoat-list__item" data-id="export_transactions">
                     <button class="om-export_transactions topcoat-button">Export Transactions</button>
@@ -393,9 +390,9 @@
 				<li class="topcoat-list__item" data-id="trading_name">
             		<input type="text" class="topcoat-text-input" name="trading_name" value="" placeholder="Trading Name" /> 
 				</li>
-				<li class="topcoat-list__item" data-id="trading_name_space">
-					<select name="trading_name_space" class="om-select-dark" >
-						<option value="" selected="selected">Trading Name Space</option>
+				<li class="topcoat-list__item" data-id="space">
+					<select name="space" class="om-select-dark" >
+						<option value="" selected="selected">Space</option>
 						{{#rows}}
 							<option value="{{key}}">{{key}}</option>
         				{{/rows}}
@@ -450,9 +447,9 @@
         		<li class="topcoat-list__item" data-id="currency">
             		<input type="text" class="topcoat-text-input" name="name" value="" placeholder="Currency Name" /> 
 				</li>
-				<li class="topcoat-list__item" data-id="currency_network">
-					<select name="currency_network" class="om-select-dark" >
-						<option value="" selected="selected">Currency Network</option>
+				<li class="topcoat-list__item" data-id="space">
+					<select name="space" class="om-select-dark" >
+						<option value="" selected="selected">Space</option>
 						{{#rows}}
 							<option value="{{id}}">{{key}}</option>
         				{{/rows}}
@@ -464,6 +461,16 @@
     		</ul>
  		</form>
 	</div>
+    <div class="topcoat-list__container">
+        <ul class="topcoat-list">
+            <li class="topcoat-list__item" data-id="list">
+                <h1 style="text-align:center">Currency List</h1>
+            </li>
+        {{#currencies}}
+            <li class="om-list-name topcoat-list__item" data-id="{{key}}">{{key}}</li>
+        {{/currencies}}
+        </ul>
+    </div>
 </div>
 </script>
 <script type="text/mustache" id="profile-mu">
@@ -500,14 +507,14 @@
 	</div>
 </div>
 </script>
-<script type="text/mustache" id="trading_space-mu">
+<script type="text/mustache" id="space-mu">
 <header>
     <div class="topcoat-navigation-bar">
         <div class="topcoat-navigation-bar__item left quarter om-padded">
             <button class="om-index topcoat-button todo-small">&larr;</button>
         </div>
         <div class="topcoat-navigation-bar__item center half">
-           <h1 class="topcoat-navigation-bar__title">Create Trading Space</h1>
+           <h1 class="topcoat-navigation-bar__title">Create Space</h1>
         </div>
         <div class="topcoat-navigation-bar__item right quarter om-padded">
             
@@ -533,10 +540,10 @@
         <form>
             <ul class="topcoat-list">
                 <li class="topcoat-list__item" data-id="trading_space">
-                    <input type="text" class="topcoat-text-input" name="trading_space" value="" placeholder="Space Name" /> 
+                    <input type="text" class="topcoat-text-input" name="space" value="" placeholder="Space Name" /> 
                 </li>
                 <li class="topcoat-list__item" data-id="trading_name_subspace">
-                    <select name="trading_name_subspace" class="om-select-dark" >
+                    <select name="subspace" class="om-select-dark" >
                         <option value="" selected="selected">Sub Space</option>
                         {{#rows}}
                             <option value="{{key}}">{{key}}</option>
@@ -544,61 +551,20 @@
                     </select>
                 </li>
                 <li class="topcoat-list__item" data-id="submit">
-                    <input type="submit" class="topcoat-button" name="submit" value=" Create Trading Space " /> 
+                    <input type="submit" class="topcoat-button" name="submit" value=" Create Space " /> 
                 </li>
             </ul>
         </form>
     </div>
-</div>
-</script>
-<script type="text/mustache" id="currency_network-mu">
-<header>
-    <div class="topcoat-navigation-bar">
-        <div class="topcoat-navigation-bar__item left quarter om-padded">
-            <button class="om-index topcoat-button todo-small">&larr;</button>
-        </div>
-        <div class="topcoat-navigation-bar__item center half">
-           <h1 class="topcoat-navigation-bar__title">Create Currency Network</h1>
-        </div>
-        <div class="topcoat-navigation-bar__item right quarter om-padded">
-            
-        </div>
-    </div>
-    <div class="topcoat-tab-bar">
-        <label class="topcoat-tab-bar__item">
-            <input type="radio" name="tab-bar">
-            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
-        </label>
-        <label class="topcoat-tab-bar__item">
-            <input type="radio" name="tab-bar">
-            <button class="om-payments topcoat-tab-bar__button">payment</button>
-        </label>
-        <label class="topcoat-tab-bar__item">
-            <input type="radio" name="tab-bar">
-            <button class="om-settings topcoat-tab-bar__button">settings</button>
-        </label>
-    </div>
-</header>
-<div id="scrollable">
-    <div class="topcoat-list__container">
-        <form>
-            <ul class="topcoat-list">
-                <li class="topcoat-list__item" data-id="currency_network">
-                    <input type="text" class="topcoat-text-input" name="currency_network" value="" placeholder="Currency Network Name" /> 
-                </li>
-                <li class="topcoat-list__item" data-id="currency_subnetwork">
-                    <select name="currency_subnetwork" class="om-select-dark" >
-                        <option value="" selected="selected">Sub Network</option>
-                        {{#rows}}
-                            <option value="{{key}}">{{key}}</option>
-                        {{/rows}}
-                    </select>
-                </li>
-                <li class="topcoat-list__item" data-id="submit">
-                    <input type="submit" class="topcoat-button" name="submit" value=" Create Currency Network " /> 
-                </li>
-            </ul>
-        </form>
+    <div class="topcoat-list__container">       
+        <ul class="topcoat-list">
+            <li class="topcoat-list__item" data-id="list">
+                <h1 style="text-align:center">Space List</h1>
+            </li>
+        {{#rows}}
+            <li class="om-list-name topcoat-list__item" data-id="{{key}}">{{key}}</li>
+        {{/rows}}
+        </ul>
     </div>
 </div>
 </script>

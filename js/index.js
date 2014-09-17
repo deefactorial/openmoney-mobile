@@ -681,16 +681,12 @@ function goSettings() {
         goTradingName()
     } )
 
-    $( "#content .om-trading_space" ).click( function() {
-        goTradingSpace()
-    } )
-
     $( "#content .om-currency" ).click( function() {
         goCurrency()
     } )
-
-    $( "#content .om-currency_network" ).click( function() {
-        goCurrencyNetwork()
+    
+    $( "#content .om-space" ).click( function() {
+        goSpace()
     } )
 
     $( "#content .om-export_transactions" ).click( function() {
@@ -717,13 +713,13 @@ function goSettings() {
 function goTradingName() {
     window.dbChanged = function() {
     }
-    config.views( [ "trading_name_spaces", {
+    config.views( [ "spaces", {
         include_docs : true
     } ], function(error, view) {
         if (error) { return alert( JSON.stringify( error ) ) }
 
         drawContent( config.t.trading_name( view ) )
-
+        
         $( "#content .om-index" ).click( function() {
             goSettings()
         } )
@@ -736,8 +732,8 @@ function goTradingName() {
             doc.type = "trading_name";
             doc.steward = [ config.user.user_id ];
             if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { return alert( 'The Trading Name you entered is not valid!' ); }
-            if (doc.trading_name_space != '')
-                doc.name = doc.trading_name + "." + doc.trading_name_space;
+            if (doc.space != '')
+                doc.name = doc.trading_name + "." + doc.space;
             else
                 doc.name = doc.trading_name;
             config.db.get( doc.type + "," + doc.name + "," + doc.currency, function(error, existingdoc) {
@@ -751,9 +747,23 @@ function goTradingName() {
                                 return alert( JSON.stringify( error ) )
                             $( "#content form input[name='trading_name']" ).val( "" ) // Clear
                             $( "#content form input[name='currency']" ).val( "" ) // Clear
-                            alert( "You successfully created a new trading name !" )
                             goSettings()
+                            alert( "You successfully created a new trading name !" )
                         } )
+                        
+                    	var spaceDoc = {"type":"space", "space": doc.name, "subspace": doc.space, "steward": [ config.user.name ] };
+                    	config.db.put( "space," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
+                    		 if (error)
+                                 return alert( JSON.stringify( error ) )
+                    	} );
+                    	
+                    	var currencyDoc = {"type":"currency", "currency": doc.name, "space": doc.space, "name": doc.tradingname + " Currency in " + doc.space + " Space"  , "steward": [ config.user.name ] };
+                    	config.db.put( "currency," + doc.currencyDoc, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
+                    		 if (error)
+                                 return alert( JSON.stringify( error ) )
+                    	} );
+                    	
+                    	
                     } else {
                         alert( "Error: ".JSON.stringify( error ) )
                     }
@@ -774,7 +784,7 @@ function goTradingName() {
 function goCurrency() {
     window.dbChanged = function() {
     }
-    config.views( [ "currency_networks", {
+    config.views( [ "space", {
         include_docs : true
     } ], function(error, view) {
         if (error) { return alert( JSON.stringify( error ) ) }
@@ -792,8 +802,8 @@ function goCurrency() {
             var doc = jsonform( this )
             doc.type = "currency"
             doc.steward = [ config.user.user_id ]
-            if (doc.currency_network != '')
-                doc.currency = doc.symbol + "." + doc.currency_network;
+            if (doc.space != '')
+                doc.currency = doc.symbol + "." + doc.space;
             else
                 doc.currency = doc.symbol;
             config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
@@ -803,13 +813,30 @@ function goCurrency() {
                         // doc does not exists
                         log( "insert new currency" + JSON.stringify( doc ) )
                         config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                            $( "#content form input[name='currency']" ).val( "" ) // Clear
-                            // Currency
                             if (error)
                                 return alert( JSON.stringify( error ) )
+                        	$( "#content form input[name='currency']" ).val( "" ) // Clear
+                        	goSettings()
                             alert( "You successfully created a new currency !" )
-                            goSettings()
+                            
                         } )
+
+                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
+                        
+	                        var tradingNameDoc = { "type":"trading_name", "name": doc.currency, "space": doc.space, "currency": doc.space, "steward": [ config.user.name ] };
+	                        config.db.put( tradingNameDoc.type + "," + tradingNameDoc.name,  JSON.parse( JSON.stringify( tradingNameDoc ) ), function (error, ok) { 
+	                        	if (error)
+	                                return alert( JSON.stringify( error ) )
+	                        } )
+	                        
+	                        var spaceDoc = {"type":"space", "space": doc.currency, "subspace": doc.space, "steward": [ config.user.name ] };
+	                    	config.db.put( "space," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
+	                    		 if (error)
+	                                 return alert( JSON.stringify( error ) )
+	                    	} );
+                    	
+                        }
+                        
                     } else {
                         alert( "Error: ".JSON.stringify( error ) )
                     }
@@ -841,16 +868,16 @@ function goProfile() {
  * Create Trading Name Space Settings Page
  */
 
-function goTradingSpace() {
+function goSpace() {
 
     window.dbChanged = function() {
     }
-    config.views( [ "trading_name_spaces", {
+    config.views( [ "spaces", {
         include_docs : true
     } ], function(error, view) {
         if (error) { return alert( JSON.stringify( error ) ) }
 
-        drawContent( config.t.trading_space( view ) )
+        drawContent( config.t.space( view ) )
 
         $( "#content .om-index" ).click( function() {
             goSettings()
@@ -861,27 +888,39 @@ function goTradingSpace() {
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
-            doc.type = "trading_name_space"
+            doc.type = "space"
             doc.steward = [ config.user.user_id ]
-            if (doc.trading_name_subspace != '')
-                doc.space = doc.trading_space + "." + doc.trading_name_subspace;
-            else
-                doc.space = doc.trading_space;
+            if (doc.subspace != '')
+                doc.space = doc.space + "." + doc.subspace;
 
             config.db.get( doc.type + "," + doc.space, function(error, existingdoc) {
                 if (error) {
                     log( "Error: " + JSON.stringify( error ) )
                     if (error.status == 404) {
                         // doc does not exists
-                        log( "insert new trading space" + JSON.stringify( doc ) )
+                        log( "insert new space" + JSON.stringify( doc ) )
                         config.db.put( doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 
                             if (error)
                                 return alert( JSON.stringify( error ) )
-                            $( "#content form input[name='trading_space']" ).val( "" ) // Clear
+                            $( "#content form input[name='space']" ).val( "" ) // Clear
                             alert( "You successfully created a new trading space !" )
                             goSettings()
                         } )
+                        
+                        var tradingNameDoc = { "type":"trading_name", "name": doc.space, "space": doc.subspace, "currency": doc.subspace, "steward": [ config.user.name ] };
+	                    config.db.put( tradingNameDoc.type + "," + tradingNameDoc.name,  JSON.parse( JSON.stringify( tradingNameDoc ) ), function (error, ok) { 
+                        	if (error)
+                                return alert( JSON.stringify( error ) )
+                        } )
+                        
+                        var currencyDoc = {"type":"currency", "currency": doc.space, "space": doc.subspace, "name": doc.space + " Currency in " + doc.subspace + " Space"  , "steward": [ config.user.name ] };
+                    	config.db.put( "currency," + doc.currencyDoc, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
+                    		 if (error)
+                                 return alert( JSON.stringify( error ) )
+                    	} );
+                   
+                        
                     } else {
                         alert( "Error: ".JSON.stringify( error ) )
                     }
@@ -933,7 +972,6 @@ function goCurrencyNetwork() {
                         // doc does not exists
                         log( "insert new currency network" + JSON.stringify( doc ) )
                         config.db.put( doc.type + "," + doc.name, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-
                             if (error)
                                 return alert( JSON.stringify( error ) )
                             $( "#content form input[name='currency_network']" ).val( "" ) // Clear
@@ -1102,11 +1140,11 @@ function goNewNFC() {
             }
 
             for ( var i = view.rows.length - 1; i >= 0; i--) {
-                log( "row:" + JSON.stringify( view.rows[i] ) )
-                log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+                //log( "row:" + JSON.stringify( view.rows[i] ) )
+                //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
                 if (view.rows[i].key.steward.length) {
                     for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                        log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+                        //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
                         if (view.rows[i].key.steward[j] == config.user.user_id) {
                             thisUsersAccounts.rows.push( view.rows[i] )
                         }
@@ -1316,11 +1354,11 @@ function goEditNFC(id) {
                 }
 
                 for ( var i = view.rows.length - 1; i >= 0; i--) {
-                    log( "row:" + JSON.stringify( view.rows[i] ) )
-                    log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+                    //log( "row:" + JSON.stringify( view.rows[i] ) )
+                    //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
                     if (view.rows[i].key.steward.length) {
                         for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                            log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+                            //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
                             if (view.rows[i].key.steward[j] == config.user.user_id) {
                                 thisUsersAccounts.rows.push( view.rows[i] )
                             }
@@ -1435,11 +1473,11 @@ function goPayment() {
         }
 
         for ( var i = view.rows.length - 1; i >= 0; i--) {
-            log( "row:" + JSON.stringify( view.rows[i] ) )
-            log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+            //log( "row:" + JSON.stringify( view.rows[i] ) )
+            //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
             if (view.rows[i].key.steward.length) {
                 for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                    log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+                    //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
                     if (view.rows[i].key.steward[j] == config.user.user_id) {
                         thisUsersAccounts.rows.push( view.rows[i] )
                     }
@@ -1705,11 +1743,11 @@ function goMerchantPayment() {
         }
 
         for ( var i = view.rows.length - 1; i >= 0; i--) {
-            log( "row:" + JSON.stringify( view.rows[i] ) )
-            log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+            //log( "row:" + JSON.stringify( view.rows[i] ) )
+            //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
             if (view.rows[i].key.steward.length) {
                 for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                    log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+                    //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
                     if (view.rows[i].key.steward[j] == config.user.user_id) {
                         thisUsersAccounts.rows.push( view.rows[i] )
                     }
@@ -2141,6 +2179,9 @@ function addMyUsernameToAllLists(cb) {
                         if (steward == null) {
                             newStewardList.push( config.user.name );
                             row.doc.steward = newStewardList;
+                        } else {
+                        	newStewardList.push( steward );
+                            row.doc.steward = newStewardList;
                         }
                     } )
                 }
@@ -2159,7 +2200,7 @@ function addMyUsernameToAllLists(cb) {
 function createBeamTag(cb) {
     log( "createBeamTag user " + JSON.stringify( config.user ) )
     var userData = JSON.parse( JSON.stringify( config.user ) );
-    var beamData = {};
+    var beamData = { };
     beamData.type = "beamtag";
     beamData.username = config.user.name;
     beamData.sessionID = userData.sessionID;
@@ -2582,29 +2623,9 @@ function setupConfig(done) {
                         }
                         return result;
                     }.toString()
-                }, tasks : {
-                    map : function(doc) {
-                        if (doc.type == "task" && doc.created_at && doc.title && doc.list_id) {
-                            emit( [ doc.list_id, doc.created_at ], {
-                                checked : doc.checked ? "checked" : "", title : doc.title, image : (doc._attachments && doc._attachments["image.jpg"])
-                            } )
-                        }
-                    }.toString()
-                }, profiles : {
-                    map : function(doc) {
-                        if (doc.type == "profile" && doc.user_id && doc.name) {
-                            emit( doc.name )
-                        }
-                    }.toString()
-                }, currency_networks : {
-                    map : function(doc) {
-                        if (doc.type == "currency_network" && doc.name && doc.steward) {
-                            emit( doc.name )
-                        }
-                    }.toString()
                 }, trading_name_spaces : {
                     map : function(doc) {
-                        if (doc.type == "trading_name_space" && doc.space && doc.steward) {
+                        if (doc.type == "space" && doc.space && doc.steward) {
                             emit( doc.space )
                         }
                     }.toString()
