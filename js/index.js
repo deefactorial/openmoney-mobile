@@ -275,7 +275,9 @@ function setLoginLogoutButton() {
     } else {
         if (SERVER_LOGIN) {
             $( ".openmoney-logout" ).show().click( function() {
+            	window.plugins.spinnerDialog.show();
                 doServerLogout( function(error, data) {
+                	window.plugins.spinnerDialog.hide();
                     if (error) { return logoutError( error ) }
                     // Logout Success
                     $( ".openmoney-logout" ).hide().off( "click" )
