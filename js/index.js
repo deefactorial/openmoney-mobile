@@ -2623,7 +2623,7 @@ function setupConfig(done) {
                         }
                         return result;
                     }.toString()
-                }, trading_name_spaces : {
+                }, spaces : {
                     map : function(doc) {
                         if (doc.type == "space" && doc.space && doc.steward) {
                             emit( doc.space )
