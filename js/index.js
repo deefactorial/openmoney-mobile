@@ -281,8 +281,9 @@ function setLoginLogoutButton() {
                     if (error) { return logoutError( error ) }
                     // Logout Success
                     $( ".openmoney-logout" ).hide().off( "click" )
-                    alert( "You are now logged out!" )
-                    goIndex()
+                    navigator.notification.alert( "You are now logged out!" , function () { goIndex() }, "Logged out", "OK")
+                    //alert( "You are now logged out!" )
+                    
                 } )
             } )
         } else if (FACEBOOK_LOGIN) {
