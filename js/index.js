@@ -177,7 +177,7 @@ function goIndex() {
 	
     drawContent( config.t.index() )
     
-    window.plugins.spinnerDialog.hide();
+    
     
     $( "#content form" ).submit( function(e) {
         e.preventDefault()
@@ -230,6 +230,8 @@ function goIndex() {
 
             log( "accounts " + JSON.stringify( thisUsersAccounts ), thisUsersAccounts )
             $( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
+            
+            window.plugins.spinnerDialog.hide();
             // $( "#scrollable li" ).on( "swipeRight", function() {
             // var id = $( this ).attr( "data-id" )
             // $( this ).find( "button" ).show().click( function() {
