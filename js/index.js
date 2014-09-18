@@ -1012,6 +1012,8 @@ function goServer() {
     } )
 
     setTabs()
+    
+    window.plugins.spinnerDialog.hide();
 }
 
 /*
@@ -1027,6 +1029,8 @@ function goExportTransactions() {
     } )
 
     setTabs()
+    
+    window.plugins.spinnerDialog.hide();
 }
 
 /*
