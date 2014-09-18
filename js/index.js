@@ -630,7 +630,7 @@ function doRegistration(callBack) {
 function goLostPassword(callBack) {
     drawContent( config.t.lost() )
     $( "#content .todo-index" ).click( function() {
-        goServerLogin()
+        goServerLogin(function() { callBack() })
     } )
 
     $( "#content form" ).submit( function(e) {
