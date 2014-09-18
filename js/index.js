@@ -150,17 +150,17 @@ function connectToChanges() {
 
 function loginErr(error) {
     if (error.msg) {
-        alert( "Can Not Login: " + error.msg )
+    	navigator.notification.alert( "Can Not Login: " + error.msg , function() {  }, "Login Error", "OK")
     } else {
-        alert( "Login error: " + JSON.stringify( error ) )
+    	navigator.notification.alert( "Login error: " + JSON.stringify( error ) , function() {  }, "Login Error", "OK")
     }
 }
 
 function logoutError(error) {
     if (error.msg) {
-        alert( "Can Not Logout: " + error.msg )
+    	navigator.notification.alert( "Can Not Logout: " + error.msg , function() {  }, "Logout Error", "OK")
     } else {
-        alert( "Logout Error: " + JSON.stringify( error ) )
+    	navigator.notification.alert( "Can Not Logout: " + JSON.stringify( error ), function() {  }, "Logout Error", "OK")
     }
 }
 
@@ -176,8 +176,6 @@ function drawContent(html) {
 function goIndex() {
 	
     drawContent( config.t.index() )
-    
-    
     
     $( "#content form" ).submit( function(e) {
         e.preventDefault()
@@ -215,11 +213,11 @@ function goIndex() {
             }
 
             for ( var i = view.rows.length - 1; i >= 0; i--) {
-                log( "row:" + JSON.stringify( view.rows[i] ) )
-                log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+                //log( "row:" + JSON.stringify( view.rows[i] ) )
+                //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
                 if (view.rows[i].key.steward.length) {
                     for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                        log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+                        //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
                         if (view.rows[i].key.steward[j] == config.user.user_id) {
                             thisUsersAccounts.rows.push( view.rows[i] )
                         }
@@ -255,7 +253,9 @@ function setLoginLogoutButton() {
     if (!config.user || !config.user.user_id) {
         if (SERVER_LOGIN) {
             $( ".openmoney-login" ).show().click( function() {
+            	window.plugins.spinnerDialog.show();
                 goServerLogin( function(error) {
+                	window.plugins.spinnerDialog.hide();
                     $( ".openmoney-login" ).hide().off( "click" )
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
@@ -264,7 +264,9 @@ function setLoginLogoutButton() {
             } )
         } else if (FACEBOOK_LOGIN) {
             $( ".openmoney-login" ).show().click( function() {
+            	window.plugins.spinnerDialog.show();
                 doFirstLogin( function(error) {
+                	window.plugins.spinnerDialog.hide();
                     $( ".openmoney-login" ).hide().off( "click" );
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
@@ -282,19 +284,21 @@ function setLoginLogoutButton() {
                     // Logout Success
                     $( ".openmoney-logout" ).hide().off( "click" )
                     navigator.notification.alert( "You are now logged out!" , function () { goIndex() }, "Logged out", "OK")
-                    //alert( "You are now logged out!" )
+                   
                     
                 } )
             } )
         } else if (FACEBOOK_LOGIN) {
             $( ".openmoney-logout" ).show().click( function() {
                 if (config.user && config.user.access_token) {
+                	window.plugins.spinnerDialog.show();
                     doFacebookLogout( config.user.access_token, function(error, data) {
+                    	window.plugins.spinnerDialog.hide();
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" );
-                        alert( "You are now logged out!" );
-                        goIndex()
+                        navigator.notification.alert( "You are now logged out!" , function () { goIndex() }, "Logged out", "OK")
+                        
                     } )
                 } else {
                     setLoginLogoutButton();
@@ -333,6 +337,7 @@ function setTabs() {
 function goList(id) {
 	
 	window.dbChanged = function() {
+		window.plugins.spinnerDialog.show();
 		
 	    config.db.get( id, function(err, doc) {
 	        log( "Display Account Details:" + JSON.stringify( doc ) )
@@ -376,6 +381,9 @@ function goList(id) {
                 config.views( [ "account_details", {
                     startkey : [ id, {} ], endkey : [ id ], descending : true
                 } ], function(err, view) {
+                	
+                	window.plugins.spinnerDialog.hide();
+                	
                     log( "account_details" + JSON.stringify( view ), view )
                     $( "#scrollable" ).html( config.t.listItems( view ) )
                     $( "#scrollable li" ).on( "swipeRight", function() {
@@ -562,9 +570,6 @@ function goServerLogin(callBack) {
         	window.plugins.spinnerDialog.hide();
         	
             callBack( error )
-            // $( "#content form input[name='email']" ).val( "" ) // Clear email
-            // $( "#content form input[name='password']" ).val( "" ) // Clear
-            // password
 
         } )
     } )
@@ -653,9 +658,8 @@ function goLostPassword(callBack) {
         	window.plugins.spinnerDialog.hide();
             if (error) { return alert( error.msg ) }
             $( "#content form input[name='email']" ).val( "" ) // Clear email
-            alert( "A password reset token has been emailed to you!" );
-            // Login Success
-            callBack()
+            navigator.notification.alert( "A password reset token has been emailed to you!" , callBack, "Reset Token Emailed", "OK")
+            
         } )
     } )
 }
@@ -770,7 +774,10 @@ function goTradingName() {
             var doc = jsonform( this );
             doc.type = "trading_name";
             doc.steward = [ config.user.user_id ];
-            if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { return alert( 'The Trading Name you entered is not valid!' ); }
+            if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { 
+            	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
+            	return null;
+            }
             if (doc.space != '')
                 doc.name = doc.trading_name + "." + doc.space;
             else
@@ -785,9 +792,10 @@ function goTradingName() {
                             if (error)
                                 return alert( JSON.stringify( error ) )
                             $( "#content form input[name='trading_name']" ).val( "" ) // Clear
-                            $( "#content form input[name='currency']" ).val( "" ) // Clear
-                            goSettings()
-                            alert( "You successfully created a new trading name !" )
+                            $( "#content form input[name='currency']" ).val( "" ) // Clear                            
+                        
+                            navigator.notification.alert( "You successfully created a new trading name !" , function() { window.plugins.spinnerDialog.show(); goSettings() }, "New Trading Name", "OK")
+                            
                         } )
                         
                     	var spaceDoc = {"type":"space", "space": doc.name, "subspace": doc.space, "steward": [ config.user.name ] };
@@ -808,7 +816,8 @@ function goTradingName() {
                     }
                 } else {
                     // doc exsits already
-                    alert( "Trading name already exists!" )
+                	navigator.notification.alert( "Trading name already exists!" , function() { }, "Existing Trading Name", "OK")
+                   
                 }
             } )
         } )
@@ -866,10 +875,9 @@ function goCurrency() {
 	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                            if (error)
 	                                return alert( JSON.stringify( error ) )
-	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear
-	                        	goSettings()
-	                            alert( "You successfully created a new currency !" )
+	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
 	                            
+	                            navigator.notification.alert( "You successfully created a new currency !" , function() { window.plugins.spinnerDialog.show(); goSettings() }, "New Currency", "OK")
 	                        } )
 	
 	                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
@@ -893,7 +901,8 @@ function goCurrency() {
 	                    }
 	                } else {
 	                    // doc exsits already
-	                    alert( "Currency already exists!" )
+	                    //alert( "Currency already exists!" )
+	                    navigator.notification.alert( "Currency already exists!" , function() {  }, "Existing Currency", "OK")
 	                }
 	            } )
 	        } )
@@ -959,8 +968,9 @@ function goSpace() {
                             if (error)
                                 return alert( JSON.stringify( error ) )
                             $( "#content form input[name='space']" ).val( "" ) // Clear
-                            alert( "You successfully created a new trading space !" )
-                            goSettings()
+                            //alert( "You successfully created a new trading space !" )
+                            //goSettings()
+                            navigator.notification.alert( "You successfully created a new space !" , function() { window.plugins.spinnerDialog.show(); goSettings() }, "New Space", "OK")
                         } )
                         
                         var tradingNameDoc = { "type":"trading_name", "name": doc.space, "space": doc.subspace, "currency": doc.subspace, "steward": [ config.user.name ] };
@@ -981,7 +991,8 @@ function goSpace() {
                     }
                 } else {
                     // doc exsits already
-                    alert( "Trading Space already exists!" )
+                    //alert( "Trading Space already exists!" )
+                    navigator.notification.alert( "Trading Space already exists!"  , function() {  }, "Existing Space", "OK")
                 }
             } )
         } )
@@ -1193,8 +1204,12 @@ function goNewNFC() {
                 e.preventDefault()
                 var doc = jsonform( this )
 
-                if (!doc.name)
-                    return alert( "You must specify a name for your Tag." );
+                if (!doc.name) {
+                	navigator.notification.alert( "You must specify a name for your Tag."  , function() {  }, "No Name", "OK")
+                	//return alert( "You must specify a name for your Tag." );
+                	return false;
+                }
+                    
 
                 var mutableLock = false;
                 nfc.addNdefListener( function(nfcEvent) {
@@ -1257,20 +1272,24 @@ function goNewNFC() {
 
                             nfc.write( message, function() {
                                 insertTagInDB( userTag )
-                                alert( "Successfully written to NFC Tag!" )
+                                //alert( "Successfully written to NFC Tag!" )
                                 mutableLock = false;
+                                navigator.notification.alert( "Successfully written to NFC Tag!"  , function() {  }, "Success", "OK")
                             }, function() {
-                                alert( "Failed to write to NFC Tag!" )
+                                //alert( "Failed to write to NFC Tag!" )
                                 mutableLock = false;
+                                navigator.notification.alert( "Failed to write to NFC Tag!"  , function() {  }, "Failed", "OK")
                             } );
                         }
 
                     }
 
                 }, function() { // success callback
-                    alert( "Waiting for NFC tag" );
+                    //alert( "Waiting for NFC tag" );
+                	navigator.notification.alert( "Waiting for NFC tag"  , function() {  }, "Waiting", "OK")
                 }, function(error) { // error callback
-                    alert( "Error adding NDEF listener " + JSON.stringify( error ) );
+                    //alert( "Error adding NDEF listener " + JSON.stringify( error ) );
+                	navigator.notification.alert( "Error adding NDEF listener"  , function() {  }, "Error", "OK")
                 } );
 
             } )
@@ -1311,9 +1330,11 @@ function goEditNFC(id) {
             e.preventDefault()
             var doc = jsonform( this )
 
-            if (!doc.name)
-                return alert( "You must specify a name for your Tag." );
-
+            if (!doc.name) {
+            	navigator.notification.alert( "You must specify a name for your Tag."  , function() {  }, "Error", "OK")
+            	return false;
+            }
+                
             function randomString(length, chars) {
                 var result = '';
                 for ( var i = length; i > 0; --i)
@@ -1411,8 +1432,9 @@ function goEditNFC(id) {
                 log( " userTag:" + JSON.stringify( userTag ) )
 
                 insertTagInDB( userTag )
-                alert( "Successfully updated NFC Tag!" )
-
+                
+                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() {  }, "Success", "OK")
+                
             } )
 
         } )
@@ -1512,7 +1534,8 @@ function goPayment() {
             config.db.get( doc.from, function(error, from) {
                 if (error) {
                     if (error.status == 404) {
-                        return alert( "Your trading account doesn't exist!" )
+                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Error", "OK")
+                        return false
                     } else {
                         return alert( JSON.stringify( error ) )
                     }
@@ -1522,7 +1545,8 @@ function goPayment() {
                 config.db.get( "trading_name," + doc.to + "," + doc.currency, function(error, to) {
                     if (error) {
                         if (error.status == 404) {
-                            return alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!" )
+                        	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
+                            return false
                         } else {
                             return alert( JSON.stringify( error ) )
                         }
@@ -1540,15 +1564,17 @@ function goPayment() {
                                     $( "#content form input[name='to']" ).val( "" ) // Clear
                                     $( "#content form input[name='amount']" ).val( "" ) // Clear
                                     $( "#content form textarea" ).val( "" ) // Clear
-                                    alert( "You successfully made a payment !" )
-                                    goList( "trading_name," + doc.from + "," + doc.currency )
+                                    navigator.notification.alert( "You successfully made a payment !"  , function() { goList( "trading_name," + doc.from + "," + doc.currency )}, "Success", "OK")
+                                    
+                                    
                                 } )
                             } else {
                                 alert( "Error: ".JSON.stringify( error ) )
                             }
                         } else {
                             // doc exsits already
-                            alert( "Payment already exists!" )
+                        	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
+                            
                         }
                     } )
                 } )
@@ -1646,7 +1672,8 @@ function goTagPayment(tradingNames) {
             config.db.get( doc.from, function(error, from) {
                 if (error) {
                     if (error.status == 404) {
-                        return alert( "Your trading account doesn't exist!" )
+                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Exists", "OK")
+                        return false;
                     } else {
                         return alert( JSON.stringify( error ) )
                     }
@@ -1656,7 +1683,8 @@ function goTagPayment(tradingNames) {
                 config.db.get( doc.to, function(error, to) {
                     if (error) {
                         if (error.status == 404) {
-                            return alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!" )
+                        	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Exists", "OK")
+                            return false
                         } else {
                             return alert( JSON.stringify( error ) )
                         }
@@ -1674,7 +1702,8 @@ function goTagPayment(tradingNames) {
                                     $( "#content form input[name='to']" ).val( "" ) // Clear
                                     $( "#content form input[name='amount']" ).val( "" ) // Clear
                                     $( "#content form textarea" ).val( "" ) // Clear
-                                    alert( "You successfully made a payment !" )
+                                    navigator.notification.alert( "You successfully made a payment !"  , function() {  }, "Exists", "OK")
+                                    
                                     goList( "trading_name," + doc.from + "," + doc.currency )
                                 } )
                             } else {
@@ -1682,7 +1711,8 @@ function goTagPayment(tradingNames) {
                             }
                         } else {
                             // doc exsits already
-                            alert( "Payment already exists!" )
+                        	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
+                            
                         }
                     } )
                 } )
@@ -1788,7 +1818,8 @@ function goMerchantPayment() {
             config.db.get( doc.to, function(error, to) {
                 if (error) {
                     if (error.status == 404) {
-                        return alert( "Your trading account doesn't exist!" )
+                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Exists", "OK")
+                        return false
                     } else {
                         return alert( JSON.stringify( error ) )
                     }
@@ -1832,12 +1863,16 @@ function goMerchantPayment() {
                                     }
                                 } )
 
-                                if (!doc.from) { return alert( "No trading name found for that currency." ) }
+                                if (!doc.from) { 
+                                	navigator.notification.alert( "No trading name found for that currency."  , function() {  }, "Not Found", "OK")
+                                	return false
+                                }
 
                                 config.db.get( doc.from, function(error, from) {
                                     if (error) {
                                         if (error.status == 404) {
-                                            return alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" )
+                                        	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Not Found", "OK")
+                                            return false
                                         } else {
                                             return alert( JSON.stringify( error ) )
                                         }
@@ -1865,7 +1900,10 @@ function goMerchantPayment() {
                                                     }, function() {
                                                         // failure callback
                                                     } );
-                                                    alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" )
+                                                    
+                                                    navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
+                                                    
+
                                                     goList( "trading_name," + doc.to + "," + doc.currency )
                                                 } )
                                             } else {
@@ -1873,7 +1911,8 @@ function goMerchantPayment() {
                                             }
                                         } else {
                                             // doc exsits already
-                                            alert( "Payment already exists!" )
+                                        	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
+                                            
                                         }
                                     } )
                                 } )
@@ -1884,10 +1923,10 @@ function goMerchantPayment() {
 
                 nfc.addMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
                     // success callback
-                    alert( "Pass terminal to the customer or scan tag." );
+                	navigator.notification.alert( "Pass terminal to the customer or scan tag."  , function() {  }, "Pass terminal or scan", "OK")
                 }, function() {
                     // failure callback
-                    alert( "Pass terminal to the customer." );
+                	navigator.notification.alert( "Pass terminal to the customer."  , function() {  }, "Pass terminal", "OK")
                 } );
 
                 drawContent( config.t.customer_payment( {
@@ -1916,12 +1955,16 @@ function goMerchantPayment() {
                             }
                         } )
 
-                        if (!customer.from) { return alert( "No trading name found for that currency." ) }
+                        if (!customer.from) { 
+                        	navigator.notification.alert( "No trading name found for that currency."  , function() {  }, "Not Found", "OK")
+                        	return false
+                        }
 
                         config.db.get( customer.from, function(error, from) {
                             if (error) {
                                 if (error.status == 404) {
-                                    return alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" )
+                                	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" , function() {  }, "Not Found", "OK")
+                                    return false
                                 } else {
                                     return alert( JSON.stringify( error ) )
                                 }
@@ -1951,15 +1994,17 @@ function goMerchantPayment() {
                                             }, function() {
                                                 // failure callback
                                             } );
-                                            alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" )
-                                            goList( "trading_name," + doc.to + "," + doc.currency )
+                                            navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( "trading_name," + doc.to + "," + doc.currency ) }, "Successful", "OK")
+                                            
+                                            
                                         } )
                                     } else {
                                         alert( "Error: ".JSON.stringify( error ) )
                                     }
                                 } else {
                                     // doc exsits already
-                                    alert( "Payment already exists!" )
+                                	navigator.notification.alert( "Payment already exists!" , function() {  }, "Exists", "OK")
+                                    
                                 }
                             } )
                         } )
@@ -2245,7 +2290,7 @@ function createBeamTag(cb) {
     var message = [ mime, aar ];
 
     nfc.share( message, function() {
-        alert( "openmoney transmit identity complete!" )
+    	navigator.notification.alert( "openmoney transmit identity complete!" , function() {  }, "Transmit Success", "OK")
     }, function() {
         log( "Failed to beam!" )
     } );
