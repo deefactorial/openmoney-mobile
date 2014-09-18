@@ -1206,7 +1206,7 @@ function goNewNFC() {
                     
 
                 var mutableLock = false;
-                nfc.addNdefFormatableListener( function(nfcEvent) {
+                nfc.addNdefListener( function(nfcEvent) {
 
                     if (!mutableLock) {
                         mutableLock = true;
