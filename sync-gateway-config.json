@@ -258,9 +258,9 @@
                     if (!doc.username && !doc.beamTag && !doc.type) {
                         throw({forbidden: "Missing required properties"});
                     }
-                    channel(doc.type + channelDelimiter + doc.username + channelDelimiter + doc.beamtag);
+                    channel(doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
                     if (olddoc == null) {
-                        access(doc.username, doc.type + channelDelimiter + doc.username + channelDelimiter + doc.beamtag);
+                        access(doc.username, doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.username);

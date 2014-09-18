@@ -357,7 +357,7 @@ function goList(id) {
                 log( "Get Account Details for:" + id )
 
                 config.views( [ "account_details", {
-                    startkey : [ id, {} ], endkey : [ id ], descending : true
+                    startkey : [ id, {} ], endkey : [ id ], descending : true, indexUpdateMode: "before"
                 } ], function(err, view) {
                 	
                 	window.plugins.spinnerDialog.hide();
