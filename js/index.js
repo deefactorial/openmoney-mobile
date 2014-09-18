@@ -2537,7 +2537,7 @@ function setupConfig(done) {
                             } else {
                                 if (SERVER_LOGIN) {
                                     if (config.user.name) {
-                                        if (newUser.username == '') {
+                                        if (newUser.sessionID == '') {
                                             return cb()
                                         } else {
                                             /* We Got a New Session */
