@@ -1,3 +1,6 @@
+//possible alternate
+//https://code.google.com/p/stringencoders/source/browse/trunk/javascript/base64.js?r=230
+
 function base64_decode(data) {
 	// discuss at: http://phpjs.org/functions/base64_decode/
 	// original by: Tyler Akins (http://rumkin.com)

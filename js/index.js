@@ -187,7 +187,9 @@ function goIndex() {
 
     setTabs();
 
-    window.plugins.spinnerDialog.hide();
+    navigator.splashscreen.hide();
+    
+    
     // when the database changes, update the UI to reflect new lists
     window.dbChanged = function() {
     	window.plugins.spinnerDialog.show();
@@ -215,6 +217,7 @@ function goIndex() {
             log( "accounts " + JSON.stringify( thisUsersAccounts ), thisUsersAccounts )
             $( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
+            window.plugins.spinnerDialog.hide();
             window.plugins.spinnerDialog.hide();
 
         } )
