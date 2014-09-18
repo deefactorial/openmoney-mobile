@@ -192,7 +192,7 @@ function goIndex() {
     window.dbChanged = function() {
     	window.plugins.spinnerDialog.show();
         config.views( [ "accounts", {
-            descending : true
+            descending : true , indexUpdateMode: "before"
         } ], function(err, view) {
 
             var thisUsersAccounts = {
@@ -233,7 +233,7 @@ function setLoginLogoutButton() {
             $( ".openmoney-login" ).show().click( function() {
             	window.plugins.spinnerDialog.show();
                 goServerLogin( function(error) {
-                	window.plugins.spinnerDialog.hide();
+                	
                     $( ".openmoney-login" ).hide().off( "click" )
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
@@ -244,7 +244,7 @@ function setLoginLogoutButton() {
             $( ".openmoney-login" ).show().click( function() {
             	window.plugins.spinnerDialog.show();
                 doFirstLogin( function(error) {
-                	window.plugins.spinnerDialog.hide();
+                	
                     $( ".openmoney-login" ).hide().off( "click" );
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
@@ -551,6 +551,9 @@ function goServerLogin(callBack) {
 
         } )
     } )
+    
+    window.plugins.spinnerDialog.hide();
+    
 }
 
 /*

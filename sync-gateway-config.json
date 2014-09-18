@@ -118,8 +118,8 @@
             if (doc._id != null) {
                 var table = doc._id.substring(0,doc._id.indexOf(","));
                 var index = doc._id.substring(doc._id.indexOf(",")+1);
-                if (table == "users") {
-                    channel(table + channelDelimiter + index);
+                if (doc.type == "users") {
+                    channel(doc.type + channelDelimiter + doc.username);
                     if (olddoc == null) {
                         if (!doc.username || !doc.email || !doc.password || !doc.password_encryption_algorithm ) {
                             throw({forbidden: "Missing required properties"});
@@ -132,7 +132,7 @@
                         } else if (! Array.isArray(doc.password_encryption_algorithm) ) { 
                             throw({forbidden: "provide a valid encryption algorithm"});
                         }
-                        access(doc.username, table + channelDelimiter + index);
+                        access(doc.username, doc.type + channelDelimiter + doc.username);
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.username);
@@ -157,7 +157,7 @@
                 } else if (doc.type == "trading_name") {
                     var trading_name = doc.name ;
                     var currency = base64_encode( doc.currency );
-                    channel(table + channelDelimiter + trading_name + channelDelimiter + currency);
+                    channel(doc.type + channelDelimiter + trading_name + channelDelimiter + currency);
                     channel( "currency" + channelDelimiter + currency )
                     if (olddoc == null) {
                         if (!doc.steward || !doc.name || !doc.currency ) {
@@ -165,7 +165,7 @@
                         }
                         requireUser( doc.steward )
                         access( doc.steward , "currency" + channelDelimiter + currency)
-                        access( doc.steward , table + channelDelimiter + trading_name + channelDelimiter + currency )
+                        access( doc.steward , doc.type + channelDelimiter + trading_name + channelDelimiter + currency )
                         //role( doc.steward, "role:" + doc.name + "_" + doc.currency)
                     } else {
                         if (doc._deleted) {
@@ -179,12 +179,12 @@
                     }
                 } else if (doc.type == "space") {
                     var space = doc.space;              
-                    channel(table + channelDelimiter + space);
+                    channel(doc.type + channelDelimiter + space);
                     if (olddoc == null) {
                         if (!doc.steward) {
                             throw({forbidden: "Missing required properties"});
                         }
-                        access(doc.steward, table + channelDelimiter + space);
+                        access(doc.steward, doc.type + channelDelimiter + space);
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
@@ -195,9 +195,9 @@
                             requireUser(olddoc.steward);
                         }
                     }
-                } else if (table == "currency") {
+                } else if (doc.type == "currency") {
                     var currency = base64_encode( doc.currency );
-                    channel(table + channelDelimiter + currency);
+                    channel(doc.type + channelDelimiter + currency);
                     if (olddoc == null) {
                         if (!doc.steward || !doc.currency || !doc.name ) {
                             throw({forbidden: "Missing required properties"});
@@ -208,7 +208,7 @@
                         } else if (doc.name.length < 2) { 
                             throw({forbidden: "Please enter a currency name"});
                         }
-                        access(doc.steward, table + channelDelimiter + currency);
+                        access(doc.steward, doc.type + channelDelimiter + currency);
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
@@ -258,9 +258,9 @@
                     if (!doc.username && !doc.beamTag && !doc.type) {
                         throw({forbidden: "Missing required properties"});
                     }
-                    channel(table + channelDelimiter + doc.username + channelDelimiter + doc.beamtag);
+                    channel(doc.type + channelDelimiter + doc.username + channelDelimiter + doc.beamtag);
                     if (olddoc == null) {
-                        access(doc.username, table + channelDelimiter + doc.username + channelDelimiter + doc.beamtag);
+                        access(doc.username, doc.type + channelDelimiter + doc.username + channelDelimiter + doc.beamtag);
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.username);
