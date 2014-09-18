@@ -26,6 +26,7 @@ phonegap local plugin add https://github.com/chariotsolutions/phonegap-nfc.git
 phonegap local plugin add org.apache.cordova.dialogs
 phonegap local plugin add org.apache.cordova.vibration
 phonegap local plugin add https://github.com/Paldom/SpinnerDialog.git
+phonegap local plugin add org.apache.cordova.splashscreen
 ```
 
 Now replace the generated application with the Todo Lite source code.

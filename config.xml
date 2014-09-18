@@ -55,5 +55,7 @@
     <gap:plugin name="org.apache.cordova.network-information" />
     <gap:plugin name="com.couchbase.lite.phonegap" />
     <gap:plugin name="com.chariotsolutions.nfc.plugin.NfcPlugin" />
+    <gap:plugin name="org.apache.cordova.splashscreen" />
+    
     <access origin="*" />
 </widget>
