@@ -177,19 +177,6 @@ function goIndex() {
 	
     drawContent( config.t.index() )
     
-    $( "#content form" ).submit( function(e) {
-        e.preventDefault()
-        var doc = jsonform( this )
-        doc.type = "list"
-        doc.created_at = new Date()
-        if (config.user && config.user.email) {
-            // the the device owner owns lists they create
-            doc.owner = "p:" + config.user.user_id
-        }
-        config.db.post( doc, function(err, ok) {
-            $( "#content form input" ).val( "" )
-        } )
-    } )
     // If you click a list,
     $( "#scrollable" ).on( "click", "li", function() {
         var id = $( this ).attr( "data-id" );
@@ -213,12 +200,9 @@ function goIndex() {
             }
 
             for ( var i = view.rows.length - 1; i >= 0; i--) {
-                //log( "row:" + JSON.stringify( view.rows[i] ) )
-                //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
                 if (view.rows[i].key.steward.length) {
                     for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                        //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
-                        if (view.rows[i].key.steward[j] == config.user.user_id) {
+                       if (view.rows[i].key.steward[j] == config.user.user_id) {
                             thisUsersAccounts.rows.push( view.rows[i] )
                         }
                     }
@@ -232,13 +216,7 @@ function goIndex() {
             $( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
             window.plugins.spinnerDialog.hide();
-            // $( "#scrollable li" ).on( "swipeRight", function() {
-            // var id = $( this ).attr( "data-id" )
-            // $( this ).find( "button" ).show().click( function() {
-            // deleteItem( id )
-            // return false;
-            // } )
-            // } )
+
         } )
     }
     window.dbChanged()
@@ -799,13 +777,13 @@ function goTradingName() {
                         } )
                         
                     	var spaceDoc = {"type":"space", "space": doc.name, "subspace": doc.space, "steward": [ config.user.name ] };
-                    	config.db.put( "space," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
+                    	config.db.put( spaceDoc.type + "," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
                     		 if (error)
                                  return alert( JSON.stringify( error ) )
                     	} );
                     	
                     	var currencyDoc = {"type":"currency", "currency": doc.name, "space": doc.space, "name": doc.tradingname + " Currency in " + doc.space + " Space"  , "steward": [ config.user.name ] };
-                    	config.db.put( "currency," + doc.currencyDoc, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
+                    	config.db.put( currencyDoc.type + "," + doc.name, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
                     		 if (error)
                                  return alert( JSON.stringify( error ) )
                     	} );
@@ -889,7 +867,7 @@ function goCurrency() {
 		                        } )
 		                        
 		                        var spaceDoc = {"type":"space", "space": doc.currency, "subspace": doc.space, "steward": [ config.user.name ] };
-		                    	config.db.put( "space," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
+		                    	config.db.put( spaceDoc.type + "," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
 		                    		 if (error)
 		                                 return alert( JSON.stringify( error ) )
 		                    	} );
@@ -923,6 +901,8 @@ function goProfile() {
     } )
 
     setTabs()
+    
+    window.plugins.spinnerDialog.hide();
 }
 
 /*
@@ -980,7 +960,7 @@ function goSpace() {
                         } )
                         
                         var currencyDoc = {"type":"currency", "currency": doc.space, "space": doc.subspace, "name": doc.space + " Currency in " + doc.subspace + " Space"  , "steward": [ config.user.name ] };
-                    	config.db.put( "currency," + doc.currencyDoc, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
+                    	config.db.put( currencyDoc.type + "," + doc.space, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
                     		 if (error)
                                  return alert( JSON.stringify( error ) )
                     	} );
