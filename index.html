@@ -96,7 +96,8 @@
             <button class="todo-index topcoat-button todo-small">&larr;</button>
         </div>
         <div class="topcoat-navigation-bar__item center half">
-            <h1 class="topcoat-navigation-bar__title" style="font-size:14px">{{trading_name}}.{{trading_name_space}} {{balance}} {{currency}}</h1>
+            <div id="list-title">
+            </div>
         </div>
         <div class="topcoat-navigation-bar__item right quarter">
 			<button class="openmoney-login topcoat-icon-button openmoney-small">
@@ -124,6 +125,9 @@
 </header>
 <div id="scrollable">
 </div>
+</script>
+<script type="text/mustache" id="listTitle-mu">
+<h1 class="topcoat-navigation-bar__title" style="font-size:14px">{{trading_name}}{{#space}}.{{/space}}{{space}} {{balance}} {{currency}}</h1>
 </script>
 <script type="text/mustache" id="listItems-mu">
 <div class="topcoat-list__container">

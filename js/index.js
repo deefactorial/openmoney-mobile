@@ -317,6 +317,33 @@ function goList(id) {
 	window.dbChanged = function() {
 		window.plugins.spinnerDialog.show();
 		
+		drawContent( config.t.list( ) )
+        
+        $( "#content .todo-index" ).click( function() {
+            goIndex()
+        } )
+
+        setLoginLogoutButton();
+
+        setTabs()
+
+        $( "#content .todo-share" ).click( function() {
+            doShare( id )
+        } )
+
+        $( "#scrollable" ).on( "click", "li", function(e) {
+            var id = $( this ).attr( "data-id" )
+            if ($( e.target ).hasClass( "camera" )) {
+                if ($( e.target ).hasClass( "image" )) {
+                    goImage( id )
+                } else {
+                    doCamera( id )
+                }
+            } else {
+                toggleChecked( id )
+            }
+        } )
+		
 	    config.db.get( id, function(err, doc) {
 	        log( "Display Account Details:" + JSON.stringify( doc ) )
         
@@ -327,48 +354,24 @@ function goList(id) {
                 if (view.total_rows > 0)
                     doc.balance = view.rows[0].value;
 
-                drawContent( config.t.list( doc ) )
+                $( "#list-title" ).html( config.t.listTitle( doc ) );
+                
+            } )
+            
+            log( "Get Account Details for:" + id )
 
-                $( "#content .todo-index" ).click( function() {
-                    goIndex()
-                } )
-
-                setLoginLogoutButton();
-
-                setTabs()
-
-                $( "#content .todo-share" ).click( function() {
-                    doShare( id )
-                } )
-
-                $( "#scrollable" ).on( "click", "li", function(e) {
+            config.views( [ "account_details", {
+                startkey : [ id, {} ], endkey : [ id ], descending : true, indexUpdateMode: "before"
+            } ], function(err, view) {
+            	
+            	window.plugins.spinnerDialog.hide();
+            	
+                log( "account_details" + JSON.stringify( view ), view )
+                $( "#scrollable" ).html( config.t.listItems( view ) )
+                $( "#scrollable li" ).on( "swipeRight", function() {
                     var id = $( this ).attr( "data-id" )
-                    if ($( e.target ).hasClass( "camera" )) {
-                        if ($( e.target ).hasClass( "image" )) {
-                            goImage( id )
-                        } else {
-                            doCamera( id )
-                        }
-                    } else {
-                        toggleChecked( id )
-                    }
-                } )
-
-                log( "Get Account Details for:" + id )
-
-                config.views( [ "account_details", {
-                    startkey : [ id, {} ], endkey : [ id ], descending : true, indexUpdateMode: "before"
-                } ], function(err, view) {
-                	
-                	window.plugins.spinnerDialog.hide();
-                	
-                    log( "account_details" + JSON.stringify( view ), view )
-                    $( "#scrollable" ).html( config.t.listItems( view ) )
-                    $( "#scrollable li" ).on( "swipeRight", function() {
-                        var id = $( this ).attr( "data-id" )
-                        $( this ).find( "button" ).show().click( function() {
-                            deleteItem( id )
-                        } )
+                    $( this ).find( "button" ).show().click( function() {
+                        deleteItem( id )
                     } )
                 } )
             } )
