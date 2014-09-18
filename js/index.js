@@ -2267,7 +2267,7 @@ function createBeamTag(cb) {
     // users private RSA key.
     encodedString = mcrypt.Encrypt( pinCode, beamData.initializationVector, beamData.hashTag, 'rijndael-256', 'cbc' );
 
-    beamData.base64_encodedString = base64_encode( encodedString )
+    beamData.base64_encodedString = base64_encode( String( encodedString ) )
 
     log( " BeamTag: " + JSON.stringify( beamData ) )
 
