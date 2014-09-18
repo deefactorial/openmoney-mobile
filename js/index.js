@@ -1206,12 +1206,14 @@ function goNewNFC() {
                     
 
                 var mutableLock = false;
-                nfc.addNdefListener( function(nfcEvent) {
+                nfc.addNdefFormatableListener( function(nfcEvent) {
 
                     if (!mutableLock) {
                         mutableLock = true;
 
                         var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+                        
+                        nfc.erase(function(){log("erase success")}, function(){log("erase failed")});
 
                         function randomString(length, chars) {
                             var result = '';
