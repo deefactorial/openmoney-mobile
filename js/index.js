@@ -187,7 +187,8 @@ function goIndex() {
 
     setTabs();
 
-    navigator.splashscreen.hide();
+    if (typeof navigator.splashscreen != 'undefined')
+    	navigator.splashscreen.hide();
     
     
     // when the database changes, update the UI to reflect new lists
