@@ -88,7 +88,7 @@ function doTagLookup(key, callBack) {
             reason : "No network connection"
         } ) }
     }
-    if (config && config.user) {
+    if (typeof config != 'undefined' && typeof config.user != 'undefined') {
         var url = REMOTE_SERVER_TAG_LOOKUP_URL;
         var login = coax( url );
         var credentials = '{ "username" : "' + config.user.name + '", "password": "' + config.user.password + '", "key": "' + key + '" }';
@@ -1206,7 +1206,7 @@ function goNewNFC() {
                     
 
                 var mutableLock = false;
-                nfc.addNdefFormatableListener( function(nfcEvent) {
+                nfc.addTagDiscoveredListener( function(nfcEvent) {
 
                     if (!mutableLock) {
                         mutableLock = true;
