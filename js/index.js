@@ -1489,23 +1489,31 @@ function changeToPassword() {
 
 function insertTagInDB(tag) {
     log( "Insert Tag:" + JSON.stringify( tag ) )
-    config.db.get( "users," + config.user.name, function(err, doc) {
-        log( "user doc:" + JSON.stringify( doc ) )
-        if (doc.tags) {
-            var found = false;
-            for ( var i = 0; i < doc.tags.length; i++) {
-                if ((doc.tags[i].tagID).equals( tag.tagID )) {
-                    found = true;
-                    doc.tags[i] = tag;
-                }
-            }
-            if (!found)
-                doc.tags.push( tag );
-        } else {
-            doc.tags = [ tag ];
-        }
-        config.db.put( "users," + config.user.name, doc, function() {
-        } )
+    config.db.get( "beamtag," + config.user.name + "," + tag.hashTag, function(error, doc) {
+    	if( error ) { 
+    		 log( "Error: " + JSON.stringify( error ) )
+             if (error.status == 404) {
+                 config.db.put( "beamtag," + config.user.name + "," + tag.hashTag, tag, function() {
+                	 
+                 } )
+             } else {
+            	 alert( "Error: ".JSON.stringify( error ) )
+             }
+    	} else {
+    		log( "Document already exists: " . JSON.stringify( doc ) )
+    		
+    		doc.tagID = tag.tagID;
+    		doc.name = tag.name;
+    		doc.initializationVector = tag.initializationVector;
+    		doc.pinCode = tag.pinCode;
+    		doc.defaultMaxLimitBeforePinRequest = tag.defaultMaxLimitBeforePinRequest;
+    		doc.maxLimitBeforePinRequestPerCurrency = tag.maxLimitBeforePinRequestPerCurrency;
+    		
+    		config.db.put( "beamtag," + config.user.name + "," + tag.hashTag, doc, function() {
+                	 
+            } )
+    	}
+
     } )
 }
 
@@ -2308,7 +2316,7 @@ function createBeamTag(cb) {
     // users private RSA key.
     encodedString = mcrypt.Encrypt( pinCode, beamData.initializationVector, beamData.hashTag, 'rijndael-256', 'cbc' );
 
-    beamData.base64_encodedString = base64_encode( String( encodedString ) )
+    beamData.pinCode = base64_encode( String( encodedString ) )
 
     log( " BeamTag: " + JSON.stringify( beamData ) )
 
