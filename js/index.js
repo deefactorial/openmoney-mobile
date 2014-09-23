@@ -1396,7 +1396,7 @@ function goEditNFC(id) {
 
                     var exist = false;
 
-                    if (typeof maxLimitBeforePinRequestPerCurrency !== 'undefined') {
+                    if (typeof maxLimitBeforePinRequestPerCurrency != 'undefined') {
                         // check if currency exists in currency list.
                         for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
                             if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
@@ -1412,7 +1412,7 @@ function goEditNFC(id) {
 
                     if (!exist) {
                         // check if form defined an amount for this currency
-                        if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
+                        if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] != 'undefined') {
                             maxLimitBeforePinRequestPerCurrency.push( {
                                 "amount" : doc[maxLimitBeforePinRequestPerCurrencyName], "currency" : currency
                             } )
@@ -1433,7 +1433,7 @@ function goEditNFC(id) {
 
                 insertTagInDB( userTag )
                 
-                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() {  }, "Success", "OK")
+                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { goManageNFC() }, "Success", "OK")
                 
             } )
 
@@ -1468,10 +1468,10 @@ function insertTagInDB(tag) {
                 	 
                  } )
              } else {
-            	 alert( "Error: ".JSON.stringify( error ) )
+            	 alert( "Error: " + JSON.stringify( error ) )
              }
     	} else {
-    		log( "Document already exists: " . JSON.stringify( doc ) )
+    		log( "Document already exists: " + JSON.stringify( doc ) )
     		
     		doc.tagID = tag.tagID;
     		doc.name = tag.name;
