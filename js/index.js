@@ -1083,14 +1083,12 @@ function goManageNFC() {
 
 function isTagArchived(id, callback) {
     var result = false;
-    config.db.get( "users," + config.user.name, function(error, doc) {
-        // find tag by id and return archived
-        for ( var i = 0; i < doc.tags.length; i++) {
-            if (id == doc.tags[i].tagID) {
-                // log( "match found " + doc.tags[i].archived)
-                result = doc.tags[i].archived;
-            }
-        }
+    config.db.get( "beamtag," + config.user.name + "," + id, function(error, doc) {
+    	if (error) {
+
+    	} else {
+    		result = doc.archived;
+    	}
         log( "is Tag (" + id + ") Archived:" + result )
         callback( error, result )
     } )
@@ -1102,14 +1100,9 @@ function isTagArchived(id, callback) {
 
 function archiveTag(id) {
     log( "Archive Tag", id )
-    config.db.get( "users," + config.user.name, function(err, doc) {
-        // find tag by id and archive it
-        for ( var i = 0; i < doc.tags.length; i++) {
-            if (id == doc.tags[i].tagID) {
-                doc.tags[i].archived = true;
-            }
-        }
-        config.db.put( "users," + config.user.name, doc, function() {
+    config.db.get( "beamtag," + config.user.name + "," + id, function(err, doc) {
+        doc.archived = true;
+        config.db.put( "beamtag," + config.user.name + "," + id, doc, function() {
         } )
     } )
 }
@@ -1120,14 +1113,9 @@ function archiveTag(id) {
 
 function activateTag(id) {
     log( "Activate Tag", id )
-    config.db.get( "users," + config.user.name, function(err, doc) {
-        // find tag by id and archive it
-        for ( var i = 0; i < doc.tags.length; i++) {
-            if (id == doc.tags[i].tagID) {
-                doc.tags[i].archived = false;
-            }
-        }
-        config.db.put( "users," + config.user.name, doc, function() {
+    config.db.get( "beamtag," + config.user.name + "," + id, function(err, doc) {
+        doc.archived = false;
+        config.db.put( "beamtag," + config.user.name + "," + id, doc, function() {
         } )
     } )
 }
@@ -1140,10 +1128,6 @@ function randomString(length, chars) {
 }
 
 function goNewNFC() {
-	
-	
-
-    config.db.get( "users," + config.user.name, function(err, doc) {
 
         config.views( [ "accounts", {
             descending : true
@@ -1329,8 +1313,6 @@ function goNewNFC() {
 
         } )
 
-    } )
-
 }
 
 /*
@@ -1339,15 +1321,9 @@ function goNewNFC() {
 
 function goEditNFC(id) {
 
-    config.db.get( "users," + config.user.name, function(err, doc) {
+    config.db.get( "beamtag," + config.user.name + "," + id, function(err, doc) {
 
-        var thisTag = null;
-        // find tag by id
-        for ( var i = 0; i < doc.tags.length; i++) {
-            if (id == doc.tags[i].tagID) {
-                thisTag = doc.tags[i];
-            }
-        }
+        var thisTag = doc;
 
         log( "This Tag: " + JSON.stringify( thisTag ) )
 
@@ -1364,13 +1340,6 @@ function goEditNFC(id) {
             if (!doc.name) {
             	navigator.notification.alert( "You must specify a name for your Tag."  , function() {  }, "Error", "OK")
             	return false;
-            }
-                
-            function randomString(length, chars) {
-                var result = '';
-                for ( var i = length; i > 0; --i)
-                    result += chars[Math.round( Math.random() * (chars.length - 1) )];
-                return result;
             }
 
             var hashTag = thisTag.hashTag;
