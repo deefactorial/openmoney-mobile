@@ -1204,9 +1204,15 @@ function goNewNFC() {
                 	return false;
                 }
                     
+                nfc.removeMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                    // success callback
+                }, function() {
+                    // failure callback
+                } );
 
                 var mutableLock = false;
-                nfc.addNdefListener( function(nfcEvent) {
+                
+                var newTagListner = function(nfcEvent) {
 
                     if (!mutableLock) {
                         mutableLock = true;
@@ -1255,7 +1261,7 @@ function goNewNFC() {
 
                         log( " userTag:" + JSON.stringify( userTag ) )
 
-                        if (tag.isWritable && tag.canMakeReadOnly) {
+                        if (tag.isWritable) {
                             log( "tag:" + JSON.stringify( tag ) );
 
                             var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
@@ -1268,19 +1274,30 @@ function goNewNFC() {
 
                             nfc.write( message, function() {
                                 insertTagInDB( userTag )
-                                //alert( "Successfully written to NFC Tag!" )
                                 mutableLock = false;
-                                navigator.notification.alert( "Successfully written to NFC Tag!"  , function() {  }, "Success", "OK")
+                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                    // success callback
+                                }, function() {
+                                    // failure callback
+                                } );
+                                navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { goManageNFC() }, "Success", "OK")
                             }, function() {
                                 //alert( "Failed to write to NFC Tag!" )
                                 mutableLock = false;
+                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                    // success callback
+                                }, function() {
+                                    // failure callback
+                                } );
                                 navigator.notification.alert( "Failed to write to NFC Tag!"  , function() {  }, "Failed", "OK")
                             } );
+                        } else {
+                        	
                         }
-
                     }
-
-                }, function() { // success callback
+                }
+                
+                nfc.addNdefListener( newTagListner , function() { // success callback
                     //alert( "Waiting for NFC tag" );
                 	navigator.notification.alert( "Waiting for NFC tag"  , function() {  }, "Waiting", "OK")
                 }, function(error) { // error callback
