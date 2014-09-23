@@ -1488,12 +1488,14 @@ function changeToPassword() {
  */
 
 function insertTagInDB(tag) {
+	tag.type = 'beamtag';
+	tag.username = config.user.name;
     log( "Insert Tag:" + JSON.stringify( tag ) )
-    config.db.get( "beamtag," + config.user.name + "," + tag.hashTag, function(error, doc) {
+    config.db.get( "beamtag," + tag.username + "," + tag.hashTag, function(error, doc) {
     	if( error ) { 
     		 log( "Error: " + JSON.stringify( error ) )
              if (error.status == 404) {
-                 config.db.put( "beamtag," + config.user.name + "," + tag.hashTag, tag, function() {
+                 config.db.put( "beamtag," + tag.username + "," + tag.hashTag, tag, function() {
                 	 
                  } )
              } else {
@@ -1509,7 +1511,7 @@ function insertTagInDB(tag) {
     		doc.defaultMaxLimitBeforePinRequest = tag.defaultMaxLimitBeforePinRequest;
     		doc.maxLimitBeforePinRequestPerCurrency = tag.maxLimitBeforePinRequestPerCurrency;
     		
-    		config.db.put( "beamtag," + config.user.name + "," + tag.hashTag, doc, function() {
+    		config.db.put( "beamtag," + tag.username + "," + tag.hashTag, doc, function() {
                 	 
             } )
     	}
@@ -2729,10 +2731,11 @@ function setupConfig(done) {
                     }.toString()
                 }, nfc_tags : {
                     map : function(doc) {
-                        if (doc.type == "users" && doc.tags && doc.username) {
-                            for ( var i = 0; i < doc.tags.length; i++) {
-                                emit( [ doc.username, doc.tags[i].tagID ], doc.tags[i] )
+                        if (doc.type == "beamtag" && doc.username) {
+                            if(typeof doc.sessionID == 'undefined') {
+                                emit( [ doc.username, doc.hashTag ], doc )
                             }
+                            
                         }
                     }.toString()
                 }
