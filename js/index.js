@@ -1287,7 +1287,7 @@ function goNewNFC() {
                     //alert( "Error adding NDEF listener " + JSON.stringify( error ) );
                 	if (error == "NFC_DISABLED") {
                 		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
-                			
+                			window.OpenActivity("NfcSettings");
                 		}, "Turn on NFC", "OK")
                 	} else {
                 		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
