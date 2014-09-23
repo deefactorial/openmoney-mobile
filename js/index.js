@@ -195,7 +195,7 @@ function goIndex() {
     window.dbChanged = function() {
     	window.plugins.spinnerDialog.show();
         config.views( [ "accounts", {
-            descending : true , indexUpdateMode: "before"
+            descending : true , stale: false
         } ], function(err, view) {
 
             var thisUsersAccounts = {
