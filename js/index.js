@@ -1285,7 +1285,7 @@ function goNewNFC() {
                 	navigator.notification.alert( "Waiting for NFC tag"  , function() {  }, "Waiting", "OK")
                 }, function(error) { // error callback
                     //alert( "Error adding NDEF listener " + JSON.stringify( error ) );
-                	navigator.notification.alert( "Error adding NDEF listener"  , function() {  }, "Error", "OK")
+                	navigator.notification.alert( "Error adding NDEF listener:" + error  , function() {  }, "Error", "OK")
                 } );
 
             } )
