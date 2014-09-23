@@ -1140,6 +1140,8 @@ function randomString(length, chars) {
 }
 
 function goNewNFC() {
+	
+	
 
     config.db.get( "users," + config.user.name, function(err, doc) {
 
@@ -1198,6 +1200,10 @@ function goNewNFC() {
             drawContent( config.t.edit_nfc( tag ) )
 
             $( "#content .om-index" ).click( function() {
+            	if(typeof newTagListner != 'undefined') {
+            		 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
+            	}
+            	
                 goManageNFC()
             } )
 
@@ -1228,77 +1234,74 @@ function goNewNFC() {
                         
                         if (tag.isWritable) {
                         
-	                        nfc.erase( function(){
-	                        	log("erase success");
-	                        	
-	                        	var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-		                        var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-		
-		                        var pinCode = doc.pinCode,
-		
-		                        // for more information on mcrypt
-		                        // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
-		                        // note the key that should be used instead of the
-		                        // hashID
-		                        // should be
-		                        // the users private RSA key.
-		                        encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
-		
-		                        var base64_encodedString = base64_encode( encodedString )
-		
-		                        var name = config.user.name;
-		                        if (doc.name)
-		                            name = doc.name;
-		                        defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
-		
-		                        for ( var i = 0; i < maxLimitBeforePinRequestPerCurrency.length; i++) {
-		                            var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + maxLimitBeforePinRequestPerCurrency[i].currency;
-		                            if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
-		                                maxLimitBeforePinRequestPerCurrency[i].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
-		                            }
-		                        }
-		
-		                        var userTag = {
-		                            "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
-		                        };
-		
-		                        log( " userTag:" + JSON.stringify( userTag ) )
+                            nfc.erase( function(){
+                            	log("erase success");
+                            	
+                            	var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+                                var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 
-	                            log( "tag:" + JSON.stringify( tag ) );
+                                var pinCode = doc.pinCode,
 
-	                            var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
-	                                key : hashTag
-	                            } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+                                // for more information on mcrypt
+                                // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
+                                // note the key that should be used instead of the
+                                // hashID
+                                // should be
+                                // the users private RSA key.
+                                encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
 
-	                            var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
+                                var base64_encodedString = base64_encode( encodedString )
 
-	                            var message = [ mime, aar ];
+                                var name = config.user.name;
+                                if (doc.name)
+                                    name = doc.name;
+                                defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
 
-	                            nfc.write( message, function() {
-	                                insertTagInDB( userTag )
-	                                mutableLock = false;
-	                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-	                                    // success callback
-	                                }, function() {
-	                                    // failure callback
-	                                } );
-	                                navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { goManageNFC() }, "Success", "OK")
-	                            }, function() {
-	                                //alert( "Failed to write to NFC Tag!" )
-	                                mutableLock = false;
-	                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-	                                    // success callback
-	                                }, function() {
-	                                    // failure callback
-	                                } );
-	                                navigator.notification.alert( "Failed to write to NFC Tag!"  , function() {  }, "Failed", "OK")
-	                            } );
-	                        	
-	                        }, function(){
-	                        	log("erase failed");
-	                        	navigator.notification.alert( "Could Not Erase!"  , function() {  }, "Not Erasable", "OK")
-	                        });
-	                        
+                                for ( var i = 0; i < maxLimitBeforePinRequestPerCurrency.length; i++) {
+                                    var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + maxLimitBeforePinRequestPerCurrency[i].currency;
+                                    if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
+                                        maxLimitBeforePinRequestPerCurrency[i].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
+                                    }
+                                }
+
+                                var userTag = {
+                                    "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
+                                };
+
+                                log( " userTag:" + JSON.stringify( userTag ) )
+
+                                log( "tag:" + JSON.stringify( tag ) );
+
+                                var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
+                                    key : hashTag
+                                } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+
+                                var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
+
+                                var message = [ mime, aar ];
+
+                                nfc.write( message, function() {
+                                    insertTagInDB( userTag )
+                                    mutableLock = false;
+                                    nfc.removeNdefListener( newTagListner, function() {}, function() {} );
+                                    
+                                    nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                        // success callback
+                                    }, function() {
+                                        // failure callback
+                                    } );
+                                    navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { goManageNFC() }, "Success", "OK")
+                                }, function() {
+                                    //alert( "Failed to write to NFC Tag!" )
+                                    mutableLock = false;
+                                    navigator.notification.alert( "Failed to write to NFC Tag!"  , function() {  }, "Failed", "OK")
+                                } );
+                            	
+                            }, function(){
+                            	log("erase failed");
+                            	navigator.notification.alert( "Could Not Erase!"  , function() {  }, "Not Erasable", "OK")
+                            });
+                            
                         } else {
                         	navigator.notification.alert( "Tag is not writeable!"  , function() {  }, "Not Writeable", "OK")
                         }
