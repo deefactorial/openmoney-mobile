@@ -2382,7 +2382,9 @@ function addMyUsernameToAllLists(cb) {
         if (err) { return cb( err ) }
         var docs = [];
         view.rows.forEach( function(row) {
+        	log("account row:" + JSON.stringify( row ) )
         	config.db.get("trading_name," + row.doc.trading_name, function(error, doc) {
+        		log("account doc before:" + JSON.stringify( doc ) )
 	            if (!doc.steward) {
 	                doc.steward = [ config.user.name ];
 	            } else {
@@ -2399,6 +2401,7 @@ function addMyUsernameToAllLists(cb) {
 	                    } )
 	                }
 	            }
+        		log("account doc after:" + JSON.stringify( doc ) )
 	            docs.push( doc )
         	} )
         } )
