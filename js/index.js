@@ -67,8 +67,10 @@ function doOnOrientationChange () {
 }
 
 function adjustHeader() {
-    $(".topcoat-navigation-bar").css('display','block');
-    $(".topcoat-tab-bar").css('display','table');
+    $(".topcoat-navigation-bar").css('display','inline-block');
+    $(".topcoat-navigation-bar").css('width','100%');
+    $(".topcoat-tab-bar").css('display','inline-table');
+    $(".topcoat-tab-bar").css('width','100%');
     setTimeout(function () { 
     	$(".topcoat-navigation-bar").css('display','block');
     	$(".topcoat-tab-bar").css('display','table');
