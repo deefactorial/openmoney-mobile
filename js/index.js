@@ -782,7 +782,7 @@ function goTradingName() {
                             $( "#content form input[name='trading_name']" ).val( "" ) // Clear
                             $( "#content form input[name='currency']" ).val( "" ) // Clear                            
                         
-                            navigator.notification.alert( "You successfully created a new trading name !" , function() { window.plugins.spinnerDialog.show(); goSettings() }, "New Trading Name", "OK")
+                            navigator.notification.alert( "You successfully created a new trading name !" , function() { window.plugins.spinnerDialog.show(); goIndex() }, "New Trading Name", "OK")
                             
                         } )
                         
