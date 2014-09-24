@@ -792,7 +792,16 @@ function goTradingName() {
                                  return alert( JSON.stringify( error ) )
                     	} );
                     	
-                    	var currencyDoc = {"type":"currency", "currency": doc.name, "space": doc.space, "name": doc.tradingname + " Currency in " + doc.space + " Space"  , "steward": [ config.user.name ] };
+                    	var name = doc.name + " Currency";
+                    	if (doc.space) {
+                    		name += " in " + doc.space + " Space";
+                    	}
+                    	
+                    	var currencyDoc = { "type":"currency",
+                    						"currency": doc.name,
+                    						"space": doc.space,
+                    						"name": name,
+                    						"steward": [ config.user.name ] };
                     	config.db.put( currencyDoc.type + "," + doc.name, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
                     		 if (error)
                                  return alert( JSON.stringify( error ) )
@@ -870,13 +879,20 @@ function goCurrency() {
 	
 	                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
 	                        
-		                        var tradingNameDoc = { "type":"trading_name", "name": doc.currency, "space": doc.space, "currency": doc.space, "steward": [ config.user.name ] };
+		                        var tradingNameDoc = { "type": "trading_name",
+		                        					    "name": doc.currency,
+		                        					    "space": doc.space,
+		                        					    "currency": doc.space,
+		                        					    "steward": [ config.user.name ] };
 		                        config.db.put( tradingNameDoc.type + "," + tradingNameDoc.name,  JSON.parse( JSON.stringify( tradingNameDoc ) ), function (error, ok) { 
 		                        	if (error)
 		                                return alert( JSON.stringify( error ) )
 		                        } )
 		                        
-		                        var spaceDoc = {"type":"space", "space": doc.currency, "subspace": doc.space, "steward": [ config.user.name ] };
+		                        var spaceDoc = { "type":"space",
+		                        				 "space": doc.currency,
+		                        				 "subspace": doc.space,
+		                        				 "steward": [ config.user.name ] };
 		                    	config.db.put( spaceDoc.type + "," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
 		                    		 if (error)
 		                                 return alert( JSON.stringify( error ) )
@@ -963,13 +979,22 @@ function goSpace() {
                             navigator.notification.alert( "You successfully created a new space !" , function() { window.plugins.spinnerDialog.show(); goSettings() }, "New Space", "OK")
                         } )
                         
-                        var tradingNameDoc = { "type":"trading_name", "name": doc.space, "space": doc.subspace, "currency": doc.subspace, "steward": [ config.user.name ] };
+                        var tradingNameDoc = { "type": "trading_name", "name": doc.space, "space": doc.subspace, "currency": doc.subspace, "steward": [ config.user.name ] };
 	                    config.db.put( tradingNameDoc.type + "," + tradingNameDoc.name,  JSON.parse( JSON.stringify( tradingNameDoc ) ), function (error, ok) { 
                         	if (error)
                                 return alert( JSON.stringify( error ) )
                         } )
                         
-                        var currencyDoc = {"type":"currency", "currency": doc.space, "space": doc.subspace, "name": doc.space + " Currency in " + doc.subspace + " Space"  , "steward": [ config.user.name ] };
+                        var name = doc.space + " Currency";
+                    	if (doc.subspace) {
+                    		name += " in " + doc.subspace + " Space";
+                    	}
+                        
+                        var currencyDoc = { "type": "currency",
+                        					"currency": doc.space,
+                        					"space": doc.subspace,
+                        					"name": name,
+                        					"steward": [ config.user.name ] };
                     	config.db.put( currencyDoc.type + "," + doc.space, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
                     		 if (error)
                                  return alert( JSON.stringify( error ) )
