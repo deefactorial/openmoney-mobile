@@ -1044,6 +1044,70 @@ function goManageNFC() {
                 goSettings()
             } )
 
+            $( "#content .om-erase_nfc" ).click( function() {
+                
+                nfc.removeMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                    // success callback
+                }, function() {
+                    // failure callback
+                } );
+                
+                var mutableLock = false;
+                
+                var eraseTagListner = function(nfcEvent) {
+
+                    if (!mutableLock) {
+                        mutableLock = true;
+
+                        var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+                        
+                        if (tag.isWritable) {
+                        
+                            nfc.erase( function(){
+                            	log("erase success");
+                                nfc.removeNdefListener( eraseTagListner, function() {}, function() {} );
+                                
+                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                    // success callback
+                                }, function() {
+                                    // failure callback
+                                } );
+                            	navigator.notification.alert( "Successfully Erased Tag"  , function() {  }, "Erase Success", "OK")
+                            }, function (error) {
+                                nfc.removeNdefListener( eraseTagListner, function() {}, function() {} );
+                                
+                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                    // success callback
+                                }, function() {
+                                    // failure callback
+                                } );
+                            	navigator.notification.alert( "Error Erasing Tag:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
+                            } )
+                            	
+                            
+                        } else {
+                        	navigator.notification.alert( "Tag is not writeable!"  , function() {  }, "Not Writeable", "OK")
+                        }
+                    }
+                }
+                
+                nfc.addNdefListener( eraseTagListner , function() { // success callback
+                    //alert( "Waiting for NFC tag" );
+                	navigator.notification.alert( "Waiting for NFC tag"  , function() {  }, "Waiting", "OK")
+                }, function(error) { // error callback
+                    //alert( "Error adding NDEF listener " + JSON.stringify( error ) );
+                	if (error == "NFC_DISABLED") {
+                		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
+                			window.OpenActivity("NFCSettings");
+                		}, "Turn on NFC", "OK")
+                	} else {
+                		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
+                	}
+                	
+                } );
+            	
+            } )
+            
             $( "#content .om-new_nfc" ).click( function() {
                 goNewNFC()
             } )
@@ -1218,73 +1282,74 @@ function goNewNFC() {
                         
                         if (tag.isWritable) {
                         
-                            nfc.erase( function(){
-                            	log("erase success");
-                            	
-                            	var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-                                var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+                        	
+                        	var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+                            var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 
-                                var pinCode = doc.pinCode,
+                            var pinCode = doc.pinCode,
 
-                                // for more information on mcrypt
-                                // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
-                                // note the key that should be used instead of the
-                                // hashID
-                                // should be
-                                // the users private RSA key.
-                                encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
+                            // for more information on mcrypt
+                            // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
+                            // note the key that should be used instead of the
+                            // hashID
+                            // should be
+                            // the users private RSA key.
+                            encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
 
-                                var base64_encodedString = base64_encode( encodedString )
+                            var base64_encodedString = base64_encode( encodedString )
 
-                                var name = config.user.name;
-                                if (doc.name)
-                                    name = doc.name;
-                                defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
+                            var name = config.user.name;
+                            if (doc.name)
+                                name = doc.name;
+                            defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
 
-                                for ( var i = 0; i < maxLimitBeforePinRequestPerCurrency.length; i++) {
-                                    var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + maxLimitBeforePinRequestPerCurrency[i].currency;
-                                    if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
-                                        maxLimitBeforePinRequestPerCurrency[i].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
-                                    }
+                            for ( var i = 0; i < maxLimitBeforePinRequestPerCurrency.length; i++) {
+                                var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + maxLimitBeforePinRequestPerCurrency[i].currency;
+                                if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
+                                    maxLimitBeforePinRequestPerCurrency[i].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
                                 }
+                            }
 
-                                var userTag = {
-                                    "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
-                                };
+                            var userTag = {
+                                "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
+                            };
 
-                                log( " userTag:" + JSON.stringify( userTag ) )
+                            log( " userTag:" + JSON.stringify( userTag ) )
 
-                                log( "tag:" + JSON.stringify( tag ) );
+                            log( "tag:" + JSON.stringify( tag ) );
 
-                                var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
-                                    key : hashTag
-                                } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+                            var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
+                                key : hashTag
+                            } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
 
-                                var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
+                            var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
 
-                                var message = [ mime, aar ];
+                            var message = [ mime, aar ];
 
-                                nfc.write( message, function() {
-                                    insertTagInDB( userTag )
-                                    mutableLock = false;
-                                    nfc.removeNdefListener( newTagListner, function() {}, function() {} );
-                                    
-                                    nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-                                        // success callback
-                                    }, function() {
-                                        // failure callback
-                                    } );
-                                    navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { goManageNFC() }, "Success", "OK")
+                            nfc.write( message, function() {
+                                insertTagInDB( userTag )
+                                mutableLock = false;
+                                nfc.removeNdefListener( newTagListner, function() {}, function() {} );
+                                
+                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                    // success callback
                                 }, function() {
-                                    //alert( "Failed to write to NFC Tag!" )
-                                    mutableLock = false;
-                                    navigator.notification.alert( "Failed to write to NFC Tag!"  , function() {  }, "Failed", "OK")
+                                    // failure callback
                                 } );
-                            	
-                            }, function(){
-                            	log("erase failed");
-                            	navigator.notification.alert( "Could Not Erase!"  , function() {  }, "Not Erasable", "OK")
-                            });
+                                navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { goManageNFC() }, "Success", "OK")
+                            }, function() {
+                                //alert( "Failed to write to NFC Tag!" )
+                                mutableLock = false;
+                                nfc.removeNdefListener( newTagListner, function() {}, function() {} );
+                                
+                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                    // success callback
+                                }, function() {
+                                    // failure callback
+                                } );
+                                navigator.notification.alert( "Failed to write to NFC Tag!"  , function() {  }, "Failed", "OK")
+                            } );
+                           
                             
                         } else {
                         	navigator.notification.alert( "Tag is not writeable!"  , function() {  }, "Not Writeable", "OK")
