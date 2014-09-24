@@ -57,13 +57,13 @@ function doOnOrientationChange () {
       case -90:
       case 90:
         log('landscape');
-        $(":header").css('display','none');
-        setTimeout( function () { $(":header").css('display','block'); }, 0);
+        $(".topcoat-navigation-bar").css('display','none');
+        setTimeout( function () { $(".topcoat-navigation-bar").css('display','block'); }, 0);
         break; 
       default:
         log('portrait');
-      	$(":header").css('display','none');
-      	setTimeout( function () { $(":header").css('display','block'); }, 0);
+      	$(".topcoat-navigation-bar").css('display','none');
+      	setTimeout( function () { $(".topcoat-navigation-bar").css('display','block'); }, 0);
         break; 
     }
 }
