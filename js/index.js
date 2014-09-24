@@ -2530,7 +2530,7 @@ function addMyUsernameToAllLists(cb) {
     
     //poll for when they are all complete then call callback
     while(true) {
-    	if (account && currencies && spaces && nfctags)
+    	if (accounts && currencies && spaces && nfctags)
     		cb( null )
     }
 }
