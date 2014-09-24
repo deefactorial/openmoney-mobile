@@ -58,12 +58,12 @@ function doOnOrientationChange () {
       case 90:
         log('landscape');
         $(".topcoat-navigation-bar").css('display','none');
-        setTimeout( function () { $(".topcoat-navigation-bar").css('display','block'); }, 0);
+        $(".topcoat-navigation-bar").css('display','block'); 
         break; 
       default:
         log('portrait');
       	$(".topcoat-navigation-bar").css('display','none');
-      	setTimeout( function () { $(".topcoat-navigation-bar").css('display','block'); }, 0);
+      	$(".topcoat-navigation-bar").css('display','block');
         break; 
     }
 }
