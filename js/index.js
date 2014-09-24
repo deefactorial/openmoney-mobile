@@ -2493,14 +2493,27 @@ function addMyUsernameToAllLists(cb) {
         view.rows.forEach( function(row) {
         	config.db.get("beamtag,anonymous," + row.doc.hashTag, function(error, doc) {
         		if(!error) {
+        			var newDoc = {};
+        			for (var key in doc) {
+    				  if (doc.hasOwnProperty(key)) {
+    				    log(key + " -> " + doc[key]);
+    				    if(key != '_id' || key != '_rev')
+    				    	newDoc[key] = doc[key]; 
+    				  }
+    				}
                     if (!doc.username) {
-                        doc.username = config.user.name;
+                    	doc._deleted = true;
+                        newdoc.username = config.user.name;
+                        newdoc._id = "beamtag," + newdoc.username + "," + newdoc.hashTag;
                     } else {
                         if (doc.username == 'anonymous' || doc.username == null) {
-                        	doc.username = config.user.name;
+                        	doc._deleted = true;
+                        	newdoc.username = config.user.name;
+                        	newdoc._id = "beamtag," + newdoc.username + "," + newdoc.hashTag;
                         }
                     }
                     docs.push( doc )
+                    docs.push( newdoc )
         		}
         	} )
         } )
