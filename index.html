@@ -334,6 +334,9 @@
 <div id="scrollable">
 	<div class="topcoat-list__container">
 			<ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="trading_name">
+                    <button class="om-manage_accounts topcoat-button">Manage Accounts</button>
+                </li>
         		<li class="topcoat-list__item" data-id="trading_name">
             		<button class="om-trading_name topcoat-button">Join Currency</button>
 				</li>
@@ -358,6 +361,92 @@
     		</ul>
 	</div>
 </div>
+</script>
+<script type="text/mustache" id="manage_accounts-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item center half">
+           <h1 class="topcoat-navigation-bar__title">Manage Accounts</h1>
+        </div>
+        <div class="topcoat-navigation-bar__item right quarter om-padded">
+            
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable">
+    <div class="topcoat-list__container">
+        <ul class="topcoat-list">
+            <li class="topcoat-list__item" data-id="create">
+                <button class="om-create topcoat-button">Create</button>
+            </li>
+        </ul>
+    </div>
+    <div class="topcoat-list__container" id="accounts_list">
+    </div>
+    <div class="topcoat-list__container" id="currencies_list">
+    </div>
+    <div class="topcoat-list__container" id="spaces_list">
+    </div>
+</div>
+</script>
+<script type="text/mustache" id="accounts_list-mu">
+    {{#rows}}
+        <ul class="topcoat-list">
+            <li class="topcoat-list__item" data-id="list">
+                <h1 style="text-align:center">Trading Name Accounts</h1>
+            </li>
+            {{#value}}
+            <li class="topcoat-list__item" data-id="{{trading_name}}">
+                {{trading_name}} {{currency}}
+            </li>
+            {{/value}}
+        </ul>
+    {{/rows}}
+</script>
+<script type="text/mustache" id="currencies_list-mu">
+    {{#rows}}
+        <ul class="topcoat-list">
+            <li class="topcoat-list__item" data-id="list">
+                <h1 style="text-align:center">Currencies</h1>
+            </li>
+            {{#value}}
+            <li class="topcoat-list__item" data-id="{{currency}}">
+                {{currency}}
+            </li>
+            {{/value}}
+        </ul>
+    {{/rows}}
+</script>
+<script type="text/mustache" id="spaces_list-mu">
+    {{#rows}}
+        <ul class="topcoat-list">
+            <li class="topcoat-list__item" data-id="list">
+                <h1 style="text-align:center">Spaces</h1>
+            </li>
+            {{#value}}
+            <li class="topcoat-list__item" data-id="{{space}}">
+                {{space}}
+            </li>
+            {{/value}}
+        </ul>
+    {{/rows}}
 </script>
 <script type="text/mustache" id="trading_name-mu">
 <header>

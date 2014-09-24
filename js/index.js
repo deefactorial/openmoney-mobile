@@ -201,6 +201,58 @@ function drawContent(html) {
     $( "#content" ).html( html )
 }
 
+function drawContainer(id, html) {
+
+	scroll( 0, 0 )
+	
+	console.log( "drawContainer(" + id + ")" )
+
+	$( id ).html( html );
+}
+
+
+
+/*
+ * https://stackoverflow.com/questions/824349/modify-the-url-without-reloading-the-page
+ */
+
+function processAjaxData(response, urlPath) {
+	
+	drawContent( response.html );
+
+	document.title = response.pageTitle;
+
+	window.history.pushState( {
+		"html" : response.html, "pageTitle" : response.pageTitle
+	}, "", urlPath );
+}
+
+window.onpopstate = function(e) {
+	if (e.state) {
+		document.getElementById( "content" ).innerHTML = e.state.html;
+		document.title = e.state.pageTitle;
+	}
+};
+
+/*
+ * https://stackoverflow.com/questions/12832317/window-history-replacestate-example
+ */
+
+/*
+ * This function refreshes the browser history with the latest content. It can
+ * also be used to change the url location of the current document.
+ */
+
+function updateAjaxData(urlPath) {
+
+	window.history.replaceState( {
+		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title
+	}, "", urlPath );
+
+}
+
+
+
 function goIndex() {
 	
     drawContent( config.t.index() )
@@ -726,6 +778,11 @@ function goSettings() {
 
     setTabs()
 
+    $( "#content .om-manage_accounts" ).click( function() {
+    	window.plugins.spinnerDialog.show();
+        goManageAccounts()
+    } )
+    
     $( "#content .om-trading_name" ).click( function() {
     	window.plugins.spinnerDialog.show();
         goTradingName()
@@ -762,6 +819,84 @@ function goSettings() {
     
     window.plugins.spinnerDialog.hide();
 }
+
+
+/*
+ * Manage Accounts Page
+ */
+
+function goManageAccounts() {
+	
+	var response = { "html" : config.t.manage_accounts(), "pageTitle" : "Manage Accounts" }
+	
+	processAjaxData( response, "manage_accounts" )
+
+    $( "#content .om-index" ).click( function() {
+        goSettings()
+    } )
+
+    setTabs()
+	
+    window.dbChanged = function() {
+		
+		var accounts = false, currencies = false, spaces = false;
+		
+    	config.views( [ "accounts", {
+            include_docs : true
+        } ], function(error, view) {
+            if (error) { return alert( JSON.stringify( error ) ) }
+
+            drawContainer( "accounts_list" , config.t.currencies_list( view ) )
+
+            updateAjaxData( "manage_accounts" )
+            
+            accounts = true;
+            
+        } )
+		
+    	config.views( [ "currencies", {
+            include_docs : true
+        } ], function(error, view) {
+            if (error) { return alert( JSON.stringify( error ) ) }
+
+            drawContainer( "currencies_list" , config.t.currencies_list( view ) )
+            
+            updateAjaxData( "manage_accounts" )
+            
+            currencies = true;
+
+        } )
+		
+    	config.views( [ "spaces", {
+            include_docs : true
+        } ], function(error, view) {
+            if (error) { return alert( JSON.stringify( error ) ) }
+
+            drawContainer( "spaces_list", config.t.spaces_list( view ) )
+            
+            updateAjaxData( "manage_accounts" )
+            
+            spaces = true;
+            
+        } )
+        
+        function pollComplete() {
+    		if (accounts && currencies && spaces) {
+    			window.plugins.spinnerDialog.hide();
+    		} else {
+    			setTimeout( function () {
+    				pollComplete()
+    			}, 125)
+    		}
+    	}
+        
+    	pollComplete()
+        
+    }
+	
+	window.dbChanged();
+}
+
 
 /*
  * Join a Currency (trading name) Page
