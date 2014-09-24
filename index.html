@@ -82,7 +82,7 @@
         <li class="om-list-name topcoat-list__item" data-id="{{id}}">
 			{{#key}}
             	{{trading_name}} {{currency}}
-            	<button class="todo-delete topcoat-button">Delete</button>
+            	
 			{{/key}}
         </li>
     {{/rows}}
@@ -137,9 +137,9 @@
         {{#value}}
             <div class="who"><b>{{subject}}</b> <i>{{description}}</i><br/>{{timestamp}}</div>
 			<div class="what {{#isPositive}}isPositive{{/isPositive}}{{^isPositive}}isNegative{{/isPositive}}">{{amount}} {{currency}}            
-				<div class="camera {{#image}}image{{/image}}"></div>
+				
 			</div>
-            <button class="todo-delete topcoat-button">Delete</button>
+            
             <br class="clear"/>
         {{/value}}
         </li>

@@ -365,15 +365,15 @@ function goList(id) {
 
         $( "#scrollable" ).on( "click", "li", function(e) {
             var id = $( this ).attr( "data-id" )
-            if ($( e.target ).hasClass( "camera" )) {
-                if ($( e.target ).hasClass( "image" )) {
-                    goImage( id )
-                } else {
-                    doCamera( id )
-                }
-            } else {
-                toggleChecked( id )
-            }
+//            if ($( e.target ).hasClass( "camera" )) {
+//                if ($( e.target ).hasClass( "image" )) {
+//                    goImage( id )
+//                } else {
+//                    doCamera( id )
+//                }
+//            } else {
+//                toggleChecked( id )
+//            }
         } )
 		
 	    config.db.get( id, function(err, doc) {
@@ -400,12 +400,12 @@ function goList(id) {
             	
                 log( "account_details" + JSON.stringify( view ), view )
                 $( "#scrollable" ).html( config.t.listItems( view ) )
-                $( "#scrollable li" ).on( "swipeRight", function() {
-                    var id = $( this ).attr( "data-id" )
-                    $( this ).find( "button" ).show().click( function() {
-                        deleteItem( id )
-                    } )
-                } )
+//                $( "#scrollable li" ).on( "swipeRight", function() {
+//                    var id = $( this ).attr( "data-id" )
+//                    $( this ).find( "button" ).show().click( function() {
+//                        deleteItem( id )
+//                    } )
+//                } )
             } )
     	} )
 	}
