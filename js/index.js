@@ -836,6 +836,10 @@ function goManageAccounts() {
     } )
 
     setTabs()
+    
+    $( "#content .om-create" ).click( function() {
+        goCreateAccount()
+    } )
 	
     window.dbChanged = function() {
 		
