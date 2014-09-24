@@ -786,14 +786,14 @@ function goTradingName() {
                             
                         } )
                         
-                    	var spaceDoc = {"type":"space", "space": doc.name, "subspace": doc.space, "steward": [ config.user.name ] };
+                    	var spaceDoc = {"type":"space", "space": doc.name + "." + doc.currency, "subspace": doc.currency, "steward": [ config.user.name ] };
                     	config.db.put( spaceDoc.type + "," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
                     		 if (error)
                                  return alert( JSON.stringify( error ) )
                     	} );
                     	
                     	var name = doc.name + " Currency";
-                    	if (doc.space) {
+                    	if (typeof doc.space == 'undefined' || doc.space == '') {
                     		name += " in " + doc.currency + " Space";
                     	}
                     	
@@ -986,7 +986,7 @@ function goSpace() {
                         } )
                         
                         var name = doc.space + " Currency";
-                    	if (doc.subspace) {
+	                    if (typeof doc.subspace == 'undefined' || doc.subspace == '') {
                     		name += " in " + doc.subspace + " Space";
                     	}
                         
