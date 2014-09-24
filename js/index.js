@@ -846,9 +846,18 @@ function goManageAccounts() {
         } ], function(error, view) {
             if (error) { return alert( JSON.stringify( error ) ) }
             
-            log("accounts view:" + JSON.stringify( view ) ) 
+            var usersAccounts = { "rows" : [] };
+            view.rows.forEach( function(row) {
+            	if (row.doc.steward.forEach( function( steward ) {
+            		if (steward == config.user.name) {
+            			usersAccounts.rows.push( row )
+            		}
+            	}))
+            } )
+            
+            log("accounts view:" + JSON.stringify( usersAccounts ) ) 
 
-            drawContainer( "div#accounts_list" , config.t.accounts_list( view ) )
+            drawContainer( "div#accounts_list" , config.t.accounts_list( usersAccounts ) )
 
             updateAjaxData( "manage_accounts" )
             
