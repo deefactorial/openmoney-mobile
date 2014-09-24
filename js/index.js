@@ -57,24 +57,22 @@ function doOnOrientationChange () {
       case -90:
       case 90:
         log('landscape');
-        $(".topcoat-navigation-bar").css('display','run-in');
-        $(".topcoat-tab-bar").css('display','run-in');
-        setTimeout(function () { 
-        	$(".topcoat-navigation-bar").css('display','block');
-        	$(".topcoat-tab-bar").css('display','block');
-        }, 500);
+        adjustHeader();
         break; 
       default:
         log('portrait');
-        $(":header").hide();
-        $(".topcoat-navigation-bar").css('display','run-in');
-        $(".topcoat-tab-bar").css('display','run-in');
-        setTimeout(function () { 
-        	$(".topcoat-navigation-bar").css('display','block');
-        	$(".topcoat-tab-bar").css('display','block');
-        }, 500);
+        adjustHeader();
         break; 
     }
+}
+
+function adjustHeader() {
+    $(".topcoat-navigation-bar").css('display','inline-block');
+    $(".topcoat-tab-bar").css('display','inline-block');
+    setTimeout(function () { 
+    	$(".topcoat-navigation-bar").css('display','block');
+    	$(".topcoat-tab-bar").css('display','block');
+    }, 500);
 }
 
 window.addEventListener('orientationchange', doOnOrientationChange);
