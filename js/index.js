@@ -2374,6 +2374,7 @@ function registerFacebookToken(cb) {
 function addMyUsernameToAllLists(cb) {
 	
 	var accounts = false, currencies = false, spaces = false, nfctags=false;
+	
     // update trading names
     config.views( [ "accounts", {
         include_docs : true
@@ -2529,9 +2530,15 @@ function addMyUsernameToAllLists(cb) {
     } )
     
     //poll for when they are all complete then call callback
-    while(true) {
-    	if (accounts && currencies && spaces && nfctags)
+    
+    function pollCompleted() {
+    	if (accounts && currencies && spaces && nfctags) {
     		cb( null )
+    	} else {
+    	    setTimeout(function () { 
+    	    	pollCompleted()
+    	    }, 125);
+    	}
     }
 }
 
