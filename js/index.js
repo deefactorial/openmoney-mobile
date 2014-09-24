@@ -57,21 +57,25 @@ function doOnOrientationChange () {
       case -90:
       case 90:
         log('landscape');
-        $(".topcoat-navigation-bar").hide();
-        $(".topcoat-tab-bar").hide();
+        $(":header").hide();
+        //$(".topcoat-navigation-bar").hide();
+        //$(".topcoat-tab-bar").hide();
         setTimeout(function () { 
-        	$(".topcoat-navigation-bar").show();
-        	$(".topcoat-tab-bar").show();
+        	$(":header").show();
+        	//$(".topcoat-navigation-bar").show();
+        	//$(".topcoat-tab-bar").show();
         }, 500);
         
         break; 
       default:
         log('portrait');
-		$(".topcoat-navigation-bar").hide();
-		$(".topcoat-tab-bar").hide();
+        $(":header").hide();
+		//$(".topcoat-navigation-bar").hide();
+		//$(".topcoat-tab-bar").hide();
         setTimeout(function () { 
-        	$(".topcoat-navigation-bar").show();
-        	$(".topcoat-tab-bar").show();
+        	$(":header").show();
+        	//$(".topcoat-navigation-bar").show();
+        	//$(".topcoat-tab-bar").show();
         }, 500);
         break; 
     }
