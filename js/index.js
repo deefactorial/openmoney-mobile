@@ -848,7 +848,7 @@ function goManageAccounts() {
             
             log("accounts view:" + JSON.stringify( view ) ) 
 
-            drawContainer( "accounts_list" , config.t.accounts_list( view ) )
+            drawContainer( "div#accounts_list" , config.t.accounts_list( view ) )
 
             updateAjaxData( "manage_accounts" )
             
@@ -861,7 +861,7 @@ function goManageAccounts() {
         } ], function(error, view) {
             if (error) { return alert( JSON.stringify( error ) ) }
 
-            drawContainer( "currencies_list" , config.t.currencies_list( view ) )
+            drawContainer( "div#currencies_list" , config.t.currencies_list( view ) )
             
             updateAjaxData( "manage_accounts" )
             
@@ -874,7 +874,7 @@ function goManageAccounts() {
         } ], function(error, view) {
             if (error) { return alert( JSON.stringify( error ) ) }
 
-            drawContainer( "spaces_list", config.t.spaces_list( view ) )
+            drawContainer( "div#spaces_list", config.t.spaces_list( view ) )
             
             updateAjaxData( "manage_accounts" )
             
