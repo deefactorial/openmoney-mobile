@@ -798,7 +798,7 @@ function goTradingName() {
                     	}
                     	
                     	var currencyDoc = { "type":"currency",
-                    						"currency": doc.name,
+                    						"currency": doc.name + "." + doc.currency,
                     						"space": doc.currency,
                     						"name": name,
                     						"steward": [ config.user.name ] };
