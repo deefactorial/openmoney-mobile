@@ -794,12 +794,12 @@ function goTradingName() {
                     	
                     	var name = doc.name + " Currency";
                     	if (doc.space) {
-                    		name += " in " + doc.space + " Space";
+                    		name += " in " + doc.currency + " Space";
                     	}
                     	
                     	var currencyDoc = { "type":"currency",
                     						"currency": doc.name,
-                    						"space": doc.space,
+                    						"space": doc.currency,
                     						"name": name,
                     						"steward": [ config.user.name ] };
                     	config.db.put( currencyDoc.type + "," + doc.name, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
