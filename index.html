@@ -407,46 +407,52 @@
 </div>
 </script>
 <script type="text/mustache" id="accounts_list-mu">
-    {{#rows}}
+    
         <ul class="topcoat-list">
             <li class="topcoat-list__item" data-id="list">
                 <h1 style="text-align:center">Trading Name Accounts</h1>
             </li>
+        {{#rows}}
             {{#doc}}
             <li class="topcoat-list__item" data-id="{{trading_name}}">
                 {{trading_name}} {{currency}}
             </li>
             {{/doc}}
+        {{/rows}}
         </ul>
-    {{/rows}}
+    
 </script>
 <script type="text/mustache" id="currencies_list-mu">
-    {{#rows}}
+    
         <ul class="topcoat-list">
             <li class="topcoat-list__item" data-id="list">
                 <h1 style="text-align:center">Currencies</h1>
             </li>
+        {{#rows}}
             {{#doc}}
             <li class="topcoat-list__item" data-id="{{currency}}">
                 {{currency}}
             </li>
             {{/doc}}
+        {{/rows}}
         </ul>
-    {{/rows}}
+    
 </script>
 <script type="text/mustache" id="spaces_list-mu">
-    {{#rows}}
+    
         <ul class="topcoat-list">
             <li class="topcoat-list__item" data-id="list">
                 <h1 style="text-align:center">Spaces</h1>
             </li>
+        {{#rows}}
             {{#doc}}
             <li class="topcoat-list__item" data-id="{{space}}">
                 {{space}}
             </li>
             {{/doc}}
+        {{/rows}}
         </ul>
-    {{/rows}}
+    
 </script>
 <script type="text/mustache" id="trading_name-mu">
 <header>
