@@ -67,7 +67,7 @@ function doOnOrientationChange () {
 }
 
 function adjustHeader() {
-    $(".topcoat-navigation-bar").css('display','inline-block');
+    $(".topcoat-navigation-bar").css('display','table');
     $(".topcoat-tab-bar").css('display','inline-table');
     setTimeout(function () { 
     	$(".topcoat-navigation-bar").css('display','block');
