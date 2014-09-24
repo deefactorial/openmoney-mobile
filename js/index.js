@@ -2540,6 +2540,8 @@ function addMyUsernameToAllLists(cb) {
     	    }, 125);
     	}
     }
+    
+    pollCompleted()
 }
 
 function createBeamTag(cb) {
