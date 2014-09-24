@@ -2383,27 +2383,28 @@ function addMyUsernameToAllLists(cb) {
         var docs = [];
         view.rows.forEach( function(row) {
         	log("account row:" + JSON.stringify( row ) )
-        	config.db.get("trading_name," + row.doc.trading_name, function(error, doc) {
-        		log("account doc before:" + JSON.stringify( doc ) )
-	            if (!doc.steward) {
-	                doc.steward = [ config.user.name ];
+
+        		
+        		log("account doc before:" + JSON.stringify( row.doc ) )
+	            if (!row.doc.steward) {
+	            	row.doc.steward = [ config.user.name ];
 	            } else {
-	                if (Array.isArray( doc.steward )) {
+	                if (Array.isArray( row.doc.steward )) {
 	                    var newStewardList = [];
-	                    doc.steward.forEach( function(steward) {
+	                    row.doc.steward.forEach( function(steward) {
 	                        if (steward == null) {
 	                            newStewardList.push( config.user.name );
-	                            doc.steward = newStewardList;
+	                            row.doc.steward = newStewardList;
 	                        } else {
 	                        	newStewardList.push( steward );
-	                            doc.steward = newStewardList;
+	                        	row.doc.steward = newStewardList;
 	                        }
 	                    } )
 	                }
 	            }
-        		log("account doc after:" + JSON.stringify( doc ) )
-	            docs.push( doc )
-        	} )
+        		log("account doc after:" + JSON.stringify( row.doc ) )
+	            docs.push( row.doc )
+        	
         } )
         config.db.post( "_bulk_docs", {
             docs : docs
@@ -2422,27 +2423,23 @@ function addMyUsernameToAllLists(cb) {
         if (err) { return cb( err ) }
         var docs = [];
         view.rows.forEach( function(row) {
-        	config.db.get("currency," + row.doc.currency, function(error, doc) {
-        		if(!error) {
-                    if (!doc.steward) {
-                        doc.steward = [ config.user.name ];
-                    } else {
-                        if (Array.isArray( doc.steward )) {
-                            var newStewardList = [];
-                            doc.steward.forEach( function(steward) {
-                                if (steward == null) {
-                                    newStewardList.push( config.user.name );
-                                    doc.steward = newStewardList;
-                                } else {
-                                	newStewardList.push( steward );
-                                    doc.steward = newStewardList;
-                                }
-                            } )
+            if (!row.doc.steward) {
+            	row.doc.steward = [ config.user.name ];
+            } else {
+                if (Array.isArray( row.doc.steward )) {
+                    var newStewardList = [];
+                    row.doc.steward.forEach( function(steward) {
+                        if (steward == null) {
+                            newStewardList.push( config.user.name );
+                            row.doc.steward = newStewardList;
+                        } else {
+                        	newStewardList.push( steward );
+                        	row.doc.steward = newStewardList;
                         }
-                    }
-                    docs.push( doc )
-        		}
-        	} )
+                    } )
+                }
+            }
+            docs.push( row.doc )
         } )
         config.db.post( "_bulk_docs", {
             docs : docs
@@ -2459,28 +2456,24 @@ function addMyUsernameToAllLists(cb) {
     } ], function(err, view) {
         if (err) { return cb( err ) }
         var docs = [];
-        view.rows.forEach( function(row) {
-        	config.db.get("space," + row.doc.space, function(error, doc) {
-        		if(!error) {
-                    if (!doc.steward) {
-                        doc.steward = [ config.user.name ];
-                    } else {
-                        if (Array.isArray( doc.steward )) {
-                            var newStewardList = [];
-                            doc.steward.forEach( function(steward) {
-                                if (steward == null) {
-                                    newStewardList.push( config.user.name );
-                                    doc.steward = newStewardList;
-                                } else {
-                                	newStewardList.push( steward );
-                                    doc.steward = newStewardList;
-                                }
-                            } )
+        view.rows.forEach( function(row) {	
+            if (!row.doc.steward) {
+            	row.doc.steward = [ config.user.name ];
+            } else {
+                if (Array.isArray( row.doc.steward )) {
+                    var newStewardList = [];
+                    row.doc.steward.forEach( function(steward) {
+                        if (steward == null) {
+                            newStewardList.push( config.user.name );
+                            row.doc.steward = newStewardList;
+                        } else {
+                        	newStewardList.push( steward );
+                        	row.doc.steward = newStewardList;
                         }
-                    }
-                    docs.push( doc )
-        		}
-        	} )
+                    } )
+                }
+            }
+            docs.push( row.doc )
         } )
         config.db.post( "_bulk_docs", {
             docs : docs
@@ -2498,31 +2491,27 @@ function addMyUsernameToAllLists(cb) {
         if (error) { return cb( error ) }
         var docs = [];
         view.rows.forEach( function(row) {
-        	config.db.get("beamtag,anonymous," + row.doc.hashTag, function(error, doc) {
-        		if(!error) {
-        			var newDoc = {};
-        			for (var key in doc) {
-    				  if (doc.hasOwnProperty(key)) {
-    				    log(key + " -> " + doc[key]);
-    				    if(key != '_id' || key != '_rev')
-    				    	newDoc[key] = doc[key]; 
-    				  }
-    				}
-                    if (!doc.username) {
-                    	doc._deleted = true;
-                        newdoc.username = config.user.name;
-                        newdoc._id = "beamtag," + newdoc.username + "," + newdoc.hashTag;
-                    } else {
-                        if (doc.username == 'anonymous' || doc.username == null) {
-                        	doc._deleted = true;
-                        	newdoc.username = config.user.name;
-                        	newdoc._id = "beamtag," + newdoc.username + "," + newdoc.hashTag;
-                        }
-                    }
-                    docs.push( doc )
-                    docs.push( newdoc )
-        		}
-        	} )
+			var newDoc = {};
+			for (var key in row.doc) {
+			  if (row.doc.hasOwnProperty(key)) {
+			    log(key + " -> " + row.doc[key]);
+			    if(key != '_id' || key != '_rev')
+			    	newDoc[key] = row.doc[key]; 
+			  }
+			}
+            if (!row.doc.username) {
+            	row.doc._deleted = true;
+                newdoc.username = config.user.name;
+                newdoc._id = "beamtag," + newdoc.username + "," + newdoc.hashTag;
+            } else {
+                if (row.doc.username == 'anonymous' || row.doc.username == null) {
+                	row.doc._deleted = true;
+                	newdoc.username = config.user.name;
+                	newdoc._id = "beamtag," + newdoc.username + "," + newdoc.hashTag;
+                }
+            }
+            docs.push( row.doc )
+            docs.push( newdoc )
         } )
         config.db.post( "_bulk_docs", {
             docs : docs
