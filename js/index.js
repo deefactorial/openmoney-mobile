@@ -848,11 +848,11 @@ function goManageAccounts() {
             
             var usersAccounts = { "rows" : [] };
             view.rows.forEach( function(row) {
-            	if (row.doc.steward.forEach( function( steward ) {
+            	row.doc.steward.forEach( function( steward ) {
             		if (steward == config.user.name) {
             			usersAccounts.rows.push( row )
             		}
-            	}))
+            	})
             } )
             
             log("accounts view:" + JSON.stringify( usersAccounts ) ) 
