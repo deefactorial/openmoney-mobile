@@ -57,12 +57,12 @@ function doOnOrientationChange () {
       case -90:
       case 90:
         log('landscape');
-        $(":header").css('display','run-in');
+        $(":header").css('display','none');
         setTimeout( function () { $(":header").css('display','block'); }, 0);
         break; 
       default:
         log('portrait');
-      	$(":header").css('display','run-in');
+      	$(":header").css('display','none');
       	setTimeout( function () { $(":header").css('display','block'); }, 0);
         break; 
     }
