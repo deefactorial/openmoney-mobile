@@ -2372,6 +2372,8 @@ function registerFacebookToken(cb) {
 }
 
 function addMyUsernameToAllLists(cb) {
+	
+	var accounts = false, currencies = false, spaces = false, nfctags=false;
     // update trading names
     config.views( [ "accounts", {
         include_docs : true
@@ -2403,7 +2405,8 @@ function addMyUsernameToAllLists(cb) {
             docs : docs
         }, function(err, ok) {
             log( "updated all trading names", err, ok )
-            cb( err, ok )
+            accounts = true;
+            
         } )
     } )
     
@@ -2441,7 +2444,7 @@ function addMyUsernameToAllLists(cb) {
             docs : docs
         }, function(err, ok) {
             log( "updated all currencies", err, ok )
-           
+            currencies = true;
         } )
     } )
     
@@ -2479,7 +2482,7 @@ function addMyUsernameToAllLists(cb) {
             docs : docs
         }, function(err, ok) {
             log( "updated all spaces", err, ok )
-            
+            spaces = true;
         } )
     } )
     
@@ -2521,9 +2524,15 @@ function addMyUsernameToAllLists(cb) {
             docs : docs
         }, function(err, ok) {
             log( "updated all tags", err, ok )
-            
+            nfctags = true;
         } )
     } )
+    
+    //poll for when they are all complete then call callback
+    while(true) {
+    	if (account && currencies && spaces && nfctags)
+    		cb( null )
+    }
 }
 
 function createBeamTag(cb) {
