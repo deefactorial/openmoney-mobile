@@ -57,13 +57,17 @@ function doOnOrientationChange () {
       case -90:
       case 90:
         log('landscape');
-        $(".topcoat-navigation-bar").css('display','none');
-        $(".topcoat-navigation-bar").css('display','block'); 
+        $(".topcoat-navigation-bar").hide();
+        $(".topcoat-tab-bar").hide();
+        $(".topcoat-navigation-bar").show();
+        $(".topcoat-tab-bar").show();
         break; 
       default:
         log('portrait');
-      	$(".topcoat-navigation-bar").css('display','none');
-      	$(".topcoat-navigation-bar").css('display','block');
+		$(".topcoat-navigation-bar").hide();
+		$(".topcoat-tab-bar").hide();
+		$(".topcoat-navigation-bar").show();
+		$(".topcoat-tab-bar").show();
         break; 
     }
 }
