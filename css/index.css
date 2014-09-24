@@ -215,6 +215,13 @@ br.clear {
 	letter-spacing: 0;
 }
 
+.topcoat-button.om-create {
+    line-height: 2rem;
+    padding: 0 0.6rem 2px 0.6rem;
+    letter-spacing: 0;
+    width: 100%;
+}
+
 .topcoat-button.om-manage_accounts {
     line-height: 2rem;
     padding: 0 0.6rem 2px 0.6rem;
