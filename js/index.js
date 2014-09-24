@@ -1062,6 +1062,16 @@ function goManageNFC() {
                         var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
                         
                         if (tag.isWritable) {
+                        	
+                        	try {
+	                            var payload = JSON.parse( nfc.bytesToString( ndefMessage[0].payload ) )
+	                            if (typeof payload.key !== 'undefined') {
+	                            	archiveTag(payload.key)
+	                            } 
+                            } catch (error) {
+                            	log("Error Parsing tag:" + error);
+                            }
+                        	
                         
                             nfc.erase( function(){
                             	log("erase success");
@@ -1164,10 +1174,12 @@ function isTagArchived(id, callback) {
 
 function archiveTag(id) {
     log( "Archive Tag", id )
-    config.db.get( "beamtag," + config.user.name + "," + id, function(err, doc) {
-        doc.archived = true;
-        config.db.put( "beamtag," + config.user.name + "," + id, doc, function() {
-        } )
+    config.db.get( "beamtag," + config.user.name + "," + id, function(error, doc) {
+    	if (!error) {
+	        doc.archived = true;
+	        config.db.put( "beamtag," + config.user.name + "," + id, doc, function() {
+	        } )
+    	}
     } )
 }
 
@@ -1177,10 +1189,12 @@ function archiveTag(id) {
 
 function activateTag(id) {
     log( "Activate Tag", id )
-    config.db.get( "beamtag," + config.user.name + "," + id, function(err, doc) {
-        doc.archived = false;
-        config.db.put( "beamtag," + config.user.name + "," + id, doc, function() {
-        } )
+    config.db.get( "beamtag," + config.user.name + "," + id, function(error, doc) {
+    	if (!error) {
+	        doc.archived = false;
+	        config.db.put( "beamtag," + config.user.name + "," + id, doc, function() {
+	        } )
+    	}
     } )
 }
 
