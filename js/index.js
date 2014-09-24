@@ -1433,6 +1433,17 @@ function goNewNFC() {
                 		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
                 			window.OpenActivity("NFCSettings");
                 		}, "Turn on NFC", "OK")
+                	} else if(error == "NO_NFC") {
+                		navigator.notification.alert( "You do not have the capability to read and write NFC tags." , function() { 
+                			 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
+                             
+                             nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                 // success callback
+                             }, function() {
+                                 // failure callback
+                             } );
+                			goManageNFC()
+                		}, "Turn on NFC", "OK")
                 	} else {
                 		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
                 	}
@@ -1591,6 +1602,9 @@ function changeToPassword() {
 function insertTagInDB(tag) {
 	tag.type = 'beamtag';
 	tag.username = config.user.name;
+	if (tag.username == null) {
+		tag.username = 'anonymous';
+	}
     log( "Insert Tag:" + JSON.stringify( tag ) )
     config.db.get( "beamtag," + tag.username + "," + tag.hashTag, function(error, doc) {
     	if( error ) { 
@@ -2358,36 +2372,143 @@ function registerFacebookToken(cb) {
 }
 
 function addMyUsernameToAllLists(cb) {
-    // TODO: update for currencies and currency_networks created as well
+    // update trading names
     config.views( [ "accounts", {
         include_docs : true
     } ], function(err, view) {
         if (err) { return cb( err ) }
         var docs = [];
         view.rows.forEach( function(row) {
-            if (!row.doc.steward) {
-                row.doc.steward = [ config.user.name ];
-            } else {
-                if (Array.isArray( row.doc.steward )) {
-                    var newStewardList = [];
-                    row.doc.steward.forEach( function(steward) {
-                        if (steward == null) {
-                            newStewardList.push( config.user.name );
-                            row.doc.steward = newStewardList;
-                        } else {
-                        	newStewardList.push( steward );
-                            row.doc.steward = newStewardList;
-                        }
-                    } )
-                }
-            }
-            docs.push( row.doc )
+        	config.db.get("trading_name," + row.doc.trading_name, function(error, doc) {
+	            if (!doc.steward) {
+	                doc.steward = [ config.user.name ];
+	            } else {
+	                if (Array.isArray( doc.steward )) {
+	                    var newStewardList = [];
+	                    doc.steward.forEach( function(steward) {
+	                        if (steward == null) {
+	                            newStewardList.push( config.user.name );
+	                            doc.steward = newStewardList;
+	                        } else {
+	                        	newStewardList.push( steward );
+	                            doc.steward = newStewardList;
+	                        }
+	                    } )
+	                }
+	            }
+	            docs.push( doc )
+        	} )
         } )
         config.db.post( "_bulk_docs", {
             docs : docs
         }, function(err, ok) {
-            log( "updated all docs", err, ok )
+            log( "updated all trading names", err, ok )
             cb( err, ok )
+        } )
+    } )
+    
+    //update currencies
+    
+    config.views( [ "currencies", {
+        include_docs : true
+    } ], function(err, view) {
+        if (err) { return cb( err ) }
+        var docs = [];
+        view.rows.forEach( function(row) {
+        	config.db.get("currency," + row.doc.currency, function(error, doc) {
+        		if(!error) {
+                    if (!doc.steward) {
+                        doc.steward = [ config.user.name ];
+                    } else {
+                        if (Array.isArray( doc.steward )) {
+                            var newStewardList = [];
+                            doc.steward.forEach( function(steward) {
+                                if (steward == null) {
+                                    newStewardList.push( config.user.name );
+                                    doc.steward = newStewardList;
+                                } else {
+                                	newStewardList.push( steward );
+                                    doc.steward = newStewardList;
+                                }
+                            } )
+                        }
+                    }
+                    docs.push( doc )
+        		}
+        	} )
+        } )
+        config.db.post( "_bulk_docs", {
+            docs : docs
+        }, function(err, ok) {
+            log( "updated all currencies", err, ok )
+           
+        } )
+    } )
+    
+    //update spaces
+    
+    config.views( [ "spaces", {
+        include_docs : true
+    } ], function(err, view) {
+        if (err) { return cb( err ) }
+        var docs = [];
+        view.rows.forEach( function(row) {
+        	config.db.get("space," + row.doc.space, function(error, doc) {
+        		if(!error) {
+                    if (!doc.steward) {
+                        doc.steward = [ config.user.name ];
+                    } else {
+                        if (Array.isArray( doc.steward )) {
+                            var newStewardList = [];
+                            doc.steward.forEach( function(steward) {
+                                if (steward == null) {
+                                    newStewardList.push( config.user.name );
+                                    doc.steward = newStewardList;
+                                } else {
+                                	newStewardList.push( steward );
+                                    doc.steward = newStewardList;
+                                }
+                            } )
+                        }
+                    }
+                    docs.push( doc )
+        		}
+        	} )
+        } )
+        config.db.post( "_bulk_docs", {
+            docs : docs
+        }, function(err, ok) {
+            log( "updated all spaces", err, ok )
+            
+        } )
+    } )
+    
+    //Update NFC Tags
+    	
+    config.views( [ "nfc_tags", {
+        startkey : [ "anonymous", {} ], endkey : [ "anonymous" ], descending : true, include_docs : true
+    } ], function(error, view) {
+        if (error) { return cb( error ) }
+        var docs = [];
+        view.rows.forEach( function(row) {
+        	config.db.get("beamtag,anonymous," + row.doc.hashTag, function(error, doc) {
+        		if(!error) {
+                    if (!doc.username) {
+                        doc.username = config.user.name;
+                    } else {
+                        if (doc.username == 'anonymous' || doc.username == null) {
+                        	doc.username = config.user.name;
+                        }
+                    }
+                    docs.push( doc )
+        		}
+        	} )
+        } )
+        config.db.post( "_bulk_docs", {
+            docs : docs
+        }, function(err, ok) {
+            log( "updated all tags", err, ok )
+            
         } )
     } )
 }
@@ -2821,7 +2942,7 @@ function setupConfig(done) {
                 }, currencies : {
                     map : function(doc) {
                         if (doc.type == "currency" && doc.currency && doc.steward) {
-                            emit( doc.currency, { "currency": doc.currency, "name": doc.name } )
+                            emit( doc.currency, { "currency": doc.currency, "name": doc.name} )
                         }
                     }.toString()
                 }, spaces : {
