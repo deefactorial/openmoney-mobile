@@ -852,7 +852,7 @@ function goManageAccounts() {
             		if (steward == config.user.name) {
             			usersAccounts.rows.push( row )
             		}
-            	})
+            	} )
             } )
             
             log("accounts view:" + JSON.stringify( usersAccounts ) ) 
@@ -908,6 +908,33 @@ function goManageAccounts() {
 	window.dbChanged();
 }
 
+
+function goCreateAccount() {
+	window.dbChanged = function() {	
+	}
+	
+	config.views( [ "spaces", {
+        include_docs : true
+    } ], function(error, view) {
+        if (error) { return alert( JSON.stringify( error ) ) }
+	
+		var response = { "html" : config.t.create_account( view ), "pageTitle" : "Create Account" }
+		
+		processAjaxData( response, "create_account" )
+	
+	    $( "#content .om-index" ).click( function() {
+	        goManageAccounts()
+	    } )
+	
+	    setTabs()
+	    
+	    window.plugins.spinnerDialog.hide();
+	    
+	} );
+    
+    
+	
+}
 
 /*
  * Join a Currency (trading name) Page

@@ -450,6 +450,64 @@
         </ul>
     
 </script>
+<script type="text/mustache" id="create_account-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item center half">
+           <h1 class="topcoat-navigation-bar__title">Create</h1>
+        </div>
+        <div class="topcoat-navigation-bar__item right quarter om-padded">
+            
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable">
+    <div class="topcoat-list__container">
+        <form>
+            <ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="trading_name">
+                    <input type="text" class="topcoat-text-input" name="name" value="" placeholder="Requested Name" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="type">
+                    <select name="type" class="om-select-dark" >
+                        <option value="trading_name" selected="selected">Trading Name</option>
+                        <option value="currency">Currency</option>
+                        <option value="space">Space</option>
+                    </selct>
+                </li>
+                <li class="topcoat-list__item" data-id="space">
+                    <select name="space" class="om-select-dark" >
+                        <option value="" selected="selected">in</option>
+                        {{#rows}}
+                            <option value="{{key}}">{{key}}</option>
+                        {{/rows}}
+                    </select>
+                </li>
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" name="create" value=" Create " /> 
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+</script>
 <script type="text/mustache" id="trading_name-mu">
 <header>
     <div class="topcoat-navigation-bar">
