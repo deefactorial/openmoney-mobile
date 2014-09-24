@@ -62,7 +62,7 @@ function doOnOrientationChange () {
         setTimeout(function () { 
         	$(".topcoat-navigation-bar").show();
         	$(".topcoat-tab-bar").show();
-        }, 0);
+        }, 1);
         
         break; 
       default:
@@ -72,7 +72,7 @@ function doOnOrientationChange () {
         setTimeout(function () { 
         	$(".topcoat-navigation-bar").show();
         	$(".topcoat-tab-bar").show();
-        }, 0);
+        }, 1);
         break; 
     }
 }
