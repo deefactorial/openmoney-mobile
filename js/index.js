@@ -845,6 +845,8 @@ function goManageAccounts() {
             include_docs : true
         } ], function(error, view) {
             if (error) { return alert( JSON.stringify( error ) ) }
+            
+            log("accounts view:" + JSON.stringify( view ) ) 
 
             drawContainer( "accounts_list" , config.t.currencies_list( view ) )
 
