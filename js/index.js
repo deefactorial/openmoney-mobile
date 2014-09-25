@@ -3240,9 +3240,7 @@ function setupConfig(done) {
         t[id.join( '-' )] = mustache.compile( this.innerHTML.replace( /^\s+|\s+$/g, '' ) )
     } );
 
-	var e = new Error("Got to mustache");
-	
-	window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+
     
     cblite.getURL( function(err, url) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
@@ -3252,6 +3250,10 @@ function setupConfig(done) {
         xmlHttp.open( 'GET', url, false )
         xmlHttp.send( null )
         console.log( 'XMLHttpRequest get: ' + xmlHttp.responseText )
+        
+        var e = new Error("Got to setup db");
+	
+        window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
 
         window.server = coax( url );
         var db = coax( [ url, appDbName ] );
