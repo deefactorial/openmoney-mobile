@@ -3262,6 +3262,10 @@ function setupConfig(done) {
 
         window.server = coax( url );
         
+        var e = new Error("Url:" + url);
+        
+        window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+        
         var db = coax( [ url, appDbName ] );
         
         setupDb( db, function(err, info) {
