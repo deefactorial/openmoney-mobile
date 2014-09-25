@@ -311,10 +311,7 @@ function updateAjaxData(urlPath) {
 
 
 function goIndex() {
-	
-	var e = new Error("Got to Index");
-	
-	window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+
 	
     drawContent( config.t.index() )
     
@@ -899,7 +896,7 @@ function goManageAccounts() {
     setTabs()
     
     $( "#content .om-create" ).click( function() {
-        goCreateAccount()
+        goCreateAccount( {} )
     } )
 	
     window.dbChanged = function() {
@@ -980,6 +977,7 @@ function goCreateAccount(doc) {
 	}
 	
 	view = { "trading_name": true };
+	
 	if (typeof doc.type != 'undefined') {
 		if (doc.type == 'trading_name') {
 			
@@ -3230,6 +3228,11 @@ function triggerSync(cb, retryCount) {
 function setupConfig(done) {
     // get CBL url
     if (!window.cblite) { return done( 'Couchbase Lite not installed' ) }
+    
+	
+	var e = new Error("Got to setupConfig");
+	
+	window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
 
     var mustache = require( "mustache" ), t = {}
 
