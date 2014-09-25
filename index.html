@@ -511,7 +511,8 @@
                 </li>
 
                 <li class="topcoat-list__item" data-id="currency" style="margin: 0 auto;">
-                    <div style="width: 48%;display:inline-block;vertical-align: middle;">
+                    <div style="display:table">
+                    <div style="width: 49%;display:table-cell;vertical-align: middle;">
                     <select name="currency" class="om-select-dark" >
                         <option value="cc" selected="selected">currency</option>
                         {{#currencies}}{{#rows}}
@@ -519,8 +520,9 @@
                         {{/rows}}{{/currencies}}
                     </select>
                     </div>
-                    <div style="width: 48%;display:inline-block;">
+                    <div style="width: 49%;display:table-cell;">
                     <input type="button" class="topcoat-button" name="find" value=" find currency " />
+                    </div>
                     </div>
                 </li>
 
