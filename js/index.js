@@ -1005,9 +1005,6 @@ function goCreateAccount() {
                 } )
             	
             } else if (doc.type == "currency") {
-            	doc.symbol = doc.name;
-            	doc.name = doc.description;
-            	delete doc.description;
             	
             	if (doc.space != '')
 	                doc.currency = doc.symbol + "." + doc.space;
