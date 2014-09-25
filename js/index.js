@@ -3264,17 +3264,18 @@ function setupConfig(done) {
 
         window.server = coax( url );
         var db = coax( [ url, appDbName ] );
+        
+        var e = new Error("Got to before setup db2");
+    	
+        window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+        
         setupDb( db, function(err, info) {
             if (err) { return done( err ) }
             
-            var e = new Error("Got to setup db2");
-        	
-            window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+
             
             setupViews( db, function(err, views) {
                 if (err) { return done( err ) }
-                
-
                 
                 getUser( db, function(err, user) {
                     if (err) { return done( err ) }
