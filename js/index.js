@@ -43,6 +43,8 @@ function onDeviceReady() {
         } )
     } )
 
+    window.OpenActivity("SendErrorReport");
+    
     nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
         // success callback
     }, function() {
