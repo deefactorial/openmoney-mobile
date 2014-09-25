@@ -963,7 +963,32 @@ function goCreateAccount() {
 	    	log( "onchange: " + type)
 	    	
 	    	if (type == 'trading_name') {
-	    		drawContainer( "div#form", config.t.trading_name_form() )
+	    		
+	    		window.plugins.spinnerDialog.show();
+	        	config.views( [ "currencies", {
+	                include_docs : true
+	            } ], function(error, currencies) {
+	                if (error) { return alert( JSON.stringify( error ) ) }
+
+	            	config.views( [ "spaces", {
+	                    include_docs : true
+	                } ], function(error, spaces) {
+	            		window.plugins.spinnerDialog.hide();
+	                    if (error) { return alert( JSON.stringify( error ) ) }
+	                    
+	                    var doc = { "currencies" : currencies, "spaces" : spaces }
+	                    
+	                    log ("trading_name_doc : " + JSON.stringify( doc ))
+
+		                drawContainer( "div#form", config.t.trading_name_form(doc) )
+		                
+		                updateAjaxData( "manage_accounts" )
+	                    
+	                    spaces = true;
+	                    
+	                } )
+	            } )
+	    		
 	    	} else if (type == "currency") {
 	    		drawContainer( "div#form", config.t.currency_form())
 	    	} else if (type == "space") {
