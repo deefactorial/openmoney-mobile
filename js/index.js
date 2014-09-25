@@ -956,9 +956,9 @@ function goCreateAccount() {
             
         } )
         
-        $( "#content select[name='type']" ).change( function () {
+        $( "#content select[name='type']" ).on('change', function () {
 	    	
-	    	var type = $(this).val();
+	    	var type = this.value;
 	    	
 	    	log( "onchange: " + type)
 	    	
