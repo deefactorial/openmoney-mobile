@@ -38,10 +38,6 @@ function onDeviceReady() {
         
         goIndex()
         
-        var error = new Error();
-        
-        window.OpenActivity("SendErrorReport",[ { "error": error.stack } ]);
-        
         config.syncReference = triggerSync( function(err) {
             if (err) {
                 console.log( "error on sync" + JSON.stringify( err ) )
@@ -49,7 +45,9 @@ function onDeviceReady() {
         } )
     } )
     
-    
+        var error = new Error();
+        
+        window.OpenActivity("SendErrorReport",[ { "error": error.stack } ]);
     
     nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
         // success callback
