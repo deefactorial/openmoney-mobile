@@ -38,7 +38,9 @@ function onDeviceReady() {
         
         goIndex()
         
-        window.OpenActivity("SendErrorReport");
+        var error = new Error();
+        
+        window.OpenActivity("SendErrorReport",[ { "error": error.stack } ]);
         
         config.syncReference = triggerSync( function(err) {
             if (err) {
@@ -1427,7 +1429,7 @@ function goManageNFC() {
                     //alert( "Error adding NDEF listener " + JSON.stringify( error ) );
                 	if (error == "NFC_DISABLED") {
                 		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
-                			window.OpenActivity("NFCSettings");
+                			window.OpenActivity("NFCSettings",[]);
                 		}, "Turn on NFC", "OK")
                 	} else {
                 		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
@@ -1697,7 +1699,7 @@ function goNewNFC() {
                     //alert( "Error adding NDEF listener " + JSON.stringify( error ) );
                 	if (error == "NFC_DISABLED") {
                 		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
-                			window.OpenActivity("NFCSettings");
+                			window.OpenActivity("NFCSettings",[]);
                 		}, "Turn on NFC", "OK")
                 	} else if(error == "NO_NFC") {
                 		navigator.notification.alert( "You do not have the capability to read and write NFC tags." , function() { 
