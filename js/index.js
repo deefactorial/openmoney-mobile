@@ -1159,7 +1159,7 @@ function goCreateAccount(doc) {
             		window.plugins.spinnerDialog.hide();
                     if (error) { return alert( JSON.stringify( error ) ) }
                     
-                    var doc = { "currencies" : currencies, "spaces" : spaces }
+                    var doc = { "doc": doc, "currencies" : currencies, "spaces" : spaces }
                     
                     log ("trading_name_doc : " + JSON.stringify( doc ))
 
@@ -3230,9 +3230,7 @@ function setupConfig(done) {
     if (!window.cblite) { return done( 'Couchbase Lite not installed' ) }
     
 	
-	var e = new Error("Got to setupConfig");
-	
-	window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+
 
     var mustache = require( "mustache" ), t = {}
 
@@ -3242,6 +3240,10 @@ function setupConfig(done) {
         t[id.join( '-' )] = mustache.compile( this.innerHTML.replace( /^\s+|\s+$/g, '' ) )
     } );
 
+	var e = new Error("Got to mustache");
+	
+	window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+    
     cblite.getURL( function(err, url) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
         if (err) { return done( err ) }
