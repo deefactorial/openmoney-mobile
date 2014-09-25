@@ -970,6 +970,7 @@ function goCreateAccount() {
             	doc.trading_name = doc.name;
             	
             	
+            	
             } else if (doc.type == "currency") {
             	doc.currency = doc.name;
             	if (doc.space != '') {
@@ -986,6 +987,8 @@ function goCreateAccount() {
             	}
             	delete doc.name;
             }            
+            
+            alert(JSON.stringify(doc))
             
         } )
         
