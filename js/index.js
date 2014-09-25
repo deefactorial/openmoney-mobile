@@ -967,17 +967,89 @@ function goCreateAccount() {
             doc.steward = [ config.user.name ];
             
             if (doc.type == "trading_name") {
+            	if(doc.name.length < 2) { alert("Requested Name is required.") }
             	doc.trading_name = doc.name;
-            	
-            	
+                if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { 
+                	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
+                	return null;
+                }
+                
+                if(doc.space != '') {
+                	doc.name += "." + doc.space;
+                }
+                
+                config.db.get( doc.type + "," + doc.name + "," + doc.currency, function(error, existingdoc) {
+                    if (error) {
+                        log( "Error: " + JSON.stringify( error ) )
+                        if (error.status == 404) {
+                            // doc does not exists
+                            log( "insert new trading name" + JSON.stringify( doc ) )
+                            config.db.put( doc.type + "," + doc.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                if (error)
+                                    return alert( JSON.stringify( error ) )
+                                $( "#content form input[name='trading_name']" ).val( "" ) // Clear
+                                $( "#content form input[name='currency']" ).val( "" ) // Clear                            
+                            
+                                navigator.notification.alert( "You successfully created a new trading name!" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Trading Name", "OK")
+                                
+                            } )                        	
+                        	
+                        } else {
+                            alert( "Error: ".JSON.stringify( error ) )
+                        }
+                    } else {
+                        // doc exsits already
+                    	navigator.notification.alert( "Trading name already exists!" , function() { }, "Existing Trading Name", "OK")
+                       
+                    }
+                } )
             	
             } else if (doc.type == "currency") {
-            	doc.currency = doc.name;
-            	if (doc.space != '') {
-            		doc.currency += '.' + doc.space;
-            	}
+            	doc.symbol = doc.name;
             	doc.name = doc.description;
             	delete doc.description;
+            	
+            	if (doc.space != '')
+	                doc.currency = doc.symbol + "." + doc.space;
+	            else
+	                doc.currency = doc.symbol;
+	            config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
+	                if (error) {
+	                    log( "Error: " + JSON.stringify( error ) )
+	                    if (error.status == 404) {
+	                        // doc does not exists
+	                        log( "insert new currency" + JSON.stringify( doc ) )
+	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	                            if (error)
+	                                return alert( JSON.stringify( error ) )
+	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
+	                            
+	                            navigator.notification.alert( "You successfully created a new currency !" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Currency", "OK")
+	                        } )
+	
+	                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
+		                        
+		                        var spaceDoc = { "type":"space",
+		                        				 "space": doc.currency,
+		                        				 "subspace": doc.space,
+		                        				 "steward": [ config.user.name ] };
+		                    	config.db.put( spaceDoc.type + "," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
+		                    		 if (error)
+		                                 return alert( JSON.stringify( error ) )
+		                    	} );
+	                    	
+	                        }
+	                        
+	                    } else {
+	                        alert( "Error: ".JSON.stringify( error ) )
+	                    }
+	                } else {
+	                    // doc exsits already
+	                    //alert( "Currency already exists!" )
+	                    navigator.notification.alert( "Currency already exists!" , function() {  }, "Existing Currency", "OK")
+	                }
+	            } )
+            	
             	
             } else if (doc.type == "space") {
             	doc.subspace = doc.space;
@@ -986,6 +1058,45 @@ function goCreateAccount() {
             		doc.space += '.' + doc.subspace;
             	}
             	delete doc.name;
+
+                config.db.get( doc.type + "," + doc.space, function(error, existingdoc) {
+                    if (error) {
+                        log( "Error: " + JSON.stringify( error ) )
+                        if (error.status == 404) {
+                            // doc does not exists
+                            log( "insert new space" + JSON.stringify( doc ) )
+                            config.db.put( doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+
+                                if (error)
+                                    return alert( JSON.stringify( error ) )
+                                $( "#content form input[name='space']" ).val( "" ) // Clear
+                                navigator.notification.alert( "You successfully created a new space !" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Space", "OK")
+                            } )
+                            
+                            var name = doc.space + " Currency";
+    	                    if (typeof doc.subspace == 'undefined' || doc.subspace == '') {
+                        		name += " in " + doc.subspace + " Space";
+                        	}
+                            
+                            var currencyDoc = { "type": "currency",
+                            					"currency": doc.space,
+                            					"space": doc.subspace,
+                            					"name": name,
+                            					"steward": [ config.user.name ] };
+                        	config.db.put( currencyDoc.type + "," + doc.space, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
+                        		 if (error)
+                                     return alert( JSON.stringify( error ) )
+                        	} );
+                       
+                            
+                        } else {
+                            alert( "Error: ".JSON.stringify( error ) )
+                        }
+                    } else {
+                        navigator.notification.alert( "Trading Space already exists!"  , function() {  }, "Existing Space", "OK")
+                    }
+                } )
+            	
             }            
             
             alert(JSON.stringify(doc))
