@@ -511,13 +511,13 @@
                 </li>
 
                 <li class="topcoat-list__item" data-id="currency">
-                    <select name="currency" class="om-select-dark" >
+                    <select name="currency" class="om-select-dark-variable" >
                         <option value="cc" selected="selected">currency</option>
                         {{#currencies}}{{#rows}}
                             <option value="{{key}}">{{key}}</option>
                         {{/rows}}{{/currencies}}
                     </select>
-                    <input type="button" class="topcoat-button" name="find" value=" find currency " />
+                    <input type="button" class="topcoat-button" style="float:right" name="find" value=" find currency " />
                 </li>
 
                 <li class="topcoat-list__item" data-id="submit">
