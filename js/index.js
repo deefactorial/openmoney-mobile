@@ -956,7 +956,7 @@ function goCreateAccount() {
             
         } )
         
-        $( "#content select#type" ).on('change', function () {
+        $( "#content select#type" ).change( function () {
 	    	
 	    	var type = this.value;
 	    	
@@ -990,14 +990,30 @@ function goCreateAccount() {
 	            } )
 	    		
 	    	} else if (type == "currency") {
-	    		drawContainer( "div#form", config.t.currency_form())
+            	config.views( [ "spaces", {
+                    include_docs : true
+                } ], function(error, spaces) {
+            		window.plugins.spinnerDialog.hide();
+                    if (error) { return alert( JSON.stringify( error ) ) }
+                    
+                    drawContainer( "div#form", config.t.currency_form( spaces ))
+                    
+            	})
 	    	} else if (type == "space") {
-	    		drawContainer( "div#form", config.t.space_form())
+            	config.views( [ "spaces", {
+                    include_docs : true
+                } ], function(error, spaces) {
+            		window.plugins.spinnerDialog.hide();
+                    if (error) { return alert( JSON.stringify( error ) ) }
+                    
+                    drawContainer( "div#form", config.t.space_form( spaces )) 
+                    
+            	} )
 	    	}
             
             updateAjaxData( "create" )
             
-	    } )
+	    } ).change()
 	    
 	    window.plugins.spinnerDialog.hide();
 	    

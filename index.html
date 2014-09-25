@@ -504,18 +504,18 @@
                 <li class="topcoat-list__item" data-id="space">
                     <select name="space" class="om-select-dark" >
                         <option value="" selected="selected">in space (Optional)</option>
-                        {{#spaces}}
+                        {{#spaces}}{{#rows}}
                             <option value="{{key}}">{{key}}</option>
-                        {{/spaces}}
+                        {{/spaces}}{{/rows}}
                     </select>
                 </li>
 
                 <li class="topcoat-list__item" data-id="currency">
                     <select name="currency" class="om-select-dark" >
                         <option value="cc" selected="selected">currency</option>
-                        {{#currencies}}
+                        {{#currencies}}{{#rows}}
                             <option value="{{key}}">{{key}}</option>
-                        {{/currencies}}
+                        {{/currencies}}{{/rows}}
                     </select>
                 </li>
 
