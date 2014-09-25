@@ -1179,7 +1179,9 @@ function goCreateAccount(doc) {
         		window.plugins.spinnerDialog.hide();
                 if (error) { return alert( JSON.stringify( error ) ) }
                 
-                drawContainer( "div#form", config.t.currency_form( spaces ))
+                var view = { "spaces" : spaces, "doc": doc }
+                
+                drawContainer( "div#form", config.t.currency_form( view ))
                 
         	})
     	} else if (type == "space") {
@@ -1189,7 +1191,9 @@ function goCreateAccount(doc) {
         		window.plugins.spinnerDialog.hide();
                 if (error) { return alert( JSON.stringify( error ) ) }
                 
-                drawContainer( "div#form", config.t.space_form( spaces )) 
+                var view = { "spaces" : spaces, "doc": doc }
+                
+                drawContainer( "div#form", config.t.space_form( view )) 
                 
         	} )
     	}
@@ -3251,9 +3255,7 @@ function setupConfig(done) {
         xmlHttp.send( null )
         console.log( 'XMLHttpRequest get: ' + xmlHttp.responseText )
         
-        var e = new Error("Got to setup db");
-	
-        window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+
 
         window.server = coax( url );
         var db = coax( [ url, appDbName ] );
@@ -3261,6 +3263,11 @@ function setupConfig(done) {
             if (err) { return done( err ) }
             setupViews( db, function(err, views) {
                 if (err) { return done( err ) }
+                
+                var e = new Error("Got to setup views");
+            	
+                window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+                
                 getUser( db, function(err, user) {
                     if (err) { return done( err ) }
                     window.config = {
