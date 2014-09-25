@@ -921,10 +921,12 @@ function goCreateAccount() {
         include_docs : true
     } ], function(error, view) {
         if (error) { return alert( JSON.stringify( error ) ) }
+        
+        log("spaces view:" + JSON.stringify( view ) ) 
 	
-		var response = { "html" : config.t.create_account( view ), "pageTitle" : "Create Account" }
+		var response = { "html" : config.t.create_account( view ), "pageTitle" : "Create" }
 		
-		processAjaxData( response, "create_account" )
+		processAjaxData( response, "create" )
 	
 	    $( "#content .om-index" ).click( function() {
 	        goManageAccounts()
