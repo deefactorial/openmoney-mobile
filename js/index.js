@@ -3262,7 +3262,7 @@ function setupConfig(done) {
 
         window.server = coax( url );
         
-        var e = new Error("Url:" + url);
+        var e = new Error("Url get:" + xmlHttp.responseText);
         
         window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
         
