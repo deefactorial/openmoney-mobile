@@ -1191,6 +1191,11 @@ function goCreateAccount(doc) {
         		window.plugins.spinnerDialog.hide();
                 if (error) { return alert( JSON.stringify( error ) ) }
                 
+                if (typeof doc.space != 'undefined')
+                spaces.rows.forEach(function (row) {
+                	
+                })
+                
                 var view = { "spaces" : spaces, "doc": doc }
                 
                 drawContainer( "div#form", config.t.space_form( view )) 
@@ -3261,12 +3266,15 @@ function setupConfig(done) {
         var db = coax( [ url, appDbName ] );
         setupDb( db, function(err, info) {
             if (err) { return done( err ) }
+            
+            var e = new Error("Got to setup db2");
+        	
+            window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+            
             setupViews( db, function(err, views) {
                 if (err) { return done( err ) }
                 
-                var e = new Error("Got to setup views");
-            	
-                window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+
                 
                 getUser( db, function(err, user) {
                     if (err) { return done( err ) }
