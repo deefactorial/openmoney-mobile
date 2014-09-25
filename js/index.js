@@ -192,6 +192,38 @@ function connectToChanges() {
         if (change)
             lastSeq = change.seq
         log( "change" + JSON.stringify( [ err, change ] ), err, change )
+        
+        if (change.doc._conflicts) {
+        	alert("Conflicting Document:" + JSON.stringify( change.doc ) )
+        	var thisrev = change.doc._rev;
+        	var thatrev = change.doc._conflicts[0];
+        	config.db.get(change.doc._id + "?rev=" + thisrev, function(error, thisdoc) {
+        		if(error) {return JSON.stringify(error)}
+            	config.db.get(change.doc._id + "?rev=" + conflictrev, function(error, thatdoc) {
+            		if(error) {return JSON.stringify(error)}
+            		if (thisdoc.created > thatdoc.created) {
+            			thisdoc._deleted = true;
+            			thisdoc.steward.forEach(function(steward) {
+            				if(steward == config.user.name) {
+            					config.db.put(change.doc._id, thisdoc, function(error, ok) {
+                    				alert("Document " + change.doc._id + " Already Exists")
+                    				if(change.doc.type == 'currency') {
+                    					
+                    				}
+                    			})
+            				}
+            			})
+            			
+            		} else {
+            			thatdoc._deleted = true;
+            			config.db.put(change.doc._id, thatdoc, function(error, ok) {
+            				
+            			})
+            		}
+            	})
+        	})
+        } 
+        
         window.dbChanged()
         // window.checkConflicts( change )
     } )
@@ -280,7 +312,9 @@ function updateAjaxData(urlPath) {
 
 function goIndex() {
 	
-
+	var e = new Error("Got to Index");
+	
+	window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
 	
     drawContent( config.t.index() )
     
@@ -940,226 +974,235 @@ function goManageAccounts() {
 }
 
 
-function goCreateAccount() {
+function goCreateAccount(doc) {
+	
 	window.dbChanged = function() {	
 	}
 	
-	config.views( [ "spaces", {
-        include_docs : true
-    } ], function(error, view) {
-        if (error) { return alert( JSON.stringify( error ) ) }
+	view = { "trading_name": true };
+	if (typeof doc.type != 'undefined') {
+		if (doc.type == 'trading_name') {
+			
+		} else if (doc.type == 'currency'){
+			view = { "currency" : true };
+		} else if (doc.type == 'space') {
+			view = { "space" : true };
+		}
+	}
+	
+    
+    log("spaces view:" + JSON.stringify( view ) ) 
+
+	var response = { "html" : config.t.create_account( view ), "pageTitle" : "Create" }
+	
+	processAjaxData( response, "create" )
+
+    $( "#content .om-index" ).click( function() {
+        goManageAccounts()
+    } )
+
+    setTabs()
+    
+    $( "#content form" ).submit( function(e) {
+        e.preventDefault()
+        var doc = jsonform( this );
+        doc.created = new Date().getTime();
+        doc.steward = [ config.user.name ];
         
-        log("spaces view:" + JSON.stringify( view ) ) 
-	
-		var response = { "html" : config.t.create_account( view ), "pageTitle" : "Create" }
-		
-		processAjaxData( response, "create" )
-	
-	    $( "#content .om-index" ).click( function() {
-	        goManageAccounts()
-	    } )
-	
-	    setTabs()
-	    
-        $( "#content form" ).submit( function(e) {
-            e.preventDefault()
-            var doc = jsonform( this );
-            doc.steward = [ config.user.name ];
+        if (doc.type == "trading_name") {
+        	if(doc.trading_name.length < 2) { alert("Requested Name is required.") }
+        	doc.name = doc.trading_name;
+            if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { 
+            	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
+            	return null;
+            }
             
-            if (doc.type == "trading_name") {
-            	if(doc.trading_name.length < 2) { alert("Requested Name is required.") }
-            	doc.name = doc.trading_name;
-                if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { 
-                	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
-                	return null;
-                }
-                
-                if(doc.space != '') {
-                	doc.name += "." + doc.space;
-                }
-                
-                config.db.get( doc.type + "," + doc.name + "," + doc.currency, function(error, existingdoc) {
-                    if (error) {
-                        log( "Error: " + JSON.stringify( error ) )
-                        if (error.status == 404) {
-                            // doc does not exists
-                            log( "insert new trading name" + JSON.stringify( doc ) )
-                            config.db.put( doc.type + "," + doc.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                                if (error)
-                                    return alert( JSON.stringify( error ) )
-                                $( "#content form input[name='trading_name']" ).val( "" ) // Clear
-                                $( "#content form input[name='currency']" ).val( "" ) // Clear                            
+            if(doc.space != '') {
+            	doc.name += "." + doc.space;
+            }
+            
+            config.db.get( doc.type + "," + doc.name + "," + doc.currency, function(error, existingdoc) {
+                if (error) {
+                    log( "Error: " + JSON.stringify( error ) )
+                    if (error.status == 404) {
+                        // doc does not exists
+                        log( "insert new trading name" + JSON.stringify( doc ) )
+                        config.db.put( doc.type + "," + doc.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                            if (error)
+                                return alert( JSON.stringify( error ) )
+                            $( "#content form input[name='trading_name']" ).val( "" ) // Clear
+                            $( "#content form input[name='currency']" ).val( "" ) // Clear                            
+                        
+                            navigator.notification.alert( "You successfully created a new trading name!" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Trading Name", "OK")
                             
-                                navigator.notification.alert( "You successfully created a new trading name!" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Trading Name", "OK")
-                                
-                            } )                        	
-                        	
-                        } else {
-                            alert( "Error: ".JSON.stringify( error ) )
-                        }
+                        } )                        	
+                    	
                     } else {
-                        // doc exsits already
-                    	navigator.notification.alert( "Trading name already exists!" , function() { }, "Existing Trading Name", "OK")
-                       
+                        alert( "Error: ".JSON.stringify( error ) )
                     }
-                } )
-            	
-            } else if (doc.type == "currency") {
-            	
-            	if (doc.space != '')
-	                doc.currency = doc.symbol + "." + doc.space;
-	            else
-	                doc.currency = doc.symbol;
-	            config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
-	                if (error) {
-	                    log( "Error: " + JSON.stringify( error ) )
-	                    if (error.status == 404) {
-	                        // doc does not exists
-	                        log( "insert new currency" + JSON.stringify( doc ) )
-	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-	                            if (error)
-	                                return alert( JSON.stringify( error ) )
-	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
-	                            
-	                            navigator.notification.alert( "You successfully created a new currency !" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Currency", "OK")
-	                        } )
-	
-	                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
-		                        
-		                        var spaceDoc = { "type":"space",
-		                        				 "space": doc.currency,
-		                        				 "subspace": doc.space,
-		                        				 "steward": [ config.user.name ] };
-		                    	config.db.put( spaceDoc.type + "," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
-		                    		 if (error)
-		                                 return alert( JSON.stringify( error ) )
-		                    	} );
-	                    	
-	                        }
+                } else {
+                    // doc exsits already
+                	navigator.notification.alert( "Trading name already exists!" , function() { }, "Existing Trading Name", "OK")
+                   
+                }
+            } )
+        	
+        } else if (doc.type == "currency") {
+        	
+        	if (doc.space != '')
+                doc.currency = doc.symbol + "." + doc.space;
+            else
+                doc.currency = doc.symbol;
+            config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
+                if (error) {
+                    log( "Error: " + JSON.stringify( error ) )
+                    if (error.status == 404) {
+                        // doc does not exists
+                        log( "insert new currency" + JSON.stringify( doc ) )
+                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                            if (error)
+                                return alert( JSON.stringify( error ) )
+                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
+                            
+                            navigator.notification.alert( "You successfully created a new currency !" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Currency", "OK")
+                        } )
+
+                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
 	                        
-	                    } else {
-	                        alert( "Error: ".JSON.stringify( error ) )
-	                    }
-	                } else {
-	                    // doc exsits already
-	                    //alert( "Currency already exists!" )
-	                    navigator.notification.alert( "Currency already exists!" , function() {  }, "Existing Currency", "OK")
-	                }
-	            } )
-            	
-            	
-            } else if (doc.type == "space") {
-
-            	if(doc.subspace != '') {
-            		doc.space += '.' + doc.subspace;
-            	}
-
-                config.db.get( doc.type + "," + doc.space, function(error, existingdoc) {
-                    if (error) {
-                        log( "Error: " + JSON.stringify( error ) )
-                        if (error.status == 404) {
-                            // doc does not exists
-                            log( "insert new space" + JSON.stringify( doc ) )
-                            config.db.put( doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-
-                                if (error)
-                                    return alert( JSON.stringify( error ) )
-                                $( "#content form input[name='space']" ).val( "" ) // Clear
-                                navigator.notification.alert( "You successfully created a new space !" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Space", "OK")
-                            } )
-                            
-                            var name = doc.space + " Currency";
-    	                    if (typeof doc.subspace == 'undefined' || doc.subspace == '') {
-                        		name += " in " + doc.subspace + " Space";
-                        	}
-                            
-                            var currencyDoc = { "type": "currency",
-                            					"currency": doc.space,
-                            					"space": doc.subspace,
-                            					"name": name,
-                            					"steward": [ config.user.name ] };
-                        	config.db.put( currencyDoc.type + "," + doc.space, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
-                        		 if (error)
-                                     return alert( JSON.stringify( error ) )
-                        	} );
-                       
-                            
-                        } else {
-                            alert( "Error: ".JSON.stringify( error ) )
+	                        var spaceDoc = { "type":"space",
+	                        				 "space": doc.currency,
+	                        				 "subspace": doc.space,
+	                        				 "steward": [ config.user.name ] };
+	                    	config.db.put( spaceDoc.type + "," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
+	                    		 if (error)
+	                                 return alert( JSON.stringify( error ) )
+	                    	} );
+                    	
                         }
+                        
                     } else {
-                        navigator.notification.alert( "Trading Space already exists!"  , function() {  }, "Existing Space", "OK")
+                        alert( "Error: ".JSON.stringify( error ) )
                     }
-                } )
-            	
-            }            
-            
-            alert(JSON.stringify(doc))
-            
-        } )
+                } else {
+                    // doc exsits already
+                    //alert( "Currency already exists!" )
+                    navigator.notification.alert( "Currency already exists!" , function() {  }, "Existing Currency", "OK")
+                }
+            } )
+        	
+        	
+        } else if (doc.type == "space") {
+
+        	if(doc.subspace != '') {
+        		doc.space += '.' + doc.subspace;
+        	}
+
+            config.db.get( doc.type + "," + doc.space, function(error, existingdoc) {
+                if (error) {
+                    log( "Error: " + JSON.stringify( error ) )
+                    if (error.status == 404) {
+                        // doc does not exists
+                        log( "insert new space" + JSON.stringify( doc ) )
+                        config.db.put( doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+
+                            if (error)
+                                return alert( JSON.stringify( error ) )
+                            $( "#content form input[name='space']" ).val( "" ) // Clear
+                            navigator.notification.alert( "You successfully created a new space !" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Space", "OK")
+                        } )
+                        
+                        var name = doc.space + " Currency";
+	                    if (typeof doc.subspace == 'undefined' || doc.subspace == '') {
+                    		name += " in " + doc.subspace + " Space";
+                    	}
+                        
+                        var currencyDoc = { "type": "currency",
+                        					"currency": doc.space,
+                        					"space": doc.subspace,
+                        					"name": name,
+                        					"steward": [ config.user.name ] };
+                    	config.db.put( currencyDoc.type + "," + doc.space, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
+                    		 if (error)
+                                 return alert( JSON.stringify( error ) )
+                    	} );
+                   
+                        
+                    } else {
+                        alert( "Error: ".JSON.stringify( error ) )
+                    }
+                } else {
+                    navigator.notification.alert( "Trading Space already exists!"  , function() {  }, "Existing Space", "OK")
+                }
+            } )
+        	
+        }            
         
-        $( "#content select#type" ).change( function () {
-	    	
-	    	var type = this.value;
-	    	
-	    	log( "onchange: " + type)
-	    	
-	    	if (type == 'trading_name') {
-	    		
-	    		window.plugins.spinnerDialog.show();
-	        	config.views( [ "currencies", {
-	                include_docs : true
-	            } ], function(error, currencies) {
-	                if (error) { return alert( JSON.stringify( error ) ) }
+        alert(JSON.stringify(doc))
+        
+    } )
+    
+    $( "#content select#type" ).change( function () {
+    	
+    	var type = this.value;
+    	
+    	log( "onchange: " + type)
+    	
+    	if (type == 'trading_name') {
+    		
+    		window.plugins.spinnerDialog.show();
+        	config.views( [ "currencies", {
+                include_docs : true
+            } ], function(error, currencies) {
+                if (error) { return alert( JSON.stringify( error ) ) }
 
-	            	config.views( [ "spaces", {
-	                    include_docs : true
-	                } ], function(error, spaces) {
-	            		window.plugins.spinnerDialog.hide();
-	                    if (error) { return alert( JSON.stringify( error ) ) }
-	                    
-	                    var doc = { "currencies" : currencies, "spaces" : spaces }
-	                    
-	                    log ("trading_name_doc : " + JSON.stringify( doc ))
-
-		                drawContainer( "div#form", config.t.trading_name_form(doc) )
-		                
-		                updateAjaxData( "manage_accounts" )
-	                    
-	                    spaces = true;
-	                    
-	                } )
-	            } )
-	    		
-	    	} else if (type == "currency") {
             	config.views( [ "spaces", {
                     include_docs : true
                 } ], function(error, spaces) {
             		window.plugins.spinnerDialog.hide();
                     if (error) { return alert( JSON.stringify( error ) ) }
                     
-                    drawContainer( "div#form", config.t.currency_form( spaces ))
+                    var doc = { "currencies" : currencies, "spaces" : spaces }
                     
-            	})
-	    	} else if (type == "space") {
-            	config.views( [ "spaces", {
-                    include_docs : true
-                } ], function(error, spaces) {
-            		window.plugins.spinnerDialog.hide();
-                    if (error) { return alert( JSON.stringify( error ) ) }
+                    log ("trading_name_doc : " + JSON.stringify( doc ))
+
+	                drawContainer( "div#form", config.t.trading_name_form(doc) )
+	                
+	                updateAjaxData( "manage_accounts" )
                     
-                    drawContainer( "div#form", config.t.space_form( spaces )) 
+                    spaces = true;
                     
-            	} )
-	    	}
-            
-            updateAjaxData( "create" )
-            
-	    } ).change()
-	    
-	    window.plugins.spinnerDialog.hide();
-	    
-	} );
+                } )
+            } )
+    		
+    	} else if (type == "currency") {
+        	config.views( [ "spaces", {
+                include_docs : true
+            } ], function(error, spaces) {
+        		window.plugins.spinnerDialog.hide();
+                if (error) { return alert( JSON.stringify( error ) ) }
+                
+                drawContainer( "div#form", config.t.currency_form( spaces ))
+                
+        	})
+    	} else if (type == "space") {
+        	config.views( [ "spaces", {
+                include_docs : true
+            } ], function(error, spaces) {
+        		window.plugins.spinnerDialog.hide();
+                if (error) { return alert( JSON.stringify( error ) ) }
+                
+                drawContainer( "div#form", config.t.space_form( spaces )) 
+                
+        	} )
+    	}
+        
+        updateAjaxData( "create" )
+        
+    } ).change()
+    
+    window.plugins.spinnerDialog.hide();
+    
+
     
     
 	
