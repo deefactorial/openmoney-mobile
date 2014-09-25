@@ -956,7 +956,7 @@ function goCreateAccount() {
             
         } )
         
-        $( "#content select[name='type']" ).on('change', function () {
+        $( "#content select#type" ).on('change', function () {
 	    	
 	    	var type = this.value;
 	    	
@@ -972,7 +972,7 @@ function goCreateAccount() {
             
             updateAjaxData( "create" )
             
-	    } ).change();
+	    } )
 	    
 	    window.plugins.spinnerDialog.hide();
 	    
