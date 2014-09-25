@@ -3259,23 +3259,13 @@ function setupConfig(done) {
         xmlHttp.open( 'GET', url, false )
         xmlHttp.send( null )
         console.log( 'XMLHttpRequest get: ' + xmlHttp.responseText )
-        
-
 
         window.server = coax( url );
         
-        var e = new Error("Got to before coax" + appDbName);
-    	
-        window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
-        
         var db = coax( [ url, appDbName ] );
-        
-
         
         setupDb( db, function(err, info) {
             if (err) { return done( err ) }
-            
-
             
             setupViews( db, function(err, views) {
                 if (err) { return done( err ) }
