@@ -967,8 +967,8 @@ function goCreateAccount() {
             doc.steward = [ config.user.name ];
             
             if (doc.type == "trading_name") {
-            	if(doc.name.length < 2) { alert("Requested Name is required.") }
-            	doc.trading_name = doc.name;
+            	if(doc.trading_name.length < 2) { alert("Requested Name is required.") }
+            	doc.name = doc.trading_name;
                 if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { 
                 	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
                 	return null;
@@ -1049,12 +1049,10 @@ function goCreateAccount() {
             	
             	
             } else if (doc.type == "space") {
-            	doc.subspace = doc.space;
-            	doc.space = doc.name;
+
             	if(doc.subspace != '') {
             		doc.space += '.' + doc.subspace;
             	}
-            	delete doc.name;
 
                 config.db.get( doc.type + "," + doc.space, function(error, existingdoc) {
                     if (error) {
