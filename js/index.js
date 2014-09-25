@@ -3263,11 +3263,14 @@ function setupConfig(done) {
 
 
         window.server = coax( url );
-        var db = coax( [ url, appDbName ] );
         
-        var e = new Error("Got to before setup db2");
+        var e = new Error("Got to before coax" + appDbName);
     	
         window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+        
+        var db = coax( [ url, appDbName ] );
+        
+
         
         setupDb( db, function(err, info) {
             if (err) { return done( err ) }
