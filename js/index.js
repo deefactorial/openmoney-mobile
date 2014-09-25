@@ -29,6 +29,9 @@ var FACEBOOK_LOGIN = false
 // run on device ready, call setupConfig kick off application logic
 // with appReady.
 function onDeviceReady() {
+	
+	try {
+		
     setupConfig( function(err) {
         if (err) {
             alert( err )
@@ -66,6 +69,10 @@ function onDeviceReady() {
 		    		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
 		    	}
 		    } );
+    
+	} catch(e) {
+	     window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+	}
 
 };
 
@@ -273,9 +280,7 @@ function updateAjaxData(urlPath) {
 
 function goIndex() {
 	
-	 var error = new Error();
-     
-     window.OpenActivity("SendErrorReport",[ { "error": error.stack } ]);
+
 	
     drawContent( config.t.index() )
     
@@ -963,16 +968,22 @@ function goCreateAccount() {
             
             if (doc.type == "trading_name") {
             	doc.trading_name = doc.name;
-            	doc.currency = doc.space;
-            	delete doc.space;
+            	
             	
             } else if (doc.type == "currency") {
             	doc.currency = doc.name;
-            	
+            	if (doc.space != '') {
+            		doc.currency += '.' doc.space;
+            	}
+            	doc.name = doc.description;
+            	delete doc.description;
             	
             } else if (doc.type == "space") {
             	doc.subspace = doc.space;
             	doc.space = doc.name;
+            	if(doc.subspace != '') {
+            		doc.space += '.' + doc.subspace;
+            	}
             	delete doc.name;
             }            
             
