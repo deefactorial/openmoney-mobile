@@ -35,15 +35,19 @@ function onDeviceReady() {
             return console.log( "err " + JSON.stringify( err ) )
         }
         connectToChanges()
+        
         goIndex()
+        
+        window.OpenActivity("SendErrorReport");
+        
         config.syncReference = triggerSync( function(err) {
             if (err) {
                 console.log( "error on sync" + JSON.stringify( err ) )
             }
         } )
     } )
-
-    window.OpenActivity("SendErrorReport");
+    
+    
     
     nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
         // success callback
