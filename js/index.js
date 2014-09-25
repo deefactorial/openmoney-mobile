@@ -45,15 +45,27 @@ function onDeviceReady() {
         } )
     } )
     
-        var error = new Error();
-        
-        window.OpenActivity("SendErrorReport",[ { "error": error.stack } ]);
+       
     
-    nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-        // success callback
-    }, function() {
-        // failure callback
-    } );
+    nfc.addMimeTypeListener( "application/com.openmoney.mobile", 
+    		window.nfcListner, 
+    		function() {
+		        // success callback
+		    }, function(error) {
+		        // failure callback
+		    	
+		    	if (error == "NFC_DISABLED") {
+		    		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
+		    			window.OpenActivity("NFCSettings",[]);
+		    		}, "Turn on NFC", "OK")
+		    	} else if(error == "NO_NFC") {
+		    		navigator.notification.alert( "You do not have the capability to read and write NFC tags." , function() { 
+		    			 nfc.removeMimeTypeListener(  "application/com.openmoney.mobile", window.nfcListner, function() {}, function() {} );
+		    		}, "No NFC", "OK")
+		    	} else {
+		    		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
+		    	}
+		    } );
 
 };
 
@@ -260,6 +272,10 @@ function updateAjaxData(urlPath) {
 
 
 function goIndex() {
+	
+	 var error = new Error();
+     
+     window.OpenActivity("SendErrorReport",[ { "error": error.stack } ]);
 	
     drawContent( config.t.index() )
     
@@ -1703,13 +1719,8 @@ function goNewNFC() {
                 		navigator.notification.alert( "You do not have the capability to read and write NFC tags." , function() { 
                 			 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
                              
-                             nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-                                 // success callback
-                             }, function() {
-                                 // failure callback
-                             } );
                 			goManageNFC()
-                		}, "Turn on NFC", "OK")
+                		}, "No NFC", "OK")
                 	} else {
                 		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
                 	}
