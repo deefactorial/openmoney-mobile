@@ -934,6 +934,53 @@ function goCreateAccount() {
 	
 	    setTabs()
 	    
+	    $( "#content select[name='type']" ).change( function () {
+	    	
+	    	var type = $(this).val();
+	    	
+	    	if (type == 'trading_name') {
+	    		drawContainer( "div#trading_name_form", config.t.trading_name_form() )
+	    		drawContainer( "div#currency_form", "")
+	    		drawContainer( "div#space_form", "")
+	    	} else if (type == "currency") {
+	    		drawContainer( "div#trading_name_form", "" )
+	    		drawContainer( "div#currency_form", config.t.currency_form())
+	    		drawContainer( "div#space_form", "")
+	    	} else if (type == "space") {
+	    		drawContainer( "div#trading_name_form", "" )
+	    		drawContainer( "div#currency_form", "")
+	    		drawContainer( "div#space_form", config.t.space_form())
+	    	}
+            
+            updateAjaxData( "create" )
+	    } ).change();
+	    
+	    
+	    
+        $( "#content form" ).submit( function(e) {
+            e.preventDefault()
+            var doc = jsonform( this );
+            doc.steward = [ config.user.name ];
+            
+            if (doc.type == "trading_name") {
+            	doc.trading_name = doc.name;
+            	doc.currency = doc.space;
+            	delete doc.space;
+            	
+            } else if (doc.type == "currency") {
+            	doc.currency = doc.name;
+            	
+            	
+            } else if (doc.type == "space") {
+            	doc.subspace = doc.space;
+            	doc.space = doc.name;
+            	delete doc.name;
+            }
+            
+            
+            
+        } )
+	    
 	    window.plugins.spinnerDialog.hide();
 	    
 	} );

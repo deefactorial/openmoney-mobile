@@ -482,9 +482,6 @@
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
-                <li class="topcoat-list__item" data-id="trading_name">
-                    <input type="text" class="topcoat-text-input" name="name" value="" placeholder="Requested Name" /> 
-                </li>
                 <li class="topcoat-list__item" data-id="type">
                     <select name="type" class="om-select-dark" >
                         <option value="trading_name" selected="selected">Trading Name</option>
@@ -492,9 +489,76 @@
                         <option value="space">Space</option>
                     </select>
                 </li>
+            </ul>
+            <div id="trading_name_form"></div>
+            <div id="currency_form"></div>
+            <div id="space_form"></div>
+        </form>
+    </div>
+</div>
+</script>
+<script type="text/mustache" id="trading_name_form-mu">
+<ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="name">
+                    <input type="text" class="topcoat-text-input" name="name" value="" placeholder="Requested Name" /> 
+                </li>
+
                 <li class="topcoat-list__item" data-id="space">
                     <select name="space" class="om-select-dark" >
-                        <option value="" selected="selected">in</option>
+                        <option value="" selected="selected">in space (Optional)</option>
+                        {{#spaces}}
+                            <option value="{{key}}">{{key}}</option>
+                        {{/spaces}}
+                    </select>
+                </li>
+
+                <li class="topcoat-list__item" data-id="currency">
+                    <select name="currency" class="om-select-dark" >
+                        <option value="cc" selected="selected">currency</option>
+                        {{#currencies}}
+                            <option value="{{key}}">{{key}}</option>
+                        {{/currencies}}
+                    </select>
+                </li>
+
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" name="create" value=" Create " /> 
+                </li>
+</ul>
+</script>
+<script type="text/mustache" id="currency_form-mu">
+<ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="name">
+                    <input type="text" class="topcoat-text-input" name="currency" value="" placeholder="Requested Name" /> 
+                </li>
+
+                <li class="topcoat-list__item" data-id="space">
+                    <select name="space" class="om-select-dark" >
+                        <option value="" selected="selected">in space (Optional)</option>
+                        {{#rows}}
+                            <option value="{{key}}">{{key}}</option>
+                        {{/rows}}
+                    </select>
+                </li>
+
+                <li class="topcoat-list__item" data-id="description">
+                    <input type="text" class="topcoat-text-input" name="name" value="" placeholder="Currency Description" /> 
+                </li>
+
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" name="create" value=" Create " /> 
+                </li>
+</ul>
+</script>
+<script type="text/mustache" id="space_form-mu">
+<ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="name">
+                    <input type="text" class="topcoat-text-input" name="space" value="" placeholder="Requested Name" /> 
+                </li>
+
+                <li class="topcoat-list__item" data-id="subspace">
+                    <select name="subspace" class="om-select-dark" >
+                        <option value="" selected="selected">in space</option>
                         {{#rows}}
                             <option value="{{key}}">{{key}}</option>
                         {{/rows}}
@@ -503,10 +567,7 @@
                 <li class="topcoat-list__item" data-id="submit">
                     <input type="submit" class="topcoat-button" name="create" value=" Create " /> 
                 </li>
-            </ul>
-        </form>
-    </div>
-</div>
+</ul>
 </script>
 <script type="text/mustache" id="trading_name-mu">
 <header>
