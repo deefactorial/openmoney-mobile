@@ -974,7 +974,7 @@ function goCreateAccount() {
             } else if (doc.type == "currency") {
             	doc.currency = doc.name;
             	if (doc.space != '') {
-            		doc.currency += '.' doc.space;
+            		doc.currency += '.' + doc.space;
             	}
             	doc.name = doc.description;
             	delete doc.description;
