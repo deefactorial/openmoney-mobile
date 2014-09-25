@@ -934,29 +934,6 @@ function goCreateAccount() {
 	
 	    setTabs()
 	    
-	    $( "#content select[name='type']" ).change( function () {
-	    	
-	    	var type = $(this).val();
-	    	
-	    	if (type == 'trading_name') {
-	    		drawContainer( "div#trading_name_form", config.t.trading_name_form() )
-	    		drawContainer( "div#currency_form", "")
-	    		drawContainer( "div#space_form", "")
-	    	} else if (type == "currency") {
-	    		drawContainer( "div#trading_name_form", "" )
-	    		drawContainer( "div#currency_form", config.t.currency_form())
-	    		drawContainer( "div#space_form", "")
-	    	} else if (type == "space") {
-	    		drawContainer( "div#trading_name_form", "" )
-	    		drawContainer( "div#currency_form", "")
-	    		drawContainer( "div#space_form", config.t.space_form())
-	    	}
-            
-            updateAjaxData( "create" )
-	    } ).change();
-	    
-	    
-	    
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this );
@@ -975,11 +952,27 @@ function goCreateAccount() {
             	doc.subspace = doc.space;
             	doc.space = doc.name;
             	delete doc.name;
-            }
-            
-            
+            }            
             
         } )
+        
+        $( "#content select[name='type']" ).change( function () {
+	    	
+	    	var type = $(this).val();
+	    	
+	    	log( "onchange: " + type)
+	    	
+	    	if (type == 'trading_name') {
+	    		drawContainer( "div#form", config.t.trading_name_form() )
+	    	} else if (type == "currency") {
+	    		drawContainer( "div#form", config.t.currency_form())
+	    	} else if (type == "space") {
+	    		drawContainer( "div#form", config.t.space_form())
+	    	}
+            
+            updateAjaxData( "create" )
+            
+	    } ).change();
 	    
 	    window.plugins.spinnerDialog.hide();
 	    
