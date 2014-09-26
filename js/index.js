@@ -189,7 +189,8 @@ function connectToChanges() {
         //since : config.info.update_seq,
     	since : config.info.update_seq ,
         conflicts : true,
-        include_docs : true
+        include_docs : true,
+        feed: "continuous"
     }, function(err, change) {
         if (err) {
             log( " Changes Error: " + JSON.stringify( err ) )
@@ -1082,6 +1083,11 @@ function goCreateAccount(doc) {
         	
             if (doc.symbol.match( /\./ )) { 
             	navigator.notification.alert( 'The currency name cannot contain a dot.' , function() {}, "Invalid Currency Name", "OK")
+            	return null;
+            }
+            
+            if (doc.name.length < 2) {
+            	navigator.notification.alert( 'The currency description is required.' , function() {}, "Currency Description", "OK")
             	return null;
             }
         	
