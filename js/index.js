@@ -3218,6 +3218,7 @@ function triggerSync(cb, retryCount) {
     pullSync.on( "auth-challenge", authChallenge )
 
     pushSync.on( "error", function(err) {
+    	log("Push Sync Error:" + err)
         if (challenged) { return }
         cb( err )
     } )
@@ -3225,6 +3226,7 @@ function triggerSync(cb, retryCount) {
         pullSync.start()
     } )
     pullSync.on( "error", function(err) {
+    	log("Pull Sync Error:" + err)
         if (challenged) { return }
         cb( err )
     } )
