@@ -202,9 +202,23 @@ function connectToChanges() {
         	var thatrev = change.doc._conflicts[0];
         	config.db.get(change.doc._id + "?rev=" + thisrev, function(error, thisdoc) {
         		if(error) {return JSON.stringify(error)}
-            	config.db.get(change.doc._id + "?rev=" + conflictrev, function(error, thatdoc) {
+            	config.db.get(change.doc._id + "?rev=" + thatrev, function(error, thatdoc) {
             		if(error) {return JSON.stringify(error)}
+            		
             		var deletedDocument = null;
+            		if(typeof thisdoc.created == 'undefined' || typeof thatdoc.created == 'undefined'){
+            			//delete my doc
+            			thisdoc.steward.forEach(function(steward) {
+            				if(steward == config.user.name) {
+            					deletedDocument = thisdoc;
+            				}
+            			})
+            			thatdoc.steward.forEach(function(steward) {
+            				if(steward == config.user.name) {
+            					deletedDocument = thatdoc;
+            				}
+            			})
+            		}
             		if (thisdoc.created > thatdoc.created) {
             			thisdoc._deleted = true;
             			deletedDocument = thisdoc;
