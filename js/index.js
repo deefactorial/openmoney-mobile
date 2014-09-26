@@ -3556,7 +3556,7 @@ function syncManager(serverUrl, syncDefinition) {
             // we could use _active_tasks?feed=continuous for this
             // but we don't need that code for this app...
             callBack = function(err, info) {
-                log( "continuous sync callBack", err, info, syncDefinition )
+                log( "continuous sync callBack:" + JSON.stringify( err ) + JSON.stringify( info ) + JSON.stringify( syncDefinition ) )
                 if (err) {
                     callHandlers( "error", err )
                 } else {
