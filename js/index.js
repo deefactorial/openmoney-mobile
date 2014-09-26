@@ -201,27 +201,34 @@ function connectToChanges() {
         		if(error) {return JSON.stringify(error)}
             	config.db.get(change.doc._id + "?rev=" + conflictrev, function(error, thatdoc) {
             		if(error) {return JSON.stringify(error)}
+            		var deletedDocument = null;
             		if (thisdoc.created > thatdoc.created) {
             			thisdoc._deleted = true;
-            			thisdoc.steward.forEach(function(steward) {
-            				if(steward == config.user.name) {
-            					config.db.put(change.doc._id, thisdoc, function(error, ok) {
-                    				alert("Document " + change.doc._id + " Already Exists")
-                    				if(change.doc.type == 'currency') {
-                    					
-                    				}
-                    			})
-            				}
-            			})
-            			
+            			deletedDocument = thisdoc;
             		} else {
             			thatdoc._deleted = true;
-            			config.db.put(change.doc._id, thatdoc, function(error, ok) {
-            				
-            			})
+            			deletedDocument = thatdoc;
             		}
-            	})
-        	})
+            		deletedDocument.steward.forEach(function(steward) {
+        				if(steward == config.user.name) {
+        					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
+                				if(change.doc.type == 'currency' || change.doc.type == 'trading_name' || change.doc.type == 'space') {
+                					if(change.doc.type == 'currency') {
+                						alert( "The currency " + deletedDocument.currency + " already exists!")
+                					} else if (change.doc.type == 'trading_name') {
+                						alert( "The trading name " + deletedDocument.trading_name + " already exists!")
+                					} else if (change.doc.type == 'space') {
+                						alert( "The space " + deletedDocument.space + " already exists!")
+                					}
+                					goCreateAccount(deletedDocument)
+                				} else {
+                					alert("Document " + change.doc._id + " Already Exists")
+                				}
+                			} )
+        				}
+        			} )
+            	} )
+        	} )
         } 
         
         window.dbChanged()
