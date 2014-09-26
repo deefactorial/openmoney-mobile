@@ -187,7 +187,7 @@ var first = true;
 function connectToChanges() {
     config.db.changes( {
         //since : config.info.update_seq,
-    	since : 0 ,
+    	since : 93 ,
         conflicts : true,
         include_docs : true,
         doc_ids: ["currency,gabe"]
