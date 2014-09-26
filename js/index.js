@@ -3406,8 +3406,7 @@ function setupConfig(done) {
     	
         db.get( function(err, res, body) {
         	
-            var e = new Error("before create db:" + JSON.stringify( [ "before create db put", err, res, body ] ) );
-            window.OpenActivity("SendErrorReport", [ { "error": e.stack } ] );
+
 
             console.log( JSON.stringify( [ "before create db put", err, res, body ] ) )
             db.put( function(err, res, body) {
