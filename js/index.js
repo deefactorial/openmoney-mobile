@@ -1054,6 +1054,11 @@ function goCreateAccount(doc) {
         	
         } else if (doc.type == "currency") {
         	
+            if (doc.symbol.match( /\./ )) { 
+            	navigator.notification.alert( 'The currency name cannot contain a dot.' , function() {}, "Invalid Currency Name", "OK")
+            	return null;
+            }
+        	
         	if (doc.space != '')
                 doc.currency = doc.symbol + "." + doc.space;
             else
