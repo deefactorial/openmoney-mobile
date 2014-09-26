@@ -187,7 +187,7 @@ var first = true;
 function connectToChanges() {
     config.db.changes( {
         //since : config.info.update_seq,
-    	since : first ? first = 0: config.info.update_seq ,
+    	since : config.info.update_seq ,
         conflicts : true,
         include_docs : true
     }, function(err, change) {
