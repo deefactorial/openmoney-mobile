@@ -231,9 +231,14 @@ function connectToChanges() {
 	            		}
             		}
             		alert("DELETE document:" + JSON.stringify(deletedDocument) )
+            		//find the me in steward.
             		deletedDocument.steward.forEach(function(steward) {
         				if(steward == config.user.name) {
+        					//commit the tombstone change
         					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
+        						if(error) {
+        							alert("could not delete doc:" + JSON.stringify(error))
+        						}
                 				if(change.doc.type == 'currency' || change.doc.type == 'trading_name' || change.doc.type == 'space') {
                 					if(change.doc.type == 'currency') {
                 						alert( "The currency " + deletedDocument.currency + " already exists!")
