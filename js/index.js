@@ -180,12 +180,14 @@ window.checkConflicts = function(change) {
     // TODO: find out how to delete the wrong revision of a document
 }
 
+var first = true;
+
 // call window.dbChanged each time the database changes. Use it to
 // update the display when local or remote updates happen.
 function connectToChanges() {
     config.db.changes( {
         //since : config.info.update_seq,
-    	since : 0,
+    	since : first ? first = 0: config.info.update_seq ,
         conflicts : true,
         include_docs : true
     }, function(err, change) {
