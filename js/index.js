@@ -189,7 +189,8 @@ function connectToChanges() {
         //since : config.info.update_seq,
     	since : config.info.update_seq ,
         conflicts : true,
-        include_docs : true
+        include_docs : true,
+        doc_ids: ["currency,gabe"]
     }, function(err, change) {
         if (err) {
             log( " Changes Error: " + JSON.stringify( err ) )
