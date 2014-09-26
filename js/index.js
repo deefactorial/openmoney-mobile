@@ -221,13 +221,14 @@ function connectToChanges() {
             					deletedDocument = thatdoc;
             				}
             			})
-            		}
-            		if (thisdoc.created > thatdoc.created) {
-            			thisdoc._deleted = true;
-            			deletedDocument = thisdoc;
             		} else {
-            			thatdoc._deleted = true;
-            			deletedDocument = thatdoc;
+	            		if (thisdoc.created > thatdoc.created) {
+	            			thisdoc._deleted = true;
+	            			deletedDocument = thisdoc;
+	            		} else {
+	            			thatdoc._deleted = true;
+	            			deletedDocument = thatdoc;
+	            		}
             		}
             		alert("DELETE document:" + JSON.stringify(deletedDocument) )
             		deletedDocument.steward.forEach(function(steward) {
