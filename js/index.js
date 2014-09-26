@@ -2841,10 +2841,8 @@ function addMyUsernameToAllLists(cb) {
         if (err) { return cb( err ) }
         var docs = [];
         view.rows.forEach( function(row) {
-        	log("account row:" + JSON.stringify( row ) )
-
-        		
-        		log("account doc before:" + JSON.stringify( row.doc ) )
+        	//log("account row:" + JSON.stringify( row ) )
+        		//log("account doc before:" + JSON.stringify( row.doc ) )
 	            if (!row.doc.steward) {
 	            	row.doc.steward = [ config.user.name ];
 	            } else {
@@ -2861,7 +2859,7 @@ function addMyUsernameToAllLists(cb) {
 	                    } )
 	                }
 	            }
-        		log("account doc after:" + JSON.stringify( row.doc ) )
+        		//log("account doc after:" + JSON.stringify( row.doc ) )
 	            docs.push( row.doc )
         	
         } )
@@ -3563,7 +3561,8 @@ function syncManager(serverUrl, syncDefinition) {
                     callHandlers( "error", err )
                 } else {
                     pollForStatus( info, 10000 )
-                    callHandlers( "started", info )
+                    //callHandlers( "started", info ) //there is no started handler
+                    callHandler( "connected", info )
                 }
             }
         } else { // non-continuous
