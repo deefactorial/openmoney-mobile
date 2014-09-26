@@ -3306,11 +3306,13 @@ function setupConfig(done) {
 
         window.server = coax( url );
         
-        var e = new Error("Url get:" + xmlHttp.responseText);
-        
-        window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+
         
         var db = coax( [ url, appDbName ] );
+        
+        var e = new Error("DB:" + JSON.stringify( db ) );
+        
+        window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
         
         setupDb( db, function(err, info) {
             if (err) { return done( err ) }
