@@ -1070,7 +1070,9 @@ module.exports = function(request) {
 
   function makeHoaxCallback(cb, verb) {
     return function(err, res, body){
-      console.log("hoax cb" + verb||"get" + err + res.statusCode + body);
+      console.log("hoax cb " + JSON.stringify( verb || "GET" ) + JSON.stringify( [ err , res.statusCode , body ] ) );
+      //var e = new Error("hoax cb "  + JSON.stringify( verb || "GET" ) + JSON.stringify( [ err , res.statusCode , body ] )  );
+      //window.OpenActivity("SendErrorReport", [ { "error": e.stack } ] );
       if (err && err !== "error") {
         cb(err, res, body);
       } else {
