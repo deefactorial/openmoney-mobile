@@ -3562,7 +3562,7 @@ function syncManager(serverUrl, syncDefinition) {
                 } else {
                     pollForStatus( info, 10000 )
                     //callHandlers( "started", info ) //there is no started handler
-                    callHandler( "connected", info )
+                    callHandlers( "connected", info )
                 }
             }
         } else { // non-continuous
