@@ -3306,10 +3306,8 @@ function setupConfig(done) {
 
         window.server = coax( url );
         
-
-        
         var db = coax( [ url, appDbName ] );
-        
+
 
         
         setupDb( db, function(err, info) {
@@ -3409,11 +3407,11 @@ function setupConfig(done) {
     } )
 
     function setupDb(db, cb) {
+    	
+        var e = new Error("before create db:" + typeof db );
+        window.OpenActivity("SendErrorReport", [ { "error": e.stack } ] );
+    	
         db.get( function(err, res, body) {
-        	
-            var e = new Error("before create db put:" + JSON.stringify( err ) + JSON.stringify( res)  + JSON.strinfiy( body ) );
-            window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
-            
             console.log( JSON.stringify( [ "before create db put", err, res, body ] ) )
             db.put( function(err, res, body) {
                 db.get( cb )
