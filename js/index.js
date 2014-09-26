@@ -3404,8 +3404,6 @@ function setupConfig(done) {
 
     function setupDb(db, cb) {
     	
-
-    	
         db.get( function(err, res, body) {
         	
             var e = new Error("before create db:" + JSON.stringify( [ "before create db put", err, res, body ] ) );
