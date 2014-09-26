@@ -184,7 +184,10 @@ window.checkConflicts = function(change) {
 // update the display when local or remote updates happen.
 function connectToChanges() {
     config.db.changes( {
-        since : config.info.update_seq, conflicts : true, include_docs : true
+        //since : config.info.update_seq,
+    	since : 0,
+        conflicts : true,
+        include_docs : true
     }, function(err, change) {
         if (err) {
             log( " Changes Error: " + JSON.stringify( err ) )
