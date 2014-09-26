@@ -201,12 +201,12 @@ function connectToChanges() {
         
         if (change.doc._conflicts) {
         	alert("Conflicting Document:" + JSON.stringify( change.doc ) )
-        	var thisrev = change.doc._rev;
-        	var thatrev = change.doc._conflicts[0];
-        	config.db.get(change.doc._id + "?rev=" + thisrev, function(error, thisdoc) {
-        		if(error) {return alert(JSON.stringify(error))}
-            	config.db.get(change.doc._id + "?rev=" + thatrev, function(error, thatdoc) {
-            		if(error) {return alert(JSON.stringify(error))}
+        	var thisrev = change.doc._id + "?rev=" + change.doc._rev;
+        	var thatrev = change.doc._id + "?rev=" + change.doc._conflicts[0];
+        	config.db.get( thisrev, function(error, thisdoc) {
+        		if(error) {return alert( thisrev + ":" + JSON.stringify(error))}
+            	config.db.get( thatrev, function(error, thatdoc) {
+            		if(error) {return alert( thatrev + ":" +JSON.stringify(error))}
             		
             		var deletedDocument = null;
             		if(typeof thisdoc.created == 'undefined' || typeof thatdoc.created == 'undefined'){
