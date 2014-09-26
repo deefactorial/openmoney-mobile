@@ -3566,7 +3566,7 @@ function syncManager(serverUrl, syncDefinition) {
             }
         } else { // non-continuous
             callBack = function(err, info) {
-                log( "sync callBack", err, info, syncDefinition )
+                log( "sync callBack:" + JSON.stringify( err ) + JSON.stringify( info ) + JSON.stringify( syncDefinition ) )
                 if (err) {
                     if (info.status == 401) {
                         err.status = info.status;
