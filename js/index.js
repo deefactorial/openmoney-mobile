@@ -226,6 +226,7 @@ function connectToChanges() {
             			thatdoc._deleted = true;
             			deletedDocument = thatdoc;
             		}
+            		alert("DELETE document:" + JSON.stringify(deletedDocument) )
             		deletedDocument.steward.forEach(function(steward) {
         				if(steward == config.user.name) {
         					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
@@ -3578,8 +3579,8 @@ function syncManager(serverUrl, syncDefinition) {
                     callHandlers( "error", err )
                 } else {
                     pollForStatus( info, 10000 )
-                    //callHandlers( "started", info ) //there is no started handler
-                    callHandlers( "connected", info )
+                    callHandlers( "started", info ) //there is no started handler
+                    //callHandlers( "connected", info )
                 }
             }
         } else { // non-continuous
