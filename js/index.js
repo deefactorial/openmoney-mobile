@@ -3292,8 +3292,6 @@ function setupConfig(done) {
         id.pop()
         t[id.join( '-' )] = mustache.compile( this.innerHTML.replace( /^\s+|\s+$/g, '' ) )
     } );
-
-
     
     cblite.getURL( function(err, url) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
@@ -3307,8 +3305,6 @@ function setupConfig(done) {
         window.server = coax( url );
         
         var db = coax( [ url, appDbName ] );
-
-
         
         setupDb( db, function(err, info) {
             if (err) { return done( err ) }
@@ -3408,10 +3404,11 @@ function setupConfig(done) {
 
     function setupDb(db, cb) {
     	
-        var e = new Error("before create db:" + typeof db );
-        window.OpenActivity("SendErrorReport", [ { "error": e.stack } ] );
+
     	
         db.get( function(err, res, body) {
+            var e = new Error("before create db:" +  JSON.stringify( [ "before create db put", err, res, body ] ) );
+            window.OpenActivity("SendErrorReport", [ { "error": e.stack } ] );
             console.log( JSON.stringify( [ "before create db put", err, res, body ] ) )
             db.put( function(err, res, body) {
                 db.get( cb )
