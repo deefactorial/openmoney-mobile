@@ -3300,10 +3300,10 @@ function setupConfig(done) {
        // if ( ! /Apple/.test( navigator.userAgent ) ) {
         	// this helps on Android < 4.4
         	// otherwise basic auth doesn't work
-        	var xmlHttp = new XMLHttpRequest()
-        	xmlHttp.open( 'GET', url, false )
-        	xmlHttp.send( null )
-        	console.log( 'XMLHttpRequest get: ' + xmlHttp.responseText )
+//        	var xmlHttp = new XMLHttpRequest()
+//        	xmlHttp.open( 'GET', url, false )
+//        	xmlHttp.send( null )
+//        	console.log( 'XMLHttpRequest get: ' + xmlHttp.responseText )
        // }
 
         window.server = coax( url );
