@@ -3297,14 +3297,14 @@ function setupConfig(done) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
         if (err) { return done( err ) }
 
-        if (!/Apple/.test(navigator.userAgent)) {
+       // if ( ! /Apple/.test( navigator.userAgent ) ) {
         	// this helps on Android < 4.4
         	// otherwise basic auth doesn't work
         	var xmlHttp = new XMLHttpRequest()
         	xmlHttp.open( 'GET', url, false )
         	xmlHttp.send( null )
         	console.log( 'XMLHttpRequest get: ' + xmlHttp.responseText )
-        }
+       // }
 
         window.server = coax( url );
         
