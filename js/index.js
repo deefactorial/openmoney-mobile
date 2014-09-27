@@ -3414,7 +3414,7 @@ function setupConfig(done) {
     		}, 10000 )
     		
 	        db.get( function(err, res, body) {
-	            console.log( JSON.stringify( [ "before create db put", err, res, body ] ) )
+	            //console.log( JSON.stringify( [ "before create db put", err, res, body ] ) )
 	            db.put( function(err, res, body) {
 	                db.get( cb )
 	            } )
