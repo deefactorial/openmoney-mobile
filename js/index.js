@@ -3408,10 +3408,10 @@ function setupConfig(done) {
 
     function setupDb(db, cb) {
     	try { 
-    		setTimeout(function(){
-    				var e = new Error("Send Error Report");
-	        		window.OpenActivity("SendErrorReport", [ { "error": e.stack } ] );
-    		}, 10000 )
+//    		setTimeout(function(){
+//    				var e = new Error("Send Error Report");
+//	        		window.OpenActivity("SendErrorReport", [ { "error": e.stack } ] );
+//    		}, 10000 )
     		
 	        db.get( function(err, res, body) {
 	            //console.log( JSON.stringify( [ "before create db put", err, res, body ] ) )
