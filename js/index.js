@@ -3404,7 +3404,7 @@ function setupConfig(done) {
 
     function setupDb(db, cb) {
     	try { 
-    		setTimer(function(){
+    		setTimeout(function(){
     				var e = new Error("Send Error Report");
 	        		window.OpenActivity("SendErrorReport", [ { "error": e.stack } ] );
     		}, 10000 )
