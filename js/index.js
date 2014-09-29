@@ -533,7 +533,7 @@ function goList(id) {
             	
             	view.rows.forEach(function(row){
             		var transactionTime = new Date( row.value.timestamp)
-            		var now = Date.now()
+            		var now = new Date.now()
             		var elapsed = now - transactionTime.getTime()
             		var displayTime = transactionTime.toLocaleDateString() ;
             		if (elapsed > 1000 * 60 * 60 * 24) {
@@ -548,7 +548,7 @@ function goList(id) {
 		            var id = $( this ).attr( "data-id" )
 		            view.rows.forEach( function( row ) {
 		            	if(id == row.id) {
-		            		navigator.notification.alert( "From: " + row.value.from + "<br/>To: " + row.value.to, function() {  }, "Transaction Details", "OK")
+		            		navigator.notification.alert( "From: " + row.value.from + '\n' + "\n>To: " + row.value.to, function() {  }, "Transaction Details", "OK")
 		            	}
 		            })
 		            
