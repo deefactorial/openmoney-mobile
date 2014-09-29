@@ -543,7 +543,7 @@ function goList(id) {
             	window.plugins.spinnerDialog.hide();
             	
             	view.rows.forEach(function(row){
-            		var transactionTime = Date(row.timestamp)
+            		var transactionTime = new Date(row.timestamp)
             		var now = Date.now()
             		var elapsed = now - transactionTime.getTime()
             		var displayTime = transactionTime;
