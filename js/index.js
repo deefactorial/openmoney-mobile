@@ -48,7 +48,9 @@ function onDeviceReady() {
         } )
     } )
     
-       
+    //test error reporting
+    var e = new Error("This is a new Error I would like a error report about");
+    window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
     
     nfc.addMimeTypeListener( "application/com.openmoney.mobile", 
     		window.nfcListner, 
