@@ -542,6 +542,19 @@ function goList(id) {
             	
             	window.plugins.spinnerDialog.hide();
             	
+            	view.rows.forEach(function(row){
+            		var transactionTime = Date(row.timestamp)
+            		var now = Date.now()
+            		var elapsed = now.getTime() - transactionTime.getTime()
+            		var displayTime = transactionTime;
+            		if (elapsed > 1000 * 60 * 60 * 24) {
+            			displayTime = transactionTime.getFullYear() + "-" + transactionTime.getMonth() + "-" + transactionTime.getDay() 
+            		} else {
+            			displayTime = transactionTime.getFullYear() + "-" + transactionTime.getMonth() + "-" + transactionTime.getDay() + " " + transactionTime.getHours() + ":" + transactionTime.getMinutes();
+            		}
+            		row.timestamp = displayTime;
+            	})
+            	
                 log( "account_details" + JSON.stringify( view ), view )
                 $( "#scrollable" ).html( config.t.listItems( view ) )
 //                $( "#scrollable li" ).on( "swipeRight", function() {
