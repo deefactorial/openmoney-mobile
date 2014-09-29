@@ -1297,6 +1297,8 @@ function goTradingName() {
             var doc = jsonform( this );
             doc.type = "trading_name";
             doc.steward = [ config.user.user_id ];
+            doc.created = new Date().getTime();
+            
             if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { 
             	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
             	return null;
@@ -1394,6 +1396,8 @@ function goCurrency() {
 	            var doc = jsonform( this )
 	            doc.type = "currency"
 	            doc.steward = [ config.user.user_id ]
+	            doc.created = new Date().getTime();
+	            
 	            if (doc.space != '')
 	                doc.currency = doc.symbol + "." + doc.space;
 	            else
@@ -1495,6 +1499,8 @@ function goSpace() {
             var doc = jsonform( this )
             doc.type = "space"
             doc.steward = [ config.user.user_id ]
+            doc.created = new Date().getTime();
+            
             if (doc.subspace != '')
                 doc.space = doc.space + "." + doc.subspace;
 
@@ -1832,6 +1838,8 @@ function goNewNFC() {
             $( "#content form" ).submit( function(e) {
                 e.preventDefault()
                 var doc = jsonform( this )
+                
+                doc.created = new Date().getTime();
 
                 if (!doc.name) {
                 	navigator.notification.alert( "You must specify a name for your Tag."  , function() {  }, "No Name", "OK")
@@ -1981,6 +1989,8 @@ function goEditNFC(id) {
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
+            
+            doc.modified = new Date().getTime();
 
             if (!doc.name) {
             	navigator.notification.alert( "You must specify a name for your Tag."  , function() {  }, "Error", "OK")
@@ -3209,8 +3219,6 @@ function triggerSync(cb, retryCount) {
 
     pushSync = syncManager( config.server, push ), pullSync = syncManager( config.server, pull )
 
-    // log( "pushSync", push )
-
     if (typeof retryCount == "undefined") {
         retryCount = 3
     }
@@ -3308,14 +3316,9 @@ function setupConfig(done) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
         if (err) { return done( err ) }
 
-       // if ( ! /Apple/.test( navigator.userAgent ) ) {
-        	// this helps on Android < 4.4
-        	// otherwise basic auth doesn't work
-        	var xmlHttp = new XMLHttpRequest()
-        	xmlHttp.open( 'GET', url, false )
-        	xmlHttp.send( null )
-        	//console.log( 'XMLHttpRequest get: ' + xmlHttp.responseText )
-       // }
+    	var xmlHttp = new XMLHttpRequest()
+    	xmlHttp.open( 'GET', url, false )
+    	xmlHttp.send( null )
 
         window.server = coax( url );
         
@@ -3419,13 +3422,7 @@ function setupConfig(done) {
 
     function setupDb(db, cb) {
     	try { 
-//    		setTimeout(function(){
-//    				var e = new Error("Send Error Report");
-//	        		window.OpenActivity("SendErrorReport", [ { "error": e.stack } ] );
-//    		}, 10000 )
-    		
 	        db.get( function(err, res, body) {
-	            //console.log( JSON.stringify( [ "before create db put", err, res, body ] ) )
 	            db.put( function(err, res, body) {
 	                db.get( cb )
 	            } )
