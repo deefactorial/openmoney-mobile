@@ -533,7 +533,7 @@ function goList(id) {
             	
             	view.rows.forEach(function(row){
             		var transactionTime = new Date( row.value.timestamp)
-            		var now = new Date.now()
+            		var now = Date.now()
             		var elapsed = now - transactionTime.getTime()
             		var displayTime = transactionTime.toLocaleDateString() ;
             		if (elapsed > 1000 * 60 * 60 * 24) {
