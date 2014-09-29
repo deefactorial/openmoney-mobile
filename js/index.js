@@ -71,6 +71,7 @@ function onDeviceReady() {
 		    } );
     
 	} catch(e) {
+		// var e = new Error("This is a new Error I would like a error report about");
 	     window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
 	}
 
@@ -3420,21 +3421,15 @@ function setupConfig(done) {
     } )
 
     function setupDb(db, cb) {
-    	try { 
-	        db.get( function(err, res, body) {
-	            db.put( function(err, res, body) {
-	                db.get( cb )
-	            } )
-	        } )
-    	} catch (e) {
-    		// var e = new Error("hoax cb "  + JSON.stringify( verb || "GET" ) + JSON.stringify( [ err , res.statusCode , body ] )  );
-    		window.OpenActivity("SendErrorReport", [ { "error": e.stack } ] );
-    	}
+        db.get( function(err, res, body) {
+            db.put( function(err, res, body) {
+                db.get( cb )
+            } )
+        } )
     }
 
     function destroyDb(db, cb) {
         db.get( function(err, res, body) {
-            console.log( JSON.stringify( [ "before destroy db del", err, res, body ] ) )
             db.del( function(err, res, body) {
                 db.get( cb )
             } )
