@@ -548,7 +548,7 @@ function goList(id) {
 		            var id = $( this ).attr( "data-id" )
 		            view.rows.forEach( function( row ) {
 		            	if(id == row.id) {
-		            		navigator.notification.alert( "From: " + row.value.from + "\nTo: " + row.value.to +"\nAmount: "+ row.value.amount + "\nDescription:" + row.value.description + "\nTime:", function() {  }, "Transaction Details:" + row.value.timestamp, "OK")
+		            		navigator.notification.alert( "From: " + row.value.from + "\nTo: " + row.value.to +"\nAmount: "+ row.value.amount + "\nDescription:" + row.value.description + "\nTime:" + row.value.timestamp, function() {  }, "Transaction Details:" , "OK")
 		            	}
 		            })
 		            
