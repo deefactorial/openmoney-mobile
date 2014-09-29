@@ -544,14 +544,12 @@ function goList(id) {
             	
             	view.rows.forEach(function(row){
             		var transactionTime = new Date( row.value.timestamp)
-            		//var now = Date.now()
-            		//var elapsed = now - transactionTime.getTime()
-            		var displayTime = transactionTime.toLocaleTimeString();
-//            		if (elapsed > 1000 * 60 * 60 * 24) {
-//            			displayTime = transactionTime.getFullYear() + "-" + transactionTime.getMonth() + "-" + transactionTime.getDay() 
-//            		} else {
-//            			displayTime = transactionTime.getFullYear() + "-" + transactionTime.getMonth() + "-" + transactionTime.getDay() + " " + transactionTime.getHours() + ":" + transactionTime.getMinutes();
-//            		}
+            		var now = Date.now()
+            		var elapsed = now - transactionTime.getTime()
+            		var displayTime = transactionTime.toLocaleDateString() ;
+            		if (elapsed > 1000 * 60 * 60 * 24) {
+            			displayTime += " " + transactionTime.toLocaleTimeString()
+            		}
             		row.value.timestamp = displayTime;
             	})
             	
