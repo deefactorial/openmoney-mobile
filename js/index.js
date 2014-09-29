@@ -545,7 +545,7 @@ function goList(id) {
             	view.rows.forEach(function(row){
             		var transactionTime = Date(row.timestamp)
             		var now = Date.now()
-            		var elapsed = now.getTime() - transactionTime.getTime()
+            		var elapsed = now - transactionTime.getTime()
             		var displayTime = transactionTime;
             		if (elapsed > 1000 * 60 * 60 * 24) {
             			displayTime = transactionTime.getFullYear() + "-" + transactionTime.getMonth() + "-" + transactionTime.getDay() 
