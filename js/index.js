@@ -507,18 +507,7 @@ function goList(id) {
             doShare( id )
         } )
 
-        $( "#scrollable" ).on( "click", "li", function(e) {
-            var id = $( this ).attr( "data-id" )
-//            if ($( e.target ).hasClass( "camera" )) {
-//                if ($( e.target ).hasClass( "image" )) {
-//                    goImage( id )
-//                } else {
-//                    doCamera( id )
-//                }
-//            } else {
-//                toggleChecked( id )
-//            }
-        } )
+
 		
 	    config.db.get( id, function(err, doc) {
 	        log( "Display Account Details:" + JSON.stringify( doc ) )
@@ -555,6 +544,16 @@ function goList(id) {
             	
                 log( "account_details" + JSON.stringify( view ), view )
                 $( "#scrollable" ).html( config.t.listItems( view ) )
+                $( "#scrollable" ).on( "click", "li", function(e) {
+		            var id = $( this ).attr( "data-id" )
+		            view.rows.forEach( function( row ) {
+		            	if(id == row.id) {
+		            		navigator.notification.alert( "From: " + row.value.from + "<br/>To: " + row.value.to, function() {  }, "Transaction Details", "OK")
+		            	}
+		            })
+		            
+		
+		        } )
 //                $( "#scrollable li" ).on( "swipeRight", function() {
 //                    var id = $( this ).attr( "data-id" )
 //                    $( this ).find( "button" ).show().click( function() {
