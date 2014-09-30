@@ -83,7 +83,7 @@ Coax.extend("changes", function(opts, cb) {
       } else if (err) {
         return cb(err);
       }
-      // console.log("changes", ok)
+      console.log("modules changes" + JSON.stringify( ok ) )
       ok.results.forEach(function(row){
         cb(null, row);
       });

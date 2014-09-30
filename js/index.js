@@ -263,8 +263,8 @@ function connectToChanges() {
     config.db.changes( {
     	since : config.info.update_seq,
         conflicts : true,
-        include_docs : true,
-        feed: "continuous"
+        include_docs : true
+        
     }, changes)
 }
 
