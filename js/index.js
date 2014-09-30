@@ -264,7 +264,7 @@ function connectToChanges() {
     	since : config.info.update_seq,
         conflicts : true,
         include_docs : true
-        //feed: "continuous"
+        feed: "continuous"
     }, changes)
 }
 
