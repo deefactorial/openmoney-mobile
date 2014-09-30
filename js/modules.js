@@ -33,18 +33,7 @@ Coax.extend("changes", function(opts, cb) {
   var self = this;
   opts = opts || {};
 
-  var handlers = {}
-  
-  self.on = function(name, cb) {
-      handlers[name] = handlers[name] || []
-      handlers[name].push( cb )
-  }
-
-  self.emit = function (name, data) {
-      (handlers[name] || []).forEach( function(h) {
-          h( data )
-      } )
-  }
+ 
   
   if (opts.feed == "continuous") {
     var listener = self(["_changes", opts], function(err, ok) {
@@ -54,6 +43,19 @@ Coax.extend("changes", function(opts, cb) {
         return cb(err);
       }
     });
+    
+    var handlers = {}
+    
+    listener.on = function(name, cb) {
+        handlers[name] = handlers[name] || []
+        handlers[name].push( cb )
+    }
+
+    listener.emit = function (name, data) {
+        (handlers[name] || []).forEach( function(h) {
+            h( data )
+        } )
+    }
     
     listener.on("data", function(data){
       var sep = "\n";
