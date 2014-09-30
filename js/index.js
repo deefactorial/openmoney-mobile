@@ -188,43 +188,38 @@ var first = true;
 // call window.dbChanged each time the database changes. Use it to
 // update the display when local or remote updates happen.
 function connectToChanges() {
-    config.db.changes( {
-        //since : config.info.update_seq,
-    	since : config.info.update_seq ,
-        conflicts : true,
-        include_docs : true
-        //feed: "continuous"
-    }, function(err, change) {
-        if (err) {
-            log( " Changes Error: " + JSON.stringify( err ) )
-        }
-        if (change)
-            lastSeq = change.seq
-        log( "change" + JSON.stringify( [ err, change ] ), err, change )
-        
-        if (change.doc._conflicts) {
-        	alert("Conflicting Document:" + JSON.stringify( change.doc ) )
-        	var thisrev = [ change.doc._id, { "rev": change.doc._rev } ] ;
-        	var thatrev = [ change.doc._id, { "rev": change.doc._conflicts[0] } ];
-        	config.db.get( thisrev, function(error, thisdoc) {
-        		if(error) {return alert( JSON.stringify( thisrev ) + ":" + JSON.stringify(error))}
-            	config.db.get( thatrev, function(error, thatdoc) {
-            		if(error) {return alert( JSON.stringify( thatrev ) + ":" +JSON.stringify(error))}
-            		
-            		var deletedDocument = null;
-            		if(typeof thisdoc.created == 'undefined' || typeof thatdoc.created == 'undefined'){
-            			//delete my doc
-            			thisdoc.steward.forEach(function(steward) {
-            				if(steward == config.user.name) {
-            					deletedDocument = thisdoc;
-            				}
-            			})
-            			thatdoc.steward.forEach(function(steward) {
-            				if(steward == config.user.name) {
-            					deletedDocument = thatdoc;
-            				}
-            			})
-            		} else {
+	
+	var changes = function(err, change) {
+	    if (err) {
+	        log( " Changes Error: " + JSON.stringify( err ) )
+	    }
+	    if (change)
+	        lastSeq = change.seq
+	    log( "change" + JSON.stringify( [ err, change ] ), err, change )
+	    
+	    if (change.doc._conflicts) {
+	    	alert("Conflicting Document:" + JSON.stringify( change.doc ) )
+	    	var thisrev = [ change.doc._id, { "rev": change.doc._rev } ] ;
+	    	var thatrev = [ change.doc._id, { "rev": change.doc._conflicts[0] } ];
+	    	config.db.get( thisrev, function(error, thisdoc) {
+	    		if(error) {return alert( JSON.stringify( thisrev ) + ":" + JSON.stringify(error))}
+	        	config.db.get( thatrev, function(error, thatdoc) {
+	        		if(error) {return alert( JSON.stringify( thatrev ) + ":" +JSON.stringify(error))}
+	        		
+	        		var deletedDocument = null;
+	        		if(typeof thisdoc.created == 'undefined' || typeof thatdoc.created == 'undefined'){
+	        			//delete my doc
+	        			thisdoc.steward.forEach(function(steward) {
+	        				if(steward == config.user.name) {
+	        					deletedDocument = thisdoc;
+	        				}
+	        			})
+	        			thatdoc.steward.forEach(function(steward) {
+	        				if(steward == config.user.name) {
+	        					deletedDocument = thatdoc;
+	        				}
+	        			})
+	        		} else {
 	            		if (thisdoc.created > thatdoc.created) {
 	            			thisdoc._deleted = true;
 	            			deletedDocument = thisdoc;
@@ -232,39 +227,48 @@ function connectToChanges() {
 	            			thatdoc._deleted = true;
 	            			deletedDocument = thatdoc;
 	            		}
-            		}
-            		alert("DELETE document:" + JSON.stringify(deletedDocument) )
-            		//find the me in steward.
-            		deletedDocument.steward.forEach(function(steward) {
-        				if(steward == config.user.name) {
-        					//commit the tombstone change
-        					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
-        						if(error) {
-        							alert("could not delete doc:" + JSON.stringify(error))
-        						}
-                				if(change.doc.type == 'currency' || change.doc.type == 'trading_name' || change.doc.type == 'space') {
-                					if(change.doc.type == 'currency') {
-                						alert( "The currency " + deletedDocument.currency + " already exists!")
-                					} else if (change.doc.type == 'trading_name') {
-                						alert( "The trading name " + deletedDocument.trading_name + " already exists!")
-                					} else if (change.doc.type == 'space') {
-                						alert( "The space " + deletedDocument.space + " already exists!")
-                					}
-                					goCreateAccount(deletedDocument)
-                				} else {
-                					alert("Document " + change.doc._id + " Already Exists")
-                				}
-                			} )
-        				}
-        			} )
-            	} )
-        	} )
-        } 
-        
-        window.dbChanged()
-        // window.checkConflicts( change )
-    } )
+	        		}
+	        		alert("DELETE document:" + JSON.stringify(deletedDocument) )
+	        		//find the me in steward.
+	        		deletedDocument.steward.forEach(function(steward) {
+	    				if(steward == config.user.name) {
+	    					//commit the tombstone change
+	    					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
+	    						if(error) {
+	    							alert("could not delete doc:" + JSON.stringify(error))
+	    						}
+	            				if(change.doc.type == 'currency' || change.doc.type == 'trading_name' || change.doc.type == 'space') {
+	            					if(change.doc.type == 'currency') {
+	            						alert( "The currency " + deletedDocument.currency + " already exists!")
+	            					} else if (change.doc.type == 'trading_name') {
+	            						alert( "The trading name " + deletedDocument.trading_name + " already exists!")
+	            					} else if (change.doc.type == 'space') {
+	            						alert( "The space " + deletedDocument.space + " already exists!")
+	            					}
+	            					goCreateAccount(deletedDocument)
+	            				} else {
+	            					alert("Document " + change.doc._id + " Already Exists")
+	            				}
+	            			} )
+	    				}
+	    			} )
+	        	} )
+	    	} )
+	    }
+	    
+	    window.dbChanged()
+	    // window.checkConflicts( change )
+	};
+	
+    config.db.changes( {
+    	since : config.info.update_seq,
+        conflicts : true,
+        include_docs : true,
+        feed: "continuous"
+    }, changes).on( "data" , changes)
 }
+
+
 
 /*
  * Error handling UI
@@ -272,7 +276,7 @@ function connectToChanges() {
 
 function loginErr(error) {
     if (error.msg) {
-    	navigator.notification.alert( "Can Not Login: " + error.msg , function() {  }, "Login Error", "OK")
+    	navigator.notification.alert( error.msg , function() {  }, "Login Error", "OK")
     } else {
     	navigator.notification.alert( "Login error: " + JSON.stringify( error ) , function() {  }, "Login Error", "OK")
     }
@@ -280,7 +284,7 @@ function loginErr(error) {
 
 function regErr(error) {
     if (error.msg) {
-    	navigator.notification.alert( "Can Not Register: " + error.msg , function() {  }, "Register Error", "OK")
+    	navigator.notification.alert( error.msg , function() {  }, "Register Error", "OK")
     } else {
     	navigator.notification.alert( "Register error: " + JSON.stringify( error ) , function() {  }, "Register Error", "OK")
     }
@@ -288,7 +292,7 @@ function regErr(error) {
 
 function logoutError(error) {
     if (error.msg) {
-    	navigator.notification.alert( "Can Not Logout: " + error.msg , function() {  }, "Logout Error", "OK")
+    	navigator.notification.alert( error.msg , function() {  }, "Logout Error", "OK")
     } else {
     	navigator.notification.alert( "Can Not Logout: " + JSON.stringify( error ), function() {  }, "Logout Error", "OK")
     }
@@ -357,7 +361,6 @@ function updateAjaxData(urlPath) {
 
 function goIndex() {
 
-	
     drawContent( config.t.index() )
     
     // If you click a list,
@@ -406,6 +409,7 @@ function goIndex() {
         } )
     }
     window.dbChanged()
+    
 }
 
 /*
