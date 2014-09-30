@@ -1490,6 +1490,12 @@ function goSpace() {
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
+            
+            if (doc.soace.match( /[^A-Za-z0-9\-_]/ )) { 
+            	navigator.notification.alert( 'The space you entered is not valid!' , function() {}, "Invalid Space Name", "OK")
+            	return null;
+            }
+            
             doc.type = "space"
             doc.steward = [ config.user.user_id ]
             doc.created = new Date().getTime();
