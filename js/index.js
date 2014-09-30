@@ -278,6 +278,14 @@ function loginErr(error) {
     }
 }
 
+function regErr(error) {
+    if (error.msg) {
+    	navigator.notification.alert( "Can Not Register: " + error.msg , function() {  }, "Register Error", "OK")
+    } else {
+    	navigator.notification.alert( "Register error: " + JSON.stringify( error ) , function() {  }, "Register Error", "OK")
+    }
+}
+
 function logoutError(error) {
     if (error.msg) {
     	navigator.notification.alert( "Can Not Logout: " + error.msg , function() {  }, "Logout Error", "OK")
@@ -380,7 +388,8 @@ function goIndex() {
             if (typeof view.rows != 'undefined') {
             	view.rows.forEach(function(row) {
             		row.key.steward.forEach(function(steward) {
-            			thisUsersAccounts.rows.push( row );
+            			if(steward == config.user.name)
+            				thisUsersAccounts.rows.push( row );
             		})
             	})
             }
@@ -772,7 +781,7 @@ function goServerRegistration(callBack) {
         	
         	window.plugins.spinnerDialog.hide();
         	
-            if (error) { return loginErr( error ) }
+            if (error) { return regErr( error ) }
             $( "#content form input[name='email']" ).val( "" ) // Clear email
             $( "#content form input[name='password']" ).val( "" ) // Clear
             // password
