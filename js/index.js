@@ -376,15 +376,13 @@ function goIndex() {
             var thisUsersAccounts = {
                 rows : []
             }
-
-            for ( var i = view.rows.length - 1; i >= 0; i--) {
-                if (view.rows[i].key.steward.length) {
-                    for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                       if (view.rows[i].key.steward[j] == config.user.user_id) {
-                            thisUsersAccounts.rows.push( view.rows[i] )
-                        }
-                    }
-                }
+            
+            if (typeof view.rows != 'undefined') {
+            	view.rows.forEach(function(row) {
+            		row.key.steward.forEach(function(steward) {
+            			thisUsersAccounts.rows.push( row );
+            		})
+            	})
             }
 
             thisUsersAccounts.offset = view.offset
@@ -3488,9 +3486,16 @@ function setupConfig(done) {
                             if(typeof doc.sessionID == 'undefined') {
                                 emit( [ doc.username, doc.hashTag ], doc )
                             }
-                            
                         }
                     }.toString()
+                }, user_tags : {
+                	map : function(doc) {
+                		if (doc.type == "beamtag" && doc.username) {
+                            if(typeof doc.sessionID != 'undefined') {
+                                emit( [ doc.username, doc.hashTag ], doc )
+                            }
+                        }
+                	}.toString()
                 }
             }
         }, function() {
