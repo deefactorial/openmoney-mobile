@@ -30,7 +30,7 @@ phonegap local plugin add org.apache.cordova.splashscreen
 phonegap local plugin add https://github.com/deefactorial/cordova-activity-plugin.git
 ```
 
-Now replace the generated application with the Todo Lite source code.
+Now replace the generated application with the openmoney-mobile source code.
 
 ```sh
 rm -rf www
