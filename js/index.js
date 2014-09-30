@@ -422,7 +422,6 @@ function goIndex() {
         } )
     }
     window.dbChanged()
-    window.dbChanged()
 }
 
 /*
