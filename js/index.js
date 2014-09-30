@@ -263,9 +263,9 @@ function connectToChanges() {
     config.db.changes( {
     	since : config.info.update_seq,
         conflicts : true,
-        include_docs : true,
-        feed: "continuous"
-    }, changes).on( "data" , changes)
+        include_docs : true
+        //feed: "continuous"
+    }, changes)
 }
 
 
