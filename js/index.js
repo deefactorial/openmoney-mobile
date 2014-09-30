@@ -394,7 +394,7 @@ function goIndex() {
     window.dbChanged = function() {
     	window.plugins.spinnerDialog.show();
         config.views( [ "accounts", {
-            descending : true , stale: false
+            descending : true, include_docs : true
         } ], function(err, view) {
 
             var thisUsersAccounts = {
