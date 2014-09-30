@@ -205,18 +205,19 @@ function connectToChanges() {
 	    		if(error) {return alert( JSON.stringify( thisrev ) + ":" + JSON.stringify(error))}
 	        	config.db.get( thatrev, function(error, thatdoc) {
 	        		if(error) {return alert( JSON.stringify( thatrev ) + ":" +JSON.stringify(error))}
-	        		
+	        		var addCreated = null;
 	        		var deletedDocument = null;
-	        		if(typeof thisdoc.created == 'undefined' || typeof thatdoc.created == 'undefined'){
+	        		if( typeof thisdoc.created == 'undefined' ) {
 	        			//delete my doc
 	        			thisdoc.steward.forEach(function(steward) {
 	        				if(steward == config.user.name) {
-	        					deletedDocument = thisdoc;
+	        					addCreated = thisdoc;
 	        				}
 	        			})
+	        		} else if( typeof thatdoc.created == 'undefined'){
 	        			thatdoc.steward.forEach(function(steward) {
 	        				if(steward == config.user.name) {
-	        					deletedDocument = thatdoc;
+	        					addCreated = thatdoc;
 	        				}
 	        			})
 	        		} else {
@@ -228,30 +229,42 @@ function connectToChanges() {
 	            			deletedDocument = thatdoc;
 	            		}
 	        		}
-	        		alert("DELETE document:" + JSON.stringify(deletedDocument) )
-	        		//find the me in steward.
-	        		deletedDocument.steward.forEach(function(steward) {
-	    				if(steward == config.user.name) {
-	    					//commit the tombstone change
-	    					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
+	        		if(addCreated != null){
+	        			addCreated.created = new Date().getTime();
+	        			addCreated.steward.forEach(function(steward) {
+		        			config.db.put(change.doc._id, addCreated, function(error, ok) {
 	    						if(error) {
-	    							alert("could not delete doc:" + JSON.stringify(error))
+	    							alert("could not add created to doc:" + JSON.stringify(error))
 	    						}
-	            				if(change.doc.type == 'currency' || change.doc.type == 'trading_name' || change.doc.type == 'space') {
-	            					if(change.doc.type == 'currency') {
-	            						alert( "The currency " + deletedDocument.currency + " already exists!")
-	            					} else if (change.doc.type == 'trading_name') {
-	            						alert( "The trading name " + deletedDocument.trading_name + " already exists!")
-	            					} else if (change.doc.type == 'space') {
-	            						alert( "The space " + deletedDocument.space + " already exists!")
-	            					}
-	            					goCreateAccount(deletedDocument)
-	            				} else {
-	            					alert("Document " + change.doc._id + " Already Exists")
-	            				}
 	            			} )
-	    				}
-	    			} )
+		        		})
+	        		} else {
+	        		
+		        		alert("DELETE document:" + JSON.stringify(deletedDocument) )
+		        		//find the me in steward.
+		        		deletedDocument.steward.forEach(function(steward) {
+		    				if(steward == config.user.name) {
+		    					//commit the tombstone change
+		    					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
+		    						if(error) {
+		    							alert("could not delete doc:" + JSON.stringify(error))
+		    						}
+		            				if(change.doc.type == 'currency' || change.doc.type == 'trading_name' || change.doc.type == 'space') {
+		            					if(change.doc.type == 'currency') {
+		            						alert( "The currency " + deletedDocument.currency + " already exists!")
+		            					} else if (change.doc.type == 'trading_name') {
+		            						alert( "The trading name " + deletedDocument.trading_name + " already exists!")
+		            					} else if (change.doc.type == 'space') {
+		            						alert( "The space " + deletedDocument.space + " already exists!")
+		            					}
+		            					goCreateAccount(deletedDocument)
+		            				} else {
+		            					alert("Document " + change.doc._id + " Already Exists")
+		            				}
+		            			} )
+		    				}
+		    			} )
+	        		}
 	        	} )
 	    	} )
 	    }
