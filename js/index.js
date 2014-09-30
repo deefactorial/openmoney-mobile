@@ -1099,6 +1099,11 @@ function goCreateAccount(doc) {
             	return null;
             }
             
+            if (doc.symbol.match( / / )) { 
+            	navigator.notification.alert( 'The currency name cannot contain a space.' , function() {}, "Invalid Currency Name", "OK")
+            	return null;
+            }
+            
             if (doc.name.length < 2) {
             	navigator.notification.alert( 'The currency description is required.' , function() {}, "Currency Description", "OK")
             	return null;
@@ -1325,27 +1330,6 @@ function goTradingName() {
                             
                         } )
                         
-                    	var spaceDoc = {"type":"space", "space": doc.name + "." + doc.currency, "subspace": doc.currency, "steward": [ config.user.name ] };
-                    	config.db.put( spaceDoc.type + "," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
-                    		 if (error)
-                                 return alert( JSON.stringify( error ) )
-                    	} );
-                    	
-                    	var name = doc.name + " Currency";
-                    	if (typeof doc.space == 'undefined' || doc.space == '') {
-                    		name += " in " + doc.currency + " Space";
-                    	}
-                    	
-                    	var currencyDoc = { "type":"currency",
-                    						"currency": doc.name + "." + doc.currency,
-                    						"space": doc.currency,
-                    						"name": name,
-                    						"steward": [ config.user.name ] };
-                    	config.db.put( currencyDoc.type + "," + doc.name, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
-                    		 if (error)
-                                 return alert( JSON.stringify( error ) )
-                    	} );
-                    	
                     	
                     } else {
                         alert( "Error: ".JSON.stringify( error ) )
@@ -1396,6 +1380,23 @@ function goCurrency() {
 	        $( "#content form" ).submit( function(e) {
 	            e.preventDefault()
 	            var doc = jsonform( this )
+	            
+	                    	
+	            if (doc.symbol.match( /\./ )) { 
+	            	navigator.notification.alert( 'The currency name cannot contain a dot.' , function() {}, "Invalid Currency Name", "OK")
+	            	return null;
+	            }
+	            
+	            if (doc.symbol.match( / / )) { 
+	            	navigator.notification.alert( 'The currency name cannot contain a space.' , function() {}, "Invalid Currency Name", "OK")
+	            	return null;
+	            }
+	            
+	            if (doc.name.length < 2) {
+	            	navigator.notification.alert( 'The currency description is required.' , function() {}, "Currency Description", "OK")
+	            	return null;
+	            }
+	            
 	            doc.type = "currency"
 	            doc.steward = [ config.user.user_id ]
 	            doc.created = new Date().getTime();
@@ -1418,17 +1419,7 @@ function goCurrency() {
 	                            navigator.notification.alert( "You successfully created a new currency !" , function() { window.plugins.spinnerDialog.show(); goSettings() }, "New Currency", "OK")
 	                        } )
 	
-	                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
-	                        
-		                        var tradingNameDoc = { "type": "trading_name",
-		                        					    "name": doc.currency,
-		                        					    "space": doc.space,
-		                        					    "currency": doc.space,
-		                        					    "steward": [ config.user.name ] };
-		                        config.db.put( tradingNameDoc.type + "," + tradingNameDoc.name,  JSON.parse( JSON.stringify( tradingNameDoc ) ), function (error, ok) { 
-		                        	if (error)
-		                                return alert( JSON.stringify( error ) )
-		                        } )
+	                        if ( doc.currency.match( /[A-Za-z0-9\-_]/ ) ) {
 		                        
 		                        var spaceDoc = { "type":"space",
 		                        				 "space": doc.currency,
@@ -1522,11 +1513,6 @@ function goSpace() {
                             navigator.notification.alert( "You successfully created a new space !" , function() { window.plugins.spinnerDialog.show(); goSettings() }, "New Space", "OK")
                         } )
                         
-                        var tradingNameDoc = { "type": "trading_name", "name": doc.space, "space": doc.subspace, "currency": doc.subspace, "steward": [ config.user.name ] };
-	                    config.db.put( tradingNameDoc.type + "," + tradingNameDoc.name,  JSON.parse( JSON.stringify( tradingNameDoc ) ), function (error, ok) { 
-                        	if (error)
-                                return alert( JSON.stringify( error ) )
-                        } )
                         
                         var name = doc.space + " Currency";
 	                    if (typeof doc.subspace == 'undefined' || doc.subspace == '') {
