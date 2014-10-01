@@ -772,18 +772,20 @@ function goServerLogin(callBack) {
     //drawContent( config.t.login() )
 
     $( "#content .todo-index" ).click( function() {
-        window.history.back()
+        History.back()
         goIndex()
     } )
 
     $( "#content .todo-register" ).click( function() {
         goServerRegistration( function() {
+        	History.back()
             callBack( false )
         } )
     } )
 
     $( "#content .todo-lost" ).click( function() {
         goLostPassword( function() {
+        	History.back()
             callBack( false )
         } )
     } )
@@ -800,7 +802,7 @@ function goServerLogin(callBack) {
         doFirstLogin( function(error, result) {
         	
         	window.plugins.spinnerDialog.hide();
-        	
+        	History.back()
             callBack( error )
 
         } )
@@ -818,14 +820,14 @@ function goServerRegistration(callBack) {
     window.dbChanged = function() {
     }
     
-	var response = { "html" : config.t.register(), "pageTitle" : "Login" }
+	var response = { "html" : config.t.register(), "pageTitle" : "Registration" }
 	
-	processAjaxData( response, "login" )
+	processAjaxData( response, "registration" )
 
     //drawContent( config.t.register() )
     
     $( "#content .todo-index" ).click( function() {
-        window.history.back()
+        History.back()
     } )
 
     $( "#content form" ).submit( function(e) {
@@ -846,6 +848,7 @@ function goServerRegistration(callBack) {
             $( "#content form input[name='password']" ).val( "" ) // Clear
             // password
             // Login Success
+            History.back()
             callBack( error, result )
         } )
     } )
@@ -891,7 +894,8 @@ function goLostPassword(callBack) {
     //drawContent( config.t.lost() )
     
     $( "#content .todo-index" ).click( function() {
-        goServerLogin(function() { callBack() })
+    	History.back()
+        callBack()
     } )
 
     $( "#content form" ).submit( function(e) {
@@ -907,7 +911,7 @@ function goLostPassword(callBack) {
         	window.plugins.spinnerDialog.hide();
             if (error) { return alert( error.msg ) }
             $( "#content form input[name='email']" ).val( "" ) // Clear email
-            navigator.notification.alert( "A password reset token has been emailed to you!" , callBack, "Reset Token Emailed", "OK")
+            navigator.notification.alert( "A password reset token has been emailed to you!" , function() { History.back() callBack() }, "Reset Token Emailed", "OK")
             
         } )
     } )
@@ -956,7 +960,7 @@ function goSettings() {
     //drawContent( config.t.settings() )
 
     $( "#content .om-index" ).click( function() {
-        window.history.back()
+        History.back()
     } )
 
     setLoginLogoutButton();
@@ -1017,7 +1021,7 @@ function goManageAccounts() {
 	processAjaxData( response, "manage_accounts" )
 
     $( "#content .om-index" ).click( function() {
-        goSettings()
+        History.back()
     } )
 
     setTabs()
