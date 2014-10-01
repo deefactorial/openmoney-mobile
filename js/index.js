@@ -894,8 +894,8 @@ function goLostPassword(callBack) {
     //drawContent( config.t.lost() )
     
     $( "#content .todo-index" ).click( function() {
-    	History.back()
-        callBack()
+    	History.back();
+        callBack();
     } )
 
     $( "#content form" ).submit( function(e) {
@@ -911,7 +911,7 @@ function goLostPassword(callBack) {
         	window.plugins.spinnerDialog.hide();
             if (error) { return alert( error.msg ) }
             $( "#content form input[name='email']" ).val( "" ) // Clear email
-            navigator.notification.alert( "A password reset token has been emailed to you!" , function() { History.back() callBack() }, "Reset Token Emailed", "OK")
+            navigator.notification.alert( "A password reset token has been emailed to you!" , function() { History.back(); callBack(); }, "Reset Token Emailed", "OK")
             
         } )
     } )
