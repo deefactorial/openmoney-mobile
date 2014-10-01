@@ -380,7 +380,7 @@ function updateAjaxData(urlPath) {
 
 
 function goIndex() {
-	alert(JSON.stringify(History.getState()))
+	//alert(JSON.stringify(History.getState()))
 	
 	if (History.getState().data.pageTite == "Openmoney"){
 		
@@ -463,8 +463,8 @@ function setLoginLogoutButton() {
                     $( ".openmoney-login" ).hide().off( "click" )
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
-                    //goIndex()
-                    window.history.go("index")
+                    goIndex()
+                    
                 } );
             } )
         } else if (FACEBOOK_LOGIN) {
@@ -475,8 +475,7 @@ function setLoginLogoutButton() {
                     $( ".openmoney-login" ).hide().off( "click" );
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
-                    //goIndex()
-                    window.history.go("index")
+                    goIndex()
                 } )
             } )
         }
@@ -491,7 +490,7 @@ function setLoginLogoutButton() {
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" )
-                        navigator.notification.alert( "You are now logged out!" , function () { window.history.go("index")  }, "Logged out", "OK")
+                        navigator.notification.alert( "You are now logged out!" , function () { goIndex()  }, "Logged out", "OK")
                     } )
             	} )
             } )
@@ -504,7 +503,7 @@ function setLoginLogoutButton() {
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" );
-                        navigator.notification.alert( "You are now logged out!" , function () { window.history.go("index")  }, "Logged out", "OK")
+                        navigator.notification.alert( "You are now logged out!" , function () { goIndex() }, "Logged out", "OK")
                         
                     } )
                 } else {
