@@ -350,8 +350,8 @@ function processAjaxData(response, urlPath) {
 
 History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
     var State = History.getState(); // Note: We are using History.getState() instead of event.state
-	document.getElementById( "content" ).innerHTML = State.html;
-	document.title = State.pageTitle;
+	document.getElementById( "content" ).innerHTML = State.data.html;
+	document.title = State.data.pageTitle;
 });
 //window.onpopstate = function(e) {
 //	if (e.state) {
@@ -380,12 +380,20 @@ function updateAjaxData(urlPath) {
 
 
 function goIndex() {
-
-	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney" }
-	
-	processAjaxData( response, "index" )
-	
 	alert(JSON.stringify(History.getState()))
+	
+	if (History.getState().data.pageTite == "Openmoney"){
+		
+		
+	} else {
+
+		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney" }
+		
+		processAjaxData( response, "index" )
+	
+	}
+	
+	
 	
     //drawContent( config.t.index() )
     
