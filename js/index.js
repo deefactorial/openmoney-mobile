@@ -3200,120 +3200,6 @@ function getNewFacebookToken(cb) {
     } )
 }
 
-/*
- * Sync Manager: this is run on first login, and on every app boot after that.
- * 
- * The way it works is with an initial single push replication. When that
- * completes, we know we have a valid connection, so we can trigger a continuous
- * push and pull
- * 
- */
-
-function triggerSync(cb, retryCount) {
-
-    if (!config.user) { return log( "no user" ) }
-
-    if (SERVER_LOGIN) {
-        var remote = {
-            url : REMOTE_SYNC_PROTOCOL + encodeURIComponent( config.user.name ) + ":" + encodeURIComponent( config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/" + REMOTE_SYNC_DATABASE + "/"
-        };
-    } else if (FACEBOOK_LOGIN) {
-        var remote = {
-            url : config.site.syncUrl, auth : {
-                facebook : {
-                    email : config.user.email
-                }
-            }
-        // why is this email?
-        };
-    }
-    log( " Remote: " + JSON.stringify( remote ) )
-    var push = {
-        source : appDbName, target : remote, continuous : true
-    }, pull = {
-        target : appDbName, source : remote, continuous : true
-    },
-
-    pushSync = syncManager( config.server, push ), pullSync = syncManager( config.server, pull )
-
-    if (typeof retryCount == "undefined") {
-        retryCount = 3
-    }
-
-    var challenged = false;
-    function authChallenge() {
-        log( "authChallenge" )
-        if (challenged) { return }
-        challenged = true;
-        pushSync.cancel( function(err, ok) {
-            pullSync.cancel( function(err, ok) {
-                if (retryCount == 0) { return cb( "sync retry limit reached" ) }
-                retryCount--
-                if (SERVER_LOGIN) {
-                    doServerLogin( function(err, result) {
-                        if (err) { return loginErr( err ) }
-                        config.setUser( result, function(err, ok) {
-                            if (err) { return loginErr( err ) }
-                            challenged = false;
-                            config.syncReference = triggerSync( cb, retryCount )
-                        } )
-                    } )
-                } else if (FACEBOOK_LOGIN) {
-                    if (config.user) {
-                        getNewFacebookToken( function(err, ok) {
-                            if (err) { return loginErr( err ) }
-                            challenged = false;
-                            config.syncReference = triggerSync( cb, retryCount )
-                        } )
-                    }
-                }
-            } )
-        } )
-    }
-
-    function cancelSync(callBack) {
-        pushSync.cancel( function(err, ok) {
-            if (err) { return callBack( log( "pushSync Cancel Error: " + JSON.stringify( err ) ) ) }
-            pullSync.cancel( function(err, ok) {
-                callBack( err, ok )
-            } )
-        } )
-    }
-
-    pushSync.on( "auth-challenge", authChallenge )
-    pullSync.on( "auth-challenge", authChallenge )
-
-    pushSync.on( "error", function(err) {
-    	log("Push Sync Error:" + err)
-        if (challenged) { return }
-        cb( err )
-    } )
-    pushSync.on( "connected", function() {
-        pullSync.start()
-    } )
-    pushSync.on( "started", function() {
-    	window.dbChanged();
-    } )
-    pullSync.on( "error", function(err) {
-    	log("Pull Sync Error:" + err)
-        if (challenged) { return }
-        cb( err )
-    } )
-    pullSync.on( "connected", function() {
-        cb()
-    } )
-    pullSync.on( "started", function() {
-    	window.dbChanged();
-    } )
-    
-
-    pushSync.start()
-
-    var publicAPI = {
-        cancelSync : cancelSync
-    }
-    return publicAPI;
-}
 
 /*
  * The config functions don't have any visibile UI, they are used for
@@ -3546,6 +3432,122 @@ function setupConfig(done) {
     };
 }
 
+/*
+ * Sync Manager: this is run on first login, and on every app boot after that.
+ * 
+ * The way it works is with an initial single push replication. When that
+ * completes, we know we have a valid connection, so we can trigger a continuous
+ * push and pull
+ * 
+ */
+
+function triggerSync(cb, retryCount) {
+
+    if (!config.user) { return log( "no user" ) }
+
+    if (SERVER_LOGIN) {
+        var remote = {
+            url : REMOTE_SYNC_PROTOCOL + encodeURIComponent( config.user.name ) + ":" + encodeURIComponent( config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/" + REMOTE_SYNC_DATABASE + "/"
+        };
+    } else if (FACEBOOK_LOGIN) {
+        var remote = {
+            url : config.site.syncUrl, auth : {
+                facebook : {
+                    email : config.user.email
+                }
+            }
+        // why is this email?
+        };
+    }
+    log( " Remote: " + JSON.stringify( remote ) )
+    var push = {
+        source : appDbName, target : remote, continuous : true
+    }, pull = {
+        target : appDbName, source : remote, continuous : true
+    },
+
+    pushSync = syncManager( config.server, push ), pullSync = syncManager( config.server, pull )
+
+    if (typeof retryCount == "undefined") {
+        retryCount = 3
+    }
+
+    var challenged = false;
+    function authChallenge() {
+        log( "authChallenge" )
+        if (challenged) { return }
+        challenged = true;
+        pushSync.cancel( function(err, ok) {
+            pullSync.cancel( function(err, ok) {
+                if (retryCount == 0) { return cb( "sync retry limit reached" ) }
+                retryCount--
+                if (SERVER_LOGIN) {
+                    doServerLogin( function(err, result) {
+                        if (err) { return loginErr( err ) }
+                        config.setUser( result, function(err, ok) {
+                            if (err) { return loginErr( err ) }
+                            challenged = false;
+                            config.syncReference = triggerSync( cb, retryCount )
+                        } )
+                    } )
+                } else if (FACEBOOK_LOGIN) {
+                    if (config.user) {
+                        getNewFacebookToken( function(err, ok) {
+                            if (err) { return loginErr( err ) }
+                            challenged = false;
+                            config.syncReference = triggerSync( cb, retryCount )
+                        } )
+                    }
+                }
+            } )
+        } )
+    }
+
+    function cancelSync(callBack) {
+        pushSync.cancel( function(err, ok) {
+            if (err) { return callBack( log( "pushSync Cancel Error: " + JSON.stringify( err ) ) ) }
+            pullSync.cancel( function(err, ok) {
+                callBack( err, ok )
+            } )
+        } )
+    }
+
+    pushSync.on( "auth-challenge", authChallenge )
+    pullSync.on( "auth-challenge", authChallenge )
+
+    pushSync.on( "error", function(err) {
+    	log("Push Sync Error:" + err)
+        if (challenged) { return }
+        cb( err )
+    } )
+    pushSync.on( "connected", function() {
+        pullSync.start()
+        window.dbChanged();
+    } )
+    pushSync.on( "started", function() {
+    	window.dbChanged();
+    } )
+    pullSync.on( "error", function(err) {
+    	log("Pull Sync Error:" + err)
+        if (challenged) { return }
+        cb( err )
+    } )
+    pullSync.on( "connected", function() {
+    	window.dbChanged();
+        cb()
+    } )
+    pullSync.on( "started", function() {
+    	window.dbChanged();
+    } )
+    
+
+    pushSync.start()
+
+    var publicAPI = {
+        cancelSync : cancelSync
+    }
+    return publicAPI;
+}
 /* END APP */
 
 /*
