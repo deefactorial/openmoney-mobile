@@ -3083,14 +3083,14 @@ function destroyBeamTag(cb) {
 	        	//check if tag has been used in a transaction.
 	        	deleteDoc = true;
 	        	transactions.rows.forEach( function(transaction) {
-	        		if(typeof transaction.usertag != 'undefined' && transaction.usertag == tag.hashTag) {
+	        		if(typeof transaction.doc.usertag != 'undefined' && transaction.doc.usertag == tag.doc.hashTag) {
 	        			//found it in a transaction
 	        			deleteDoc = false;
 	        		}
 	        	})
 	        	if (deleteDoc) {
-	        		tag._deleted = true;
-	        		docs.push(tag)
+	        		tag.doc._deleted = true;
+	        		docs.push(tag.doc)
 	        	}
 	        } )
 
