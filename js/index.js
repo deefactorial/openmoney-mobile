@@ -379,7 +379,7 @@ function goIndex() {
 	
 	processAjaxData( response, "index" )
 	
-	alert(JSON.stringify(window.history.state))
+	alert(JSON.stringify(History.getState()))
 	
     //drawContent( config.t.index() )
     
