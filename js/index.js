@@ -3066,7 +3066,6 @@ function addMyUsernameToAllLists(cb) {
 
 function destroyBeamTag(cb) {
 	log( "destroyBeamTag user" + JSON.stringify( config.user ) )
-    var userData = JSON.parse( JSON.stringify( config.user ) );
 	
 	//do a view lookup on all user tags. check if they have been used. if not destroy.
     config.views( [ "user_tags", {
@@ -3076,8 +3075,9 @@ function destroyBeamTag(cb) {
         
         config.views( [ "account_details", {
             startkey : [ {}, {} ], endkey : [], descending : true
-        } ], function(err, transactions) {
-        	   	
+        } ], function(error, transactions) {
+        	if (error) { return cb( error ) }
+        	
 	        var docs = [];
 	        userTags.rows.forEach( function(tag) {
 	        	//check if tag has been used in a transaction.
