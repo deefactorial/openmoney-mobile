@@ -72,6 +72,12 @@ function onDeviceReady() {
 		    	}
 		    } );
     
+    History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
+        var State = History.getState(); // Note: We are using History.getState() instead of event.state
+    	document.getElementById( "content" ).innerHTML = State.data.html;
+    	document.title = State.data.pageTitle;
+    });
+    
 	} catch(e) {
 		// var e = new Error("This is a new Error I would like a error report about");
 	     window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
@@ -348,11 +354,7 @@ function processAjaxData(response, urlPath) {
 }
 
 
-History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
-    var State = History.getState(); // Note: We are using History.getState() instead of event.state
-	document.getElementById( "content" ).innerHTML = State.data.html;
-	document.title = State.data.pageTitle;
-});
+
 //window.onpopstate = function(e) {
 //	if (e.state) {
 //		document.getElementById( "content" ).innerHTML = e.state.html;
@@ -392,8 +394,6 @@ function goIndex() {
 		processAjaxData( response, "index" )
 	
 	}
-	
-	
 	
     //drawContent( config.t.index() )
     
