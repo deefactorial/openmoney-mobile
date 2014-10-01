@@ -74,6 +74,7 @@ function onDeviceReady() {
     
     History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
         var State = History.getState(); // Note: We are using History.getState() instead of event.state
+        log ( "State Change " + JSON.stringify(State) ) 
     	document.getElementById( "content" ).innerHTML = State.data.html;
     	document.title = State.data.pageTitle;
     });
@@ -344,6 +345,8 @@ function drawContainer(id, html) {
 
 function processAjaxData(response, urlPath) {
 	
+	log ("set page " + urlPath)
+	
 	drawContent( response.html );
 
 	document.title = response.pageTitle;
@@ -372,6 +375,8 @@ function processAjaxData(response, urlPath) {
  */
 
 function updateAjaxData(urlPath) {
+	
+	log ("update page " + urlPath)
 
 	History.replaceState( {
 		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title
@@ -457,6 +462,7 @@ function setLoginLogoutButton() {
     if (!config.user || !config.user.user_id) {
         if (SERVER_LOGIN) {
             $( ".openmoney-login" ).show().click( function() {
+            	log("go to login")
             	window.plugins.spinnerDialog.show();
                 goServerLogin( function(error) {
                 	
