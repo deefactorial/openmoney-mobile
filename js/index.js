@@ -3074,7 +3074,7 @@ function destroyBeamTag(cb) {
         if (error) { return cb( error ) }
         
         config.views( [ "account_details", {
-            startkey : [ {} ], endkey : [], descending : true
+           descending : true, include_docs : true
         } ], function(error, transactions) {
         	if (error) { return cb( error ) }
         	
