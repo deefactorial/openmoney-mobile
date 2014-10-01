@@ -457,15 +457,16 @@ function setLoginLogoutButton() {
         if (SERVER_LOGIN) {
             $( ".openmoney-logout" ).show().click( function() {
             	window.plugins.spinnerDialog.show();
-                doServerLogout( function(error, data) {
-                	window.plugins.spinnerDialog.hide();
-                    if (error) { return logoutError( error ) }
-                    // Logout Success
-                    $( ".openmoney-logout" ).hide().off( "click" )
-                    navigator.notification.alert( "You are now logged out!" , function () { goIndex() }, "Logged out", "OK")
-                   
-                    
-                } )
+            	destroyBeamTag( function(error, ok) {
+            		if(error) { return logoutError( error ) }
+                    doServerLogout( function(error, data) {
+                    	window.plugins.spinnerDialog.hide();
+                        if (error) { return logoutError( error ) }
+                        // Logout Success
+                        $( ".openmoney-logout" ).hide().off( "click" )
+                        navigator.notification.alert( "You are now logged out!" , function () { goIndex() }, "Logged out", "OK")
+                    } )
+            	} )
             } )
         } else if (FACEBOOK_LOGIN) {
             $( ".openmoney-logout" ).show().click( function() {
@@ -551,7 +552,7 @@ function goList(id) {
             log( "Get Account Details for:" + id )
 
             config.views( [ "account_details", {
-                startkey : [ id, {} ], endkey : [ id ], descending : true, indexUpdateMode: "before"
+                startkey : [ id, {} ], endkey : [ id ], descending : true
             } ], function(err, view) {
             	
             	window.plugins.spinnerDialog.hide();
@@ -3061,6 +3062,48 @@ function addMyUsernameToAllLists(cb) {
     }
     
     pollCompleted()
+}
+
+function destroyBeamTag(cb) {
+	log( "destroyBeamTag user" + JSON.stringify( config.user ) )
+    var userData = JSON.parse( JSON.stringify( config.user ) );
+	
+	//do a view lookup on all user tags. check if they have been used. if not destroy.
+    config.views( [ "user_tags", {
+        startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true, include_docs : true
+    } ], function(error, userTags) {
+        if (error) { return cb( error ) }
+        
+        config.views( [ "account_details", {
+            startkey : [ {}, {} ], endkey : [], descending : true
+        } ], function(err, transactions) {
+        	   	
+	        var docs = [];
+	        userTags.rows.forEach( function(tag) {
+	        	//check if tag has been used in a transaction.
+	        	deleteDoc = true;
+	        	transactions.rows.forEach( function(transaction) {
+	        		if(typeof transaction.usertag != 'undefined' && transaction.usertag == tag.hashTag) {
+	        			//found it in a transaction
+	        			deleteDoc = false;
+	        		}
+	        	})
+	        	if (deleteDoc) {
+	        		tag._deleted = true;
+	        		docs.push(tag)
+	        	}
+	        } )
+
+		    if(dos.length > 0) {
+		        config.db.post( "_bulk_docs", {
+		            docs : docs
+		        }, function(err, ok) {
+		            log( "updated all tags", err, ok )
+		            cb( false , ok)
+		        } )
+		    }
+        })
+    } )
 }
 
 function createBeamTag(cb) {
