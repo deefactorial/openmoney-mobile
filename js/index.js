@@ -3520,10 +3520,9 @@ function triggerSync(cb, retryCount) {
     } )
     pushSync.on( "connected", function() {
         pullSync.start()
-        window.dbChanged();
     } )
     pushSync.on( "started", function() {
-    	window.dbChanged();
+    	
     } )
     pullSync.on( "error", function(err) {
     	log("Pull Sync Error:" + err)
@@ -3531,11 +3530,10 @@ function triggerSync(cb, retryCount) {
         cb( err )
     } )
     pullSync.on( "connected", function() {
-    	window.dbChanged();
         cb()
     } )
     pullSync.on( "started", function() {
-    	window.dbChanged();
+    	
     } )
     
 
