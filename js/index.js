@@ -315,17 +315,19 @@ function logoutError(error) {
  */
 
 function drawContent(html) {
-    scroll( 0, 0 )
+    
     $( "#content" ).html( html )
+    
+    scroll( 0, 0 )
 }
 
 function drawContainer(id, html) {
 
-	scroll( 0, 0 )
-	
 	console.log( "drawContainer(" + id + ")" )
 
 	$( id ).html( html );
+	
+	scroll( 0, 0 )
 }
 
 
@@ -373,7 +375,11 @@ function updateAjaxData(urlPath) {
 
 function goIndex() {
 
-    drawContent( config.t.index() )
+	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney" }
+	
+	processAjaxData( response, "index" )
+	
+    //drawContent( config.t.index() )
     
     // If you click a list,
     $( "#scrollable" ).on( "click", "li", function() {
@@ -413,7 +419,10 @@ function goIndex() {
             thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
 
             log( "accounts " + JSON.stringify( thisUsersAccounts ), thisUsersAccounts )
-            $( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
+            drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) )
+            //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
+            
+            updateAjaxData("index")
             
             window.plugins.spinnerDialog.hide();
             window.plugins.spinnerDialog.hide();
@@ -438,7 +447,8 @@ function setLoginLogoutButton() {
                     $( ".openmoney-login" ).hide().off( "click" )
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
-                    goIndex()
+                    //goIndex()
+                    history.go("index")
                 } );
             } )
         } else if (FACEBOOK_LOGIN) {
@@ -449,7 +459,8 @@ function setLoginLogoutButton() {
                     $( ".openmoney-login" ).hide().off( "click" );
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
-                    goIndex()
+                    //goIndex()
+                    history.go("openmoney")
                 } )
             } )
         }
@@ -464,7 +475,7 @@ function setLoginLogoutButton() {
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" )
-                        navigator.notification.alert( "You are now logged out!" , function () { goIndex() }, "Logged out", "OK")
+                        navigator.notification.alert( "You are now logged out!" , function () { history.go("index")  }, "Logged out", "OK")
                     } )
             	} )
             } )
@@ -477,7 +488,7 @@ function setLoginLogoutButton() {
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" );
-                        navigator.notification.alert( "You are now logged out!" , function () { goIndex() }, "Logged out", "OK")
+                        navigator.notification.alert( "You are now logged out!" , function () { history.go("index")  }, "Logged out", "OK")
                         
                     } )
                 } else {
@@ -494,17 +505,14 @@ function setLoginLogoutButton() {
 
 function setTabs() {
     $( "#content .om-accounts" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goIndex()
+    	history.go("index") //goIndex()
     } )
 
     $( "#content .om-payments" ).click( function() {
-    	window.plugins.spinnerDialog.show();
         goPayment()
     } )
 
     $( "#content .om-settings" ).click( function() {
-    	window.plugins.spinnerDialog.show();
         goSettings()
     } )
 }
@@ -519,21 +527,19 @@ function goList(id) {
 	window.dbChanged = function() {
 		window.plugins.spinnerDialog.show();
 		
-		drawContent( config.t.list( ) )
+		var response = { "html" : config.t.list( ) , "pageTitle" : "Account Details" }
+		
+		processAjaxData( response, "account_details" )
+		
+		//drawContent( config.t.list( ) )
         
         $( "#content .todo-index" ).click( function() {
-            goIndex()
+            window.history.back()
         } )
 
         setLoginLogoutButton();
 
         setTabs()
-
-        $( "#content .todo-share" ).click( function() {
-            doShare( id )
-        } )
-
-
 		
 	    config.db.get( id, function(err, doc) {
 	        log( "Display Account Details:" + JSON.stringify( doc ) )
@@ -545,7 +551,11 @@ function goList(id) {
                 if (view.total_rows > 0)
                     doc.balance = view.rows[0].value;
 
-                $( "#list-title" ).html( config.t.listTitle( doc ) );
+                //$( "#list-title" ).html( config.t.listTitle( doc ) );
+                
+                drawContainer( "#list-title",  config.t.listTitle( doc )  )
+                
+                updateAjaxData("account_details")
                 
             } )
             
@@ -569,7 +579,14 @@ function goList(id) {
             	})
             	
                 log( "account_details" + JSON.stringify( view ), view )
-                $( "#scrollable" ).html( config.t.listItems( view ) )
+                
+                
+                //$( "#scrollable" ).html( config.t.listItems( view ) )
+                
+                drawContainer( "#scrollable", config.t.listItems( view ) )
+                
+                updateAjaxData("account_details")
+                
                 $( "#scrollable" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
 		            view.rows.forEach( function( row ) {
@@ -731,10 +748,14 @@ function goServerLogin(callBack) {
     window.dbChanged = function() {
     }
 
-    drawContent( config.t.login() )
+	var response = { "html" : config.t.login(), "pageTitle" : "Login" }
+	
+	processAjaxData( response, "login" )
+    
+    //drawContent( config.t.login() )
 
     $( "#content .todo-index" ).click( function() {
-        callBack( false )
+        window.history.back()
     } )
 
     $( "#content .todo-register" ).click( function() {
@@ -778,10 +799,15 @@ function goServerLogin(callBack) {
 function goServerRegistration(callBack) {
     window.dbChanged = function() {
     }
+    
+	var response = { "html" : config.t.register(), "pageTitle" : "Login" }
+	
+	processAjaxData( response, "login" )
 
-    drawContent( config.t.register() )
+    //drawContent( config.t.register() )
+    
     $( "#content .todo-index" ).click( function() {
-        callBack()
+        window.history.back()
     } )
 
     $( "#content form" ).submit( function(e) {
@@ -823,6 +849,9 @@ function doRegistration(callBack) {
                     if (err) { return cb( err ) }
                     config.syncReference = triggerSync( function(error, ok) {
                         log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
+                        
+                        connectToChanges()
+                        
                         callBack( error, ok )
                     } )
                 } )
@@ -836,7 +865,13 @@ function doRegistration(callBack) {
  */
 
 function goLostPassword(callBack) {
-    drawContent( config.t.lost() )
+	
+	var response = { "html" : config.t.lost(), "pageTitle" : "Lost" }
+	
+	processAjaxData( response, "lost" )
+	
+    //drawContent( config.t.lost() )
+    
     $( "#content .todo-index" ).click( function() {
         goServerLogin(function() { callBack() })
     } )
@@ -895,11 +930,15 @@ function doLostPassword(callBack) {
  */
 
 function goSettings() {
-    drawContent( config.t.settings() )
+	
+	var response = { "html" : config.t.settings(), "pageTitle" : "Settings" }
+	
+	processAjaxData( response, "settings" )
+	
+    //drawContent( config.t.settings() )
 
     $( "#content .om-index" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goIndex()
+        window.history.back()
     } )
 
     setLoginLogoutButton();
@@ -1259,9 +1298,7 @@ function goCreateAccount(doc) {
 	                    spaces = true;
 	                    
 	                    $( "#content input[name='add']" ).click( function() {
-	                        goAddCurrency(function(currency){
-	                        	//do nothing with the doc, it should update the form when a db change is detected.
-	                        } )
+	                        goAddCurrency()
 	                    } )
 	                    
 	                } )
@@ -1308,7 +1345,7 @@ function goCreateAccount(doc) {
 
 }
 
-function goAddCurrency(callback) {
+function goAddCurrency() {
 	
 	var response = { "html" : config.t.add-currency( ), "pageTitle" : "Add Currency" }
 	
@@ -1335,7 +1372,7 @@ function goAddCurrency(callback) {
         config.db.put( doc.type + "," + config.user.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
    		 	if (error)
                 return alert( JSON.stringify( error ) )
-            callback(doc)
+            window.history.back();
         } );
         
     } );
