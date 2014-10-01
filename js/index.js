@@ -1117,13 +1117,8 @@ function goCreateAccount(doc) {
         	
         } else if (doc.type == "currency") {
         	
-            if (doc.symbol.match( /\./ )) { 
-            	navigator.notification.alert( 'The currency name cannot contain a dot.' , function() {}, "Invalid Currency Name", "OK")
-            	return null;
-            }
-            
-            if (doc.symbol.match( / / )) { 
-            	navigator.notification.alert( 'The currency name cannot contain a space.' , function() {}, "Invalid Currency Name", "OK")
+            if (doc.symbol.match( /[\. ,@]/ )) { 
+            	navigator.notification.alert( 'The currency name cannot contain a dot, space, comma or @.' , function() {}, "Invalid Currency Name", "OK")
             	return null;
             }
             
@@ -1155,7 +1150,8 @@ function goCreateAccount(doc) {
 	                        var spaceDoc = { "type":"space",
 	                        				 "space": doc.currency,
 	                        				 "subspace": doc.space,
-	                        				 "steward": [ config.user.name ] };
+	                        				 "steward": [ config.user.name ],
+	                        				 "created": new Date().getTime() };
 	                    	config.db.put( spaceDoc.type + "," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
 	                    		 if (error)
 	                                 return alert( JSON.stringify( error ) )
@@ -1175,6 +1171,11 @@ function goCreateAccount(doc) {
         	
         	
         } else if (doc.type == "space") {
+        	
+            if (doc.space.match( /[^A-Za-z0-9\-_]/ )) { 
+            	navigator.notification.alert( 'The Space Name you entered is not valid!' , function() {}, "Invalid Space Name", "OK")
+            	return null;
+            }
 
         	if(doc.subspace != '') {
         		doc.space += '.' + doc.subspace;
@@ -1203,7 +1204,8 @@ function goCreateAccount(doc) {
                         					"currency": doc.space,
                         					"space": doc.subspace,
                         					"name": name,
-                        					"steward": [ config.user.name ] };
+                        					"steward": [ config.user.name ],
+                        					"created": new Date().getTime() };
                     	config.db.put( currencyDoc.type + "," + doc.space, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
                     		 if (error)
                                  return alert( JSON.stringify( error ) )
@@ -1232,30 +1234,40 @@ function goCreateAccount(doc) {
     	
     	if (type == 'trading_name') {
     		
-    		window.plugins.spinnerDialog.show();
-        	config.views( [ "currencies", {
-                include_docs : true
-            } ], function(error, currencies) {
-                if (error) { return alert( JSON.stringify( error ) ) }
-
-            	config.views( [ "spaces", {
-                    include_docs : true
-                } ], function(error, spaces) {
-            		window.plugins.spinnerDialog.hide();
-                    if (error) { return alert( JSON.stringify( error ) ) }
-                    
-                    var doc = { "doc": doc, "currencies" : currencies, "spaces" : spaces }
-                    
-                    log ("trading_name_doc : " + JSON.stringify( doc ))
-
-	                drawContainer( "div#form", config.t.trading_name_form(doc) )
-	                
-	                updateAjaxData( "manage_accounts" )
-                    
-                    spaces = true;
-                    
-                } )
-            } )
+    		window.dbChanged = function() {	
+    		    		
+	    		window.plugins.spinnerDialog.show();
+	        	config.views( [ "currencies", {
+	                include_docs : true
+	            } ], function(error, currencies) {
+	                if (error) { return alert( JSON.stringify( error ) ) }
+	
+	            	config.views( [ "spaces", {
+	                    include_docs : true
+	                } ], function(error, spaces) {
+	            		window.plugins.spinnerDialog.hide();
+	                    if (error) { return alert( JSON.stringify( error ) ) }
+	                    
+	                    var tradingNameDoc = { "doc": doc, "currencies" : currencies, "spaces" : spaces }
+	                    
+	                    log ("trading_name_doc : " + JSON.stringify( tradingNameDoc ))
+	
+		                drawContainer( "div#form", config.t.trading_name_form( tradingNameDoc ) )
+		                
+		                updateAjaxData( "manage_accounts" )
+	                    
+	                    spaces = true;
+	                    
+	                    $( "#content input[name='add']" ).click( function() {
+	                        goAddCurrency(function(currency){
+	                        	//do nothing with the doc, it should update the form when a db change is detected.
+	                        } )
+	                    } )
+	                    
+	                } )
+	            } )
+    		}
+    		window.dbChanged()
     		
     	} else if (type == "currency") {
         	config.views( [ "spaces", {
@@ -1293,12 +1305,42 @@ function goCreateAccount(doc) {
     } ).change()
     
     window.plugins.spinnerDialog.hide();
-    
 
-    
-    
-	
 }
+
+function goAddCurrency(callback) {
+	
+	var response = { "html" : config.t.add-currency( ), "pageTitle" : "Add Currency" }
+	
+	processAjaxData( response, "add currency" )
+	
+	$( "#content .om-index" ).click( function() {
+		window.history.back();
+    } )
+
+    setTabs()
+    
+    $( "#content form" ).submit( function(e) {
+	    e.preventDefault()
+	    var doc = jsonform( this );
+	    doc.type = "currency_view";
+	    doc.created = new Date().getTime();
+	    doc.steward = [ config.user.name ];
+	    
+        if (doc.currency.match( /[\ ,@]/ )) { 
+        	navigator.notification.alert( 'The currency name cannot contain a space, comma or @.' , function() {}, "Invalid Currency Name", "OK")
+        	return null;
+        }
+	    
+        config.db.put( doc.type + "," + config.user.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+   		 	if (error)
+                return alert( JSON.stringify( error ) )
+            callback(doc)
+        } );
+        
+    } );
+}
+
 
 /*
  * Join a Currency (trading name) Page
@@ -2154,6 +2196,7 @@ function insertTagInDB(tag) {
     		doc.pinCode = tag.pinCode;
     		doc.defaultMaxLimitBeforePinRequest = tag.defaultMaxLimitBeforePinRequest;
     		doc.maxLimitBeforePinRequestPerCurrency = tag.maxLimitBeforePinRequestPerCurrency;
+    		doc.created = new Date().getTime();
     		
     		config.db.put( "beamtag," + tag.username + "," + tag.hashTag, doc, function() {
                 	 
@@ -3115,6 +3158,7 @@ function createBeamTag(cb) {
     beamData.username = config.user.name;
     beamData.sessionID = userData.sessionID;
     beamData.expires = userData.expires;
+    beamData.created = new Date().getTime();
 
     function randomString(length, chars) {
         var result = '';
