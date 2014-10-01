@@ -3094,7 +3094,7 @@ function destroyBeamTag(cb) {
 	        	}
 	        } )
 
-		    if(dos.length > 0) {
+		    if(docs.length > 0) {
 		        config.db.post( "_bulk_docs", {
 		            docs : docs
 		        }, function(err, ok) {
