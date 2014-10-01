@@ -239,11 +239,10 @@ function connectToChanges() {
 	            			} )
 		        		})
 	        		} else {
-	        		
-		        		alert("DELETE document:" + JSON.stringify(deletedDocument) )
 		        		//find the me in steward.
 		        		deletedDocument.steward.forEach(function(steward) {
 		    				if(steward == config.user.name) {
+		    					alert("DELETE document:" + JSON.stringify(deletedDocument) )
 		    					//commit the tombstone change
 		    					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
 		    						if(error) {
