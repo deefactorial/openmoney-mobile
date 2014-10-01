@@ -750,13 +750,13 @@ function goServerLogin(callBack) {
     window.dbChanged = function() {
     }
     
-    alert(JSON.stringify(history.state))
+    alert(JSON.stringify(window.history.state))
     
 	var response = { "html" : config.t.login(), "pageTitle" : "Login" }
 	
 	processAjaxData( response, "login" )
 	
-	alert(JSON.stringify(history.state))
+	alert(JSON.stringify(window.history.state))
     
     //drawContent( config.t.login() )
 
