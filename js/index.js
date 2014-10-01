@@ -375,9 +375,7 @@ function updateAjaxData(urlPath) {
 
 function goIndex() {
 	
-	var currentState = history.state;
-	
-	alert(currentState)
+	alert(history.state)
 
 	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney" }
 	
@@ -464,7 +462,7 @@ function setLoginLogoutButton() {
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
                     //goIndex()
-                    window.history.go("openmoney")
+                    window.history.go("index")
                 } )
             } )
         }
@@ -751,10 +749,14 @@ function toggleShare(doc, user, cb) {
 function goServerLogin(callBack) {
     window.dbChanged = function() {
     }
-
+    
+    alert(history.state)
+    
 	var response = { "html" : config.t.login(), "pageTitle" : "Login" }
 	
 	processAjaxData( response, "login" )
+	
+	alert(history.state)
     
     //drawContent( config.t.login() )
 
