@@ -3095,6 +3095,7 @@ function destroyBeamTag(cb) {
 	        } )
 
 		    if(docs.length > 0) {
+		    	log (" destroy beam docs: " + JSON.stringify(docs) )
 		        config.db.post( "_bulk_docs", {
 		            docs : docs
 		        }, function(err, ok) {
