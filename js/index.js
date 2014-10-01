@@ -342,17 +342,23 @@ function processAjaxData(response, urlPath) {
 
 	document.title = response.pageTitle;
 
-	window.history.pushState( {
+	History.pushState( {
 		"html" : response.html, "pageTitle" : response.pageTitle
 	}, "", urlPath );
 }
 
-window.onpopstate = function(e) {
-	if (e.state) {
-		document.getElementById( "content" ).innerHTML = e.state.html;
-		document.title = e.state.pageTitle;
-	}
-};
+
+History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
+    var State = History.getState(); // Note: We are using History.getState() instead of event.state
+	document.getElementById( "content" ).innerHTML = State.html;
+	document.title = State.pageTitle;
+});
+//window.onpopstate = function(e) {
+//	if (e.state) {
+//		document.getElementById( "content" ).innerHTML = e.state.html;
+//		document.title = e.state.pageTitle;
+//	}
+//};
 
 /*
  * https://stackoverflow.com/questions/12832317/window-history-replacestate-example
@@ -365,7 +371,7 @@ window.onpopstate = function(e) {
 
 function updateAjaxData(urlPath) {
 
-	window.history.replaceState( {
+	History.replaceState( {
 		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title
 	}, "", urlPath );
 
@@ -379,7 +385,7 @@ function goIndex() {
 	
 	processAjaxData( response, "index" )
 	
-	alert(JSON.stringify(window.history.getState()))
+	alert(JSON.stringify(History.getState()))
 	
     //drawContent( config.t.index() )
     
