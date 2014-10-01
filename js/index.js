@@ -2871,6 +2871,7 @@ function doServerLogout(callBack) {
                     config.db = null;
                     config.views = null;
                     setupConfig( function(error, ok) {
+                    	connectToChanges()
                         callBack( error, result )
                     } )
                 } )
@@ -3211,9 +3212,6 @@ function setupConfig(done) {
     // get CBL url
     if (!window.cblite) { return done( 'Couchbase Lite not installed' ) }
     
-	
-
-
     var mustache = require( "mustache" ), t = {}
 
     $( 'script[type="text/mustache"]' ).each( function() {
