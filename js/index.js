@@ -374,6 +374,10 @@ function updateAjaxData(urlPath) {
 
 
 function goIndex() {
+	
+	var currentState = history.state;
+	
+	alert(currentState)
 
 	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney" }
 	
@@ -448,7 +452,7 @@ function setLoginLogoutButton() {
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
                     //goIndex()
-                    history.go("index")
+                    window.history.go("index")
                 } );
             } )
         } else if (FACEBOOK_LOGIN) {
@@ -460,7 +464,7 @@ function setLoginLogoutButton() {
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
                     //goIndex()
-                    history.go("openmoney")
+                    window.history.go("openmoney")
                 } )
             } )
         }
