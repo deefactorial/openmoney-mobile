@@ -374,12 +374,12 @@ function updateAjaxData(urlPath) {
 
 
 function goIndex() {
-	
-	alert(history.state)
 
 	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney" }
 	
 	processAjaxData( response, "index" )
+	
+	alert(JSON.stringify(window.history.state))
 	
     //drawContent( config.t.index() )
     
@@ -477,7 +477,7 @@ function setLoginLogoutButton() {
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" )
-                        navigator.notification.alert( "You are now logged out!" , function () { history.go("index")  }, "Logged out", "OK")
+                        navigator.notification.alert( "You are now logged out!" , function () { window.history.go("index")  }, "Logged out", "OK")
                     } )
             	} )
             } )
@@ -490,7 +490,7 @@ function setLoginLogoutButton() {
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" );
-                        navigator.notification.alert( "You are now logged out!" , function () { history.go("index")  }, "Logged out", "OK")
+                        navigator.notification.alert( "You are now logged out!" , function () { window.history.go("index")  }, "Logged out", "OK")
                         
                     } )
                 } else {
@@ -750,18 +750,16 @@ function goServerLogin(callBack) {
     window.dbChanged = function() {
     }
     
-    alert(JSON.stringify(window.history.state))
-    
 	var response = { "html" : config.t.login(), "pageTitle" : "Login" }
 	
 	processAjaxData( response, "login" )
 	
-	alert(JSON.stringify(window.history.state))
     
     //drawContent( config.t.login() )
 
     $( "#content .todo-index" ).click( function() {
         window.history.back()
+        goIndex()
     } )
 
     $( "#content .todo-register" ).click( function() {
