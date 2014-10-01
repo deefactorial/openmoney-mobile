@@ -344,7 +344,7 @@ function processAjaxData(response, urlPath) {
 
 	History.pushState( {
 		"html" : response.html, "pageTitle" : response.pageTitle
-	}, "", urlPath );
+	}, urlPath, urlPath );
 }
 
 
@@ -373,7 +373,7 @@ function updateAjaxData(urlPath) {
 
 	History.replaceState( {
 		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title
-	}, "", urlPath );
+	}, urlPath, urlPath );
 
 }
 
@@ -767,7 +767,6 @@ function goServerLogin(callBack) {
 	
 	processAjaxData( response, "login" )
 	
-    
     //drawContent( config.t.login() )
 
     $( "#content .todo-index" ).click( function() {
