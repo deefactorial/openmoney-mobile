@@ -79,6 +79,8 @@ function onDeviceReady() {
         	log ( "updated DOM")
         	document.getElementById( "content" ).innerHTML = State.data.html;
     		document.title = State.data.pageTitle;
+    		//call the function of the page it's supposed to be on with the parameters of the page
+    		State.data.pageFunction(State.data.pageParameters)
         }
     });
     
@@ -395,11 +397,11 @@ function updateAjaxData(urlPath) {
 
 
 
-function goIndex() {
+function goIndex(parameters) {
 	
 	if (History.getState().data.pageTite != "Openmoney"){
 
-		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney" }
+		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : goIndex, "pageParameters" : [] }
 		
 		processAjaxData( response, "index" )
 	
@@ -442,7 +444,7 @@ function goIndex() {
                 // If you click a list,
 		    $( "#scrollable" ).on( "click", "li", function() {
 		        var id = $( this ).attr( "data-id" );
-		        goList( id )
+		        goList( [ id ] )
 		    } )
 		
 		    setLoginLogoutButton();
@@ -468,14 +470,14 @@ function setLoginLogoutButton() {
             $( "#content .openmoney-login" ).show().click( function() {
             	log("go to login")
             	window.plugins.spinnerDialog.show();
-                goServerLogin( function(error) {
+                goServerLogin( [ function(error) {
                 	
                     $( ".openmoney-login" ).hide().off( "click" )
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
                     goIndex()
                     
-                } );
+                } ] );
             } )
         } else if (FACEBOOK_LOGIN) {
             $( "#content .openmoney-login" ).show().click( function() {
@@ -548,7 +550,9 @@ function setTabs() {
  * also links to a screen for sharing each list with a different set of friends.
  */
 
-function goList(id) {
+function goList(parameters) {
+	
+	id = parameters[0]
 	
 	window.dbChanged = function() {
 		window.plugins.spinnerDialog.show();
@@ -557,7 +561,7 @@ function goList(id) {
 		
 		if (History.getState().data.pageTite != pageTitle){
 		
-			var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle }
+			var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList, "pageParameters" : [ id ] }
 			
 			processAjaxData( response, "account_details" )
 		}
@@ -791,7 +795,10 @@ function toggleShare(doc, user, cb) {
  * Display Server Login Page
  */
 
-function goServerLogin(callBack) {
+function goServerLogin(parameters) {
+	
+	callBack = parameters[0];
+	
     window.dbChanged = function() {
     }
     
@@ -799,31 +806,28 @@ function goServerLogin(callBack) {
 	
 	if (History.getState().data.pageTite != pageTitle) {
     
-		var response = { "html" : config.t.login(), "pageTitle" : pageTitle }
+		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : goServerLogin, "pageParameters" : [ callBack ]  }
 		
 		processAjaxData( response, "login" )
 		
+		//drawContent( config.t.login() )
+		
 	}
-	
-    //drawContent( config.t.login() )
 
     $( "#content .todo-index" ).click( function() {
         History.back()
-        goIndex()
     } )
 
     $( "#content .todo-register" ).click( function() {
-        goServerRegistration( function() {
-        	History.back()
-            callBack( false )
-        } )
+        goServerRegistration( [ function() {
+
+        } ] )
     } )
 
     $( "#content .todo-lost" ).click( function() {
-        goLostPassword( function() {
-        	History.back()
-            callBack( false )
-        } )
+        goLostPassword( [ function() {
+        	
+        } ] )
     } )
 
     $( "#content form" ).submit( function(e) {
@@ -838,12 +842,13 @@ function goServerLogin(callBack) {
         doFirstLogin( function(error, result) {
         	
         	window.plugins.spinnerDialog.hide();
+        	
+        	if(error) { callBack(error); return false;}
         	History.back()
-            callBack( error )
-
+            
         } )
     } )
-    
+
     window.plugins.spinnerDialog.hide();
     
 }
@@ -852,7 +857,10 @@ function goServerLogin(callBack) {
  * Register User Page
  */
 
-function goServerRegistration(callBack) {
+function goServerRegistration(parameters) {
+	
+	callBack = paramters[0]
+	
     window.dbChanged = function() {
     }
     
@@ -860,7 +868,7 @@ function goServerRegistration(callBack) {
 	
 	if (History.getState().data.pageTite != pageTitle) {
     
-		var response = { "html" : config.t.register(), "pageTitle" : pageTitle }
+		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : goServerRegistration, "pageParameters" : [ callBack ]  }
 		
 		processAjaxData( response, "registration" )
 		
@@ -890,8 +898,7 @@ function goServerRegistration(callBack) {
             $( "#content form input[name='password']" ).val( "" ) // Clear
             // password
             // Login Success
-            History.back()
-            callBack( error, result )
+            History.go(-2)
         } )
     } )
 }
@@ -927,13 +934,15 @@ function doRegistration(callBack) {
  * Lost Password Page
  */
 
-function goLostPassword(callBack) {
+function goLostPassword(parameters) {
+	
+	callBack = parameters[0]
 	
     var pageTitle = "Lost";
 	
 	if (History.getState().data.pageTite != pageTitle) {
 	
-		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle }
+		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : goLostPassword, "pageParameters" : [ callBack ]  }
 		
 		processAjaxData( response, "lost" )
 		
@@ -943,7 +952,6 @@ function goLostPassword(callBack) {
     
     $( "#content .todo-index" ).click( function() {
     	History.back();
-        callBack();
     } )
 
     $( "#content form" ).submit( function(e) {
@@ -959,7 +967,7 @@ function goLostPassword(callBack) {
         	window.plugins.spinnerDialog.hide();
             if (error) { return alert( error.msg ) }
             $( "#content form input[name='email']" ).val( "" ) // Clear email
-            navigator.notification.alert( "A password reset token has been emailed to you!" , function() { History.back(); callBack(); }, "Reset Token Emailed", "OK")
+            navigator.notification.alert( "A password reset token has been emailed to you!" , function() { History.go(-2) }, "Reset Token Emailed", "OK")
             
         } )
     } )
@@ -999,19 +1007,21 @@ function doLostPassword(callBack) {
  * Settings Page
  */
 
-function goSettings() {
+function goSettings(parameters) {
+	
 	
     var pageTitle = "Settings";
 	
 	if (History.getState().data.pageTite != pageTitle) {
 		
-		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle }
+		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : goSettings, "pageParameters" : [] }
 		
 		processAjaxData( response, "settings" )
 		
+		//drawContent( config.t.settings() )
+		
 	}
 	
-    //drawContent( config.t.settings() )
 
     $( "#content .om-index" ).click( function() {
         History.back()
