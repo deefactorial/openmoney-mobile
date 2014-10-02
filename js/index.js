@@ -354,6 +354,8 @@ function processAjaxData(response, urlPath) {
 	History.pushState( {
 		"html" : response.html, "pageTitle" : response.pageTitle
 	}, urlPath, urlPath );
+	
+	log ("post set page");
 }
 
 
@@ -382,6 +384,7 @@ function updateAjaxData(urlPath) {
 		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title
 	}, urlPath, urlPath );
 
+	log ("post update page");
 }
 
 
@@ -443,7 +446,7 @@ function goIndex() {
             drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) )
             //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
-            updateAjaxData("index")
+            //updateAjaxData("index")
             
             window.plugins.spinnerDialog.hide();
             window.plugins.spinnerDialog.hide();
