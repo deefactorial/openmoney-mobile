@@ -80,7 +80,8 @@ function onDeviceReady() {
         	document.getElementById( "content" ).innerHTML = State.data.html;
     		document.title = State.data.pageTitle;
     		//call the function of the page it's supposed to be on with the parameters of the page
-    		State.data.pageFunction(State.data.pageParameters)
+    		if(typeof State.data.pageFunction != 'undefined')
+    			State.data.pageFunction(State.data.pageParameters)
         }
     });
     
@@ -859,7 +860,7 @@ function goServerLogin(parameters) {
 
 function goServerRegistration(parameters) {
 	
-	callBack = paramters[0]
+	callBack = parameters[0]
 	
     window.dbChanged = function() {
     }
