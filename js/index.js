@@ -805,7 +805,7 @@ function toggleShare(doc, user, cb) {
  * Display Server Login Page
  */
 
-function goServerLogin(parameters) {
+var goServerLogin = function (parameters) {
 	
 	callBack = parameters[0];
 	
