@@ -360,7 +360,7 @@ function processAjaxData(response, urlPath) {
 
 	document.title = response.pageTitle;
 
-	History.pushState( JSON.parse( JSON.stringify( response ) ), null, urlPath );
+	History.pushState(  response  , null, urlPath );
 	
 	log ("post set page");
 }
@@ -816,7 +816,7 @@ var goServerLogin = function (parameters) {
 	
 	if (History.getState().data.pageTite != pageTitle) {
     
-		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : goServerLogin, "pageParameters" : [ callBack ]  }
+		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : this, "pageParameters" : [ callBack ]  };
 		
 		processAjaxData( response, "login" )
 		
