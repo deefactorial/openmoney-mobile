@@ -81,7 +81,7 @@ function onDeviceReady() {
     		document.title = State.data.pageTitle;
     		//call the function of the page it's supposed to be on with the parameters of the page
     		if(typeof State.data.pageFunction != 'undefined')
-    			State.data.pageFunction(State.data.pageParameters)
+    			State.data.pageFunction(State.data.pageParameters);
         }
     });
     
@@ -360,9 +360,7 @@ function processAjaxData(response, urlPath) {
 
 	document.title = response.pageTitle;
 
-	History.pushState( {
-		"html" : response.html, "pageTitle" : response.pageTitle
-	}, null, urlPath );
+	History.pushState( response , null, urlPath );
 	
 	log ("post set page");
 }
@@ -385,13 +383,11 @@ function processAjaxData(response, urlPath) {
  * also be used to change the url location of the current document.
  */
 
-function updateAjaxData(urlPath) {
+function updateAjaxData( response ) {
 	
 	log ("update page " + urlPath)
 
-	History.replaceState( {
-		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title
-	}, null, urlPath );
+	History.replaceState( response , null, urlPath );
 
 	log ("post update page");
 }
@@ -440,7 +436,11 @@ function goIndex(parameters) {
             drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) )
             //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
-            updateAjaxData( "index" )
+            var response = {
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goIndex, "pageParameters" : []
+        	}
+            
+            updateAjaxData( response, "index" )
             
                 // If you click a list,
 		    $( "#scrollable" ).on( "click", "li", function() {
@@ -591,7 +591,12 @@ function goList(parameters) {
                 
                 drawContainer( "#list-title",  config.t.listTitle( doc )  )
                 
-                updateAjaxData("account_details")
+                                
+                var response = {
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goList, "pageParameters" : [ id ]
+                }
+            
+                updateAjaxData( response , "account_details")
                 
 		        $( "#content .todo-index" ).click( function() {
 		            History.back()
@@ -629,7 +634,11 @@ function goList(parameters) {
                 
                 drawContainer( "#scrollable", config.t.listItems( view ) )
                 
-                updateAjaxData("account_details")
+                var response = {
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goList, "pageParameters" : [ id ]
+                }
+            
+                updateAjaxData( response , "account_details")
                 
                 $( "#content .todo-index" ).click( function() {
 		            History.back()
