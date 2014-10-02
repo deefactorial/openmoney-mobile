@@ -80,8 +80,26 @@ function onDeviceReady() {
         	document.getElementById( "content" ).innerHTML = State.data.html;
     		document.title = State.data.pageTitle;
     		//call the function of the page it's supposed to be on with the parameters of the page
-    		if(typeof State.data.pageFunction != 'undefined')
-    			State.data.pageFunction(State.data.pageParameters);
+    		if(typeof State.data.pageFunction != 'undefined') {
+    			//eval(State.data.pageFunction);
+    			
+    			if (State.data.pageFunction && (typeof State.data.pageFunction === 'string') && State.data.pageFunction.indexOf("function") === 0) {
+    				var jsFunc = new Function('return ' + State.data.pageFunction)();
+    				if (State.data.pageParameter && (typeof State.data.pageFunction === 'Array') ) {
+    					var arguments = [];
+    					State.data.pageFunction.forEach(function(parameter){
+    						if(parameter.indexOf("function") === 0){
+    							arguments.push( new Function('return ' + parameter)() )
+    						} else {
+    							arguments.push( parameter )
+    						}
+    					})
+    				}
+    				jsFunc(arguments);
+    			}
+    			
+    		}
+    			
         }
     });
     
@@ -823,7 +841,7 @@ var goServerLogin = function (parameters) {
 	
 	if (History.getState().data.pageTite != pageTitle) {
     
-		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : "goServerLogin", "pageParameters" : [ callBack ]  };
+		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : goServerLogin.toString(), "pageParameters" : [ callBack.toString() ]  };
 		
 		processAjaxData( response, "login" )
 		
