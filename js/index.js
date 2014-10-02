@@ -76,6 +76,7 @@ function onDeviceReady() {
         var State = History.getState(); // Note: We are using History.getState() instead of event.state
         log ( "State Change " + JSON.stringify(State) ) 
         if (document.title != State.data.pageTitle) {
+        	log ( "updated DOM")
         	document.getElementById( "content" ).innerHTML = State.data.html;
     		document.title = State.data.pageTitle;
         }
