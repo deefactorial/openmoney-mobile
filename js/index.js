@@ -380,9 +380,9 @@ function updateAjaxData(urlPath) {
 	
 	log ("update page " + urlPath)
 
-	History.replaceState( {
+	History.replaceState( JSON.parse( JSON.stringify( {
 		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title
-	}, urlPath, urlPath );
+	} ) ), urlPath, urlPath );
 
 	log ("post update page");
 }
@@ -446,7 +446,7 @@ function goIndex() {
             drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) )
             //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
-            //updateAjaxData("index")
+            updateAjaxData("index")
             
             window.plugins.spinnerDialog.hide();
             window.plugins.spinnerDialog.hide();
