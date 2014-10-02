@@ -22,6 +22,7 @@ var REMOTE_CUSTOMER_TRADINGNAME_LOOKUP_URL = "https://cloud.openmoney.cc/custome
 var SERVER_LOGIN = true
 var FACEBOOK_LOGIN = false
 
+var currentpage = null;
 /*
  * Initialize the app, connect to the database, draw the initial UI
  */
@@ -75,10 +76,10 @@ function onDeviceReady() {
     History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
         var State = History.getState(); // Note: We are using History.getState() instead of event.state
         log ( "State Change " + JSON.stringify(State) ) 
-        if (parent.document.title != State.data.pageTitle) {
-        	log ( "updated DOM doc:" + parent.document.title + "state:" + State.data.pageTitle)
+        if (currentpage != State.data.pageTitle) {
+        	log ( "updated DOM doc:" + currentpage + "state:" + State.data.pageTitle)
         	document.getElementById( "content" ).innerHTML = State.data.html;
-    		parent.document.title = State.data.pageTitle;
+        	currentpage = State.data.pageTitle;
     		//call the function of the page it's supposed to be on with the parameters of the page
     		if(typeof State.data.pageFunction != 'undefined') {
     			//eval(State.data.pageFunction);
@@ -376,7 +377,7 @@ function processAjaxData(response, urlPath) {
 	
 	drawContent( response.html );
 
-	parent.document.title = response.pageTitle;
+	currentpage = response.pageTitle;
 
 	History.pushState(  response  , null, urlPath );
 	
@@ -462,7 +463,7 @@ function goIndex(parameters) {
             //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
             var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : parent.document.title, "pageFunction" : goIndex.toString(), "pageParameters" : []
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goIndex.toString(), "pageParameters" : []
         	}
             
             
@@ -619,7 +620,7 @@ function goList(parameters) {
                 
                                 
                 var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
                 }
             
                 updateAjaxData( response , "account_details")
@@ -661,7 +662,7 @@ function goList(parameters) {
                 drawContainer( "#scrollable", config.t.listItems( view ) )
                 
                 var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goList, "pageParameters" : [ id ]
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList, "pageParameters" : [ id ]
                 }
             
                 updateAjaxData( response , "account_details")
