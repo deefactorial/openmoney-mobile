@@ -393,12 +393,19 @@ function updateAjaxData( response , urlPath) {
 }
 
 
+function getFunctionName() {
+   var myName = arguments.callee.toString();
+   myName = myName.substr('function '.length);
+   myName = myName.substr(0, myName.indexOf('('));
+   return(myName);
+}
+
 
 function goIndex(parameters) {
 	
 	if (History.getState().data.pageTite != "Openmoney"){
 
-		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : goIndex, "pageParameters" : [] }
+		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : getFunctionName(), "pageParameters" : [] }
 		
 		processAjaxData( response, "index" )
 	
@@ -816,7 +823,7 @@ var goServerLogin = function (parameters) {
 	
 	if (History.getState().data.pageTite != pageTitle) {
     
-		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : this, "pageParameters" : [ callBack ]  };
+		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : goServerLogin, "pageParameters" : [ callBack ]  };
 		
 		processAjaxData( response, "login" )
 		
