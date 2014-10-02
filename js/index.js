@@ -412,14 +412,7 @@ function goIndex() {
     //drawContent( config.t.index() )
     
     // If you click a list,
-    $( "#scrollable" ).on( "click", "li", function() {
-        var id = $( this ).attr( "data-id" );
-        goList( id )
-    } )
 
-    setLoginLogoutButton();
-
-    setTabs();
 
     if (typeof navigator.splashscreen != 'undefined')
     	navigator.splashscreen.hide();
@@ -453,6 +446,15 @@ function goIndex() {
             //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
             updateAjaxData( "index" )
+            
+		    $( "#scrollable" ).on( "click", "li", function() {
+		        var id = $( this ).attr( "data-id" );
+		        goList( id )
+		    } )
+		
+		    setLoginLogoutButton();
+		
+		    setTabs();
             
             window.plugins.spinnerDialog.hide();
             window.plugins.spinnerDialog.hide();
