@@ -437,6 +437,9 @@ function goIndex(parameters) {
     if (typeof navigator.splashscreen != 'undefined')
     	navigator.splashscreen.hide();
     
+    setLoginLogoutButton();
+	
+    setTabs();
     
     // when the database changes, update the UI to reflect new lists
     window.dbChanged = function() {
@@ -478,9 +481,7 @@ function goIndex(parameters) {
 		        goList( [ id ] )
 		    } )
 		
-		    setLoginLogoutButton();
-		
-		    setTabs();
+
             
             window.plugins.spinnerDialog.hide();
             window.plugins.spinnerDialog.hide();
@@ -590,7 +591,7 @@ function goList(parameters) {
 		
 		var pageTitle = "Account Details";
 		
-		if (History.getState().data.pageTite != pageTitle){
+		if (currentpage != pageTitle){
 		
 			var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
 			
