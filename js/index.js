@@ -75,10 +75,10 @@ function onDeviceReady() {
     History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
         var State = History.getState(); // Note: We are using History.getState() instead of event.state
         log ( "State Change " + JSON.stringify(State) ) 
-        if (document.title.toString() != State.data.pageTitle) {
-        	log ( "updated DOM doc:" + document.title.toString() + "state:" + State.data.pageTitle)
+        if (parent.document.title != State.data.pageTitle) {
+        	log ( "updated DOM doc:" + parent.document.title + "state:" + State.data.pageTitle)
         	document.getElementById( "content" ).innerHTML = State.data.html;
-    		document.title = State.data.pageTitle;
+    		parent.document.title = State.data.pageTitle;
     		//call the function of the page it's supposed to be on with the parameters of the page
     		if(typeof State.data.pageFunction != 'undefined') {
     			//eval(State.data.pageFunction);
@@ -376,7 +376,7 @@ function processAjaxData(response, urlPath) {
 	
 	drawContent( response.html );
 
-	document.title = response.pageTitle;
+	parent.document.title = response.pageTitle;
 
 	History.pushState(  response  , null, urlPath );
 	
@@ -462,7 +462,7 @@ function goIndex(parameters) {
             //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
             var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goIndex.toString(), "pageParameters" : []
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : parent.document.title, "pageFunction" : goIndex.toString(), "pageParameters" : []
         	}
             
             
