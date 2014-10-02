@@ -396,12 +396,8 @@ function updateAjaxData(urlPath) {
 
 
 function goIndex() {
-	//alert(JSON.stringify(History.getState()))
 	
-	if (History.getState().data.pageTite == "Openmoney"){
-		
-		
-	} else {
+	if (History.getState().data.pageTite != "Openmoney"){
 
 		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney" }
 		
@@ -410,10 +406,6 @@ function goIndex() {
 	}
 	
     //drawContent( config.t.index() )
-    
-    // If you click a list,
-
-
     if (typeof navigator.splashscreen != 'undefined')
     	navigator.splashscreen.hide();
     
@@ -447,6 +439,7 @@ function goIndex() {
             
             updateAjaxData( "index" )
             
+                // If you click a list,
 		    $( "#scrollable" ).on( "click", "li", function() {
 		        var id = $( this ).attr( "data-id" );
 		        goList( id )
@@ -560,14 +553,19 @@ function goList(id) {
 	window.dbChanged = function() {
 		window.plugins.spinnerDialog.show();
 		
-		var response = { "html" : config.t.list( ) , "pageTitle" : "Account Details" }
+		var pageTitle = "Account Details";
 		
-		processAjaxData( response, "account_details" )
+		if (History.getState().data.pageTite != pageTitle){
+		
+			var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle }
+			
+			processAjaxData( response, "account_details" )
+		}
 		
 		//drawContent( config.t.list( ) )
         
         $( "#content .todo-index" ).click( function() {
-            window.history.back()
+            History.back()
         } )
 
         setLoginLogoutButton();
@@ -589,6 +587,14 @@ function goList(id) {
                 drawContainer( "#list-title",  config.t.listTitle( doc )  )
                 
                 updateAjaxData("account_details")
+                
+		        $( "#content .todo-index" ).click( function() {
+		            History.back()
+		        } )
+		
+		        setLoginLogoutButton();
+		
+		        setTabs()
                 
             } )
             
@@ -619,6 +625,14 @@ function goList(id) {
                 drawContainer( "#scrollable", config.t.listItems( view ) )
                 
                 updateAjaxData("account_details")
+                
+                $( "#content .todo-index" ).click( function() {
+		            History.back()
+		        } )
+		
+		        setLoginLogoutButton();
+		
+		        setTabs()
                 
                 $( "#scrollable" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
@@ -781,9 +795,15 @@ function goServerLogin(callBack) {
     window.dbChanged = function() {
     }
     
-	var response = { "html" : config.t.login(), "pageTitle" : "Login" }
+	var pageTitle = "Login";
 	
-	processAjaxData( response, "login" )
+	if (History.getState().data.pageTite != pageTitle) {
+    
+		var response = { "html" : config.t.login(), "pageTitle" : pageTitle }
+		
+		processAjaxData( response, "login" )
+		
+	}
 	
     //drawContent( config.t.login() )
 
@@ -836,9 +856,15 @@ function goServerRegistration(callBack) {
     window.dbChanged = function() {
     }
     
-	var response = { "html" : config.t.register(), "pageTitle" : "Registration" }
+    var pageTitle = "Registration";
 	
-	processAjaxData( response, "registration" )
+	if (History.getState().data.pageTite != pageTitle) {
+    
+		var response = { "html" : config.t.register(), "pageTitle" : pageTitle }
+		
+		processAjaxData( response, "registration" )
+		
+	}
 
     //drawContent( config.t.register() )
     
@@ -903,9 +929,15 @@ function doRegistration(callBack) {
 
 function goLostPassword(callBack) {
 	
-	var response = { "html" : config.t.lost(), "pageTitle" : "Lost" }
+    var pageTitle = "Lost";
 	
-	processAjaxData( response, "lost" )
+	if (History.getState().data.pageTite != pageTitle) {
+	
+		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle }
+		
+		processAjaxData( response, "lost" )
+		
+	}
 	
     //drawContent( config.t.lost() )
     
@@ -969,9 +1001,15 @@ function doLostPassword(callBack) {
 
 function goSettings() {
 	
-	var response = { "html" : config.t.settings(), "pageTitle" : "Settings" }
+    var pageTitle = "Settings";
 	
-	processAjaxData( response, "settings" )
+	if (History.getState().data.pageTite != pageTitle) {
+		
+		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle }
+		
+		processAjaxData( response, "settings" )
+		
+	}
 	
     //drawContent( config.t.settings() )
 
