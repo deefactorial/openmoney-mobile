@@ -465,6 +465,7 @@ function goIndex(parameters) {
             		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goIndex.toString(), "pageParameters" : []
         	}
             
+            
             updateAjaxData( response, "index" )
             
                 // If you click a list,
