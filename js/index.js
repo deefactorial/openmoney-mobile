@@ -383,7 +383,7 @@ function processAjaxData(response, urlPath) {
  * also be used to change the url location of the current document.
  */
 
-function updateAjaxData( response ) {
+function updateAjaxData( response , urlPath) {
 	
 	log ("update page " + urlPath)
 
