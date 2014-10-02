@@ -628,13 +628,6 @@ function goList(parameters) {
             
                 updateAjaxData( response , "account_details")
                 
-		        $( "#content .todo-index" ).click( function() {
-		            History.back()
-		        } )
-		
-		        setLoginLogoutButton();
-		
-		        setTabs()
                 
             } )
             
@@ -670,13 +663,6 @@ function goList(parameters) {
             
                 updateAjaxData( response , "account_details")
                 
-                $( "#content .todo-index" ).click( function() {
-		            History.back()
-		        } )
-		
-		        setLoginLogoutButton();
-		
-		        setTabs()
                 
                 $( "#scrollable" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
