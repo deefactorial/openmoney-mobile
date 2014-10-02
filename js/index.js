@@ -448,6 +448,8 @@ function goIndex() {
             
             updateAjaxData("index")
             
+            setLoginLogoutButton()
+            
             window.plugins.spinnerDialog.hide();
             window.plugins.spinnerDialog.hide();
 
