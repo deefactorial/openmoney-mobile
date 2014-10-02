@@ -423,7 +423,7 @@ function goIndex(parameters) {
 	
 	if (History.getState().data.pageTite != "Openmoney"){
 
-		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : getFunctionName(), "pageParameters" : [] }
+		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : goIndex.toString(), "pageParameters" : [] }
 		
 		processAjaxData( response, "index" )
 	
@@ -462,7 +462,7 @@ function goIndex(parameters) {
             //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
             var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goIndex, "pageParameters" : []
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goIndex.toString(), "pageParameters" : []
         	}
             
             updateAjaxData( response, "index" )
@@ -587,7 +587,7 @@ function goList(parameters) {
 		
 		if (History.getState().data.pageTite != pageTitle){
 		
-			var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList, "pageParameters" : [ id ] }
+			var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
 			
 			processAjaxData( response, "account_details" )
 		}
@@ -618,7 +618,7 @@ function goList(parameters) {
                 
                                 
                 var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goList, "pageParameters" : [ id ]
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
                 }
             
                 updateAjaxData( response , "account_details")
@@ -903,7 +903,7 @@ function goServerRegistration(parameters) {
 	
 	if (History.getState().data.pageTite != pageTitle) {
     
-		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : goServerRegistration, "pageParameters" : [ callBack ]  }
+		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : goServerRegistration.toString(), "pageParameters" : [ callBack.toString() ]  }
 		
 		processAjaxData( response, "registration" )
 		
@@ -977,7 +977,7 @@ function goLostPassword(parameters) {
 	
 	if (History.getState().data.pageTite != pageTitle) {
 	
-		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : goLostPassword, "pageParameters" : [ callBack ]  }
+		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : goLostPassword.toString(), "pageParameters" : [ callBack.toString() ]  }
 		
 		processAjaxData( response, "lost" )
 		
