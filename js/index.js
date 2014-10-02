@@ -85,17 +85,20 @@ function onDeviceReady() {
     			//eval(State.data.pageFunction);
     			
     			if (State.data.pageFunction && (typeof State.data.pageFunction === 'string') && State.data.pageFunction.indexOf("function") === 0) {
+    				//this makes the function back into a function from a string.
     				var jsFunc = new Function('return ' + State.data.pageFunction)();
     				if (State.data.pageParameter && (typeof State.data.pageFunction === 'Array') ) {
     					var arguments = [];
     					State.data.pageFunction.forEach(function(parameter){
     						if(parameter.indexOf("function") === 0){
+    							//if the parameter is a function make it back into one.
     							arguments.push( new Function('return ' + parameter)() )
     						} else {
     							arguments.push( parameter )
     						}
     					})
     				}
+    				//call the function with the arguments
     				jsFunc(arguments);
     			}
     			
@@ -426,7 +429,7 @@ function goIndex(parameters) {
 
 		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : goIndex.toString(), "pageParameters" : [] }
 		
-		processAjaxData( response, "index" )
+		updateAjaxData( response, "index.html" )
 	
 	}
 	
@@ -467,7 +470,7 @@ function goIndex(parameters) {
         	}
             
             
-            updateAjaxData( response, "index" )
+            updateAjaxData( response, "index.html" )
             
                 // If you click a list,
 		    $( "#scrollable" ).on( "click", "li", function() {
@@ -856,15 +859,11 @@ var goServerLogin = function (parameters) {
     } )
 
     $( "#content .todo-register" ).click( function() {
-        goServerRegistration( [ function() {
-
-        } ] )
+        goServerRegistration( [ ] )
     } )
 
     $( "#content .todo-lost" ).click( function() {
-        goLostPassword( [ function() {
-        	
-        } ] )
+        goLostPassword( [ ] )
     } )
 
     $( "#content form" ).submit( function(e) {
