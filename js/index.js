@@ -325,6 +325,8 @@ function logoutError(error) {
  */
 
 function drawContent(html) {
+	log( "drawContent" )
+	
 	scroll( 0, 0 )
     
     $( "#content" ).html( html )
@@ -338,7 +340,6 @@ function drawContainer(id, html) {
 	console.log( "drawContainer(" + id + ")" )
 
 	$( id ).html( html );
-	
 	
 }
 
@@ -358,7 +359,7 @@ function processAjaxData(response, urlPath) {
 
 	History.pushState( {
 		"html" : response.html, "pageTitle" : response.pageTitle
-	}, urlPath, urlPath );
+	}, null, urlPath );
 	
 	log ("post set page");
 }
@@ -387,7 +388,7 @@ function updateAjaxData(urlPath) {
 
 	History.replaceState( {
 		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : document.title
-	}, urlPath, urlPath );
+	}, null, urlPath );
 
 	log ("post update page");
 }
@@ -451,7 +452,7 @@ function goIndex() {
             drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) )
             //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
-            updateAjaxData("index")
+            updateAjaxData( "index" )
             
             window.plugins.spinnerDialog.hide();
             window.plugins.spinnerDialog.hide();
@@ -469,7 +470,7 @@ function setLoginLogoutButton() {
     // offer the sign in screen to logged out users
     if (!config.user || !config.user.user_id) {
         if (SERVER_LOGIN) {
-            $( ".openmoney-login" ).show().click( function() {
+            $( "#content .openmoney-login" ).show().click( function() {
             	log("go to login")
             	window.plugins.spinnerDialog.show();
                 goServerLogin( function(error) {
@@ -482,7 +483,7 @@ function setLoginLogoutButton() {
                 } );
             } )
         } else if (FACEBOOK_LOGIN) {
-            $( ".openmoney-login" ).show().click( function() {
+            $( "#content .openmoney-login" ).show().click( function() {
             	window.plugins.spinnerDialog.show();
                 doFirstLogin( function(error) {
                 	
@@ -495,7 +496,7 @@ function setLoginLogoutButton() {
         }
     } else {
         if (SERVER_LOGIN) {
-            $( ".openmoney-logout" ).show().click( function() {
+            $( "#content .openmoney-logout" ).show().click( function() {
             	window.plugins.spinnerDialog.show();
             	destroyBeamTag( function(error, ok) {
             		if(error) { return logoutError( error ) }
@@ -509,7 +510,7 @@ function setLoginLogoutButton() {
             	} )
             } )
         } else if (FACEBOOK_LOGIN) {
-            $( ".openmoney-logout" ).show().click( function() {
+            $( "#content .openmoney-logout" ).show().click( function() {
                 if (config.user && config.user.access_token) {
                 	window.plugins.spinnerDialog.show();
                     doFacebookLogout( config.user.access_token, function(error, data) {
@@ -534,7 +535,8 @@ function setLoginLogoutButton() {
 
 function setTabs() {
     $( "#content .om-accounts" ).click( function() {
-    	history.go("index") //goIndex()
+    	log("go Index")
+    	goIndex()
     } )
 
     $( "#content .om-payments" ).click( function() {
