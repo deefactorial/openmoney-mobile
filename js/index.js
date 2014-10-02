@@ -75,8 +75,10 @@ function onDeviceReady() {
     History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
         var State = History.getState(); // Note: We are using History.getState() instead of event.state
         log ( "State Change " + JSON.stringify(State) ) 
-    	document.getElementById( "content" ).innerHTML = State.data.html;
-    	document.title = State.data.pageTitle;
+        if (document.title != State.data.pageTitle) {
+        	document.getElementById( "content" ).innerHTML = State.data.html;
+    		document.title = State.data.pageTitle;
+        }
     });
     
 	} catch(e) {
@@ -447,8 +449,6 @@ function goIndex() {
             //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
             
             updateAjaxData("index")
-            
-            setLoginLogoutButton()
             
             window.plugins.spinnerDialog.hide();
             window.plugins.spinnerDialog.hide();
