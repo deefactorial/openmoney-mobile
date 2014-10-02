@@ -75,8 +75,8 @@ function onDeviceReady() {
     History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
         var State = History.getState(); // Note: We are using History.getState() instead of event.state
         log ( "State Change " + JSON.stringify(State) ) 
-        if (document.title != State.data.pageTitle) {
-        	log ( "updated DOM" + document.title + State.data.pageTitle)
+        if (document.title.toString() != State.data.pageTitle) {
+        	log ( "updated DOM doc:" + document.title.toString() + "state:" + State.data.pageTitle)
         	document.getElementById( "content" ).innerHTML = State.data.html;
     		document.title = State.data.pageTitle;
     		//call the function of the page it's supposed to be on with the parameters of the page
