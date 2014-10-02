@@ -354,13 +354,13 @@ function drawContainer(id, html) {
 
 function processAjaxData(response, urlPath) {
 	
-	log ("set page " + urlPath)
+	log ("set page " + urlPath + " : " + JSON.stringify( response ))
 	
 	drawContent( response.html );
 
 	document.title = response.pageTitle;
 
-	History.pushState( response , null, urlPath );
+	History.pushState( JSON.parse( JSON.stringify( response ) ), null, urlPath );
 	
 	log ("post set page");
 }
