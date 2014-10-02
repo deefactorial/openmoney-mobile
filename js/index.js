@@ -425,7 +425,7 @@ function getFunctionName() {
 
 function goIndex(parameters) {
 	
-	if (History.getState().data.pageTite != "Openmoney"){
+	if (currentpage != "Openmoney"){
 
 		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : goIndex.toString(), "pageParameters" : [] }
 		
@@ -844,7 +844,7 @@ var goServerLogin = function (parameters) {
     
 	var pageTitle = "Login";
 	
-	if (History.getState().data.pageTite != pageTitle) {
+	if (currentpage != pageTitle) {
     
 		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : goServerLogin.toString(), "pageParameters" : [ callBack.toString() ]  };
 		
