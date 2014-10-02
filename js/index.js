@@ -895,7 +895,6 @@ var goServerLogin = function (parameters) {
 
 function goServerRegistration(parameters) {
 	
-	callBack = parameters[0]
 	
     window.dbChanged = function() {
     }
@@ -904,7 +903,7 @@ function goServerRegistration(parameters) {
 	
 	if (History.getState().data.pageTite != pageTitle) {
     
-		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : goServerRegistration.toString(), "pageParameters" : [ callBack.toString() ]  }
+		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : goServerRegistration.toString(), "pageParameters" : [ ]  }
 		
 		processAjaxData( response, "registration" )
 		
@@ -972,13 +971,11 @@ function doRegistration(callBack) {
 
 function goLostPassword(parameters) {
 	
-	callBack = parameters[0]
-	
     var pageTitle = "Lost";
 	
 	if (History.getState().data.pageTite != pageTitle) {
 	
-		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : goLostPassword.toString(), "pageParameters" : [ callBack.toString() ]  }
+		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : goLostPassword.toString(), "pageParameters" : [ ]  }
 		
 		processAjaxData( response, "lost" )
 		
