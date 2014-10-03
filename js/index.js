@@ -648,7 +648,7 @@ function goList(parameters) {
             		var now = Date.now()
             		var elapsed = now - transactionTime.getTime()
             		var displayTime = transactionTime.toLocaleDateString() ;
-            		if (elapsed > 1000 * 60 * 60 * 24) {
+            		if (elapsed < 1000 * 60 * 60 * 24) {
             			displayTime += " " + transactionTime.toLocaleTimeString()
             		}
             		row.value.timestamp = displayTime;
