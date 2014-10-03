@@ -91,6 +91,7 @@ function onDeviceReady() {
     				
     				if (State.data.pageParameters && Object.prototype.toString.call( State.data.pageParameters ) === Object.prototype.toString.call( [] ) ) {
     					log (" State Parameters:" + JSON.stringify( State.data.pageParameters ) )
+    					log (" Arguments:" + JSON.stringify( args ) )
     					State.data.pageParameters.forEach( function( parameter ) {
     						log("Parameter:" + JSON.stringify( parameter ) )
     						if(typeof parameter === 'string' && parameter.indexOf("function") === 0){
