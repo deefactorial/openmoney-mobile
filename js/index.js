@@ -835,11 +835,11 @@ function goServerLogin(parameters) {
     } )
 
     $( "#content .todo-register" ).off("click").click( function() {
-        goServerRegistration( [ function() { callBack(false) } ] )
+        goServerRegistration( [ callBack.toString() ] )
     } )
 
     $( "#content .todo-lost" ).off("click").click( function() {
-        goLostPassword( [ function() { callBack(false) } ] )
+        goLostPassword( [ callBack.toString() ] )
     } )
 
     $( "#content form" ).off("submit").submit( function(e) {
@@ -913,7 +913,7 @@ function goServerRegistration(parameters) {
             $( "#content form input[name='password']" ).val( "" ) // Clear
             // password
             // Login Success
-            callBack();
+            callBack(false);
         } )
     } )
 }
@@ -982,7 +982,7 @@ function goLostPassword(parameters) {
         	window.plugins.spinnerDialog.hide();
             if (error) { return alert( error.msg ) }
             $( "#content form input[name='email']" ).val( "" ) // Clear email
-            navigator.notification.alert( "A password reset token has been emailed to you!" , function() { callBack(); }, "Reset Token Emailed", "OK")
+            navigator.notification.alert( "A password reset token has been emailed to you!" , function() { callBack(false); }, "Reset Token Emailed", "OK")
             
         } )
     } )
