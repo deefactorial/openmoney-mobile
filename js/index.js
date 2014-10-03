@@ -1305,6 +1305,7 @@ function goCreateAccount(parameters) {
             else
                 doc.currency = doc.symbol;
         	
+        	currency_view = {};
             currency_view.type = "currency_view";
             currency_view.created = new Date().getTime();
             currency_view.steward = [ config.user.name ];
