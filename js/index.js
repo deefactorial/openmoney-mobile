@@ -249,12 +249,13 @@ function connectToChanges() {
 	        		var deletedDocument = null;
 	        		if( typeof thisdoc.created == 'undefined' ) {
 	        			//delete my doc
+	        			if( Object.prototype.toString.call( thisdoc.steward ) === Object.prototype.toString.call( [] ))
 	        			thisdoc.steward.forEach(function(steward) {
 	        				if(steward == config.user.name) {
 	        					addCreated = thisdoc;
 	        				}
 	        			})
-	        		} else if( typeof thatdoc.created == 'undefined'){
+	        		} else if( typeof thatdoc.created == 'undefined' && Object.prototype.toString.call( thatdoc.steward ) === Object.prototype.toString.call( [] )){
 	        			thatdoc.steward.forEach(function(steward) {
 	        				if(steward == config.user.name) {
 	        					addCreated = thatdoc;
@@ -280,6 +281,7 @@ function connectToChanges() {
 		        		})
 	        		} else {
 		        		//find the me in steward.
+	        			if( Object.prototype.toString.call( deletedDocument.steward ) === Object.prototype.toString.call( [] ) ) 
 		        		deletedDocument.steward.forEach(function(steward) {
 		    				if(steward == config.user.name) {
 		    					log( "DELETE document:" + JSON.stringify(deletedDocument) )
