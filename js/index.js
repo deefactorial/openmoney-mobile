@@ -1033,7 +1033,7 @@ function goSettings(parameters) {
 	
     var pageTitle = "Settings";
 	
-	if (History.getState().data.pageTite != pageTitle) {
+	if (currentpage != pageTitle) {
 		
 		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : goSettings, "pageParameters" : [] }
 		
