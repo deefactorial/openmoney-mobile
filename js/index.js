@@ -595,7 +595,7 @@ function goList(parameters) {
 		
 			var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
 			
-			processAjaxData( response, "account_details" )
+			processAjaxData( response, "account_details.html" )
 		}
 		
 		//drawContent( config.t.list( ) )
@@ -627,7 +627,7 @@ function goList(parameters) {
             		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
                 }
             
-                updateAjaxData( response , "account_details")
+                updateAjaxData( response , "account_details.html")
                 
                 
             } )
@@ -659,10 +659,10 @@ function goList(parameters) {
                 drawContainer( "#scrollable", config.t.listItems( view ) )
                 
                 var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList, "pageParameters" : [ id ]
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
                 }
             
-                updateAjaxData( response , "account_details")
+                updateAjaxData( response , "account_details.html")
                 
                 
                 $( "#scrollable" ).on( "click", "li", function(e) {
@@ -822,7 +822,7 @@ function toggleShare(doc, user, cb) {
  * Display Server Login Page
  */
 
-var goServerLogin = function (parameters) {
+function goServerLogin(parameters) {
 	
 	callBack = parameters[0];
 	
@@ -835,7 +835,7 @@ var goServerLogin = function (parameters) {
     
 		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : goServerLogin.toString(), "pageParameters" : [ callBack.toString() ]  };
 		
-		processAjaxData( response, "login" )
+		processAjaxData( response, "login.html" )
 		
 		//drawContent( config.t.login() )
 		
@@ -892,7 +892,7 @@ function goServerRegistration(parameters) {
     
 		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : goServerRegistration.toString(), "pageParameters" : [ ]  }
 		
-		processAjaxData( response, "registration" )
+		processAjaxData( response, "registration.html" )
 		
 	}
 
@@ -964,7 +964,7 @@ function goLostPassword(parameters) {
 	
 		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : goLostPassword.toString(), "pageParameters" : [ ]  }
 		
-		processAjaxData( response, "lost" )
+		processAjaxData( response, "lost.html" )
 		
 	}
 	
@@ -1036,7 +1036,7 @@ function goSettings(parameters) {
 		
 		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : goSettings, "pageParameters" : [] }
 		
-		processAjaxData( response, "settings" )
+		processAjaxData( response, "settings.html" )
 		
 		//drawContent( config.t.settings() )
 		
@@ -1052,45 +1052,44 @@ function goSettings(parameters) {
     setTabs()
 
     $( "#content .om-manage_accounts" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goManageAccounts()
+    
+        goManageAccounts([])
     } )
     
     $( "#content .om-trading_name" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goTradingName()
+    
+        goTradingName([])
     } )
 
     $( "#content .om-currency" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goCurrency()
+
+        goCurrency([])
     } )
     
     $( "#content .om-space" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goSpace()
+    
+        goSpace([])
     } )
 
     $( "#content .om-export_transactions" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goExportTransactions()
+  
+        goExportTransactions([])
     } )
 
     $( "#content .om-server" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goServer()
+ 
+        goServer([])
     } )
 
     $( "#content .om-profile" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goProfile()
+        goProfile([])
     } )
 
     $( "#content .om-manage_nfc" ).click( function() {
-        goManageNFC()
+        goManageNFC([])
     } )
     
-    window.plugins.spinnerDialog.hide();
+   
 }
 
 
@@ -1098,11 +1097,20 @@ function goSettings(parameters) {
  * Manage Accounts Page
  */
 
-function goManageAccounts() {
+function goManageAccounts(parameters) {
 	
-	var response = { "html" : config.t.manage_accounts(), "pageTitle" : "Manage Accounts" }
 	
-	processAjaxData( response, "manage_accounts" )
+	var pageTitle = "Manage Accounts";
+	
+	if (currentpage != pageTitle) {
+    
+		var response = { "html" : config.t.manage_accounts(), "pageTitle" : pageTitle, "pageFunction" : goManageAccounts.toString(), "pageParameters" : [ ]  };
+		
+		processAjaxData( response, "manage_accounts.html" )
+		
+		//drawContent( config.t.login() )
+		
+	}
 
     $( "#content .om-index" ).click( function() {
         History.back()
@@ -1136,7 +1144,11 @@ function goManageAccounts() {
 
             drawContainer( "div#accounts_list" , config.t.accounts_list( usersAccounts ) )
 
-            updateAjaxData( "manage_accounts" )
+            var response = {
+        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goManageAccounts.toString(), "pageParameters" : [ ]
+            }
+        
+            updateAjaxData( response , "manage_accounts.html")
             
             accounts = true;
             
@@ -1149,7 +1161,11 @@ function goManageAccounts() {
 
             drawContainer( "div#currencies_list" , config.t.currencies_list( view ) )
             
-            updateAjaxData( "manage_accounts" )
+            var response = {
+        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goManageAccounts.toString(), "pageParameters" : [ ]
+            }
+        
+            updateAjaxData( response , "manage_accounts.html")
             
             currencies = true;
 
@@ -1162,7 +1178,11 @@ function goManageAccounts() {
 
             drawContainer( "div#spaces_list", config.t.spaces_list( view ) )
             
-            updateAjaxData( "manage_accounts" )
+            var response = {
+        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goManageAccounts.toString(), "pageParameters" : [ ]
+            }
+        
+            updateAjaxData( response , "manage_accounts.html")
             
             spaces = true;
             
@@ -1186,7 +1206,9 @@ function goManageAccounts() {
 }
 
 
-function goCreateAccount(doc) {
+function goCreateAccount(parameters) {
+	
+	var doc = parmeters.pop();
 	
 	window.dbChanged = function() {	
 	}
@@ -1206,12 +1228,23 @@ function goCreateAccount(doc) {
     
     log("spaces view:" + JSON.stringify( view ) ) 
 
-	var response = { "html" : config.t.create_account( view ), "pageTitle" : "Create" }
+    var pageTitle = "Create";
 	
-	processAjaxData( response, "create" )
+	if (currentpage != pageTitle) {
+    
+		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc ]  };
+		
+		processAjaxData( response, "create.html" )
+		
+		//drawContent( config.t.login() )
+		
+	}
+    
+
+	
 
     $( "#content .om-index" ).click( function() {
-        goManageAccounts()
+        History.back()
     } )
 
     setTabs()
@@ -1246,7 +1279,7 @@ function goCreateAccount(doc) {
                             $( "#content form input[name='trading_name']" ).val( "" ) // Clear
                             $( "#content form input[name='currency']" ).val( "" ) // Clear                            
                         
-                            navigator.notification.alert( "You successfully created a new trading name!" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Trading Name", "OK")
+                            navigator.notification.alert( "You successfully created a new trading name!" , function() { window.plugins.spinnerDialog.show(); History.back() }, "New Trading Name", "OK")
                             
                         } )                        	
                     	
@@ -1287,7 +1320,7 @@ function goCreateAccount(doc) {
                                 return alert( JSON.stringify( error ) )
                         	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
                             
-                            navigator.notification.alert( "You successfully created a new currency !" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Currency", "OK")
+                            navigator.notification.alert( "You successfully created a new currency !" , function() { window.plugins.spinnerDialog.show(); History.back() }, "New Currency", "OK")
                         } )
 
                         if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
@@ -1337,7 +1370,7 @@ function goCreateAccount(doc) {
                             if (error)
                                 return alert( JSON.stringify( error ) )
                             $( "#content form input[name='space']" ).val( "" ) // Clear
-                            navigator.notification.alert( "You successfully created a new space !" , function() { window.plugins.spinnerDialog.show(); goManageAccounts() }, "New Space", "OK")
+                            navigator.notification.alert( "You successfully created a new space !" , function() { window.plugins.spinnerDialog.show(); History.back() }, "New Space", "OK")
                         } )
                         
                         var name = doc.space + " Currency";
@@ -1399,12 +1432,11 @@ function goCreateAccount(doc) {
 	
 		                drawContainer( "div#form", config.t.trading_name_form( tradingNameDoc ) )
 		                
-		                updateAjaxData( "manage_accounts" )
 	                    
 	                    spaces = true;
 	                    
 	                    $( "#content input[name='add']" ).click( function() {
-	                        goAddCurrency()
+	                        goAddCurrency([])
 	                    } )
 	                    
 	                } )
@@ -1422,6 +1454,8 @@ function goCreateAccount(doc) {
                 var view = { "spaces" : spaces, "doc": doc }
                 
                 drawContainer( "div#form", config.t.currency_form( view ))
+                
+
                 
         	})
     	} else if (type == "space") {
@@ -1443,7 +1477,11 @@ function goCreateAccount(doc) {
         	} )
     	}
         
-        updateAjaxData( "create" )
+        var response = {
+			"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc ]
+	    }
+	
+	    updateAjaxData( response , "create.html")
         
     } ).change()
     
@@ -1451,14 +1489,20 @@ function goCreateAccount(doc) {
 
 }
 
-function goAddCurrency() {
+function goAddCurrency(parameters) {
 	
-	var response = { "html" : config.t.add-currency( ), "pageTitle" : "Add Currency" }
+    var pageTitle = "Add Currency";
 	
-	processAjaxData( response, "add currency" )
+	if (currentpage != pageTitle) {
+    
+		var response = { "html" : config.t.add_currency( ), "pageTitle" : pageTitle, "pageFunction" : goAddCurrency.toString(), "pageParameters" : [ ]  };
+		
+		processAjaxData( response, "add_currency.html" )
+		
+	}
 	
 	$( "#content .om-index" ).click( function() {
-		window.history.back();
+		History.back();
     } )
 
     setTabs()
@@ -1478,7 +1522,7 @@ function goAddCurrency() {
         config.db.put( doc.type + "," + config.user.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
    		 	if (error)
                 return alert( JSON.stringify( error ) )
-            window.history.back();
+            History.back();
         } );
         
     } );
@@ -1489,23 +1533,34 @@ function goAddCurrency() {
  * Join a Currency (trading name) Page
  */
 
-function goTradingName() {
-    window.dbChanged = function() {
-    }
+function goTradingName(parameters) {
+	
+    window.dbChanged = function() {}
+    
+    window.plugins.spinnerDialog.show();
     config.views( [ "spaces", {
         include_docs : true
     } ], function(error, view) {
+    	window.plugins.spinnerDialog.hide();
         if (error) { return alert( JSON.stringify( error ) ) }
+        
+        var pageTitle = "Join a Currency";
+    	
+    	if (currentpage != pageTitle) {
+        
+    		var response = { "html" : config.t.trading_name( view ), "pageTitle" : pageTitle, "pageFunction" : goTradingName.toString(), "pageParameters" : [ ]  };
+    		
+    		processAjaxData( response, "join_currency.html" )
+    		
+    	}
 
         drawContent( config.t.trading_name( view ) )
         
         $( "#content .om-index" ).click( function() {
-            goSettings()
+            History.back()
         } )
 
         setTabs()
-        
-        window.plugins.spinnerDialog.hide();
 
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
@@ -1557,9 +1612,11 @@ function goTradingName() {
  * Create a Currency Page
  */
 
-function goCurrency() {
-    window.dbChanged = function() {
-    }
+function goCurrency(parameters) {
+    window.dbChanged = function() { }
+    
+    window.plugins.spinnerDialog.show();
+    
     config.views( [ "spaces", {
         include_docs : true
     } ], function(error, spacesData) {
@@ -1570,20 +1627,32 @@ function goCurrency() {
         config.views( [ "currencies", {
             include_docs : true
         } ], function(error, currenciesData) {
+        	
+        	window.plugins.spinnerDialog.hide();
+        	
             if (error) { return alert( JSON.stringify( error ) ) }
             
             currencyPage.currencies = currenciesData.rows;
         
-	        drawContent( config.t.currency( currencyPage ) )
+            var pageTitle = "Create a Currency";
+        	
+        	if (currentpage != pageTitle) {
+            
+        		var response = { "html" : config.t.currency( currencyPage ), "pageTitle" : pageTitle, "pageFunction" : goCurrency.toString(), "pageParameters" : [ ]  };
+        		
+        		processAjaxData( response, "create_currency.html" )
+        		
+        	}
+            
 	
 	        $( "#content .om-index" ).click( function() {
-	        	window.plugins.spinnerDialog.show();
-	            goSettings()
+	        	
+	            History.back()
 	        } )
 	
 	        setTabs()
 	        
-	        window.plugins.spinnerDialog.hide();
+	       
 	
 	        $( "#content form" ).submit( function(e) {
 	            e.preventDefault()
@@ -1624,7 +1693,7 @@ function goCurrency() {
 	                                return alert( JSON.stringify( error ) )
 	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
 	                            
-	                            navigator.notification.alert( "You successfully created a new currency !" , function() { window.plugins.spinnerDialog.show(); goSettings() }, "New Currency", "OK")
+	                            navigator.notification.alert( "You successfully created a new currency !" , function() { History.back() }, "New Currency", "OK")
 	                        } )
 	
 	                        if ( doc.currency.match( /[A-Za-z0-9\-_]/ ) ) {
@@ -1658,42 +1727,59 @@ function goCurrency() {
  * Profile Settings Page
  */
 
-function goProfile() {
-    drawContent( config.t.profile() )
+function goProfile(parameters) {
+	
+    var pageTitle = "Profile";
+	
+	if (currentpage != pageTitle) {
+    
+		var response = { "html" : config.t.profile(), "pageTitle" : pageTitle, "pageFunction" : goProfile.toString(), "pageParameters" : [ ]  };
+		
+		processAjaxData( response, "profile.html" )
+		
+	}
 
     $( "#content .om-index" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goSettings()
+    	History.back()
     } )
 
     setTabs()
-    
-    window.plugins.spinnerDialog.hide();
+
 }
 
 /*
  * Create Trading Name Space Settings Page
  */
 
-function goSpace() {
+function goSpace(parameters) {
 
-    window.dbChanged = function() {
-    }
+    window.dbChanged = function() { }
+    
+    window.plugins.spinnerDialog.show();
     config.views( [ "spaces", {
         include_docs : true
     } ], function(error, view) {
+    	window.plugins.spinnerDialog.hide();
         if (error) { return alert( JSON.stringify( error ) ) }
 
-        drawContent( config.t.space( view ) )
+        
+        var pageTitle = "Create a Space";
+    	
+    	if (currentpage != pageTitle) {
+        
+    		var response = { "html" :  config.t.space( view ) , "pageTitle" : pageTitle, "pageFunction" : goSpace.toString(), "pageParameters" : [ ]  };
+    		
+    		processAjaxData( response, "space.html" )
+    		
+    	}
+        
 
         $( "#content .om-index" ).click( function() {
-        	window.plugins.spinnerDialog.show();
-            goSettings()
+        	
+            History.back();
         } )
 
         setTabs()
-        
-        window.plugins.spinnerDialog.hide();
 
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
@@ -1724,7 +1810,7 @@ function goSpace() {
                             $( "#content form input[name='space']" ).val( "" ) // Clear
                             //alert( "You successfully created a new trading space !" )
                             //goSettings()
-                            navigator.notification.alert( "You successfully created a new space !" , function() { window.plugins.spinnerDialog.show(); goSettings() }, "New Space", "OK")
+                            navigator.notification.alert( "You successfully created a new space !" , function() { History.back(); }, "New Space", "OK")
                         } )
                         
                         
@@ -1761,42 +1847,57 @@ function goSpace() {
  * Set Syncronization Server Settings Page
  */
 
-function goServer() {
-    drawContent( config.t.server() )
+function goServer(parameters) {
+	
+    var pageTitle = "Server Settings";
+	
+	if (currentpage != pageTitle) {
+    
+		var response = { "html" :  config.t.server()  , "pageTitle" : pageTitle, "pageFunction" : goServer.toString(), "pageParameters" : [ ]  };
+		
+		processAjaxData( response, "server.html" )
+		
+	}
 
     $( "#content .om-index" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goSettings()
+    	History.back()
     } )
 
     setTabs()
     
-    window.plugins.spinnerDialog.hide();
 }
 
 /*
  * Export Transactions Settings Page
  */
 
-function goExportTransactions() {
-    drawContent( config.t.export_transactions() )
+function goExportTransactions(parameters) {
+	
+	var pageTitle = "Export Transactions";
+	
+	if (currentpage != pageTitle) {
+    
+		var response = { "html" : config.t.export_transactions()  , "pageTitle" : pageTitle, "pageFunction" : goExportTransactions.toString(), "pageParameters" : [ ]  };
+		
+		processAjaxData( response, "export.html" )
+		
+	}
 
     $( "#content .om-index" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goSettings()
+    	History.back()
     } )
 
     setTabs()
-    
-    window.plugins.spinnerDialog.hide();
+
 }
 
 /*
  * Export Transactions Settings Page
  */
 
-function goManageNFC() {
+function goManageNFC(parameters) {
     window.dbChanged = function() {
+    	
     	window.plugins.spinnerDialog.show();
         config.views( [ "nfc_tags", {
             startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true
@@ -1805,11 +1906,20 @@ function goManageNFC() {
             if (error) { return alert( JSON.stringify( error ) ) }
 
             log( "nfc_tags: " + JSON.stringify( view ) )
-
-            drawContent( config.t.manage_nfc( view ) )
+            
+            
+			var pageTitle = "Manage NFC";
+			
+			if (currentpage != pageTitle) {
+		    
+				var response = { "html" : config.t.manage_nfc( view )  , "pageTitle" : pageTitle, "pageFunction" : goManageNFC.toString(), "pageParameters" : [ ]  };
+				
+				processAjaxData( response, "manage_nfc.html" )
+				
+			}
 
             $( "#content .om-index" ).click( function() {
-                goSettings()
+                History.back()
             } )
 
             $( "#content .om-erase_nfc" ).click( function() {
@@ -1887,12 +1997,12 @@ function goManageNFC() {
             } )
             
             $( "#content .om-new_nfc" ).click( function() {
-                goNewNFC()
+                goNewNFC([])
             } )
 
             $( "#scrollable li.nfc_item" ).click( function() {
                 var id = $( this ).attr( "data-id" )
-                goEditNFC( id )
+                goEditNFC( [ id ] )
             } )
 
             $( "#scrollable li.nfc_item" ).on( "swipeRight", function() {
@@ -1973,12 +2083,15 @@ function randomString(length, chars) {
     return result;
 }
 
-function goNewNFC() {
+function goNewNFC(parameters) {
 
+	window.plugins.spinnerDialog.show();
         config.views( [ "accounts", {
             descending : true
         } ], function(err, view) {
-
+        	window.plugins.spinnerDialog.hide();
+        	if(err) { log(JSON.stringify(err))}
+        	
             var thisUsersAccounts = {
                 rows : []
             }
@@ -2026,15 +2139,23 @@ function goNewNFC() {
             var tag = {
                 "name" : "", "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
             };
-
-            drawContent( config.t.edit_nfc( tag ) )
+            
+			var pageTitle = "New NFC";
+			
+			if (currentpage != pageTitle) {
+		    
+				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : goNewNFC.toString(), "pageParameters" : [ ]  };
+				
+				processAjaxData( response, "new_nfc.html" )
+				
+			}
 
             $( "#content .om-index" ).click( function() {
             	if(typeof newTagListner != 'undefined') {
             		 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
             	}
             	
-                goManageNFC()
+                History.back();
             } )
 
             $( "#content form" ).submit( function(e) {
@@ -2120,7 +2241,7 @@ function goNewNFC() {
                                 }, function() {
                                     // failure callback
                                 } );
-                                navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { goManageNFC() }, "Success", "OK")
+                                navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { History.back(); }, "Success", "OK")
                             }, function() {
                                 //alert( "Failed to write to NFC Tag!" )
                                 mutableLock = false;
@@ -2154,7 +2275,7 @@ function goNewNFC() {
                 		navigator.notification.alert( "You do not have the capability to read and write NFC tags." , function() { 
                 			 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
                              
-                			goManageNFC()
+                			History.back();
                 		}, "No NFC", "OK")
                 	} else {
                 		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
@@ -2174,7 +2295,9 @@ function goNewNFC() {
  * This will store and flash writable nfc tags.
  */
 
-function goEditNFC(id) {
+function goEditNFC(parameters) {
+	
+	var id = parameters.pop();
 
     config.db.get( "beamtag," + config.user.name + "," + id, function(err, doc) {
 
@@ -2182,10 +2305,19 @@ function goEditNFC(id) {
 
         log( "This Tag: " + JSON.stringify( thisTag ) )
 
-        drawContent( config.t.edit_nfc( thisTag ) )
+    	var pageTitle = "Edit NFC";
+		
+		if (currentpage != pageTitle) {
+	    
+			var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : goEditNFC.toString(), "pageParameters" : [ id ]  };
+			
+			processAjaxData( response, "edit_nfc.html" )
+			
+		}
+
 
         $( "#content .om-index" ).click( function() {
-            goManageNFC()
+            History.back();
         } )
 
         $( "#content form" ).submit( function(e) {
@@ -2290,7 +2422,7 @@ function goEditNFC(id) {
 
                 insertTagInDB( userTag )
                 
-                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { goManageNFC() }, "Success", "OK")
+                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
                 
             } )
 
@@ -2353,12 +2485,15 @@ function insertTagInDB(tag) {
  * Payment Page
  */
 
-function goPayment() {
-    window.dbChanged = function() {
-    }
+function goPayment(parameters) {
+	
+    window.dbChanged = function() { }
+    
+    window.plugins.spinnerDialog.show();
     config.views( [ "accounts", {
         include_docs : true
     } ], function(error, view) {
+    	window.plugins.spinnerDialog.hide();
         if (error) { return alert( JSON.stringify( error ) ) }
 
         var thisUsersAccounts = {
@@ -2381,10 +2516,18 @@ function goPayment() {
         thisUsersAccounts.offset = view.offset
         thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
 
-        drawContent( config.t.payment( thisUsersAccounts ) )
+    	var pageTitle = "Payment";
+		
+		if (currentpage != pageTitle) {
+	    
+			var response = { "html" : config.t.payment( thisUsersAccounts )  , "pageTitle" : pageTitle, "pageFunction" : goPayment.toString(), "pageParameters" : [ ]  };
+			
+			processAjaxData( response, "payment.html" )
+			
+		}
 
         $( "#content .om-index" ).click( function() {
-            goIndex()
+            History.back()
         } )
 
         setLoginLogoutButton();
@@ -2392,8 +2535,6 @@ function goPayment() {
         setTabs()
 
         setModes()
-
-        window.plugins.spinnerDialog.hide();
         
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
@@ -2460,13 +2601,11 @@ function goPayment() {
 
 function setModes() {
     $( "#content .om-personal" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goPayment()
+        goPayment([])
     } )
 
     $( "#content .om-merchant" ).click( function() {
-    	window.plugins.spinnerDialog.show();
-        goMerchantPayment()
+        goMerchantPayment([])
     } )
 }
 
@@ -2474,13 +2613,18 @@ function setModes() {
  * Payment Page
  */
 
-function goTagPayment(tradingNames) {
+function goTagPayment(parameters) {
+	
+	tradingNames = parameters.pop()
+	
     log( "Go Tag Payment Page: " + JSON.stringify( tradingNames ) )
-    window.dbChanged = function() {
-    }
+    window.dbChanged = function() { }
+	
+	window.plugins.spinnerDialog.show();
     config.views( [ "accounts", {
         include_docs : true
     } ], function(error, view) {
+    	window.plugins.spinnerDialog.hide();
         if (error) { return alert( JSON.stringify( error ) ) }
 
         var thisUsersAccounts = {
@@ -2515,12 +2659,21 @@ function goTagPayment(tradingNames) {
             } )
         } )
 
-        drawContent( config.t.tagpayment( {
-            "fromAccounts" : fromAccounts, "toAccounts" : toAccounts
-        } ) )
+        var pageTitle = "Tag Payment";
+		
+		if (currentpage != pageTitle) {
+	    
+			var response = { "html" : config.t.tagpayment( {
+	            "fromAccounts" : fromAccounts, "toAccounts" : toAccounts
+	        } )   , "pageTitle" : pageTitle, "pageFunction" : goTagPayment.toString(), "pageParameters" : [ tradingNames ]  };
+			
+			processAjaxData( response, "tag_payment.html" )
+			
+		}
+        
 
         $( "#content .om-index" ).click( function() {
-            goIndex()
+            History.back()
         } )
 
         setLoginLogoutButton();
@@ -2529,7 +2682,7 @@ function goTagPayment(tradingNames) {
 
         setModes()
 
-        window.plugins.spinnerDialog.hide();
+        
         
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
@@ -2637,12 +2790,15 @@ function updateTo() {
  * Payment Page
  */
 
-function goMerchantPayment() {
-    window.dbChanged = function() {
-    }
+function goMerchantPayment(parameters) {
+	
+    window.dbChanged = function() { }
+    
+    window.plugins.spinnerDialog.show();
     config.views( [ "accounts", {
         include_docs : true
     } ], function(error, view) {
+    	window.plugins.spinnerDialog.hide();
         if (error) { return alert( JSON.stringify( error ) ) }
 
         var thisUsersAccounts = {
@@ -2665,10 +2821,18 @@ function goMerchantPayment() {
         thisUsersAccounts.offset = view.offset
         thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
 
-        drawContent( config.t.merchant_payment( thisUsersAccounts ) )
+        var pageTitle = "Merchant Payment";
+		
+		if (currentpage != pageTitle) {
+	    
+			var response = { "html" :  config.t.merchant_payment( thisUsersAccounts )  , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ ]  };
+			
+			processAjaxData( response, "merchant_payment.html" )
+			
+		}
 
         $( "#content .om-index" ).click( function() {
-            goMerchantPayment()
+            History.back();
         } )
 
         setLoginLogoutButton();
@@ -2676,8 +2840,6 @@ function goMerchantPayment() {
         setTabs()
 
         setModes()
-        
-        window.plugins.spinnerDialog.hide();
 
         $( "#content form" ).submit( function(e) {
             e.preventDefault()
