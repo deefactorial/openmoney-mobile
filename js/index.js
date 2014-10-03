@@ -241,78 +241,87 @@ function connectToChanges() {
 	    	window.plugins.toast.showShortTop("Conflicting Document:" + JSON.stringify( change.doc ) , function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
 	    	log ("Conflicting Document:" + JSON.stringify( change.doc ))
 	    	var thisrev = [ change.doc._id, { "rev": change.doc._rev } ] ;
-	    	var thatrev = [ change.doc._id, { "rev": change.doc._conflicts[0] } ];
+	    	var thatConflicts = new Array();
+	    	change.doc._conflicts.forEach(function(rev) {
+	    		thatConflicts.push( [ change.doc._id, { "rev": rev } ] );
+	    	})
+	    	
 	    	config.db.get( thisrev, function(error, thisdoc) {
 	    		if(error) {return alert( JSON.stringify( thisrev ) + ":" + JSON.stringify(error))}
-	        	config.db.get( thatrev, function(error, thatdoc) {
-	        		if(error) {return alert( JSON.stringify( thatrev ) + ":" +JSON.stringify(error))}
-	        		var addCreated = null;
-	        		var deletedDocument = null;
-	        		if( typeof thisdoc.created == 'undefined' ) {
-	        			//delete my doc
-	        			if( Object.prototype.toString.call( thisdoc.steward ) === Object.prototype.toString.call( [] ))
-	        			thisdoc.steward.forEach(function(steward) {
-	        				if(steward == config.user.name) {
-	        					addCreated = thisdoc;
-	        				}
-	        			})
-	        		} else if( typeof thatdoc.created == 'undefined' && Object.prototype.toString.call( thatdoc.steward ) === Object.prototype.toString.call( [] )){
-	        			thatdoc.steward.forEach(function(steward) {
-	        				if(steward == config.user.name) {
-	        					addCreated = thatdoc;
-	        				}
-	        			})
-	        		} else {
-	            		if (thisdoc.created > thatdoc.created) {
-	            			thisdoc._deleted = true;
-	            			deletedDocument = thisdoc;
-	            		} else {
-	            			thatdoc._deleted = true;
-	            			deletedDocument = thatdoc;
-	            		}
-	        		}
-	        		if(addCreated != null){
-	        			addCreated.created = new Date().getTime();
-	        			addCreated.steward.forEach(function(steward) {
-		        			config.db.put(change.doc._id, addCreated, function(error, ok) {
-	    						if(error) {
-	    							alert("could not add created to doc:" + JSON.stringify(error))
-	    						}
-	            			} )
-		        		})
-	        		} else {
-		        		//find the me in steward.
-	        			if( Object.prototype.toString.call( deletedDocument.steward ) === Object.prototype.toString.call( [] ) ) 
-		        		deletedDocument.steward.forEach(function(steward) {
-		    				if(steward == config.user.name) {
-		    					log( "DELETE document:" + JSON.stringify(deletedDocument) )
-		    					
-		    					//commit the tombstone change
-		    					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
+	    		
+	    		thatConflicts.forEach(function(thatrev){
+	    			
+	    			config.db.get( thatrev, function(error, thatdoc) {
+		        		if(error) {return alert( JSON.stringify( thatrev ) + ":" +JSON.stringify(error))}
+		        		var addCreated = null;
+		        		var deletedDocument = null;
+		        		if( typeof thisdoc.created == 'undefined' ) {
+		        			//delete my doc
+		        			if( Object.prototype.toString.call( thisdoc.steward ) === Object.prototype.toString.call( [] ))
+		        			thisdoc.steward.forEach(function(steward) {
+		        				if(steward == config.user.name) {
+		        					addCreated = thisdoc;
+		        				}
+		        			})
+		        		} else if( typeof thatdoc.created == 'undefined' && Object.prototype.toString.call( thatdoc.steward ) === Object.prototype.toString.call( [] )){
+		        			thatdoc.steward.forEach(function(steward) {
+		        				if(steward == config.user.name) {
+		        					addCreated = thatdoc;
+		        				}
+		        			})
+		        		} else {
+		            		if (thisdoc.created > thatdoc.created) {
+		            			thisdoc._deleted = true;
+		            			deletedDocument = thisdoc;
+		            		} else {
+		            			thatdoc._deleted = true;
+		            			deletedDocument = thatdoc;
+		            		}
+		        		}
+		        		if(addCreated != null){
+		        			addCreated.created = new Date().getTime();
+		        			addCreated.steward.forEach(function(steward) {
+			        			config.db.put(change.doc._id, addCreated, function(error, ok) {
 		    						if(error) {
-		    							alert("could not delete doc:" + JSON.stringify(error))
+		    							alert("could not add created to doc:" + JSON.stringify(error))
 		    						}
-		            				if(deletedDocument.type == 'currency' || deletedDocument.type == 'trading_name' || deletedDocument.type == 'space') {
-		            					if(change.doc.type == 'currency') {
-		            						window.plugins.toast.showShortTop("The currency " + deletedDocument.currency + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
-		            						log( "The currency " + deletedDocument.currency + " already exists!")
-		            					} else if (change.doc.type == 'trading_name') {
-		            						window.plugins.toast.showShortTop("The trading name " + deletedDocument.trading_name + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
-		            						log( "The trading name " + deletedDocument.trading_name + " already exists!")
-		            					} else if (change.doc.type == 'space') {
-		            						window.plugins.toast.showShortTop( "The space " + deletedDocument.space + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
-		            						log( "The space " + deletedDocument.space + " already exists!")
-		            					}
-		            					goCreateAccount( [ deletedDocument ] )
-		            				} else {
-		            					window.plugins.toast.showShortTop("Document " + change.doc._id + " Already Exists", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
-		            					log("Document " + change.doc._id + " Already Exists")
-		            				}
 		            			} )
-		    				}
-		    			} )
-	        		}
-	        	} )
+			        		})
+		        		} else {
+			        		//find the me in steward.
+		        			log ("deleted Document:" + JSON.stringify( deletedDocument ) )
+		        			if( deletedDocument.steward && Object.prototype.toString.call( deletedDocument.steward ) === Object.prototype.toString.call( [] ) ) 
+			        		deletedDocument.steward.forEach(function(steward) {
+			    				if(steward == config.user.name) {
+			    					log( "DELETE document:" + JSON.stringify(deletedDocument) )
+			    					
+			    					//commit the tombstone change
+			    					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
+			    						if(error) {
+			    							alert("could not delete doc:" + JSON.stringify(error))
+			    						}
+			            				if(deletedDocument.type == 'currency' || deletedDocument.type == 'trading_name' || deletedDocument.type == 'space') {
+			            					if(change.doc.type == 'currency') {
+			            						window.plugins.toast.showShortTop("The currency " + deletedDocument.currency + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
+			            						log( "The currency " + deletedDocument.currency + " already exists!")
+			            					} else if (change.doc.type == 'trading_name') {
+			            						window.plugins.toast.showShortTop("The trading name " + deletedDocument.trading_name + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
+			            						log( "The trading name " + deletedDocument.trading_name + " already exists!")
+			            					} else if (change.doc.type == 'space') {
+			            						window.plugins.toast.showShortTop( "The space " + deletedDocument.space + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
+			            						log( "The space " + deletedDocument.space + " already exists!")
+			            					}
+			            					goCreateAccount( [ deletedDocument ] )
+			            				} else {
+			            					window.plugins.toast.showShortTop("Document " + change.doc._id + " Already Exists", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
+			            					log("Document " + change.doc._id + " Already Exists")
+			            				}
+			            			} )
+			    				}
+			    			} )
+		        		}
+		        	} )
+	    		} )
 	    	} )
 	    }
 	    
