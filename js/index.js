@@ -89,8 +89,8 @@ function onDeviceReady() {
     				var jsFunc = new Function("parameters",'return ' + State.data.pageFunction)();
     				var arguments = [];
     				log (" State Parameters:" + JSON.stringify( State.data.pageParameter ) )
-    				if (State.data.pageParameter && Object.prototype.toString.call( State.data.pageParameter ) === Object.prototype.toString.call( arguments ) ) {
-    					State.data.pageParameter.forEach( function( parameter ) {
+    				if (State.data.pageParameters && Object.prototype.toString.call( State.data.pageParameters ) === Object.prototype.toString.call( arguments ) ) {
+    					State.data.pageParameters.forEach( function( parameter ) {
     						if(typeof parameter === 'string' && parameter.indexOf("function") === 0){
     							//if the parameter is a function make it back into one.
     							arguments.push( new Function('return ' + parameter)() )
