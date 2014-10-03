@@ -3443,6 +3443,8 @@ function destroyBeamTag(cb) {
 		            log( "updated all tags", err, ok )
 		            cb( false , ok)
 		        } )
+		    } else {
+		    	cb(false)
 		    }
         })
     } )
