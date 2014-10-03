@@ -505,10 +505,11 @@ function setLoginLogoutButton() {
             	window.plugins.spinnerDialog.show();
                 goServerLogin( [ function(error) {
                 	
+                	log( "Login CallBack" )
                     $( ".openmoney-login" ).hide().off( "click" )
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
-                    //goIndex()
+                    goIndex([])
                     
                 } ] );
             } )
@@ -520,7 +521,7 @@ function setLoginLogoutButton() {
                     $( ".openmoney-login" ).hide().off( "click" );
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
-                    goIndex()
+                    goIndex([])
                 } )
             } )
         }
@@ -529,7 +530,7 @@ function setLoginLogoutButton() {
             $( "#content .openmoney-logout" ).show().click( function() {
             	window.plugins.spinnerDialog.show();
             	destroyBeamTag( function(error, ok) {
-            		if(error) { return logoutError( error ) }
+            		if(error) { log( JSON.stringify( error ) ) }
                     doServerLogout( function(error, data) {
                     	window.plugins.spinnerDialog.hide();
                         if (error) { return logoutError( error ) }
@@ -838,8 +839,6 @@ function goServerLogin(parameters) {
 		
 		processAjaxData( response, "login.html" )
 		
-		//drawContent( config.t.login() )
-		
 	}
 
     $( "#content .todo-index" ).click( function() {
@@ -868,8 +867,11 @@ function goServerLogin(parameters) {
         	window.plugins.spinnerDialog.hide();
         	
         	if(error) { callBack(error); return false;}
-        	History.back()
-            callBack(false)
+        	
+        	callBack(false)
+        	
+        	//History.back()
+            
         } )
     } )
 
