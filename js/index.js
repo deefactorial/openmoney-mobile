@@ -586,44 +586,44 @@ function setTabs() {
 
 function goList(parameters) {
 	
-	id = parameters[0]
+	var id = parameters.pop();
 	
-	window.dbChanged = function() {
-		window.plugins.spinnerDialog.show();
+	var pageTitle = "Account Details";
+	
+	if (currentpage != pageTitle){
+	
+		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
 		
-		var pageTitle = "Account Details";
-		
-		if (currentpage != pageTitle){
-		
-			var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
-			
-			processAjaxData( response, "account_details.html" )
-		}
-		
-		//drawContent( config.t.list( ) )
-        
-        $( "#content .todo-index" ).click( function() {
-            History.back()
-        } )
+		processAjaxData( response, "account_details.html" )
+	}
+	
+	//drawContent( config.t.list( ) )
+    
+    $( "#content .todo-index" ).click( function() {
+        History.back()
+    } )
 
-        setLoginLogoutButton();
+    setLoginLogoutButton();
 
-        setTabs()
+    setTabs()
 		
+    window.dbChanged = function() {
+    	
+    	window.plugins.spinnerDialog.show();
 	    config.db.get( id, function(err, doc) {
+	    	if(err) { return log( JSON.stringify( err ) ) }
 	        log( "Display Account Details:" + JSON.stringify( doc ) )
-        
+       
             config.views( [ "account_balance", {
                 startkey : [ id, {} ], endkey : [ id ], descending : true
             } ], function(err, view) {
-                log( "account_balance" + JSON.stringify( view ), view )
+            	window.plugins.spinnerDialog.hide();
+            	if(err) { return log( JSON.stringify( err ) ) }
+                log( "account_balance" + JSON.stringify( view ))
                 if (view.total_rows > 0)
                     doc.balance = view.rows[0].value;
-
-                //$( "#list-title" ).html( config.t.listTitle( doc ) );
                 
                 drawContainer( "#list-title",  config.t.listTitle( doc )  )
-                
                                 
                 var response = {
             		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
@@ -639,7 +639,7 @@ function goList(parameters) {
             config.views( [ "account_details", {
                 startkey : [ id, {} ], endkey : [ id ], descending : true
             } ], function(err, view) {
-            	
+            	if(err) { return log( JSON.stringify( err ) ) }
             	window.plugins.spinnerDialog.hide();
             	
             	view.rows.forEach(function(row){
@@ -653,10 +653,7 @@ function goList(parameters) {
             		row.value.timestamp = displayTime;
             	})
             	
-                log( "account_details" + JSON.stringify( view ), view )
-                
-                
-                //$( "#scrollable" ).html( config.t.listItems( view ) )
+                log( "account_details" + JSON.stringify( view ))
                 
                 drawContainer( "#scrollable", config.t.listItems( view ) )
                 
@@ -674,19 +671,11 @@ function goList(parameters) {
 		            		navigator.notification.alert( "From: " + row.value.from + "\nTo: " + row.value.to +"\nAmount: "+ row.value.amount + "\nDescription:" + row.value.description + "\nTime:" + row.value.timestamp, function() {  }, "Transaction Details:" , "OK")
 		            	}
 		            })
-		            
-		
 		        } )
-//                $( "#scrollable li" ).on( "swipeRight", function() {
-//                    var id = $( this ).attr( "data-id" )
-//                    $( this ).find( "button" ).show().click( function() {
-//                        deleteItem( id )
-//                    } )
-//                } )
             } )
     	} )
 	}
-    window.dbChanged()
+    window.dbChanged();
 }
 
 function deleteItem(id) {
