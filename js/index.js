@@ -453,7 +453,7 @@ function goIndex(parameters) {
                 rows : []
             }
             
-            if (typeof view.rows != 'undefined' && typeof config.user.name != 'undefined') {
+            if (typeof view.rows != 'undefined' && config.user != null) {
             	view.rows.forEach(function(row) {
             		row.key.steward.forEach(function(steward) {
             			if(steward == config.user.name)
@@ -500,7 +500,7 @@ function setLoginLogoutButton() {
     // offer the sign in screen to logged out users
     if (!config.user || !config.user.user_id) {
         if (SERVER_LOGIN) {
-            $( "#content .openmoney-login" ).show().click( function() {
+            $( "#content .openmoney-login" ).show().off( "click" ).click( function() {
             	log("go to login")
             	window.plugins.spinnerDialog.show();
                 goServerLogin( [ function(error) {
@@ -527,10 +527,10 @@ function setLoginLogoutButton() {
         }
     } else {
         if (SERVER_LOGIN) {
-            $( "#content .openmoney-logout" ).show().click( function() {
+            $( "#content .openmoney-logout" ).show().off( "click" ).click( function() {
             	window.plugins.spinnerDialog.show();
-            	destroyBeamTag( function(error, ok) {
-            		if(error) { log( JSON.stringify( error ) ) }
+            	destroyBeamTag( function(err, ok) {
+            		if(err) { log( JSON.stringify( err ) ) }
                     doServerLogout( function(error, data) {
                     	window.plugins.spinnerDialog.hide();
                         if (error) { return logoutError( error ) }
@@ -3201,7 +3201,7 @@ function doServerLogout(callBack) {
         if (error) { return callBack( error ) }
         config.setUser( null, function(error, ok) {
             log( "User is Set to Null" )
-            if (error) { return callBack( error ) }
+            if (error) { log( JSON.stringify( error ) ) }
             config.syncReference.cancelSync( function(error, ok) {
                 if (error) {
                     log( JSON.stringify( error ) )
@@ -3441,7 +3441,7 @@ function destroyBeamTag(cb) {
 		            docs : docs
 		        }, function(err, ok) {
 		            log( "updated all tags" + JSON.stringify( err ) + JSON.stringify( ok ) )
-		            cb( false , ok)
+		            cb( err , ok)
 		        } )
 		    } else {
 		    	cb(false)
