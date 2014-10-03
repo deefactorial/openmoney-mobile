@@ -232,7 +232,8 @@ function connectToChanges() {
 	        lastSeq = change.seq
 	    log( "change" + JSON.stringify( [ err, change ] ), err, change )
 	    
-	    if (change.doc._conflicts) {
+	    
+	    if (typeof change != 'undefined' && change.doc._conflicts) {
 	    	alert("Conflicting Document:" + JSON.stringify( change.doc ) )
 	    	var thisrev = [ change.doc._id, { "rev": change.doc._rev } ] ;
 	    	var thatrev = [ change.doc._id, { "rev": change.doc._conflicts[0] } ];
