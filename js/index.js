@@ -86,9 +86,9 @@ function onDeviceReady() {
     			
     			if (State.data.pageFunction && (typeof State.data.pageFunction === 'string') && State.data.pageFunction.indexOf("function") === 0) {
     				//this makes the function back into a function from a string.
-    				var jsFunc = new Function('return ' + State.data.pageFunction)();
+    				var jsFunc = new Function("parameters",'return ' + State.data.pageFunction)();
     				var arguments = [];
-    				if (State.data.pageParameter && (typeof State.data.pageParameter === 'Array') ) {
+    				if (State.data.pageParameter && Object.prototype.toString.call( State.data.pageParameter ) === '[object Array]' ) {
     					State.data.pageParameter.forEach(function(parameter){
     						if(typeof parameter === 'string' && parameter.indexOf("function") === 0){
     							//if the parameter is a function make it back into one.
