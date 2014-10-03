@@ -239,6 +239,7 @@ function connectToChanges() {
 	    
 	    if (typeof change != 'undefined' && change.doc._conflicts) {
 	    	window.plugins.toast.showShortTop("Conflicting Document:" + JSON.stringify( change.doc ) , function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
+	    	log ("Conflicting Document:" + JSON.stringify( change.doc ))
 	    	var thisrev = [ change.doc._id, { "rev": change.doc._rev } ] ;
 	    	var thatrev = [ change.doc._id, { "rev": change.doc._conflicts[0] } ];
 	    	config.db.get( thisrev, function(error, thisdoc) {
@@ -294,18 +295,18 @@ function connectToChanges() {
 		            				if(deletedDocument.type == 'currency' || deletedDocument.type == 'trading_name' || deletedDocument.type == 'space') {
 		            					if(change.doc.type == 'currency') {
 		            						window.plugins.toast.showShortTop("The currency " + deletedDocument.currency + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
-		            						//alert( "The currency " + deletedDocument.currency + " already exists!")
+		            						log( "The currency " + deletedDocument.currency + " already exists!")
 		            					} else if (change.doc.type == 'trading_name') {
 		            						window.plugins.toast.showShortTop("The trading name " + deletedDocument.trading_name + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
-		            						//alert( "The trading name " + deletedDocument.trading_name + " already exists!")
+		            						log( "The trading name " + deletedDocument.trading_name + " already exists!")
 		            					} else if (change.doc.type == 'space') {
 		            						window.plugins.toast.showShortTop( "The space " + deletedDocument.space + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
-		            						//alert( "The space " + deletedDocument.space + " already exists!")
+		            						log( "The space " + deletedDocument.space + " already exists!")
 		            					}
 		            					goCreateAccount( [ deletedDocument ] )
 		            				} else {
 		            					window.plugins.toast.showShortTop("Document " + change.doc._id + " Already Exists", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
-		            					//alert("Document " + change.doc._id + " Already Exists")
+		            					log("Document " + change.doc._id + " Already Exists")
 		            				}
 		            			} )
 		    				}
