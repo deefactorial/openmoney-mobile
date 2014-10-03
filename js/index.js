@@ -534,7 +534,7 @@ function setLoginLogoutButton() {
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" )
-                        navigator.notification.alert( "You are now logged out!" , function () { goIndex()  }, "Logged out", "OK")
+                        navigator.notification.alert( "You are now logged out!" , function () { goIndex([])  }, "Logged out", "OK")
                     } )
             	} )
             } )
@@ -547,7 +547,7 @@ function setLoginLogoutButton() {
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" );
-                        navigator.notification.alert( "You are now logged out!" , function () { goIndex() }, "Logged out", "OK")
+                        navigator.notification.alert( "You are now logged out!" , function () { goIndex([]) }, "Logged out", "OK")
                         
                     } )
                 } else {
@@ -565,15 +565,15 @@ function setLoginLogoutButton() {
 function setTabs() {
     $( "#content .om-accounts" ).click( function() {
     	log("go Index")
-    	goIndex()
+    	goIndex([])
     } )
 
     $( "#content .om-payments" ).click( function() {
-        goPayment()
+        goPayment([])
     } )
 
     $( "#content .om-settings" ).click( function() {
-        goSettings()
+        goSettings([])
     } )
 }
 
@@ -1279,7 +1279,7 @@ function goCreateAccount(parameters) {
                             $( "#content form input[name='trading_name']" ).val( "" ) // Clear
                             $( "#content form input[name='currency']" ).val( "" ) // Clear                            
                         
-                            navigator.notification.alert( "You successfully created a new trading name!" , function() { window.plugins.spinnerDialog.show(); History.back() }, "New Trading Name", "OK")
+                            navigator.notification.alert( "You successfully created a new trading name!" , function() { History.back() }, "New Trading Name", "OK")
                             
                         } )                        	
                     	
@@ -1320,7 +1320,7 @@ function goCreateAccount(parameters) {
                                 return alert( JSON.stringify( error ) )
                         	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
                             
-                            navigator.notification.alert( "You successfully created a new currency !" , function() { window.plugins.spinnerDialog.show(); History.back() }, "New Currency", "OK")
+                            navigator.notification.alert( "You successfully created a new currency !" , function() { History.back() }, "New Currency", "OK")
                         } )
 
                         if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
@@ -1370,7 +1370,7 @@ function goCreateAccount(parameters) {
                             if (error)
                                 return alert( JSON.stringify( error ) )
                             $( "#content form input[name='space']" ).val( "" ) // Clear
-                            navigator.notification.alert( "You successfully created a new space !" , function() { window.plugins.spinnerDialog.show(); History.back() }, "New Space", "OK")
+                            navigator.notification.alert( "You successfully created a new space !" , function() { History.back() }, "New Space", "OK")
                         } )
                         
                         var name = doc.space + " Currency";
@@ -1589,7 +1589,7 @@ function goTradingName(parameters) {
                             $( "#content form input[name='trading_name']" ).val( "" ) // Clear
                             $( "#content form input[name='currency']" ).val( "" ) // Clear                            
                         
-                            navigator.notification.alert( "You successfully created a new trading name !" , function() { window.plugins.spinnerDialog.show(); goIndex() }, "New Trading Name", "OK")
+                            navigator.notification.alert( "You successfully created a new trading name !" , function() { goIndex([]) }, "New Trading Name", "OK")
                             
                         } )
                         
@@ -1613,6 +1613,7 @@ function goTradingName(parameters) {
  */
 
 function goCurrency(parameters) {
+	
     window.dbChanged = function() { }
     
     window.plugins.spinnerDialog.show();
@@ -2576,7 +2577,7 @@ function goPayment(parameters) {
                                     $( "#content form input[name='to']" ).val( "" ) // Clear
                                     $( "#content form input[name='amount']" ).val( "" ) // Clear
                                     $( "#content form textarea" ).val( "" ) // Clear
-                                    navigator.notification.alert( "You successfully made a payment !"  , function() { goList( "trading_name," + doc.from + "," + doc.currency )}, "Success", "OK")
+                                    navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from + "," + doc.currency ] ); }, "Success", "OK")
                                     
                                     
                                 } )
@@ -2728,7 +2729,7 @@ function goTagPayment(parameters) {
                                     $( "#content form textarea" ).val( "" ) // Clear
                                     navigator.notification.alert( "You successfully made a payment !"  , function() {  }, "Exists", "OK")
                                     
-                                    goList( "trading_name," + doc.from + "," + doc.currency )
+                                    goList( [ "trading_name," + doc.from + "," + doc.currency ] )
                                 } )
                             } else {
                                 alert( "Error: ".JSON.stringify( error ) )
@@ -2937,7 +2938,7 @@ function goMerchantPayment(parameters) {
                                                     navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
                                                     
 
-                                                    goList( "trading_name," + doc.to + "," + doc.currency )
+                                                    goList( [ "trading_name," + doc.to + "," + doc.currency ] )
                                                 } )
                                             } else {
                                                 alert( "Error: ".JSON.stringify( error ) )
@@ -3027,7 +3028,7 @@ function goMerchantPayment(parameters) {
                                             }, function() {
                                                 // failure callback
                                             } );
-                                            navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( "trading_name," + doc.to + "," + doc.currency ) }, "Successful", "OK")
+                                            navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( [ "trading_name," + doc.to + "," + doc.currency ] ); }, "Successful", "OK")
                                             
                                             
                                         } )
