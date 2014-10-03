@@ -1219,7 +1219,7 @@ function goCreateAccount(parameters) {
 	
 	if (currentpage != pageTitle) {
     
-		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc.toJSON() ]  } ;
+		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ JSON.parse( JSON.stringify(doc) ) ]  } ;
 		
 		processAjaxData( response, "create.html" )
 		
