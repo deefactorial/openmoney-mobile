@@ -835,11 +835,11 @@ function goServerLogin(parameters) {
     } )
 
     $( "#content .todo-register" ).off("click").click( function() {
-        goServerRegistration( [ ] )
+        goServerRegistration( [ function() { callBack(false) } ] )
     } )
 
     $( "#content .todo-lost" ).off("click").click( function() {
-        goLostPassword( [ ] )
+        goLostPassword( [ function() { callBack(false) } ] )
     } )
 
     $( "#content form" ).off("submit").submit( function(e) {
@@ -874,6 +874,7 @@ function goServerLogin(parameters) {
 
 function goServerRegistration(parameters) {
 	
+	callBack = parameters.pop();
 	
     window.dbChanged = function() {
     }
@@ -882,7 +883,7 @@ function goServerRegistration(parameters) {
 	
 	if (History.getState().data.pageTite != pageTitle) {
     
-		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : goServerRegistration.toString(), "pageParameters" : [ ]  }
+		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : goServerRegistration.toString(), "pageParameters" : [ callBack.toString() ]  }
 		
 		processAjaxData( response, "registration.html" )
 		
@@ -912,7 +913,7 @@ function goServerRegistration(parameters) {
             $( "#content form input[name='password']" ).val( "" ) // Clear
             // password
             // Login Success
-            History.go(-2)
+            callBack();
         } )
     } )
 }
@@ -950,11 +951,13 @@ function doRegistration(callBack) {
 
 function goLostPassword(parameters) {
 	
+	callBack = parameters.pop();
+	
     var pageTitle = "Lost";
 	
 	if (History.getState().data.pageTite != pageTitle) {
 	
-		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : goLostPassword.toString(), "pageParameters" : [ ]  }
+		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : goLostPassword.toString(), "pageParameters" : [ callBack.toString() ]  }
 		
 		processAjaxData( response, "lost.html" )
 		
@@ -979,7 +982,7 @@ function goLostPassword(parameters) {
         	window.plugins.spinnerDialog.hide();
             if (error) { return alert( error.msg ) }
             $( "#content form input[name='email']" ).val( "" ) // Clear email
-            navigator.notification.alert( "A password reset token has been emailed to you!" , function() { History.go(-2) }, "Reset Token Emailed", "OK")
+            navigator.notification.alert( "A password reset token has been emailed to you!" , function() { callBack(); }, "Reset Token Emailed", "OK")
             
         } )
     } )
