@@ -87,22 +87,22 @@ function onDeviceReady() {
     			if (State.data.pageFunction && (typeof State.data.pageFunction === 'string') && State.data.pageFunction.indexOf("function") === 0) {
     				//this makes the function back into a function from a string.
     				var jsFunc = new Function("parameters",'return ' + State.data.pageFunction)();
-    				var arguments = new Array();
+    				var args = new Array();
     				
-    				if (State.data.pageParameters && Object.prototype.toString.call( State.data.pageParameters ) === Object.prototype.toString.call( arguments ) ) {
+    				if (State.data.pageParameters && Object.prototype.toString.call( State.data.pageParameters ) === Object.prototype.toString.call( [] ) ) {
     					log (" State Parameters:" + JSON.stringify( State.data.pageParameters ) )
     					State.data.pageParameters.forEach( function( parameter ) {
     						log("Parameter:" + JSON.stringify( parameter ) )
     						if(typeof parameter === 'string' && parameter.indexOf("function") === 0){
     							//if the parameter is a function make it back into one.
-    							arguments.push( new Function('return ' + parameter)() );
+    							args.push( new Function('return ' + parameter)() );
     						} else {
-    							arguments.push( parameter );
+    							args.push( parameter );
     						}
     					} )
     				}
     				//call the function with the arguments
-    				jsFunc(arguments);
+    				jsFunc(args);
     			}
     			
     		}
