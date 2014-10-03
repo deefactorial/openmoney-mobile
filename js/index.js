@@ -453,7 +453,7 @@ function goIndex(parameters) {
                 rows : []
             }
             
-            if (typeof view.rows != 'undefined') {
+            if (typeof view.rows != 'undefined' && typeof config.user.name != 'undefined') {
             	view.rows.forEach(function(row) {
             		row.key.steward.forEach(function(steward) {
             			if(steward == config.user.name)
@@ -3440,7 +3440,7 @@ function destroyBeamTag(cb) {
 	        			deleteDoc = false;
 	        		}
 	        	})
-	        	if (deleteDoc) {
+	        	if (deleteDoc && tag.doc._deleted == false) {
 	        		tag.doc._deleted = true;
 	        		docs.push(tag.doc)
 	        	}
