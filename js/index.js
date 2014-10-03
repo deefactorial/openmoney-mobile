@@ -91,7 +91,6 @@ function onDeviceReady() {
     				
     				if (State.data.pageParameters && Object.prototype.toString.call( State.data.pageParameters ) === Object.prototype.toString.call( [] ) ) {
     					log (" State Parameters:" + JSON.stringify( State.data.pageParameters ) )
-    					log (" Arguments:" + JSON.stringify( args ) )
     					State.data.pageParameters.forEach( function( parameter ) {
     						log("Parameter:" + JSON.stringify( parameter ) )
     						if(typeof parameter === 'string' && parameter.indexOf("function") === 0){
@@ -101,6 +100,7 @@ function onDeviceReady() {
     							args.push( parameter );
     						}
     					} )
+    					log (" Arguments:" + JSON.stringify( args ) )
     				}
     				//call the function with the arguments
     				jsFunc(args);
@@ -835,11 +835,11 @@ function goServerLogin(parameters) {
     } )
 
     $( "#content .todo-register" ).off("click").click( function() {
-        goServerRegistration( [ callBack.toString() ] )
+        goServerRegistration( [ callBack ] )
     } )
 
     $( "#content .todo-lost" ).off("click").click( function() {
-        goLostPassword( [ callBack.toString() ] )
+        goLostPassword( [ callBack ] )
     } )
 
     $( "#content form" ).off("submit").submit( function(e) {
