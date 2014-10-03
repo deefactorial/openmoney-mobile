@@ -1035,7 +1035,7 @@ function goSettings(parameters) {
 	
 	if (currentpage != pageTitle) {
 		
-		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : goSettings, "pageParameters" : [] }
+		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : goSettings.toString(), "pageParameters" : [] }
 		
 		processAjaxData( response, "settings.html" )
 		
