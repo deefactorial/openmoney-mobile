@@ -1333,7 +1333,7 @@ function goCreateAccount(parameters) {
 	                                return alert( JSON.stringify( error ) )
 	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
 	                            
-	                            navigator.notification.alert( "You successfully created a new currency !" , function() { History.back() }, "New Currency", "OK")
+	                            History.back() 
 	                        } )
 	
 	                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
