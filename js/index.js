@@ -87,7 +87,7 @@ function onDeviceReady() {
     			if (State.data.pageFunction && (typeof State.data.pageFunction === 'string') && State.data.pageFunction.indexOf("function") === 0) {
     				//this makes the function back into a function from a string.
     				var jsFunc = new Function("parameters",'return ' + State.data.pageFunction)();
-    				var arguments = [];
+    				var arguments = new Array();
     				
     				if (State.data.pageParameters && Object.prototype.toString.call( State.data.pageParameters ) === Object.prototype.toString.call( arguments ) ) {
     					log (" State Parameters:" + JSON.stringify( State.data.pageParameters ) )
