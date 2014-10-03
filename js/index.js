@@ -238,7 +238,7 @@ function connectToChanges() {
 	    
 	    
 	    if (typeof change != 'undefined' && change.doc._conflicts) {
-	    	alert("Conflicting Document:" + JSON.stringify( change.doc ) )
+	    	window.plugins.toast.showShortTop("Conflicting Document:" + JSON.stringify( change.doc ) , function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
 	    	var thisrev = [ change.doc._id, { "rev": change.doc._rev } ] ;
 	    	var thatrev = [ change.doc._id, { "rev": change.doc._conflicts[0] } ];
 	    	config.db.get( thisrev, function(error, thisdoc) {
@@ -282,23 +282,28 @@ function connectToChanges() {
 		        		//find the me in steward.
 		        		deletedDocument.steward.forEach(function(steward) {
 		    				if(steward == config.user.name) {
-		    					alert("DELETE document:" + JSON.stringify(deletedDocument) )
+		    					log( "DELETE document:" + JSON.stringify(deletedDocument) )
+		    					
 		    					//commit the tombstone change
 		    					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
 		    						if(error) {
 		    							alert("could not delete doc:" + JSON.stringify(error))
 		    						}
-		            				if(change.doc.type == 'currency' || change.doc.type == 'trading_name' || change.doc.type == 'space') {
+		            				if(deletedDocument.type == 'currency' || deletedDocument.type == 'trading_name' || deletedDocument.type == 'space') {
 		            					if(change.doc.type == 'currency') {
-		            						alert( "The currency " + deletedDocument.currency + " already exists!")
+		            						window.plugins.toast.showShortTop("The currency " + deletedDocument.currency + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
+		            						//alert( "The currency " + deletedDocument.currency + " already exists!")
 		            					} else if (change.doc.type == 'trading_name') {
-		            						alert( "The trading name " + deletedDocument.trading_name + " already exists!")
+		            						window.plugins.toast.showShortTop("The trading name " + deletedDocument.trading_name + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
+		            						//alert( "The trading name " + deletedDocument.trading_name + " already exists!")
 		            					} else if (change.doc.type == 'space') {
-		            						alert( "The space " + deletedDocument.space + " already exists!")
+		            						window.plugins.toast.showShortTop( "The space " + deletedDocument.space + " already exists!", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
+		            						//alert( "The space " + deletedDocument.space + " already exists!")
 		            					}
 		            					goCreateAccount(deletedDocument)
 		            				} else {
-		            					alert("Document " + change.doc._id + " Already Exists")
+		            					window.plugins.toast.showShortTop("Document " + change.doc._id + " Already Exists", function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
+		            					//alert("Document " + change.doc._id + " Already Exists")
 		            				}
 		            			} )
 		    				}
@@ -1389,7 +1394,7 @@ function goCreateAccount(parameters) {
         	
         }            
         
-        alert(JSON.stringify(doc))
+        //alert(JSON.stringify(doc))
         
     } )
     
