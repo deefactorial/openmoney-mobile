@@ -540,10 +540,10 @@ function setLoginLogoutButton() {
             	destroyBeamTag( function(err, ok) {
             		if(err) { log( JSON.stringify( err ) ) }
                     doServerLogout( function(error, data) {
-                    	window.plugins.spinnerDialog.hide();
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" )
+                        window.plugins.spinnerDialog.hide();
                         navigator.notification.alert( "You are now logged out!" , function () { goIndex([])  }, "Logged out", "OK")
                     } )
             	} )
@@ -553,10 +553,11 @@ function setLoginLogoutButton() {
                 if (config.user && config.user.access_token) {
                 	window.plugins.spinnerDialog.show();
                     doFacebookLogout( config.user.access_token, function(error, data) {
-                    	window.plugins.spinnerDialog.hide();
+                    	
                         if (error) { return logoutError( error ) }
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" );
+                        window.plugins.spinnerDialog.hide();
                         navigator.notification.alert( "You are now logged out!" , function () { goIndex([]) }, "Logged out", "OK")
                         
                     } )
@@ -3520,7 +3521,7 @@ function createBeamTag(cb) {
             log( "Error: " + JSON.stringify( error ) )
             if (error.status == 404) {
                 // doc does not exists
-                config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
+                config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, JSON.parse( JSON.stringify( beamData ) ), cb )
             } else {
                 alert( " Error Posting Beam Tag:" + JSON.stringify( error ) )
             }

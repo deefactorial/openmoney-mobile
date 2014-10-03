@@ -282,7 +282,7 @@
                 } else if (doc.type == "beamtag") {                  
                     //var username = index.substring(0,index.indexOf(",")) ;
                     //var beamTag = index.substring( index.indexOf( "," ) + 1 );
-                    if (!doc.username || !doc.beamTag || !doc.type || !doc.created) {
+                    if (!doc.username || !doc.hashTag || !doc.type || !doc.created) {
                         throw({forbidden: "Missing required properties"});
                     }
                     channel(doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
@@ -292,7 +292,7 @@
                         if (doc._deleted) {
                             requireUser(olddoc.username);
                         } else {
-                            if (!doc.username || !doc.beamTag || !doc.type || !doc.created) {
+                            if (!doc.username || !doc.hashTag || !doc.type || !doc.created) {
                                 throw( { forbidden: "Missing required properties" } );
                             } 
                             requireUser(olddoc.username);
