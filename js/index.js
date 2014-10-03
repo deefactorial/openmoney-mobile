@@ -477,6 +477,7 @@ function goIndex(parameters) {
             updateAjaxData( response, "index.html" )
             
                 // If you click a list,
+            $( "#scrollable" ).off( "click", "li")
 		    $( "#scrollable" ).on( "click", "li", function() {
 		        var id = $( this ).attr( "data-id" );
 		        goList( [ id ] )
@@ -565,16 +566,16 @@ function setLoginLogoutButton() {
  */
 
 function setTabs() {
-    $( "#content .om-accounts" ).click( function() {
+    $( "#content .om-accounts" ).off("click").click( function() {
     	log("go Index")
     	goIndex([])
     } )
 
-    $( "#content .om-payments" ).click( function() {
+    $( "#content .om-payments" ).off("click").click( function() {
         goPayment([])
     } )
 
-    $( "#content .om-settings" ).click( function() {
+    $( "#content .om-settings" ).off("click").click( function() {
         goSettings([])
     } )
 }
@@ -599,7 +600,7 @@ function goList(parameters) {
 	
 	//drawContent( config.t.list( ) )
     
-    $( "#content .todo-index" ).click( function() {
+    $( "#content .todo-index" ).off("click").click( function() {
         History.back()
     } )
 
@@ -817,8 +818,7 @@ function goServerLogin(parameters) {
 	
 	callBack = parameters[0];
 	
-    window.dbChanged = function() {
-    }
+    window.dbChanged = function() { };
     
 	var pageTitle = "Login";
 	
@@ -830,19 +830,19 @@ function goServerLogin(parameters) {
 		
 	}
 
-    $( "#content .todo-index" ).click( function() {
+    $( "#content .todo-index" ).off("click").click( function() {
         History.back()
     } )
 
-    $( "#content .todo-register" ).click( function() {
+    $( "#content .todo-register" ).off("click").click( function() {
         goServerRegistration( [ ] )
     } )
 
-    $( "#content .todo-lost" ).click( function() {
+    $( "#content .todo-lost" ).off("click").click( function() {
         goLostPassword( [ ] )
     } )
 
-    $( "#content form" ).submit( function(e) {
+    $( "#content form" ).off("submit").submit( function(e) {
         e.preventDefault()
         
         window.plugins.spinnerDialog.show();
@@ -890,11 +890,11 @@ function goServerRegistration(parameters) {
 
     //drawContent( config.t.register() )
     
-    $( "#content .todo-index" ).click( function() {
+    $( "#content .todo-index" ).off("click").click( function() {
         History.back()
     } )
 
-    $( "#content form" ).submit( function(e) {
+    $( "#content form" ).off("submit").submit( function(e) {
         e.preventDefault()
         
         window.plugins.spinnerDialog.show();
@@ -962,11 +962,11 @@ function goLostPassword(parameters) {
 	
     //drawContent( config.t.lost() )
     
-    $( "#content .todo-index" ).click( function() {
+    $( "#content .todo-index" ).off("click").click( function() {
     	History.back();
     } )
 
-    $( "#content form" ).submit( function(e) {
+    $( "#content form" ).off("submit").submit( function(e) {
         e.preventDefault()
         
         window.plugins.spinnerDialog.show();
@@ -1035,7 +1035,7 @@ function goSettings(parameters) {
 	}
 	
 
-    $( "#content .om-index" ).click( function() {
+    $( "#content .om-index" ).off("click").click( function() {
         History.back()
     } )
 
@@ -1043,41 +1043,41 @@ function goSettings(parameters) {
 
     setTabs()
 
-    $( "#content .om-manage_accounts" ).click( function() {
+    $( "#content .om-manage_accounts" ).off("click").click( function() {
     
         goManageAccounts([])
     } )
     
-    $( "#content .om-trading_name" ).click( function() {
+    $( "#content .om-trading_name" ).off("click").click( function() {
     
         goTradingName([])
     } )
 
-    $( "#content .om-currency" ).click( function() {
+    $( "#content .om-currency" ).off("click").click( function() {
 
         goCurrency([])
     } )
     
-    $( "#content .om-space" ).click( function() {
+    $( "#content .om-space" ).off("click").click( function() {
     
         goSpace([])
     } )
 
-    $( "#content .om-export_transactions" ).click( function() {
+    $( "#content .om-export_transactions" ).off("click").click( function() {
   
         goExportTransactions([])
     } )
 
-    $( "#content .om-server" ).click( function() {
+    $( "#content .om-server" ).off("click").click( function() {
  
         goServer([])
     } )
 
-    $( "#content .om-profile" ).click( function() {
+    $( "#content .om-profile" ).off("click").click( function() {
         goProfile([])
     } )
 
-    $( "#content .om-manage_nfc" ).click( function() {
+    $( "#content .om-manage_nfc" ).off("click").click( function() {
         goManageNFC([])
     } )
     
@@ -1104,13 +1104,13 @@ function goManageAccounts(parameters) {
 		
 	}
 
-    $( "#content .om-index" ).click( function() {
+    $( "#content .om-index" ).off("click").click( function() {
         History.back()
     } )
 
     setTabs()
     
-    $( "#content .om-create" ).click( function() {
+    $( "#content .om-create" ).off("click").click( function() {
         goCreateAccount( {} )
     } )
 	
@@ -1235,13 +1235,13 @@ function goCreateAccount(parameters) {
 
 	
 
-    $( "#content .om-index" ).click( function() {
+    $( "#content .om-index" ).off("click").click( function() {
         History.back()
     } )
 
     setTabs()
     
-    $( "#content form" ).submit( function(e) {
+    $( "#content form" ).off("submit").submit( function(e) {
         e.preventDefault()
         var doc = jsonform( this );
         doc.created = new Date().getTime();
@@ -1396,7 +1396,7 @@ function goCreateAccount(parameters) {
         
     } )
     
-    $( "#content select#type" ).change( function () {
+    $( "#content select#type" ).off("change").change( function () {
     	
     	var type = this.value;
     	
@@ -1427,7 +1427,7 @@ function goCreateAccount(parameters) {
 	                    
 	                    spaces = true;
 	                    
-	                    $( "#content input[name='add']" ).click( function() {
+	                    $( "#content input[name='add']" ).off("click").click( function() {
 	                        goAddCurrency([])
 	                    } )
 	                    
@@ -1493,13 +1493,13 @@ function goAddCurrency(parameters) {
 		
 	}
 	
-	$( "#content .om-index" ).click( function() {
+	$( "#content .om-index" ).off("click").click( function() {
 		History.back();
     } )
 
     setTabs()
     
-    $( "#content form" ).submit( function(e) {
+    $( "#content form" ).off("submit").submit( function(e) {
 	    e.preventDefault()
 	    var doc = jsonform( this );
 	    doc.type = "currency_view";
@@ -1545,16 +1545,14 @@ function goTradingName(parameters) {
     		processAjaxData( response, "join_currency.html" )
     		
     	}
-
-        drawContent( config.t.trading_name( view ) )
         
-        $( "#content .om-index" ).click( function() {
+        $( "#content .om-index" ).off("click").click( function() {
             History.back()
         } )
 
         setTabs()
 
-        $( "#content form" ).submit( function(e) {
+        $( "#content form" ).off("submit").submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this );
             doc.type = "trading_name";
@@ -1638,7 +1636,7 @@ function goCurrency(parameters) {
         	}
             
 	
-	        $( "#content .om-index" ).click( function() {
+	        $( "#content .om-index" ).off("click").click( function() {
 	        	
 	            History.back()
 	        } )
@@ -1647,7 +1645,7 @@ function goCurrency(parameters) {
 	        
 	       
 	
-	        $( "#content form" ).submit( function(e) {
+	        $( "#content form" ).off("submit").submit( function(e) {
 	            e.preventDefault()
 	            var doc = jsonform( this )
 	            
@@ -1732,7 +1730,7 @@ function goProfile(parameters) {
 		
 	}
 
-    $( "#content .om-index" ).click( function() {
+    $( "#content .om-index" ).off("click").click( function() {
     	History.back()
     } )
 
@@ -1767,14 +1765,14 @@ function goSpace(parameters) {
     	}
         
 
-        $( "#content .om-index" ).click( function() {
+        $( "#content .om-index" ).off("click").click( function() {
         	
             History.back();
         } )
 
         setTabs()
 
-        $( "#content form" ).submit( function(e) {
+        $( "#content form" ).off("submit").submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
             
@@ -1852,7 +1850,7 @@ function goServer(parameters) {
 		
 	}
 
-    $( "#content .om-index" ).click( function() {
+    $( "#content .om-index" ).off("click").click( function() {
     	History.back()
     } )
 
@@ -1876,7 +1874,7 @@ function goExportTransactions(parameters) {
 		
 	}
 
-    $( "#content .om-index" ).click( function() {
+    $( "#content .om-index" ).off("click").click( function() {
     	History.back()
     } )
 
@@ -1911,11 +1909,11 @@ function goManageNFC(parameters) {
 				
 			}
 
-            $( "#content .om-index" ).click( function() {
+            $( "#content .om-index" ).off("click").click( function() {
                 History.back()
             } )
 
-            $( "#content .om-erase_nfc" ).click( function() {
+            $( "#content .om-erase_nfc" ).off("click").click( function() {
                 
                 nfc.removeMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
                     // success callback
@@ -1989,16 +1987,16 @@ function goManageNFC(parameters) {
             	
             } )
             
-            $( "#content .om-new_nfc" ).click( function() {
+            $( "#content .om-new_nfc" ).off("click").click( function() {
                 goNewNFC([])
             } )
 
-            $( "#scrollable li.nfc_item" ).click( function() {
+            $( "#scrollable li.nfc_item" ).off("click").click( function() {
                 var id = $( this ).attr( "data-id" )
                 goEditNFC( [ id ] )
             } )
 
-            $( "#scrollable li.nfc_item" ).on( "swipeRight", function() {
+            $( "#scrollable li.nfc_item" ).off("swipeRight").on( "swipeRight", function() {
 
                 var id = $( this ).attr( "data-id" ), listItem = this;
                 isTagArchived( id, function(error, result) {
@@ -2143,7 +2141,7 @@ function goNewNFC(parameters) {
 				
 			}
 
-            $( "#content .om-index" ).click( function() {
+            $( "#content .om-index" ).off("click").click( function() {
             	if(typeof newTagListner != 'undefined') {
             		 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
             	}
@@ -2151,7 +2149,7 @@ function goNewNFC(parameters) {
                 History.back();
             } )
 
-            $( "#content form" ).submit( function(e) {
+            $( "#content form" ).off("submit").submit( function(e) {
                 e.preventDefault()
                 var doc = jsonform( this )
                 
@@ -2309,11 +2307,11 @@ function goEditNFC(parameters) {
 		}
 
 
-        $( "#content .om-index" ).click( function() {
+        $( "#content .om-index" ).off("click").click( function() {
             History.back();
         } )
 
-        $( "#content form" ).submit( function(e) {
+        $( "#content form" ).off("submit").submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
             
@@ -2480,7 +2478,7 @@ function insertTagInDB(tag) {
 
 function goPayment(parameters) {
 	
-    window.dbChanged = function() { }
+    window.dbChanged = function() {};
     
     window.plugins.spinnerDialog.show();
     config.views( [ "accounts", {
@@ -2519,7 +2517,7 @@ function goPayment(parameters) {
 			
 		}
 
-        $( "#content .om-index" ).click( function() {
+        $( "#content .om-index" ).off("click").click( function() {
             History.back()
         } )
 
@@ -2529,7 +2527,7 @@ function goPayment(parameters) {
 
         setModes()
         
-        $( "#content form" ).submit( function(e) {
+        $( "#content form" ).off("submit").submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
             doc.type = "trading_name_journal"
@@ -2593,11 +2591,11 @@ function goPayment(parameters) {
  */
 
 function setModes() {
-    $( "#content .om-personal" ).click( function() {
+    $( "#content .om-personal" ).off("click").click( function() {
         goPayment([])
     } )
 
-    $( "#content .om-merchant" ).click( function() {
+    $( "#content .om-merchant" ).off("click").click( function() {
         goMerchantPayment([])
     } )
 }
@@ -2665,7 +2663,7 @@ function goTagPayment(parameters) {
 		}
         
 
-        $( "#content .om-index" ).click( function() {
+        $( "#content .om-index" ).off("click").click( function() {
             History.back()
         } )
 
@@ -2677,7 +2675,7 @@ function goTagPayment(parameters) {
 
         
         
-        $( "#content form" ).submit( function(e) {
+        $( "#content form" ).off("submit").submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
             doc.type = "trading_name_journal"
@@ -2824,7 +2822,7 @@ function goMerchantPayment(parameters) {
 			
 		}
 
-        $( "#content .om-index" ).click( function() {
+        $( "#content .om-index" ).off("click").click( function() {
             History.back();
         } )
 
@@ -2834,7 +2832,7 @@ function goMerchantPayment(parameters) {
 
         setModes()
 
-        $( "#content form" ).submit( function(e) {
+        $( "#content form" ).off("submit").submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
             doc.type = "trading_name_journal"
@@ -2959,7 +2957,7 @@ function goMerchantPayment(parameters) {
                     "amount" : doc.amount, "currency" : doc.currency
                 } ) )
 
-                $( "#content form" ).submit( function(e) {
+                $( "#content form" ).off("submit").submit( function(e) {
                     e.preventDefault()
                     var customer = jsonform( this )
 
