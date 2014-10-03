@@ -1209,7 +1209,7 @@ function goManageAccounts(parameters) {
 
 function goCreateAccount(parameters) {
 	
-	var doc = parmeters.pop();
+	var doc = parameters.pop();
 	
 	window.dbChanged = function() {	
 	}
