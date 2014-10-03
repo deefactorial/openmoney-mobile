@@ -1194,7 +1194,7 @@ function goManageAccounts(parameters) {
 
 function goCreateAccount(parameters) {
 	
-	log ("goCreateAccount(" + JSON.stringigy(parameters) + ")")
+	log ("goCreateAccount(" + JSON.stringify(parameters) + ")")
 	
 	var doc = parameters.pop();
 	
