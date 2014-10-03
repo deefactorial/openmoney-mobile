@@ -1115,7 +1115,7 @@ function goManageAccounts(parameters) {
     } )
 	
     window.dbChanged = function() {
-		
+    	window.plugins.spinnerDialog.show();
 		var accounts = false, currencies = false, spaces = false;
 		
     	config.views( [ "accounts", {
