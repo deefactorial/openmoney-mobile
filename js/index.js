@@ -1194,6 +1194,8 @@ function goManageAccounts(parameters) {
 
 function goCreateAccount(parameters) {
 	
+	log ("goCreateAccount(" + JSON.stringigy(parameters) + ")")
+	
 	var doc = parameters.pop();
 	
 	window.dbChanged = function() { };
