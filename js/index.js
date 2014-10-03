@@ -3413,12 +3413,12 @@ function destroyBeamTag(cb) {
         startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true, include_docs : true
     } ], function(error, userTags) {
         if (error) { return cb( error ) }
-        
+        log( "User Tags :" + JSON.stringify( userTags ) )
         config.views( [ "account_details", {
            descending : true, include_docs : true
         } ], function(error, transactions) {
         	if (error) { return cb( error ) }
-        	
+        	log( "transactions :" + JSON.stringify( transactions ) )
 	        var docs = [];
 	        userTags.rows.forEach( function(tag) {
 	        	//check if tag has been used in a transaction.
