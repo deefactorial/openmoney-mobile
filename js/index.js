@@ -386,7 +386,7 @@ function drawContainer(id, html) {
 
 function processAjaxData(response, urlPath) {
 	
-	log ("set page " + urlPath + " : " + JSON.stringify( response ))
+	log ("set page " + urlPath )
 	
 	drawContent( response.html );
 
