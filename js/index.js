@@ -1219,7 +1219,7 @@ function goCreateAccount(parameters) {
 	
 	if (currentpage != pageTitle) {
     
-		var response = JSON.parse( JSON.stringify( { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc ]  } ) );
+		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc.toJSON() ]  } ;
 		
 		processAjaxData( response, "create.html" )
 		
@@ -1459,7 +1459,7 @@ function goCreateAccount(parameters) {
     	}
         
         var response = {
-			"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc ]
+			"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc.toJSON() ]
 	    }
 	
 	    updateAjaxData( response , "create.html")
