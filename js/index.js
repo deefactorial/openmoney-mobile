@@ -3440,7 +3440,7 @@ function destroyBeamTag(cb) {
 		        config.db.post( "_bulk_docs", {
 		            docs : docs
 		        }, function(err, ok) {
-		            log( "updated all tags", err, ok )
+		            log( "updated all tags" + JSON.stringify( err ) + JSON.stringify( ok ) )
 		            cb( false , ok)
 		        } )
 		    } else {
