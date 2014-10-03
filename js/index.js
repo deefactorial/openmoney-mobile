@@ -663,7 +663,7 @@ function goList(parameters) {
             
                 updateAjaxData( response , "account_details.html")
                 
-                
+                $( "#scrollable" ).off( "click", "li" )
                 $( "#scrollable" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
 		            view.rows.forEach( function( row ) {
