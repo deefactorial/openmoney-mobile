@@ -1096,8 +1096,6 @@ function goManageAccounts(parameters) {
 		
 		processAjaxData( response, "manage_accounts.html" )
 		
-		//drawContent( config.t.login() )
-		
 	}
 
     $( "#content .om-index" ).off("click").click( function() {
@@ -1219,7 +1217,7 @@ function goCreateAccount(parameters) {
 	
 	if (currentpage != pageTitle) {
     
-		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc ]  };
+		var response = JSON.parse( JSON.stringify( { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc ]  } ) );
 		
 		processAjaxData( response, "create.html" )
 		
