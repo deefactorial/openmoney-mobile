@@ -1105,7 +1105,7 @@ function goManageAccounts(parameters) {
     setTabs()
     
     $( "#content .om-create" ).off("click").click( function() {
-        goCreateAccount( [ { } ] )
+        goCreateAccount( [ { "type" : "trading_name" } ] )
     } )
 	
     window.dbChanged = function() {
