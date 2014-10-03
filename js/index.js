@@ -1107,7 +1107,7 @@ function goManageAccounts(parameters) {
     setTabs()
     
     $( "#content .om-create" ).off("click").click( function() {
-        goCreateAccount( [ [] ] )
+        goCreateAccount( [ { } ] )
     } )
 	
     window.dbChanged = function() {
@@ -1198,8 +1198,7 @@ function goCreateAccount(parameters) {
 	
 	var doc = parameters.pop();
 	
-	window.dbChanged = function() {	
-	}
+	window.dbChanged = function() { };
 	
 	view = { "trading_name": true };
 	
@@ -1224,12 +1223,7 @@ function goCreateAccount(parameters) {
 		
 		processAjaxData( response, "create.html" )
 		
-		//drawContent( config.t.login() )
-		
 	}
-    
-
-	
 
     $( "#content .om-index" ).off("click").click( function() {
         History.back()
@@ -1416,11 +1410,10 @@ function goCreateAccount(parameters) {
 	                    
 	                    var tradingNameDoc = { "doc": doc, "currencies" : currencies, "spaces" : spaces }
 	                    
-	                    log ("trading_name_doc : " + JSON.stringify( tradingNameDoc ))
+	                    log ("trading_name_doc : " + JSON.stringify( tradingNameDoc ) )
 	
 		                drawContainer( "div#form", config.t.trading_name_form( tradingNameDoc ) )
 		                
-	                    
 	                    spaces = true;
 	                    
 	                    $( "#content input[name='add']" ).off("click").click( function() {
@@ -1638,8 +1631,6 @@ function goCurrency(parameters) {
 	        } )
 	
 	        setTabs()
-	        
-	       
 	
 	        $( "#content form" ).off("submit").submit( function(e) {
 	            e.preventDefault()
