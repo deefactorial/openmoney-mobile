@@ -482,8 +482,6 @@ function goIndex(parameters) {
 		        var id = $( this ).attr( "data-id" );
 		        goList( [ id ] )
 		    } )
-		
-
             
             window.plugins.spinnerDialog.hide();
             window.plugins.spinnerDialog.hide();
@@ -597,8 +595,6 @@ function goList(parameters) {
 		
 		processAjaxData( response, "account_details.html" )
 	}
-	
-	//drawContent( config.t.list( ) )
     
     $( "#content .todo-index" ).off("click").click( function() {
         History.back()
@@ -618,7 +614,7 @@ function goList(parameters) {
             config.views( [ "account_balance", {
                 startkey : [ id, {} ], endkey : [ id ], descending : true
             } ], function(err, view) {
-            	window.plugins.spinnerDialog.hide();
+            	
             	if(err) { return log( JSON.stringify( err ) ) }
                 log( "account_balance" + JSON.stringify( view ))
                 if (view.total_rows > 0)
@@ -1111,7 +1107,7 @@ function goManageAccounts(parameters) {
     setTabs()
     
     $( "#content .om-create" ).off("click").click( function() {
-        goCreateAccount( {} )
+        goCreateAccount( [ [] ] )
     } )
 	
     window.dbChanged = function() {
