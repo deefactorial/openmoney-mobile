@@ -3429,7 +3429,7 @@ function destroyBeamTag(cb) {
 	        			deleteDoc = false;
 	        		}
 	        	})
-	        	if (deleteDoc && tag.doc._deleted == false) {
+	        	if (deleteDoc && tag.doc._deleted != true) {
 	        		tag.doc._deleted = true;
 	        		docs.push(tag.doc)
 	        	}
