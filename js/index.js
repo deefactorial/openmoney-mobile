@@ -508,7 +508,7 @@ function setLoginLogoutButton() {
                     $( ".openmoney-login" ).hide().off( "click" )
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
-                    goIndex()
+                    //goIndex()
                     
                 } ] );
             } )
@@ -869,7 +869,7 @@ function goServerLogin(parameters) {
         	
         	if(error) { callBack(error); return false;}
         	History.back()
-            
+            callBack(false)
         } )
     } )
 
