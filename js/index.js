@@ -1940,7 +1940,6 @@ function goManageNFC(parameters) {
 
             log( "nfc_tags: " + JSON.stringify( view ) )
             
-            
 			var pageTitle = "Manage NFC";
 			
 			if (currentpage != pageTitle) {
@@ -1950,6 +1949,7 @@ function goManageNFC(parameters) {
 				processAjaxData( response, "manage_nfc.html" )
 				
 			} else {
+				
 				var response = { "html" : config.t.manage_nfc( view )  , "pageTitle" : pageTitle, "pageFunction" : goManageNFC.toString(), "pageParameters" : [ ]  };
 				
 				updateAjaxData( response, "manage_nfc.html" )
@@ -2034,7 +2034,8 @@ function goManageNFC(parameters) {
             } )
             
             $( "#content .om-new_nfc" ).off("click").click( function() {
-                goNewNFC([])
+            	log("goNewNFC")
+                goNewNFC( [] )
             } )
 
             $( "#scrollable li.nfc_item" ).off("click").click( function() {
