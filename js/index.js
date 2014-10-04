@@ -2464,7 +2464,7 @@ function goEditNFC(parameters) {
 
                 insertTagInDB( userTag )
                 
-                //navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
+                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
                 
             } )
 
