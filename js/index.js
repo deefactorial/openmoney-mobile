@@ -170,7 +170,7 @@ window.nfcListner = function(nfcEvent) {
                 alert( "Error: " + JSON.stringify( error ) )
             else {
                 log( JSON.stringify( "Result:" + JSON.stringify( result ) ) )
-                goTagPayment( result )
+                goTagPayment( [ result ] )
             }
         } );
     }
@@ -198,7 +198,7 @@ function doTagLookup(key, callBack) {
             $( ".openmoney-login" ).hide().off( "click" )
             setLoginLogoutButton()
             if (error) { return loginErr( error ) }
-            goIndex()
+            goIndex([])
         } );
     }
 }
