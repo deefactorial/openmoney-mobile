@@ -2647,7 +2647,7 @@ function setModes() {
 
 function goTagPayment(parameters) {
 	
-	tradingNames = parameters.pop()
+	tradingNames = parameters.pop();
 	
     log( "Go Tag Payment Page: " + JSON.stringify( tradingNames ) )
     window.dbChanged = function() { }
@@ -2676,7 +2676,7 @@ function goTagPayment(parameters) {
         thisUsersAccounts.offset = view.offset
         thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
 
-        var fromAccounts = []
+        var fromAccounts = [];
         var toAccounts = [];
 
         thisUsersAccounts.rows.forEach( function(row) {
@@ -2690,6 +2690,8 @@ function goTagPayment(parameters) {
                 "to" : tradingname.id, "name" : tradingname.value.name + " " + tradingname.value.currency
             } )
         } )
+        
+        log("toAccounts:" + JSON.stringify( toAccounts ) )
 
         var pageTitle = "Tag Payment";
 		
@@ -2713,8 +2715,6 @@ function goTagPayment(parameters) {
         setTabs()
 
         setModes()
-
-        
         
         $( "#content form" ).off("submit").submit( function(e) {
             e.preventDefault()
