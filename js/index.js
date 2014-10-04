@@ -2123,6 +2123,8 @@ function randomString(length, chars) {
 
 function goNewNFC(parameters) {
 
+	window.dbChanged = function(){};
+	
 	window.plugins.spinnerDialog.show();
         config.views( [ "accounts", {
             descending : true
@@ -2334,6 +2336,8 @@ function goNewNFC(parameters) {
  */
 
 function goEditNFC(parameters) {
+	
+	window.dbChanged = function(){};
 	
 	var id = parameters.pop();
 
