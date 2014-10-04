@@ -1928,6 +1928,7 @@ function goExportTransactions(parameters) {
  */
 
 function goManageNFC(parameters) {
+	
     window.dbChanged = function() {
     	
     	window.plugins.spinnerDialog.show();
@@ -1948,6 +1949,10 @@ function goManageNFC(parameters) {
 				
 				processAjaxData( response, "manage_nfc.html" )
 				
+			} else {
+				var response = { "html" : config.t.manage_nfc( view )  , "pageTitle" : pageTitle, "pageFunction" : goManageNFC.toString(), "pageParameters" : [ ]  };
+				
+				updateAjaxData( response, "manage_nfc.html" )
 			}
 
             $( "#content .om-index" ).off("click").click( function() {
@@ -2447,7 +2452,7 @@ function goEditNFC(parameters) {
                 }
 
                 var userTag = {
-                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
+                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency, "created": thisTag.created, "modified": doc.modified
                 };
 
                 log( " userTag:" + JSON.stringify( userTag ) )
