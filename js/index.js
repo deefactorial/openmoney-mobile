@@ -2703,6 +2703,13 @@ function goTagPayment(parameters) {
 			
 			processAjaxData( response, "tag_payment.html" )
 			
+		} else {
+			
+			var response = { "html" : config.t.tagpayment( {
+	            "fromAccounts" : fromAccounts, "toAccounts" : toAccounts
+	        } )   , "pageTitle" : pageTitle, "pageFunction" : goTagPayment.toString(), "pageParameters" : [ tradingNames ]  };
+			
+			updateAjaxData( response, "tag_payment.html" )
 		}
         
 
