@@ -2248,7 +2248,7 @@ function goNewNFC(parameters) {
                             }
 
                             var userTag = {
-                                "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
+                                "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency, "created": doc.created
                             };
 
                             log( " userTag:" + JSON.stringify( userTag ) )
