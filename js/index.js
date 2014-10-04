@@ -238,7 +238,7 @@ function connectToChanges() {
 	    
 	    
 	    if (typeof change != 'undefined' && change.doc._conflicts) {
-	    	window.plugins.toast.showShortTop("Conflicting Document:" + JSON.stringify( change.doc ) , function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
+	    	//window.plugins.toast.showShortTop("Conflicting Document:" + JSON.stringify( change.doc ) , function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
 	    	log ("Conflicting Document:" + JSON.stringify( change.doc ))
 	    	var thisrev = [ change.doc._id, { "rev": change.doc._rev } ] ;
 	    	var thatConflicts = new Array();
@@ -298,7 +298,7 @@ function connectToChanges() {
 			    					//commit the tombstone change
 			    					config.db.put(change.doc._id, deletedDocument, function(error, ok) {
 			    						if(error) {
-			    							alert("could not delete doc:" + JSON.stringify(error))
+			    							log("could not delete doc:" + JSON.stringify(error))
 			    						}
 			            				if(deletedDocument.type == 'currency' || deletedDocument.type == 'trading_name' || deletedDocument.type == 'space') {
 			            					if(change.doc.type == 'currency') {
