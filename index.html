@@ -578,20 +578,20 @@
 <script type="text/mustache" id="currency_form-mu">
 <ul class="topcoat-list">
                 <li class="topcoat-list__item" data-id="name">
-                    <input type="text" class="topcoat-text-input" name="symbol" value="" placeholder="Requested Name" /> 
+                    <input type="text" class="topcoat-text-input" name="symbol" value="{{#doc}}{{symbol}}{{/doc}}" placeholder="Requested Name" /> 
                 </li>
 
                 <li class="topcoat-list__item" data-id="space">
                     <select name="space" class="om-select-dark" >
-                        <option value="" selected="selected">in space (Optional)</option>
+                        <option value="" {{#defaultSpace}}selected="selected"{{/defaultSpace}}>in space (Optional)</option>
                         {{#rows}}
-                            <option value="{{key}}">{{key}}</option>
+                            <option value="{{key}}" {{#selected}}selected="selected"{{/selected}}>{{key}}</option>
                         {{/rows}}
                     </select>
                 </li>
 
                 <li class="topcoat-list__item" data-id="description">
-                    <input type="text" class="topcoat-text-input" name="name" value="" placeholder="Currency Description" /> 
+                    <input type="text" class="topcoat-text-input" name="name" value="{{#doc}}{{name}}{{/doc}}" placeholder="Currency Description" /> 
                 </li>
 
                 <li class="topcoat-list__item" data-id="submit">

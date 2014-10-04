@@ -290,7 +290,7 @@ function connectToChanges() {
 		        		} else {
 			        		//find the me in steward.
 		        			log ("deleted Document:" + JSON.stringify( deletedDocument ) )
-		        			if( deletedDocument.steward && Object.prototype.toString.call( deletedDocument.steward ) === Object.prototype.toString.call( [] ) ) 
+		        			if( deletedDocument != null && typeof deletedDocument.steward != 'undefined' && Object.prototype.toString.call( deletedDocument.steward ) === Object.prototype.toString.call( [] ) ) 
 			        		deletedDocument.steward.forEach(function(steward) {
 			    				if(steward == config.user.name) {
 			    					log( "DELETE document:" + JSON.stringify(deletedDocument) )
@@ -1478,7 +1478,15 @@ function goCreateAccount(parameters) {
         		window.plugins.spinnerDialog.hide();
                 if (error) { return alert( JSON.stringify( error ) ) }
                 
-                var view = { "spaces" : spaces, "doc": doc }
+                var found = false;
+                spaces.rows.forEach(function(space) {
+                	if(space.space == doc.space) {
+                		space.selected = true;
+                		found = true;
+                	}
+                })
+                
+                var view = { "defaultspace": !found , "spaces" : spaces, "doc": doc }
                 
                 drawContainer( "div#form", config.t.currency_form( view ))
                 
