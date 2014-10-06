@@ -133,6 +133,11 @@ br.clear {
 	margin-bottom: 0;
 }
 
+.topcoat-text-input {
+	line-height:normal;
+	vertical-align:middle;
+}
+
 .om-select-dark-variable {
   height: 3rem;
   padding: 0;
