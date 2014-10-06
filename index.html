@@ -771,26 +771,30 @@
                 <li class="topcoat-list__item" data-id="email">
                     <input type="text" class="topcoat-text-input" name="email" value="{{email}}" placeholder="Email Address" /> 
                 </li>
-                <li class="topcoat-list__item" data-id="notifications">
-                    <div class="left three-quarters">
+                <li class="topcoat-list__item" data-id="notifications" style="padding-top:0">
+                    <div style="display:table; padding:0; margin: 0; width:100%;">
+                        <div style="width: 66.666%;display:table-cell;vertical-align: middle;">
                     Notification:
-                    </div>
-                    <div class="right quarter">
-                    <label class="topcoat-switch">
-                        <input name="notification" type="checkbox" class="topcoat-switch__input" value="true" {{#notification}}checked="checked"{{/notification}}>
-                        <div class="topcoat-switch__toggle"></div>
-                    </label>
+                        </div>
+                        <div style="width: 33.333%;display:table-cell;">
+                            <label class="topcoat-switch">
+                                <input name="notification" type="checkbox" class="topcoat-switch__input" value="true" {{#notification}}checked="checked"{{/notification}}>
+                                <div class="topcoat-switch__toggle"></div>
+                            </label>
+                        </div>
                     </div>
                 </li>
-                <li class="topcoat-list__item" data-id="mode">
-                    <div class="left three-quarters">
-                    Merchant Mode:
-                    </div>
-                    <div class="right quarter">
-                    <label class="topcoat-switch">
-                        <input name="mode" type="checkbox" class="topcoat-switch__input" value="true" {{#mode}}checked="checked"{{/mode}}>
-                        <div class="topcoat-switch__toggle"></div>
-                    </label>
+                <li class="topcoat-list__item" data-id="mode" style="padding-top:0">
+                    <div style="display:table; padding:0; margin: 0; width:100%;">
+                        <div style="width: 66.666%;display:table-cell;vertical-align: middle;">
+                            Merchant Mode:
+                        </div>
+                        <div style="width: 33.333%;display:table-cell;">
+                            <label class="topcoat-switch">
+                                <input name="mode" type="checkbox" class="topcoat-switch__input" value="true" {{#mode}}checked="checked"{{/mode}}>
+                                <div class="topcoat-switch__toggle"></div>
+                            </label>
+                        </div>
                     </div>
                 </li>
                 <li class="topcoat-list__item" data-id="theme" style="padding-top:0">
