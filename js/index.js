@@ -1954,7 +1954,7 @@ function goProfile(parameters) {
             var doc = jsonform( this )
             doc.modified = new Date().getTime();
             
-            alert(doc)
+            alert(JSON.stringify(doc))
             
             doc.forEach( function( value, index) {
             	profile[index] = doc[index];
