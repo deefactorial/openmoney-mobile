@@ -4,9 +4,6 @@
   font: inherit;
   color: inherit;
   background: transparent;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  background-clip: padding-box;
   vertical-align: middle;
   outline: none;
   font-size: 16px;
