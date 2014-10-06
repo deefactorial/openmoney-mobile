@@ -3525,9 +3525,10 @@ function putProfile(profile, cb) {
             }
         } else {
         	//go through each element in the profile doc and add/overwrite the current doc value
-            profile.forEach( function( value, index) {
-            	doc[index] = profile[index];
-            } );
+        	Object.keys(profile).forEach(function(key) {
+        	    console.log( key, profile[key] );
+        	    doc[key] = profile[key]
+        	});
             
             config.db.put( "profile," + config.user, doc, cb )
         }
