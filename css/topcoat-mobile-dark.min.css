@@ -1,6 +1,6 @@
 .om-select-dark {
   width: 100%;
-  height: 36px;
+  height: 50px;
   font: inherit;
   color: inherit;
   background: transparent;
@@ -10,7 +10,6 @@
   background-clip: padding-box;
   vertical-align: top;
   outline: none;
-  line-height: 36px;
   font-size: 16px;
   letter-spacing: 1px;
   padding: 10px;
