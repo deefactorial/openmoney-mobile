@@ -1949,6 +1949,7 @@ function goProfile(parameters) {
 	    setTabs()
 	    
 	    $( "#content form" ).off("submit").submit( function(e) {
+	    	
             e.preventDefault()
             var doc = jsonform( this )
             doc.modified = new Date().getTime();
@@ -1962,7 +1963,7 @@ function goProfile(parameters) {
             putProfile(profile, function(error, ok) {
             	if(error) {alert(JSON.strigify(error))} 
             	History.back()
-            })
+            } )
             
 	    } )
     
