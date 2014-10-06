@@ -1971,9 +1971,11 @@ function goProfile(parameters) {
             } 
             if (typeof doc.theme == 'undefined') {
             	doc.theme = false;
-            	replacejscssfile("css/topcoat-mobile-light.min.css", "light", "css") 
+            	//dark to light
+            	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
             } else {
-            	replacejscssfile("css/topcoat-mobile-dark.min.css", "dark", "css")
+            	//light to dark
+            	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
             }
             
             
