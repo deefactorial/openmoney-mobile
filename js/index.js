@@ -1963,8 +1963,18 @@ function goProfile(parameters) {
             var doc = jsonform( this )
             doc.modified = new Date().getTime();
             
+            if (typeof doc.notification == 'undefined') {
+            	doc.notification = false;
+            }
+            if (typeof doc.mode == 'undefined') {
+            	doc.mode = false;
+            } 
+            if (typeof doc.theme == 'undefined') {
+            	doc.theme = false;
+            }
+            
             putProfile(doc, function(error, ok) {
-            	if(error) {alert(JSON.strigify(error))} 
+            	if(error) {alert(JSON.stringify(error))} 
             	History.back()
             } )
             
@@ -3526,8 +3536,8 @@ function putProfile(profile, cb) {
         } else {
         	//go through each element in the profile doc and add/overwrite the current doc value
         	Object.keys(profile).forEach(function(key) {
-        	    console.log( key, profile[key] );
-        	    doc[key] = profile[key]
+        	    console.log( key + ":" + profile[key] );
+        	    doc[key] = profile[key];
         	});
             
             config.db.put( "profile," + config.user, doc, cb )
