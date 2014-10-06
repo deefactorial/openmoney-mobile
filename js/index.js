@@ -1049,6 +1049,7 @@ function doLostPassword(callBack) {
 
 function goSettings(parameters) {
 	
+	window.dbChanged = function() {};
 	
     var pageTitle = "Settings";
 	
@@ -1533,6 +1534,8 @@ function goCreateAccount(parameters) {
 
 function goAddCurrency(parameters) {
 	
+	window.dbChanged = function() {};
+	
     var pageTitle = "Add Currency";
 	
 	if (currentpage != pageTitle) {
@@ -1866,6 +1869,8 @@ function goSpace(parameters) {
 
 function goServer(parameters) {
 	
+	window.dbChanged = function() {};
+	
     var pageTitle = "Server Settings";
 	
 	if (currentpage != pageTitle) {
@@ -1890,6 +1895,8 @@ function goServer(parameters) {
 
 function goExportTransactions(parameters) {
 	
+	window.dbChanged = function() {};
+	
 	var pageTitle = "Export Transactions";
 	
 	if (currentpage != pageTitle) {
@@ -1913,6 +1920,8 @@ function goExportTransactions(parameters) {
  */
 
 function goProfile(parameters) {
+	
+	window.dbChanged = function() {};
 	
 	window.plugins.spinnerDialog.show();
 	config.db.get("profile," + config.user.name, function(error, profile){
