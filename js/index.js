@@ -3540,7 +3540,7 @@ function putProfile(profile, cb) {
         	    doc[key] = profile[key];
         	});
             
-            config.db.put( "profile," + config.user, doc, cb )
+            config.db.put( "profile," + config.user.name, doc, cb )
         }
     } )
 }
