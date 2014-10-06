@@ -1954,13 +1954,7 @@ function goProfile(parameters) {
             var doc = jsonform( this )
             doc.modified = new Date().getTime();
             
-            alert(JSON.stringify(doc))
-            
-            doc.forEach( function( value, index) {
-            	profile[index] = doc[index];
-            } )
-            
-            putProfile(profile, function(error, ok) {
+            putProfile(doc, function(error, ok) {
             	if(error) {alert(JSON.strigify(error))} 
             	History.back()
             } )
