@@ -945,17 +945,24 @@ function doRegistration(callBack) {
         if (error) { return callBack( error ) }
         config.setUser( data, function(error, ok) {
             if (error) { return callBack( error ) }
-            createBeamTag( function(err) {
-                log( "Create Beam Tag done " + JSON.stringify( err ) )
-                addMyUsernameToAllLists( function(err) {
-                    log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
-                    if (err) { return cb( err ) }
-                    config.syncReference = triggerSync( function(error, ok) {
-                        log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
-                        
-                        connectToChanges()
-                        
-                        callBack( error, ok )
+            var profile = { "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
+            if (config.user.name.indexOf("@") != -1){
+            	profile.email = config.user.name;
+            }
+            putProfile( profile, function(error, ok) {
+            	log( "Put Profile done " + JSON.stringify( [ error, ok ] ) )
+                createBeamTag( function(err) {
+                    log( "Create Beam Tag done " + JSON.stringify( err ) )
+                    addMyUsernameToAllLists( function(err) {
+                        log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
+                        if (err) { return cb( err ) }
+                        config.syncReference = triggerSync( function(error, ok) {
+                            log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
+                            
+                            connectToChanges()
+                            
+                            callBack( error, ok )
+                        } )
                     } )
                 } )
             } )
@@ -1755,29 +1762,7 @@ function goCurrency(parameters) {
     } )
 }
 
-/*
- * Profile Settings Page
- */
 
-function goProfile(parameters) {
-	
-    var pageTitle = "Profile";
-	
-	if (currentpage != pageTitle) {
-    
-		var response = { "html" : config.t.profile(), "pageTitle" : pageTitle, "pageFunction" : goProfile.toString(), "pageParameters" : [ ]  };
-		
-		processAjaxData( response, "profile.html" )
-		
-	}
-
-    $( "#content .om-index" ).off("click").click( function() {
-    	History.back()
-    } )
-
-    setTabs()
-
-}
 
 /*
  * Create Trading Name Space Settings Page
@@ -1920,6 +1905,68 @@ function goExportTransactions(parameters) {
     } )
 
     setTabs()
+
+}
+
+/*
+ * Profile Settings Page
+ */
+
+function goProfile(parameters) {
+	
+	window.plugins.spinnerDialog.show();
+	config.db.get("profile," + config.user.name, function(error, profile){
+    	if(error) {
+    		if(error.status == 404){
+    			var profile = { "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
+                if (config.user.name.indexOf("@") != -1){
+                	profile.email = config.user.name;
+                }
+                putProfile( profile, function(error, ok) {
+                	if(error) alert( JSON.stringify(error) )
+                } )
+    		} else {
+    			alert(JSON.stringify(error))
+    		}
+    	}
+    	
+    	window.plugins.spinnerDialog.hide();
+	
+	    var pageTitle = "Profile";
+		
+		if (currentpage != pageTitle) {
+	    
+			var response = { "html" : config.t.profile( profile ), "pageTitle" : pageTitle, "pageFunction" : goProfile.toString(), "pageParameters" : [ ]  };
+			
+			processAjaxData( response, "profile.html" )
+			
+		}
+	
+	    $( "#content .om-index" ).off("click").click( function() {
+	    	History.back()
+	    } )
+	
+	    setTabs()
+	    
+	    $( "#content form" ).off("submit").submit( function(e) {
+            e.preventDefault()
+            var doc = jsonform( this )
+            doc.modified = new Date().getTime();
+            
+            alert(doc)
+            
+            doc.forEach( function( value, index) {
+            	profile[index] = doc[index];
+            } )
+            
+            putProfile(profile, function(error, ok) {
+            	if(error) {alert(JSON.strigify(error))} 
+            	History.back()
+            })
+            
+	    } )
+    
+    } )
 
 }
 
@@ -2356,7 +2403,6 @@ function goEditNFC(parameters) {
 			processAjaxData( response, "edit_nfc.html" )
 			
 		}
-
 
         $( "#content .om-index" ).off("click").click( function() {
             History.back();
@@ -3461,6 +3507,29 @@ function addMyUsernameToAllLists(cb) {
     pollCompleted()
 }
 
+function putProfile(profile, cb) {
+    log( "putProfile:" + JSON.stringify( profile ) )
+    // Check if Profile Document Exists
+    config.db.get( "profile," + config.user.name, function(error, doc) {
+        if (error) {
+            log( "Error: " + JSON.stringify( error ) )
+            if (error.status == 404) {
+                // doc does not exists
+                config.db.put( "profile," + config.user.name, JSON.parse( JSON.stringify( profile ) ), cb )
+            } else {
+                alert( " Error Posting Profile:" + JSON.stringify( error ) )
+            }
+        } else {
+        	//go through each element in the profile doc and add/overwrite the current doc value
+            profile.forEach( function( value, index) {
+            	doc[index] = profile[index];
+            } );
+            
+            config.db.put( "profile," + config.user, doc, cb )
+        }
+    } )
+}
+
 function destroyBeamTag(cb) {
 	log( "destroyBeamTag user" + JSON.stringify( config.user ) )
 	
@@ -3505,6 +3574,8 @@ function destroyBeamTag(cb) {
         })
     } )
 }
+
+
 
 function createBeamTag(cb) {
     log( "createBeamTag user " + JSON.stringify( config.user ) )

@@ -338,15 +338,15 @@
                 <li class="topcoat-list__item" data-id="trading_name">
                     <button class="om-manage_accounts topcoat-button">Manage Accounts</button>
                 </li>
-        		<li class="topcoat-list__item" data-id="trading_name">
+        		<!--li class="topcoat-list__item" data-id="trading_name">
             		<button class="om-trading_name topcoat-button">Join Currency</button>
-				</li>
-				<li class="topcoat-list__item" data-id="currency">
+				</li-->
+				<!--li class="topcoat-list__item" data-id="currency">
 					<button class="om-currency topcoat-button">Create Currency</button>
-				</li>
-                <li class="topcoat-list__item" data-id="space">
+				</li-->
+                <!--li class="topcoat-list__item" data-id="space">
                     <button class="om-space topcoat-button">Create Space</button>
-                </li>
+                </li-->
                 <!--li class="topcoat-list__item" data-id="export_transactions">
                     <button class="om-export_transactions topcoat-button">Export Transactions</button>
                 </li-->
@@ -766,7 +766,37 @@
 </header>
 <div id="scrollable">
 	<div class="topcoat-list__container">
-
+        <form>
+            <ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="email">
+                    <input type="text" class="topcoat-text-input" name="email" value="{{email}}" placeholder="Email Address" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="notifications">
+                    Notification:
+                    <label class="topcoat-switch">
+                        <input name="notification" type="checkbox" class="topcoat-switch__input" value="true" {{#notification}}checked="checked"{{/notification}}>
+                        <div class="topcoat-switch__toggle"></div>
+                    </label>
+                </li>
+                <li class="topcoat-list__item" data-id="mode">
+                    Merchant Mode:
+                    <label class="topcoat-switch">
+                        <input name="mode" type="checkbox" class="topcoat-switch__input" value="true" {{#mode}}checked="checked"{{/mode}}>
+                        <div class="topcoat-switch__toggle"></div>
+                    </label>
+                </li>
+                <li class="topcoat-list__item" data-id="theme">
+                    Dark Theme:
+                    <label class="topcoat-switch">
+                        <input name="theme" type="checkbox" class="topcoat-switch__input" value="true" {{#theme}}checked="checked"{{/theme}}>
+                        <div class="topcoat-switch__toggle"></div>
+                    </label>
+                </li>
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" name="submit" value=" Save Profile " /> 
+                </li>
+            </ul>
+        </form>
 	</div>
 </div>
 </script>

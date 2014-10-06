@@ -298,6 +298,16 @@
                             requireUser(olddoc.username);
                         }
                     }
+                } else if (doc.type == "profile") {
+                	if (!doc.type || !doc.username ) {
+                		throw({forbidden: "Missing required properties"});
+                	}
+                	channel(doc.type + channelDelimiter + doc.username)
+                	if (olddoc == null) {
+                		access(doc.username, doc.type + channelDelimiter + doc.username)
+                	} else {
+                		requireUser(olddoc.username);
+                	}
                 }
             }
     }`, "users": {
