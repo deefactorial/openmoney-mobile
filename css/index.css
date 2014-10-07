@@ -134,6 +134,7 @@ br.clear {
 }
 
 .topcoat-text-input {
+	width:100%;
 	vertical-align:middle;
 }
 
