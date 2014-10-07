@@ -1,14 +1,14 @@
 .om-select-dark {
   -webkit-appearance: listbox;
   width: 100%;
-  height: 48px;       
+  height: 50px;       
   line-height: 3em;
   line-height: 52px\9; /*for IE */
   padding-left: 10px;
   border: 1px solid #9daca9;
   border-radius: 6px;
+  background: url('../img/light-select.png') 99% center no-repeat;
   background-color: #ffffff;
-  background: url('../img/light-select.png') 99% center no-repeat;;
   box-shadow: inset 0 1px rgba(0,0,0,0.05);
   color: #454545;
 }
