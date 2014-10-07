@@ -137,6 +137,7 @@ br.clear {
 	width:100%;
 	vertical-align:middle;
 	line-height:normal;
+	height:50px;
 }
 
 .om-select-dark-variable {
