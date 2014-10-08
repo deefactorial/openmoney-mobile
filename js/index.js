@@ -1979,6 +1979,7 @@ function goProfile(parameters) {
             e.preventDefault()
             var doc = jsonform( this )
             doc.modified = new Date().getTime();
+            doc.type = "profile";
             
             if (typeof doc.notification == 'undefined') {
             	doc.notification = false;
@@ -1994,11 +1995,6 @@ function goProfile(parameters) {
             	//light to dark
             	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
             }
-            
-            
-
-            	
-            	
             
             putProfile(doc, function(error, ok) {
             	if(error) {alert(JSON.stringify(error))} 
@@ -3294,32 +3290,6 @@ function doFirstLogin(cb) {
     }
 }
 
-function getProfile(){
-	config.db.get("profile," + config.user.name, function(error, profile) {
-    	if (error) {
-    		if (error.status == 404) {
-    			var profile = { "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
-                if (config.user.name.indexOf("@") != -1){
-                	profile.email = config.user.name;
-                }
-                putProfile( profile, function(error, ok) {
-                	if(error) alert( JSON.stringify(error) )
-                } )
-    		} else {
-    			log( JSON.stringify( error ) )
-    		}
-    	} else {
-    		config.user.profile = profile;
-            if (typeof profile.theme == 'undefined' || profile.theme === false) {
-            	//dark to light
-            	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
-            } else {
-            	//light to dark
-            	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
-            }
-    	}
-    } )
-}
 
 /*
  * Custom Indirect Server Login parameters are REMOTE_SERVER_LOGIN_URL, username
@@ -3606,6 +3576,34 @@ function addMyUsernameToAllLists(cb) {
     }
     
     pollCompleted()
+}
+
+
+function getProfile(){
+	config.db.get("profile," + config.user.name, function(error, profile) {
+    	if (error) {
+    		if (error.status == 404) {
+    			var profile = { "type": "profile", "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
+                if (config.user.name.indexOf("@") != -1){
+                	profile.email = config.user.name;
+                }
+                putProfile( profile, function(error, ok) {
+                	if(error) alert( JSON.stringify(error) )
+                } )
+    		} else {
+    			log( JSON.stringify( error ) )
+    		}
+    	} else {
+    		config.user.profile = profile;
+            if (typeof profile.theme == 'undefined' || profile.theme === false) {
+            	//dark to light
+            	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
+            } else {
+            	//light to dark
+            	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
+            }
+    	}
+    } )
 }
 
 function putProfile(profile, cb) {
