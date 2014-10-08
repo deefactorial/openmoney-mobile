@@ -2849,6 +2849,8 @@ function goTagPayment(parameters) {
 	            "fromAccounts" : fromAccounts, "toAccounts" : toAccounts
 	        } )   , "pageTitle" : pageTitle, "pageFunction" : goTagPayment.toString(), "pageParameters" : [ tradingNames ]  };
 			
+			drawContent( response.html );
+			
 			updateAjaxData( response, "tag_payment.html" )
 		}
         
@@ -3020,6 +3022,8 @@ function goMerchantPayment(parameters) {
 		} else {
 			
 			var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ fromAccounts ]  };
+			
+			drawContent( response.html );
 			
 			updateAjaxData( response, "merchant_payment.html" )
 		}
