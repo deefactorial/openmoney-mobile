@@ -602,7 +602,16 @@ function setTabs() {
     } )
 
     $( "#content .om-payments" ).off("click").click( function() {
-        goPayment([])
+    	if (typeof config.user != 'undefined' && typeof config.user.profile != 'undefined') {
+    		if (config.user.profile.mode) {
+    			goMerchantPayment([])
+    		} else {
+    			goPayment([])
+    		}
+    	} else {
+    		goPayment([])
+    	}
+        
     } )
 
     $( "#content .om-settings" ).off("click").click( function() {
