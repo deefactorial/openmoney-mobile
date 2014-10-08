@@ -2971,6 +2971,8 @@ function updateTo() {
 
 function goMerchantPayment(parameters) {
 	
+	log( "goMerchantPayment( " + JSON.stringify(parameters) + " )")
+	
 	fromAccounts = parameters.pop();
 	
     window.dbChanged = function() { }
