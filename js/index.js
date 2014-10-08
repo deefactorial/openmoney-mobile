@@ -3254,6 +3254,7 @@ function doFirstLogin(cb) {
                 
                 config.syncReference = triggerSync( function(error, ok) {
                     log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
+                    getProfile();
                     cb( error, ok )
                 } )
             } )
