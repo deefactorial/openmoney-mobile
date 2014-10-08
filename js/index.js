@@ -172,7 +172,7 @@ window.nfcListner = function(nfcEvent) {
                 log( JSON.stringify( "Tag Lookup Result:" + JSON.stringify( result ) ) )
                 
                 if (typeof config.user != 'undefined' && typeof config.user.profile != 'undefined') {
-		    		if (config.user.profile.mode) {
+		    		if (config.user.profile.mode && currentpage != 'Payment') {
 		    			goMerchantPayment( [ result ] )
 		    		} else {
 		    			goTagPayment( [ result ] )
