@@ -125,14 +125,12 @@
                 if (doc.type == "users") {
                     channel(doc.type + channelDelimiter + doc.username);
                     if (olddoc == null) {
-                        if (!doc.username || !doc.email || !doc.password || !doc.password_encryption_algorithm || !doc.created ) {
+                        if (!doc.username || !doc.password || !doc.password_encryption_algorithm || !doc.created ) {
                             throw({forbidden: "Missing required properties"});
-                        } else if (doc.username.length < 4) {
-                            throw({forbidden: "Username length has to be greater than 3 characters."});
-                        } else if (doc.password.length < 3) {
-                            throw({forbidden: "password has to be greater than two characters"});
-                        } else if (doc.email.length < 5) { 
-                            throw({forbidden: "Please enter a valid email"});
+                        } else if (doc.username.length < 2) {
+                            throw({forbidden: "Username length has to be greater than one character."});
+                        } else if (doc.password.length < 2) {
+                            throw({forbidden: "password has to be greater than one character"});
                         } else if (! Array.isArray(doc.password_encryption_algorithm) ) { 
                             throw({forbidden: "provide a valid encryption algorithm"});
                         }
@@ -141,14 +139,12 @@
                         if (doc._deleted) {
                             requireUser(olddoc.username);
                         } else {
-                            if (!doc.username || !doc.email || !doc.password || !doc.password_encryption_algorithm || !doc.created ) {
+                        	if (!doc.username || !doc.password || !doc.password_encryption_algorithm || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
-                            } else if (doc.username.length < 4) {
-                                throw({forbidden: "Username length has to be greater than 3 characters."});
-                            } else if (doc.password.length < 3) {
-                                throw({forbidden: "password has to be greater than two characters"});
-                            } else if (doc.email.length < 5) { 
-                                throw({forbidden: "Please enter a valid email"});
+                            } else if (doc.username.length < 2) {
+                                throw({forbidden: "Username length has to be greater than one character."});
+                            } else if (doc.password.length < 2) {
+                                throw({forbidden: "password has to be greater than one character"});
                             } else if (! Array.isArray(doc.password_encryption_algorithm) ) { 
                                 throw({forbidden: "provide a valid encryption algorithm"});
                             }
