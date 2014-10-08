@@ -1247,13 +1247,24 @@
         </div>
         <form>
             <ul class="topcoat-list__container">
-                <li class="topcoat-list__item" data-id="from">
-                    <select name="to" class="om-select-dark" >
-                        {{#rows}}
-                            <option value="{{id}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
-                        {{/rows}}
+                <li class="topcoat-list__item" data-id="to">
+                    <label for="to">To:</label>
+                    <select name="to" class="om-select-dark" onchange="updateFrom()" >
+                        {{#toAccounts}}
+                            <option value="{{to}}">{{name}}</option>
+                        {{/toAccounts}}
                     </select>
                 </li>
+                {{#from}}
+                <li class="topcoat-list__item" data-id="from">
+                    <label for="from">From:</label>
+                    <select name="from" class="om-select-dark" onchange="updateFrom()" >
+                        {{#fromAccounts}}
+                            <option value="{{from}}">{{name}}</option>
+                        {{/fromAccounts}}
+                    </select>
+                </li>
+                {{/from}}
                 <li class="topcoat-list__item" data-id="amount">
                     <input type="number" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
                 </li>

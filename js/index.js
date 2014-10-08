@@ -169,8 +169,17 @@ window.nfcListner = function(nfcEvent) {
             if (error)
                 alert( "Error: " + JSON.stringify( error ) )
             else {
-                log( JSON.stringify( "Result:" + JSON.stringify( result ) ) )
-                goTagPayment( [ result ] )
+                log( JSON.stringify( "Tag Lookup Result:" + JSON.stringify( result ) ) )
+                
+                if (typeof config.user != 'undefined' && typeof config.user.profile != 'undefined') {
+		    		if (config.user.profile.mode) {
+		    			goMerchantPayment( [ result ] )
+		    		} else {
+		    			goTagPayment( [ result ] )
+		    		}
+		    	} else {
+		    		goTagPayment( [ result ] )
+		    	}
             }
         } );
     }
@@ -2916,7 +2925,7 @@ function goTagPayment(parameters) {
 }
 
 /*
- * 
+ * this updates the options available to select from in TagPayments
  */
 
 function updateTo() {
@@ -2957,10 +2966,12 @@ function updateTo() {
 }
 
 /*
- * Payment Page
+ * Merchant Payment Page
  */
 
 function goMerchantPayment(parameters) {
+	
+	fromAccounts = parameters.pop();
 	
     window.dbChanged = function() { }
     
@@ -2974,28 +2985,37 @@ function goMerchantPayment(parameters) {
         var thisUsersAccounts = {
             rows : []
         }
-
-        for ( var i = view.rows.length - 1; i >= 0; i--) {
-            //log( "row:" + JSON.stringify( view.rows[i] ) )
-            //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
-            if (view.rows[i].key.steward.length) {
-                for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                    //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
-                    if (view.rows[i].key.steward[j] == config.user.user_id) {
-                        thisUsersAccounts.rows.push( view.rows[i] )
-                    }
-                }
-            }
+        
+        var toAccounts = [];
+        
+        if (typeof view.rows != 'undefined' && config.user != null) {
+        	view.rows.forEach(function(row) {
+        		row.key.steward.forEach(function(steward) {
+        			if(steward == config.user.name)
+        				toAccounts.push( {
+        	                "to" : row.id, "name" : row.key.trading_name + " " + row.key.currency
+        	            } );
+        		})
+        	})
         }
-
-        thisUsersAccounts.offset = view.offset
-        thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+        
+        var accounts = { "toAccounts": toAccounts };
+        
+        if (typeof fromAccounts != 'undefined') {
+        	accounts.from = {};
+        	accounts.from.fromAccounts = [];
+        	fromAccounts.forEach( function(tradingname) {
+        		accounts.from.fromAccounts.push( {
+                    "from" : tradingname.id, "name" : tradingname.value.name + " " + tradingname.value.currency
+                } )
+            } )
+        }
 
         var pageTitle = "Merchant Payment";
 		
 		if (currentpage != pageTitle) {
 	    
-			var response = { "html" :  config.t.merchant_payment( thisUsersAccounts )  , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ ]  };
+			var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ ]  };
 			
 			processAjaxData( response, "merchant_payment.html" )
 			
@@ -3217,6 +3237,49 @@ function goMerchantPayment(parameters) {
         } )
     } )
 }
+
+
+/*
+ * this updates the options available to select from in TagPayments
+ */
+
+function updateFrom() {
+    var to = '';
+    $( "form select[name='to'] > option" ).each( function() {
+        if ($( this ).prop( 'selected' )) {
+            to = this.value;
+        }
+    } )
+    log( "from account: " + to )
+    var tocurrency = to.substring( to.lastIndexOf( "," ), to.length )
+    $( "form select[name='from'] > option" ).each( function() {
+        // log( "Before to option: " + this.value + " disabled: " +
+        // $(this).prop('disabled') + " Selected: " + $(this).prop('selected')
+        // );
+        var fromcurrency = this.value.substring( this.value.lastIndexOf( "," ), this.value.length )
+        if (tocurrency != fromcurrency) {
+            $( this ).prop( 'disabled', true )
+            if ($( this ).prop( 'selected' )) {
+                $( this ).prop( 'selected', false )
+                $( this ).removeAttr( 'selected' )
+            }
+        } else {
+            $( this ).prop( 'disabled', false )
+            $( this ).removeAttr( 'disabled' )
+        }
+        // log( "After to option: " + this.value + " disabled: " +
+        // $(this).prop('disabled') + " Selected: " + $(this).prop('selected')
+        // );
+    } )
+    var once = 1;
+    $( "form select[name='from'] > option" ).each( function() {
+        if (once == 1 && !$( this ).prop( 'disabled' )) {
+            $( this ).prop( 'selected', true );
+            once = 0;
+        }
+    } )
+}
+
 
 function doCustomerTradingNameLookup(credentials, callBack) {
     log( "Do Customer Trading Name Lookup" );
