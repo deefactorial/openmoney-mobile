@@ -261,7 +261,7 @@
                     var to = doc.to; 
                     var timestamp = doc.timestamp;
                     var channelTimestamp = timestamp
-                    if (! isNumeric( timestamp ) ) {
+                    if (! isNumber( timestamp ) ) {
                     	channelTimestamp = timestamp.replace(/:/g,'.') // Replace All Colons
                     }
                     
