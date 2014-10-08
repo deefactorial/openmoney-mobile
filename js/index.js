@@ -2689,8 +2689,8 @@ function goPayment(parameters) {
             var doc = jsonform( this )
             doc.type = "trading_name_journal"
             doc.amount = parseInt( doc.amount )
-            doc.timestamp = new Date()
-            doc.timestamp = doc.timestamp.toJSON()
+            doc.timestamp = new Date().getTime();
+            //doc.timestamp = doc.timestamp.toJSON()
             config.db.get( doc.from, function(error, from) {
                 if (error) {
                     if (error.status == 404) {
@@ -2844,8 +2844,8 @@ function goTagPayment(parameters) {
             var doc = jsonform( this )
             doc.type = "trading_name_journal"
             doc.amount = parseInt( doc.amount )
-            doc.timestamp = new Date()
-            doc.timestamp = doc.timestamp.toJSON()
+            doc.timestamp = new Date().getTime();
+            //doc.timestamp = doc.timestamp.toJSON()
             delete doc.pair;
             log( " form doc: " + JSON.stringify( doc ) )
             config.db.get( doc.from, function(error, from) {
@@ -3001,8 +3001,8 @@ function goMerchantPayment(parameters) {
             var doc = jsonform( this )
             doc.type = "trading_name_journal"
             doc.amount = parseInt( doc.amount )
-            doc.timestamp = new Date()
-            doc.timestamp = doc.timestamp.toJSON()
+            doc.timestamp = new Date().getTime();
+            //doc.timestamp = doc.timestamp.toJSON()
             config.db.get( doc.to, function(error, to) {
                 if (error) {
                     if (error.status == 404) {

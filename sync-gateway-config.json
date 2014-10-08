@@ -268,7 +268,7 @@
                         //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                     } else {
                         if (doc._deleted) {
-                            //requireUser([olddoc.from , olddoc.to]);
+                            requireUser([olddoc.from , olddoc.to]);
                         } else {
                             if (!doc.from || !doc.to || !doc.amount || !doc.currency || !doc.timestamp ) {
                                 throw({forbidden: "Missing required properties"});
@@ -276,7 +276,7 @@
                             //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                             channel("trading_name" + channelDelimiter + from + channelDelimiter + currency)
                             channel("trading_name" + channelDelimiter + to + channelDelimiter + currency)
-                            //requireUser([olddoc.from , olddoc.to]);
+                            requireUser([olddoc.from , olddoc.to]);
                         }
                     }
                 } else if (doc.type == "beamtag") {                  
