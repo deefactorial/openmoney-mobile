@@ -325,6 +325,14 @@ function connectToChanges() {
 	    	} )
 	    }
 	    
+	    if (typeof change != 'undefined') {
+	    	log ("Change Document:" + JSON.stringify( change.doc ))
+	    	if (doc.type == 'profile') {
+	    		getProfile();
+	    	}
+	    }
+	    
+	    
 	    window.dbChanged()
 	    // window.checkConflicts( change )
 	};
@@ -3254,7 +3262,6 @@ function doFirstLogin(cb) {
                 
                 config.syncReference = triggerSync( function(error, ok) {
                     log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
-                    getProfile();
                     cb( error, ok )
                 } )
             } )
