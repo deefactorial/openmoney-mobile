@@ -175,7 +175,11 @@ window.nfcListner = function(nfcEvent) {
 		    		if (config.user.profile.mode && currentpage != 'Payment') {
 		    			goMerchantPayment( [ result ] )
 		    		} else {
-		    			goTagPayment( [ result ] )
+		    			if (currentpage == 'Merchant Payment'){
+		    				goMerchantPayment( [ result ] )
+		    			} else {
+		    				goTagPayment( [ result ] )
+		    			}
 		    		}
 		    	} else {
 		    		goTagPayment( [ result ] )
