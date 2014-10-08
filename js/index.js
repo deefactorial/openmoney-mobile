@@ -3240,31 +3240,6 @@ function doFirstLogin(cb) {
             config.setUser( data, function(error, ok) {
                 if (error) { return cb( error ) }
                 
-                config.db.get("profile," + config.user.name, function(error, profile) {
-                	if (error) {
-                		if (error.status == 404) {
-                			var profile = { "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
-                            if (config.user.name.indexOf("@") != -1){
-                            	profile.email = config.user.name;
-                            }
-                            putProfile( profile, function(error, ok) {
-                            	if(error) alert( JSON.stringify(error) )
-                            } )
-                		} else {
-                			log( JSON.stringify( error ) )
-                		}
-                	} else {
-                		config.user.profile = profile;
-                        if (typeof profile.theme == 'undefined' || profile.theme === false) {
-                        	//dark to light
-                        	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
-                        } else {
-                        	//light to dark
-                        	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
-                        }
-                	}
-                } )
-                
                 createBeamTag( function(err) {
                     log( "createBeamTag done " + JSON.stringify( err ) )
 
@@ -3307,6 +3282,33 @@ function doFirstLogin(cb) {
             } )
         } )
     }
+}
+
+function getProfile(){
+	config.db.get("profile," + config.user.name, function(error, profile) {
+    	if (error) {
+    		if (error.status == 404) {
+    			var profile = { "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
+                if (config.user.name.indexOf("@") != -1){
+                	profile.email = config.user.name;
+                }
+                putProfile( profile, function(error, ok) {
+                	if(error) alert( JSON.stringify(error) )
+                } )
+    		} else {
+    			log( JSON.stringify( error ) )
+    		}
+    	} else {
+    		config.user.profile = profile;
+            if (typeof profile.theme == 'undefined' || profile.theme === false) {
+            	//dark to light
+            	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
+            } else {
+            	//light to dark
+            	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
+            }
+    	}
+    } )
 }
 
 /*
@@ -3917,8 +3919,10 @@ function setupConfig(done) {
                                 }
                             }
                         }, db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
-                    }
-                    if (config.user && config.user.user_id) {
+                    };
+                    
+                    if (config.user && config.user.name) {
+                    	getProfile();
                         if (SERVER_LOGIN) {
                             registerServer( done )
                         } else if (FACEBOOK_LOGIN) {
