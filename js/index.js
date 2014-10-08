@@ -1565,9 +1565,16 @@ function goAddCurrency(parameters) {
         }
 	    
         config.db.put( doc.type + "," + config.user.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
-   		 	if (error)
-                return alert( JSON.stringify( error ) )
-            History.back();
+   		 	if (error) {
+   		 		if (error.status == 409) {
+   		 			navigator.notification.alert( 'You have already added the currency ' + doc.currency , function() {}, "Invalid Currency Name", "OK")
+   		 		} else {
+   		 			alert( JSON.stringify( error ) )
+   		 		}
+   		 	} else {
+   		 		History.back();
+   		 	}
+            
         } );
         
     } );
