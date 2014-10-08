@@ -2981,10 +2981,6 @@ function goMerchantPayment(parameters) {
     } ], function(error, view) {
     	window.plugins.spinnerDialog.hide();
         if (error) { return alert( JSON.stringify( error ) ) }
-
-        var thisUsersAccounts = {
-            rows : []
-        }
         
         var toAccounts = [];
         
@@ -3015,13 +3011,13 @@ function goMerchantPayment(parameters) {
 		
 		if (currentpage != pageTitle) {
 	    
-			var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ ]  };
+			var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ fromAccounts ]  };
 			
 			processAjaxData( response, "merchant_payment.html" )
 			
 		} else {
 			
-			var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ ]  };
+			var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ fromAccounts ]  };
 			
 			updateAjaxData( response, "merchant_payment.html" )
 		}
