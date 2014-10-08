@@ -3019,6 +3019,11 @@ function goMerchantPayment(parameters) {
 			
 			processAjaxData( response, "merchant_payment.html" )
 			
+		} else {
+			
+			var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ ]  };
+			
+			updateAjaxData( response, "merchant_payment.html" )
 		}
 
         $( "#content .om-index" ).off("click").click( function() {

@@ -1248,7 +1248,7 @@
         <form>
             <ul class="topcoat-list__container">
                 <li class="topcoat-list__item" data-id="to">
-                    <label for="to">To:</label>
+                    <label for="to" style="text-align:center;">TO</label>
                     <select name="to" class="om-select-dark" onchange="updateFrom()" >
                         {{#toAccounts}}
                             <option value="{{to}}">{{name}}</option>
@@ -1257,7 +1257,7 @@
                 </li>
                 {{#from}}
                 <li class="topcoat-list__item" data-id="from">
-                    <label for="from">From:</label>
+                    <label for="from" style="text-align:center;">FROM</label>
                     <select name="from" class="om-select-dark" onchange="updateFrom()" >
                         {{#fromAccounts}}
                             <option value="{{from}}">{{name}}</option>
