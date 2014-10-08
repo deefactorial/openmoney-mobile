@@ -1101,18 +1101,20 @@
         </div>
 		<form>
 			<ul class="topcoat-list__container">
-				<li class="topcoat-list__item" data-id="from">
+				<li class="topcoat-list__item" data-id="from" style="text-align:center;">
+                    <label for="from">FROM</label>
 					<select name="from" class="om-select-dark" data-native-menu="false"  >
 						{{#rows}}
 							<option value="{{id}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
         				{{/rows}}
 					</select>
 				</li>
-				<li class="topcoat-list__item" data-id="to">
+				<li class="topcoat-list__item" data-id="to" style="text-align:center;">
+                    <label for="to">TO</label>
             		<input type="text" class="topcoat-text-input" name="to" value="" placeholder="Recipient Trading Name" /> 
 				</li>
         		<li class="topcoat-list__item" data-id="amount">
-            		<input type="number" class="topcoat-text-input" style="width:100%;" name="amount" value="" placeholder="amount" /> 
+            		<input type="number" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
 				</li>
 				<li class="topcoat-list__item" data-id="description">
             		<input type="text" class="topcoat-text-input" name="description" placeholder="Description" />
@@ -1172,14 +1174,16 @@
         </div>
         <form>
             <ul class="topcoat-list__container">
-                <li class="topcoat-list__item" data-id="from">
+                <li class="topcoat-list__item" data-id="from" style="text-align:center;">
+                    <label for="to">FROM</label>
                     <select name="from" class="om-select-dark" onchange="updateTo()" >
                         {{#fromAccounts}}
                             <option value="{{from}}">{{name}}</option>
                         {{/fromAccounts}}
                     </select>
                 </li>
-                <li class="topcoat-list__item" data-id="from">
+                <li class="topcoat-list__item" data-id="from" style="text-align:center;">
+                    <label for="to">TO</label>
                     <select name="to" class="om-select-dark" onfocus="updateTo()">
                         {{#toAccounts}}
                             <option value="{{to}}">{{name}}</option>
