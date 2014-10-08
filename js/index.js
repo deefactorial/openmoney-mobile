@@ -233,9 +233,9 @@ function connectToChanges() {
 	        log( " Changes Error: " + JSON.stringify( err ) )
 	    }
 	    if (change)
-	        lastSeq = change.seq
-	    log( "change" + JSON.stringify( [ err, change ] ), err, change )
+	        lastSeq = change.seq;
 	    
+	    log( "connectToChanges:" + JSON.stringify( [ err, change ] ) )
 	    
 	    if (typeof change != 'undefined' && change.doc._conflicts) {
 	    	//window.plugins.toast.showShortTop("Conflicting Document:" + JSON.stringify( change.doc ) , function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
@@ -326,8 +326,8 @@ function connectToChanges() {
 	    }
 	    
 	    if (typeof change != 'undefined') {
-	    	log ("Change Document:" + JSON.stringify( change.doc ))
-	    	if (doc.type == 'profile') {
+	    	log ("Change Document:" + JSON.stringify( change.doc ) )
+	    	if (change.doc.type == 'profile') {
 	    		getProfile();
 	    	}
 	    }
