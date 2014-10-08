@@ -3232,16 +3232,45 @@ function doFirstLogin(cb) {
             if (error) { return cb( error ) }
             config.setUser( data, function(error, ok) {
                 if (error) { return cb( error ) }
+                
+                config.db.get("profile," + config.user.name, function(error, profile) {
+                	if (error) {
+                		if (error.status == 404) {
+                			var profile = { "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
+                            if (config.user.name.indexOf("@") != -1){
+                            	profile.email = config.user.name;
+                            }
+                            putProfile( profile, function(error, ok) {
+                            	if(error) alert( JSON.stringify(error) )
+                            } )
+                		} else {
+                			log( JSON.stringify( error ) )
+                		}
+                	} else {
+                		config.user.profile = profile;
+                        if (typeof profile.theme == 'undefined' || profile.theme === false) {
+                        	//dark to light
+                        	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
+                        } else {
+                        	//light to dark
+                        	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
+                        }
+                	}
+                } )
+                
                 createBeamTag( function(err) {
                     log( "createBeamTag done " + JSON.stringify( err ) )
-                    addMyUsernameToAllLists( function(err) {
-                        log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
-                        if (err) { return cb( err ) }
-                        config.syncReference = triggerSync( function(error, ok) {
-                            log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
-                            cb( error, ok )
-                        } )
-                    } )
+
+                } )
+                
+                addMyUsernameToAllLists( function(err) {
+                    log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
+
+                } )
+                
+                config.syncReference = triggerSync( function(error, ok) {
+                    log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
+                    cb( error, ok )
                 } )
             } )
         } )
