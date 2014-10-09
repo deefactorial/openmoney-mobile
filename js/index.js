@@ -949,7 +949,9 @@ function goServerRegistration(parameters) {
         var doc = jsonform( this );
         config.user = {};
         config.user.name = doc.username;
-        config.user.email = doc.email;
+        if (config.user.name.indexOf("@") !== false ) {
+        	config.user.email = doc.username;
+        }
         config.user.password = doc.password;
         doRegistration( function(error, result) {
         	
@@ -3459,7 +3461,10 @@ function doServerRegistration(callBack) {
     if (config && config.user) {
         var url = REMOTE_SERVER_REGISTRATION_URL;
         var login = coax( url );
-        var credentials = '{ "username" : "' + config.user.name + '", "email" : "' + config.user.email + '", "password" : "' + config.user.password + '" }';
+        var credentials = '{ "username" : "' + config.user.name + '", "password" : "' + config.user.password + '" }';
+        if( typeof config.user.email != 'undefined' ) {
+        	credentials.email = config.user.email;
+        }
         log( "http " + url + " " + credentials )
         login.post( JSON.parse( credentials ), function(error, result) {
             if (error) { return callBack( error ) }
@@ -4002,7 +4007,7 @@ function setupConfig(done) {
                                             config.user.sessionID = newUser.sessionID;
                                             config.user.expires = newUser.expires;
                                             config.user.user_id = config.user.name;
-                                            config.user.email = config.user.name;
+                                            
                                             db.put( "_local/user", config.user, function(err, ok) {
                                                 if (err) { return cb( err ) }
                                                 log( "updateUser ok: " + JSON.stringify( ok ) )
@@ -4015,7 +4020,7 @@ function setupConfig(done) {
                                         config.user.sessionID = newUser.sessionID;
                                         config.user.expires = newUser.expires;
                                         config.user.user_id = config.user.name;
-                                        config.user.email = config.user.name;
+                                        
                                         db.put( "_local/user", config.user, function(err, ok) {
                                             if (err) { return cb( err ) }
                                             log( "setUser ok: " + JSON.stringify( ok ) )
