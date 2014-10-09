@@ -954,7 +954,7 @@ function goServerRegistration(parameters) {
         	config.user.email = doc.username;
         }
         config.user.password = doc.password;
-        log ( "user:" + JSON.strigify( config.user ) )
+        log ( "user:" + JSON.stringify( config.user ) )
         
         doRegistration( function(error, result) {
         	
