@@ -949,6 +949,7 @@ function goServerRegistration(parameters) {
         var doc = jsonform( this );
         config.user = {};
         config.user.name = doc.username;
+        config.user.email = doc.email;
         if (config.user.name.indexOf("@") !== false ) {
         	config.user.email = doc.username;
         }
@@ -3431,6 +3432,9 @@ function doServerLogin(callBack) {
         var url = REMOTE_SERVER_LOGIN_URL;
         var login = coax( url );
         var credentials = '{ "username" : "' + config.user.name + '", "password" : "' + config.user.password + '" }';
+        if(config.user.name.indexOf("@") !== false) {
+        	credentials.email = config.user.name;
+        }
         log( "http " + url + " " + credentials )
         login.post( JSON.parse( credentials ), function(error, result) {
             if (error) { return callBack( error ) }
