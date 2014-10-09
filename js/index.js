@@ -1960,6 +1960,10 @@ function goProfile(parameters) {
                 if (config.user.name.indexOf("@") != -1){
                 	profile.email = config.user.name;
                 }
+    			if (typeof config.user.email != 'undefined') {
+    				profile.email = config.user.email;
+    			}
+    			
                 putProfile( profile, function(error, ok) {
                 	if(error) alert( JSON.stringify(error) )
                 } )
@@ -3703,6 +3707,9 @@ function getProfile(){
                 if (config.user.name.indexOf("@") != -1){
                 	profile.email = config.user.name;
                 }
+    			if (typeof config.user.email != 'undefined') {
+    				profile.email = config.user.email;
+    			}
                 putProfile( profile, function(error, ok) {
                 	if(error) alert( JSON.stringify(error) )
                 } )
