@@ -974,24 +974,17 @@ function doRegistration(callBack) {
         if (error) { return callBack( error ) }
         config.setUser( data, function(error, ok) {
             if (error) { return callBack( error ) }
-            var profile = { "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
-            if (config.user.name.indexOf("@") != -1){
-            	profile.email = config.user.name;
-            }
-            putProfile( profile, function(error, ok) {
-            	log( "Put Profile done " + JSON.stringify( [ error, ok ] ) )
-                createBeamTag( function(err) {
-                    log( "Create Beam Tag done " + JSON.stringify( err ) )
-                    addMyUsernameToAllLists( function(err) {
-                        log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
-                        if (err) { return cb( err ) }
-                        config.syncReference = triggerSync( function(error, ok) {
-                            log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
-                            
-                            connectToChanges()
-                            
-                            callBack( error, ok )
-                        } )
+            createBeamTag( function(err) {
+                log( "Create Beam Tag done " + JSON.stringify( err ) )
+                addMyUsernameToAllLists( function(err) {
+                    log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
+                    if (err) { return cb( err ) }
+                    config.syncReference = triggerSync( function(error, ok) {
+                        log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
+                        
+                        connectToChanges()
+                        
+                        callBack( error, ok )
                     } )
                 } )
             } )
