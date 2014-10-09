@@ -950,7 +950,7 @@ function goServerRegistration(parameters) {
         config.user = {};
         config.user.name = doc.username;
         config.user.email = doc.email;
-        if (config.user.name.indexOf("@") !== false ) {
+        if (config.user.name.indexOf("@") != -1 ) {
         	config.user.email = doc.username;
         }
         config.user.password = doc.password;
