@@ -3433,12 +3433,14 @@ function doServerLogin(callBack) {
     if (config && config.user) {
         var url = REMOTE_SERVER_LOGIN_URL;
         var login = coax( url );
-        var credentials = '{ "username" : "' + config.user.name + '", "password" : "' + config.user.password + '" }';
-        if(config.user.name.indexOf("@") !== false) {
+        var credentials = {};
+        credentials.username = config.user.name;
+        credentials.password = config.user.password;
+        if(config.user.name.indexOf("@") != -1) {
         	credentials.email = config.user.name;
         }
-        log( "http " + url + " " + credentials )
-        login.post( JSON.parse( credentials ), function(error, result) {
+        log( "http " + url + " " + JSON.stringify( credentials ) )
+        login.post( credentials , function(error, result) {
             if (error) { return callBack( error ) }
             log( "Server Login Result:" + JSON.stringify( result ) )
             callBack( false, result )
