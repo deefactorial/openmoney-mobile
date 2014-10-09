@@ -3467,12 +3467,15 @@ function doServerRegistration(callBack) {
     if (config && config.user) {
         var url = REMOTE_SERVER_REGISTRATION_URL;
         var login = coax( url );
-        var credentials = '{ "username" : "' + config.user.name + '", "password" : "' + config.user.password + '" }';
+        
+        var credentials = {}
+        credentials.username = config.user.name;
+        credentials.password = config.user.password;
         if( typeof config.user.email != 'undefined' ) {
         	credentials.email = config.user.email;
         }
-        log( "http " + url + " " + credentials )
-        login.post( JSON.parse( credentials ), function(error, result) {
+        log( "http " + url + " " + JSON.stringify( credentials ) ) 
+        login.post( credentials , function(error, result) {
             if (error) { return callBack( error ) }
             log( "Server Regisration Result:" + JSON.stringify( result ) )
             callBack( false, result )
