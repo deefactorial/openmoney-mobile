@@ -908,8 +908,6 @@ function goServerLogin(parameters) {
         	if(error) { callBack(error); return false;}
         	
         	callBack(false)
-        	
-        	//History.back()
             
         } )
     } )
@@ -938,8 +936,6 @@ function goServerRegistration(parameters) {
 		processAjaxData( response, "registration.html" )
 		
 	}
-
-    //drawContent( config.t.register() )
     
     $( "#content .todo-index" ).off("click").click( function() {
         History.back()
@@ -952,7 +948,8 @@ function goServerRegistration(parameters) {
         
         var doc = jsonform( this );
         config.user = {};
-        config.user.name = doc.email;
+        config.user.name = doc.username;
+        config.user.email = doc.email;
         config.user.password = doc.password;
         doRegistration( function(error, result) {
         	
@@ -3465,7 +3462,7 @@ function doServerRegistration(callBack) {
     if (config && config.user) {
         var url = REMOTE_SERVER_REGISTRATION_URL;
         var login = coax( url );
-        var credentials = '{ "username" : "' + config.user.name + '", "password" : "' + config.user.password + '" }';
+        var credentials = '{ "username" : "' + config.user.name + '", "email" : "' + config.user.email + '", "password" : "' + config.user.password + '" }';
         log( "http " + url + " " + credentials )
         login.post( JSON.parse( credentials ), function(error, result) {
             if (error) { return callBack( error ) }
