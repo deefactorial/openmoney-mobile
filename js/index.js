@@ -1961,7 +1961,7 @@ function goProfile(parameters) {
 	config.db.get("profile," + config.user.name, function(error, profile){
     	if(error) {
     		if(error.status == 404){
-    			var profile = { "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
+    			var profile = { "type": "profile", "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
                 if (config.user.name.indexOf("@") != -1){
                 	profile.email = config.user.name;
                 }
