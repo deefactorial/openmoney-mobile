@@ -383,6 +383,8 @@ function connectToChanges() {
 		    	    } )
 		    	    
 	    		}
+	    	} else if (change.doc.type == 'trading_name') {
+	    		window.dbChangedTradingName()
 	    	}
 	    }
 	    
@@ -525,53 +527,54 @@ function goIndex(parameters) {
 	
     setTabs();
     
+    window.plugins.spinnerDialog.hide();
+    
     // when the database changes, update the UI to reflect new lists
-    window.dbChanged = function() {
-    	window.plugins.spinnerDialog.show();
-        config.views( [ "accounts", {
-            descending : true, include_docs : true
-        } ], function(err, view) {
-
-            var thisUsersAccounts = {
-                rows : []
-            }
-            
-            if (typeof view.rows != 'undefined' && config.user != null) {
-            	view.rows.forEach(function(row) {
-            		row.key.steward.forEach(function(steward) {
-            			if(steward == config.user.name)
-            				thisUsersAccounts.rows.push( row );
-            		})
-            	})
-            }
-
-            thisUsersAccounts.offset = view.offset
-            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
-
-            log( "accounts " + JSON.stringify( thisUsersAccounts ) )
-            drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) )
-            //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
-            
-            var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goIndex.toString(), "pageParameters" : []
-        	}
-            
-            
-            updateAjaxData( response, "index.html" )
-            
-                // If you click a list,
-            $( "#scrollable" ).off( "click", "li")
-		    $( "#scrollable" ).on( "click", "li", function() {
-		        var id = $( this ).attr( "data-id" );
-		        goList( [ id ] )
-		    } )
-            
-            window.plugins.spinnerDialog.hide();
-            window.plugins.spinnerDialog.hide();
-
-        } )
+    window.dbChangedTradingName = function() {
+    	
+    	if(currentpage == 'Openmoney') {
+    		window.plugins.spinnerDialog.show();
+	        config.views( [ "accounts", {
+	            descending : true, include_docs : true
+	        } ], function(err, view) {
+	        	window.plugins.spinnerDialog.hide();
+	            var thisUsersAccounts = {
+	                rows : []
+	            }
+	            
+	            if (typeof view.rows != 'undefined' && config.user != null) {
+	            	view.rows.forEach(function(row) {
+	            		row.key.steward.forEach(function(steward) {
+	            			if(steward == config.user.name)
+	            				thisUsersAccounts.rows.push( row );
+	            		})
+	            	})
+	            }
+	
+	            thisUsersAccounts.offset = view.offset
+	            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+	
+	            log( "accounts " + JSON.stringify( thisUsersAccounts ) )
+	            drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) )
+	            //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
+	            
+	            var response = {
+	            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goIndex.toString(), "pageParameters" : []
+	        	}
+	            
+	            updateAjaxData( response, "index.html" )
+	            
+	                // If you click a list,
+	            $( "#scrollable" ).off( "click", "li")
+			    $( "#scrollable" ).on( "click", "li", function() {
+			        var id = $( this ).attr( "data-id" );
+			        goList( [ id ] )
+			    } )
+	        } )
+	        
+    	}
     }
-    window.dbChanged()
+    window.dbChangedTradingName()
 }
 
 /*
