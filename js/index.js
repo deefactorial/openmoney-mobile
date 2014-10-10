@@ -358,7 +358,8 @@ function connectToChanges() {
 			    	    	if (typeof config.user.name == 'undefined') { alert ("cannot update a profile with a username that isn't defined")}
 			    	    	//add username
 			    	    	profileCopy.username = config.user.name
-			    	    	profileCopy.email = config.user.email
+			    	    	if(typeof config.user.email != 'undefined' && config.user.email != '')
+			    	    		profileCopy.email = config.user.email
 			    	    	profileCopy.modified = new Date().getTime();
 			    	    	delete(profileCopy._deleted);
 			    	    	config.db.get("profile," + config.user.name, function(error, profile) {
@@ -375,6 +376,7 @@ function connectToChanges() {
 				    	    		//update the profile with the local settings.
 				    	        	Object.keys(profileCopy).forEach(function(key) {
 				    	        	    console.log( key + ":" + profileCopy[key] );
+				    	        	    if (key != '_id' || key != '_rev')
 				    	        	    profile[key] = profileCopy[key]
 				    	        	});
 				    	        	config.db.put("profile," + config.user.name, profile, function(error) {
