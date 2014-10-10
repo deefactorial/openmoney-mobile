@@ -349,11 +349,9 @@ function connectToChanges() {
 		    	    		getProfile();
 		    	    		log( JSON.stringify( error ) )
 		    	    	} else {
-			    	    	var profileCopy = profile;
+			    	    	var profileCopy = clone( profile );
 			    	    	profile._deleted = true;
 			    	    	config.db.put("profile,anonymous", profile)
-			    	    	
-			    	    	
 			    	    	
 			    	    	if (typeof config.user.name == 'undefined') { alert ("cannot update a profile with a username that isn't defined")}
 			    	    	//add username
@@ -412,7 +410,18 @@ function connectToChanges() {
     }, changes)
 }
 
+/*
+ * Clone an Object https://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
+ */
 
+function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+}
 
 /*
  * Error handling UI
