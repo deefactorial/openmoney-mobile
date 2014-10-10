@@ -353,6 +353,7 @@ function connectToChanges() {
 			    	    	profile._deleted = true;
 			    	    	config.db.put("profile,anonymous", profile)
 			    	    	
+			    	    	if (typeof config.user.name == 'undefined') { alert ("cannot update a profile with a username that isn't defined")}
 			    	    	//add username
 			    	    	profileCopy.username = config.user.name
 			    	    	profileCopy.email = config.user.email
