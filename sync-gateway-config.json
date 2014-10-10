@@ -311,7 +311,8 @@
                 	if (olddoc == null) {
                 		access(doc.username, doc.type + channelDelimiter + doc.username)
                 	} else {
-                		requireUser(olddoc.username);
+                		if(doc.username != 'anonymous')
+                			requireUser(olddoc.username);
                 	}
                 }
             }
