@@ -352,6 +352,7 @@ function connectToChanges() {
 		    	    		if( profile._deleted == true) {
 		    	    			getProfile();
 		    	    			log ("profile is deleted")
+		    	    			
 		    	    		} else {
 		    	    	
 				    	    	var profileCopy = clone( profile );
