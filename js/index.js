@@ -3716,7 +3716,23 @@ function addMyUsernameToAllLists(cb) {
     	profileCopy.username = config.user.name
     	profileCopy.email = config.user.email
     	profileCopy.modified = new Date().getTime();
-    	config.db.put("profile," + config.user.name, profileCopy)
+    	config.db.get("profile," + config.user.name, function(error, profile) {
+    		if(error) {
+    			if(error.status == 404) {
+    				config.db.put("profile," + config.user.name, profileCopy)
+    			} else {
+    				return log (JSON.stringify( error ) )
+    			}
+    		}
+    		//update the profile with the local settings.
+        	Object.keys(profileCopy).forEach(function(key) {
+        	    console.log( key + ":" + profile[key] );
+        	    profile[key] = profileCopy[key]
+        	});
+        	config.db.put("profile," + config.user.name, profile)
+        	
+    	} )
+    	
     } )
     
     //poll for when they are all complete then call callback
@@ -4222,7 +4238,7 @@ function setupConfig(done) {
 
 function triggerSync(cb, retryCount) {
 
-    if (!config.user) { return log( "no user" ) }
+    if (typeof config.user.name == 'undefined') { return log( "no user defined!" ) }
 
     if (SERVER_LOGIN) {
         var remote = {
