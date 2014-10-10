@@ -349,39 +349,45 @@ function connectToChanges() {
 		    	    		getProfile();
 		    	    		log( JSON.stringify( error ) )
 		    	    	} else {
-			    	    	var profileCopy = clone( profile );
-			    	    	profile._deleted = true;
-			    	    	config.db.put("profile,anonymous", profile)
-			    	    	
-			    	    	if (typeof config.user.name == 'undefined') { alert ("cannot update a profile with a username that isn't defined")}
-			    	    	//add username
-			    	    	profileCopy.username = config.user.name
-			    	    	if(typeof config.user.email != 'undefined' && config.user.email != '')
-			    	    		profileCopy.email = config.user.email
-			    	    	profileCopy.modified = new Date().getTime();
-			    	    	delete(profileCopy._deleted);
-			    	    	config.db.get("profile," + config.user.name, function(error, profile) {
-			    	    		if(error) {
-			    	    			if(error.status == 404) {
-			    	    				config.db.put("profile," + config.user.name, profileCopy, function(error) {
-			    	    					getProfile();
-			    	    				})
-			    	    			} else {
-			    	    				getProfile();
-			    	    				log (JSON.stringify( error ) )
-			    	    			}
-			    	    		} else {
-				    	    		//update the profile with the local settings.
-				    	        	Object.keys(profileCopy).forEach(function(key) {
-				    	        	    console.log( key + ":" + profileCopy[key] );
-				    	        	    if (key != '_id' && key != '_rev')
-				    	        	    profile[key] = profileCopy[key]
-				    	        	});
-				    	        	config.db.put("profile," + config.user.name, profile, function(error) {
-				    	        		getProfile();
-				    	        	})
-			    	    		}
-			    	    	} )
+		    	    		if( profile._deleted == true) {
+		    	    			getProfile();
+		    	    			log ("profile is deleted")
+		    	    		} else {
+		    	    	
+				    	    	var profileCopy = clone( profile );
+				    	    	profile._deleted = true;
+				    	    	config.db.put("profile,anonymous", profile)
+				    	    	
+				    	    	if (typeof config.user.name == 'undefined') { alert ("cannot update a profile with a username that isn't defined")}
+				    	    	//add username
+				    	    	profileCopy.username = config.user.name
+				    	    	if(typeof config.user.email != 'undefined' && config.user.email != '')
+				    	    		profileCopy.email = config.user.email
+				    	    	profileCopy.modified = new Date().getTime();
+				    	    	delete(profileCopy._deleted);
+				    	    	config.db.get("profile," + config.user.name, function(error, profile) {
+				    	    		if(error) {
+				    	    			if(error.status == 404) {
+				    	    				config.db.put("profile," + config.user.name, profileCopy, function(error) {
+				    	    					getProfile();
+				    	    				})
+				    	    			} else {
+				    	    				getProfile();
+				    	    				log (JSON.stringify( error ) )
+				    	    			}
+				    	    		} else {
+					    	    		//update the profile with the local settings.
+					    	        	Object.keys(profileCopy).forEach(function(key) {
+					    	        	    console.log( key + ":" + profileCopy[key] );
+					    	        	    if (key != '_id' && key != '_rev')
+					    	        	    profile[key] = profileCopy[key]
+					    	        	});
+					    	        	config.db.put("profile," + config.user.name, profile, function(error) {
+					    	        		getProfile();
+					    	        	})
+				    	    		}
+				    	    	} )
+		    	    		}
 		    	    	}
 		    	    } )
 		    	    
