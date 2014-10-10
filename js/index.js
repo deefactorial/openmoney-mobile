@@ -1958,17 +1958,20 @@ function goProfile(parameters) {
 	window.dbChanged = function() {};
 	
 	window.plugins.spinnerDialog.show();
+	
+	
 	config.db.get("profile," + config.user.name, function(error, profile){
     	if(error) {
     		if(error.status == 404){
     			var profile = { "type": "profile", "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
-                if (config.user.name.indexOf("@") != -1){
-                	profile.email = config.user.name;
-                }
-    			if (typeof config.user.email != 'undefined') {
-    				profile.email = config.user.email;
+    			if (typeof config.user.name != 'undefined') {
+	    			if (config.user.name.indexOf("@") != -1){
+	                	profile.email = config.user.name;
+	                }
+	    			if (typeof config.user.email != 'undefined') {
+	    				profile.email = config.user.email;
+	    			}
     			}
-    			
                 putProfile( profile, function(error, ok) {
                 	if(error) alert( JSON.stringify(error) )
                 } )
@@ -3452,6 +3455,7 @@ function doServerLogin(callBack) {
     }
 }
 
+
 /*
  * Custom Indirect Server Regisration parameters are REMOTE_SERVER_LOGIN_URL,
  * username and password result returned is set as user
@@ -3699,6 +3703,22 @@ function addMyUsernameToAllLists(cb) {
         } )
     } )
     
+    //update the profile if it exists
+    config.db.get("profile,anonymous", function(error,profile) {
+    	if (error) {
+    		return log( JSON.stringify( error ) )
+    	} 
+    	var profileCopy = profile;
+    	profile._deleted = true;
+    	config.db.put("profile,anonymous", profile)
+    	
+    	//add username
+    	profileCopy.username = config.user.name
+    	profileCopy.email = config.user.email
+    	profileCopy.modified = new Date().getTime();
+    	config.db.put("profile," + config.user.name, profileCopy)
+    } )
+    
     //poll for when they are all complete then call callback
     
     function pollCompleted() {
@@ -3748,12 +3768,16 @@ function getProfile(){
 function putProfile(profile, cb) {
     log( "putProfile:" + JSON.stringify( profile ) )
     // Check if Profile Document Exists
-    config.db.get( "profile," + config.user.name, function(error, doc) {
+    var profileID = 'anonymous';
+    if (typeof config.user.name != 'undefined') {
+    	profileID = config.user.name
+    }
+    config.db.get( "profile," + profileID, function(error, doc) {
         if (error) {
             log( "Error: " + JSON.stringify( error ) )
             if (error.status == 404) {
                 // doc does not exists
-                config.db.put( "profile," + config.user.name, JSON.parse( JSON.stringify( profile ) ), cb )
+                config.db.put( "profile," + profileID, JSON.parse( JSON.stringify( profile ) ), cb )
             } else {
                 alert( " Error Posting Profile:" + JSON.stringify( error ) )
             }
@@ -3764,7 +3788,7 @@ function putProfile(profile, cb) {
         	    doc[key] = profile[key];
         	});
             
-            config.db.put( "profile," + config.user.name, doc, cb )
+            config.db.put( "profile," + profileID, doc, cb )
         }
     } )
 }
