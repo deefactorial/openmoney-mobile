@@ -374,7 +374,7 @@ function connectToChanges() {
 				    	    		//update the profile with the local settings.
 				    	        	Object.keys(profileCopy).forEach(function(key) {
 				    	        	    console.log( key + ":" + profileCopy[key] );
-				    	        	    if (key != '_id' || key != '_rev')
+				    	        	    if (key != '_id' && key != '_rev')
 				    	        	    profile[key] = profileCopy[key]
 				    	        	});
 				    	        	config.db.put("profile," + config.user.name, profile, function(error) {
