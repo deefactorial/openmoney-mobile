@@ -365,18 +365,18 @@ function connectToChanges() {
 			    	    				})
 			    	    			} else {
 			    	    				getProfile();
-			    	    				return log (JSON.stringify( error ) )
+			    	    				log (JSON.stringify( error ) )
 			    	    			}
+			    	    		} else {
+				    	    		//update the profile with the local settings.
+				    	        	Object.keys(profileCopy).forEach(function(key) {
+				    	        	    console.log( key + ":" + profile[key] );
+				    	        	    profile[key] = profileCopy[key]
+				    	        	});
+				    	        	config.db.put("profile," + config.user.name, profile, function(error) {
+				    	        		getProfile();
+				    	        	})
 			    	    		}
-			    	    		//update the profile with the local settings.
-			    	        	Object.keys(profileCopy).forEach(function(key) {
-			    	        	    console.log( key + ":" + profile[key] );
-			    	        	    profile[key] = profileCopy[key]
-			    	        	});
-			    	        	config.db.put("profile," + config.user.name, profile, function(error) {
-			    	        		getProfile();
-			    	        	})
-			    	        	
 			    	    	} )
 		    	    	}
 		    	    } )
