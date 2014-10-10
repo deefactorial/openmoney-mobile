@@ -3759,15 +3759,21 @@ function addMyUsernameToAllLists(cb) {
 
 
 function getProfile(){
-	config.db.get("profile," + config.user.name, function(error, profile) {
+	var profileID = 'anonymous';
+	if( typeof config.user.name != 'undefined') {
+		profileID = config.user.name;
+	}
+	config.db.get("profile," + profileID, function(error, profile) {
     	if (error) {
     		if (error.status == 404) {
-    			var profile = { "type": "profile", "username" : config.user.name , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
-                if (config.user.name.indexOf("@") != -1){
-                	profile.email = config.user.name;
-                }
-    			if (typeof config.user.email != 'undefined') {
-    				profile.email = config.user.email;
+    			var profile = { "type": "profile", "username" : profileID, "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
+    			if (typeof config.user.name != 'undefined') {
+	                if (config.user.name.indexOf("@") != -1){
+	                	profile.email = config.user.name;
+	                }
+	    			if (typeof config.user.email != 'undefined') {
+	    				profile.email = config.user.email;
+	    			}
     			}
                 putProfile( profile, function(error, ok) {
                 	if(error) alert( JSON.stringify(error) )
