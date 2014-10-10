@@ -384,7 +384,13 @@ function connectToChanges() {
 		    	    
 	    		}
 	    	} else if (change.doc.type == 'trading_name') {
-	    		window.dbChangedTradingName()
+	    		//onlyCallChange if it's the users trading name that changed.
+	    		change.doc.steward.forEach(function (steward) {
+	    			if (steward == config.user.name){
+	    				window.dbChangedTradingName()
+	    			}
+	    		})
+	    		
 	    	}
 	    }
 	    
