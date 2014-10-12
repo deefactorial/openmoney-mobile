@@ -543,11 +543,15 @@ function getFunctionName() {
 
 function goIndex(parameters) {
 	
-	if (currentpage != "Openmoney"){
+	if (currentpage != "Openmoney") {
+		
+		var currentIndex = window.History.getCurrentIndex;
+		
+		window.History.go( -currentIndex ); // Return at the beginning
 
 		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : goIndex.toString(), "pageParameters" : [] }
 		
-		updateAjaxData( response, "index.html" )
+		processAjaxData( response, "index.html" )
 	
 	}
 	
@@ -1742,7 +1746,13 @@ function goTradingName(parameters) {
                             $( "#content form input[name='trading_name']" ).val( "" ) // Clear
                             $( "#content form input[name='currency']" ).val( "" ) // Clear                            
                         
-                            navigator.notification.alert( "You successfully created a new trading name !" , function() { goIndex([]) }, "New Trading Name", "OK")
+                            navigator.notification.alert( "You successfully created a new trading name !" , function() { 
+
+                            	
+                            	
+                            	goIndex([]) 
+                            	
+                            }, "New Trading Name", "OK")
                             
                         } )
                         
