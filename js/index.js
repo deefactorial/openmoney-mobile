@@ -546,7 +546,7 @@ function goIndex(parameters) {
 	if (currentpage != "Openmoney") {
 		
 		var currentIndex = window.History.getCurrentIndex;
-		
+		alert( currentIndex );
 		
 		window.History.go( -currentIndex ); // Return at the beginning
 
