@@ -546,8 +546,8 @@ function goIndex(parameters) {
 	if (currentpage != "Openmoney") {
 		
 		var currentIndex = window.History.getCurrentIndex();
-		alert( currentIndex );
 		
+		if (currentIndex > 0)
 		window.History.go( -currentIndex ); // Return at the beginning
 
 		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : goIndex.toString(), "pageParameters" : [] }
