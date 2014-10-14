@@ -181,7 +181,7 @@
                     var space = doc.space;              
                     channel(doc.type + channelDelimiter + space);
                     if (olddoc == null) {
-                        if (!doc.steward || typeof doc.space != 'undefined' || !doc.created) {
+                        if (!doc.steward || typeof doc.space == 'undefined' || !doc.created) {
                             throw({forbidden: "Missing required properties"});
                         }
                         access(doc.steward, doc.type + channelDelimiter + space);
@@ -189,7 +189,7 @@
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
                         } else {
-                            if (!doc.steward || typeof doc.space != 'undefined' || !doc.created) {
+                            if (!doc.steward || typeof doc.space == 'undefined' || !doc.created) {
                                 throw({forbidden: "Missing required properties"});
                             } 
                             requireUser(olddoc.steward);
