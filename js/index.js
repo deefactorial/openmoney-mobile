@@ -792,6 +792,15 @@ function goList(parameters) {
             	if(err) { return log( JSON.stringify( err ) ) }
             	window.plugins.spinnerDialog.hide();
             	
+            	log( "account_details" + JSON.stringify( view ))
+                
+                drawContainer( "#scrollable", config.t.listItems( view ) )
+                
+                var response = {
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
+                }
+            	
+            	updateAjaxData( response , "account_details.html")
             	
             	view.rows.forEach( function( row ) {
             		config.db.get( row.id , function( error, journal) {
@@ -817,18 +826,6 @@ function goList(parameters) {
                         updateAjaxData( response , "account_details.html")
             		 } )
             	} )
-            	
-            	
-            	
-                log( "account_details" + JSON.stringify( view ))
-                
-                drawContainer( "#scrollable", config.t.listItems( view ) )
-                
-                var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
-                }
-            
-                updateAjaxData( response , "account_details.html")
                 
                 $( "#scrollable" ).off( "click", "li" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
