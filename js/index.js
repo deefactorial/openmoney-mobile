@@ -1603,18 +1603,16 @@ function goCreateAccount(parameters) {
                 if (error) { return alert( JSON.stringify( error ) ) }
                 
                 var found = false;
-                spaces.rows.forEach(function(space) {
+                spaces.rows.forEach( function( space ) {
                 	if(space.space == doc.space) {
                 		space.selected = true;
                 		found = true;
                 	}
-                })
+                } )
                 
                 var view = { "defaultspace": !found , "spaces" : spaces, "doc": doc }
                 
                 drawContainer( "div#form", config.t.currency_form( view ))
-                
-
                 
         	})
     	} else if (type == "space") {

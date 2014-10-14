@@ -587,9 +587,9 @@
                 <li class="topcoat-list__item" data-id="space">
                     <select name="space" class="om-select-dark" >
                         <option value="" {{#defaultSpace}}selected="selected"{{/defaultSpace}}>in space (Optional)</option>
-                        {{#rows}}
+                        {{#spaces}}{{#rows}}
                             <option value="{{key}}" {{#selected}}selected="selected"{{/selected}}>{{key}}</option>
-                        {{/rows}}
+                        {{/rows}}{{/spaces}}
                     </select>
                 </li>
 
