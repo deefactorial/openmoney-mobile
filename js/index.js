@@ -340,6 +340,15 @@ function connectToChanges() {
 	    
 	    if (typeof change != 'undefined') {
 	    	log ("Change Document:" + JSON.stringify( change.doc ) )
+	    	if (change.doc.type == 'trading_name_journal') {
+	    		if( typeof change.doc.verified != 'undefined' ) {
+	    			if (change.doc.verified === true) {
+	    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " succesfully verified by cloud."  , function() {  }, "Verified", "OK")
+	    			} else if (change.doc.verified === false){
+	    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " failed verification by cloud because " + change.doc.verified_reason  , function() {  }, "Failed Verification", "OK")
+	    			}
+	    		} 
+	    	} else 	    	
 	    	if (change.doc.type == 'profile') {
 	    		
 	    		if (change.doc.username != 'anonymous') {
