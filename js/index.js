@@ -793,15 +793,20 @@ function goList(parameters) {
             	window.plugins.spinnerDialog.hide();
             	
             	view.rows.forEach(function(row){
-            		var transactionTime = new Date( row.value.timestamp)
-            		var now = Date.now()
-            		var elapsed = now - transactionTime.getTime()
-            		var displayTime = transactionTime.toLocaleDateString() ;
-            		if (elapsed < 1000 * 60 * 60 * 24) {
-            			displayTime += " " + transactionTime.toLocaleTimeString()
-            		}
-            		row.value.timestamp = displayTime;
-            		row.value.verified_at = new Date( row.value.verfied_at ).toLocaleTimeString();
+            		config.db.get( row.id , function( error, journal) {
+            			row.journal = journal;
+            			row.journal.isPositive = row.value.isPositive;
+            			var transactionTime = new Date( row.journal.timestamp)
+                		var now = Date.now()
+                		var elapsed = now - transactionTime.getTime()
+                		var displayTime = transactionTime.toLocaleDateString() ;
+                		if (elapsed < 1000 * 60 * 60 * 24) {
+                			displayTime += " " + transactionTime.toLocaleTimeString()
+                		}
+                		row.journal.timestamp = displayTime;
+                		row.journal.verified_timestamp = new Date( row.journal.verfied_timestamp ).toLocaleTimeString();
+            		})
+            		
             	})
             	
                 log( "account_details" + JSON.stringify( view ))
@@ -4327,18 +4332,21 @@ function setupConfig(done) {
                     map : function(doc) {
                         if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
                             emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], {
-                                subject : doc.to, from : doc.from, to : doc.to, isPositive : false, amount : -doc.amount, currency : doc.currency, timestamp : doc.timestamp, description : doc.description
-                            } )
+                                isPositive : false } );
                             emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], {
-                                subject : doc.from, from : doc.from, to : doc.to, isPositive : true, amount : doc.amount, currency : doc.currency, timestamp : doc.timestamp, description : doc.description
-                            } )
+                                isPositive : true 
+                            } );
                         }
                     }.toString()
                 }, account_balance : {
                     map : function(doc) {
                         if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
-                            emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], -doc.amount )
-                            emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc.amount )
+                        	if (typeof doc.verified != 'undefined' && doc.verified === false) {
+                        		
+                        	} else {
+                        		emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], -doc.amount )
+                            	emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc.amount )
+                        	}
                         }
                     }.toString(), reduce : function(keys, values, rereduce) {
                         var result = 0;
