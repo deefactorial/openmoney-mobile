@@ -724,12 +724,10 @@ function goList(parameters) {
 	
 	var pageTitle = "Account Details";
 	
-	if (currentpage != pageTitle){
+	var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
 	
-		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
-		
-		processAjaxData( response, "account_details.html" )
-	}
+	processAjaxData( response, "account_details.html" )
+	
     
     $( "#content .todo-index" ).off("click").click( function() {
         History.back()
@@ -2828,6 +2826,9 @@ function goPayment(parameters) {
                 }
                 doc.from = from.name
                 doc.currency = from.currency
+                if (typeof from.enabled != 'undefined' && from.enabled === false ) {
+                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                } else 
                 config.db.get( "trading_name," + doc.to + "," + doc.currency, function(error, to) {
                     if (error) {
                         if (error.status == 404) {
@@ -2838,6 +2839,9 @@ function goPayment(parameters) {
                         }
                     }
                     doc.to = to.name
+                    if (typeof to.enabled != 'undefined' && to.enabled === false ) {
+                    	navigator.notification.alert( "the recipient trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                    } else 
                     config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
                         if (error) {
                             log( "Error: " + JSON.stringify( error ) )
@@ -2987,6 +2991,9 @@ function goTagPayment(parameters) {
                 }
                 doc.from = from.name
                 doc.currency = from.currency
+                if (typeof from.enabled != 'undefined' && from.enabled === false ) {
+                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                } else 
                 config.db.get( doc.to, function(error, to) {
                     if (error) {
                         if (error.status == 404) {
@@ -2997,6 +3004,9 @@ function goTagPayment(parameters) {
                         }
                     }
                     doc.to = to.name
+                    if (typeof to.enabled != 'undefined' && to.enabled === false ) {
+                    	navigator.notification.alert( "the recipient trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                    } else 
                     config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
                         if (error) {
                             log( "Error: " + JSON.stringify( error ) )
@@ -3158,7 +3168,9 @@ function goMerchantPayment(parameters) {
                 }
                 doc.to = to.name
                 doc.currency = to.currency
-                
+                if (typeof to.enabled != 'undefined' && to.enabled === false ) {
+                	navigator.notification.alert( "Merchants trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                } else 
                 if (typeof doc.from != 'undefined') {
                 	config.db.get( doc.from, function(error, from) {
                         if (error) {
@@ -3170,6 +3182,9 @@ function goMerchantPayment(parameters) {
                             }
                         }
                         doc.from = from.name
+                        if (typeof from.enabled != 'undefined' && from.enabled === false ) {
+                        	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                        } else 
                         config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
                             if (error) {
                                 log( "Error: " + JSON.stringify( error ) )
@@ -3241,7 +3256,7 @@ function goMerchantPayment(parameters) {
 	                                	navigator.notification.alert( "No trading name found for that currency."  , function() {  }, "Not Found", "OK")
 	                                	return false
 	                                }
-	
+	                                
 	                                config.db.get( doc.from, function(error, from) {
 	                                    if (error) {
 	                                        if (error.status == 404) {
@@ -3252,6 +3267,9 @@ function goMerchantPayment(parameters) {
 	                                        }
 	                                    }
 	                                    doc.from = from.name
+	                                    if (typeof from.enabled != 'undefined' && from.enabled === false ) {
+		                                	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+		                                } else 
 	                                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
 	                                        if (error) {
 	                                            log( "Error: " + JSON.stringify( error ) )
@@ -3334,6 +3352,7 @@ function goMerchantPayment(parameters) {
 	                        	return false
 	                        }
 	
+	                        
 	                        config.db.get( customer.from, function(error, from) {
 	                            if (error) {
 	                                if (error.status == 404) {
@@ -3344,6 +3363,9 @@ function goMerchantPayment(parameters) {
 	                                }
 	                            }
 	                            doc.from = from.name
+	                            if (typeof from.enabled != 'undefined' && from.enabled === false ) {
+                                	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                                } else 
 	                            config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
 	                                if (error) {
 	                                    log( "Error: " + JSON.stringify( error ) )
