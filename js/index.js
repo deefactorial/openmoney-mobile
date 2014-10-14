@@ -792,6 +792,10 @@ function goList(parameters) {
             	if(err) { return log( JSON.stringify( err ) ) }
             	window.plugins.spinnerDialog.hide();
             	
+            	view.rows.forEach( function( row ) {
+            		row.id.replace(",","\\,")
+            	} )
+            	
             	log( "account_details" + JSON.stringify( view ))
                 
                 drawContainer( "#scrollable", config.t.listItems( view ) )
@@ -828,13 +832,12 @@ function goList(parameters) {
                          
                             updateAjaxData( response , "account_details.html")
             			}
-            			
-   
             		 } )
             	} )
                 
                 $( "#scrollable" ).off( "click", "li" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
+		            id.replace("\\,",",");
 		            config.db.get( id , function (error, journal) {
 		            	if (error) { alert ( JSON.stringify( error ) ) } else {
 		            		var transactionTime = new Date( journal.timestamp )
