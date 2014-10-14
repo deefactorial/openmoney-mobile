@@ -804,46 +804,62 @@ function goList(parameters) {
             	
             	view.rows.forEach( function( row ) {
             		config.db.get( row.id , function( error, journal) {
-            			if (error) { return log( JSON.stringify( error ) ) }
-            			
-            			journal.isPositive = row.value.isPositive;
-            			var transactionTime = new Date( row.journal.timestamp)
-                		var now = Date.now()
-                		var elapsed = now - transactionTime.getTime()
-                		var displayTime = transactionTime.toLocaleDateString() ;
-                		if (elapsed < 1000 * 60 * 60 * 24) {
-                			displayTime += " " + transactionTime.toLocaleTimeString()
-                		}
-                		journal.timestamp = displayTime;
-                		journal.verified_timestamp = new Date( journal.verfied_timestamp ).toLocaleTimeString();
-                		
-                		log ("journal:" + JSON.stringify( journal ) )
-                		
-                		drawContainer( "#" + row.id, config.t.journal( journal ) )
+            			if (error) { return log( JSON.stringify( error ) ) } else {
+            				log( "journal row:" + JSON.stringify(journal) )
+            				journal.isPositive = row.value.isPositive;
+                			var transactionTime = new Date( row.journal.timestamp )
+                    		var now = Date.now()
+                    		var elapsed = now - transactionTime.getTime()
+                    		var displayTime = transactionTime.toLocaleDateString() ;
+                    		if (elapsed < 1000 * 60 * 60 * 24) {
+                    			displayTime += " " + transactionTime.toLocaleTimeString()
+                    		}
+                    		journal.timestamp = displayTime;
+                    		journal.verified_timestamp = new Date( journal.verfied_timestamp ).toLocaleTimeString();
+                    		
+                    		log ("journal:" + JSON.stringify( journal ) )
+                    		
+                    		drawContainer( "#" + row.id, config.t.journal( journal ) )
+                             
+                            var response = {
+                         		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
+                            }
                          
-                        var response = {
-                     		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
-                        }
-                     
-                        updateAjaxData( response , "account_details.html")
+                            updateAjaxData( response , "account_details.html")
+            			}
+            			
+   
             		 } )
             	} )
                 
                 $( "#scrollable" ).off( "click", "li" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
-		            view.rows.forEach( function( row ) {
-		            	if(id == row.id) {
+		            config.db.get( id , function (error, journal) {
+		            	if (error) { alert ( JSON.stringify( error ) ) } else {
 		            		var message = 
-		            		"From: " + row.value.from + 
-		            		"\nTo: " + row.value.to +
-		            		"\nAmount: "+ row.value.amount + 
-		            		"\nDescription:" + row.value.description + 
-		            		"\nTime:" + row.value.timestamp;
-		            		if ( typeof row.value.verified != 'undefined' ) message += "\nVerified:" + row.value.verified;
-		            		if ( typeof row.value.verified_at != 'undefined' ) message += '\nVerified At:' + row.value.verified_at;
-		            		navigator.notification.alert( message, function() {  }, "Transaction Details:" , "OK")
+			            		"From: " + journal.from + 
+			            		"\nTo: " + journal.to +
+			            		"\nAmount: "+ journal.amount + 
+			            		"\nDescription:" + journal.description + 
+			            		"\nTime:" + journal.timestamp;
+			            		if ( typeof journal.verified != 'undefined' ) message += "\nVerified:" + journal.verified;
+			            		if ( typeof journal.verified_timestamp != 'undefined' ) message += '\nVerified At:' + new Date( journal.verified_timestamp ).toLocaleTimeString();
+			            		navigator.notification.alert( message, function() {  }, "Transaction Details:" , "OK")
 		            	}
 		            })
+//		            view.rows.forEach( function( row ) {
+//		            	if(id == row.id) {
+//		            		var message = 
+//		            		"From: " + row.value.from + 
+//		            		"\nTo: " + row.value.to +
+//		            		"\nAmount: "+ row.value.amount + 
+//		            		"\nDescription:" + row.value.description + 
+//		            		"\nTime:" + row.value.timestamp;
+//		            		if ( typeof row.value.verified != 'undefined' ) message += "\nVerified:" + row.value.verified;
+//		            		if ( typeof row.value.verified_at != 'undefined' ) message += '\nVerified At:' + row.value.verified_at;
+//		            		navigator.notification.alert( message, function() {  }, "Transaction Details:" , "OK")
+//		            	}
+//		            })
 		        } )
             } )
     	} )
