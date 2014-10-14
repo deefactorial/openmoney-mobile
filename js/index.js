@@ -551,19 +551,16 @@ function getFunctionName() {
 
 
 function goIndex(parameters) {
+		
+	var currentIndex = window.History.getCurrentIndex();
 	
-	if (currentpage != "Openmoney") {
-		
-		var currentIndex = window.History.getCurrentIndex();
-		
-		if (currentIndex > 0)
-			window.History.go( -currentIndex ); // Return at the beginning
+	if (currentIndex > 0)
+		window.History.go( -currentIndex ); // Return at the beginning
 
-		var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : goIndex.toString(), "pageParameters" : [] }
-		
-		processAjaxData( response, "index.html" )
+	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : goIndex.toString(), "pageParameters" : [] }
 	
-	}
+	processAjaxData( response, "index.html" )
+	
 	
     //drawContent( config.t.index() )
     if (typeof navigator.splashscreen != 'undefined')
@@ -733,9 +730,13 @@ function goList(parameters) {
 	
 	var pageTitle = "Account Details";
 	
-	var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
+	if (currentpage != pageTitle) {
 	
-	processAjaxData( response, "account_details.html" )
+		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
+		
+		processAjaxData( response, "account_details.html" )
+	
+	}
 	
     
     $( "#content .todo-index" ).off("click").click( function() {
