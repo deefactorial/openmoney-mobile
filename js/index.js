@@ -1362,7 +1362,7 @@ function goCreateAccount(parameters) {
 	}
 	
     
-    log("spaces view:" + JSON.stringify( view ) ) 
+    log("Create view:" + JSON.stringify( view ) ) 
 
     var pageTitle = "Create";
 	

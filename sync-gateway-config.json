@@ -199,28 +199,16 @@
                     var currency = base64_encode( doc.currency );
                     channel(doc.type + channelDelimiter + currency);
                     if (olddoc == null) {
-                        if (!doc.steward || !doc.currency || !doc.name || !doc.created ) {
+                        if (!doc.steward || !doc.currency || !doc.created ) {
                             throw({forbidden: "Missing required properties"});
-                        } else if (! Array.isArray(doc.steward) ) {
-                            throw({forbidden: "Steward array missing."});
-                        } else if (doc.currency.length < 2) {
-                            throw({forbidden: "Please enter currency"});
-                        } else if (doc.name.length < 2) { 
-                            throw({forbidden: "Please enter a currency name"});
                         }
                         access(doc.steward, doc.type + channelDelimiter + currency);
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
                         } else {
-                            if (!doc.steward || !doc.currency || !doc.name || !doc.created ) {
+                            if (!doc.steward || !doc.currency || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
-                            } else if (! Array.isArray(doc.steward) ) {
-                                throw({forbidden: "Steward array missing."});
-                            } else if (doc.currency.length < 2) {
-                                throw({forbidden: "Please enter currency"});
-                            } else if (doc.name.length < 2) { 
-                                throw({forbidden: "Please enter a currency name"});
                             }
                             requireUser(olddoc.steward);
                         }
@@ -280,7 +268,7 @@
                             //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                             channel("trading_name" + channelDelimiter + from + channelDelimiter + currency)
                             channel("trading_name" + channelDelimiter + to + channelDelimiter + currency)
-                            requireUser([olddoc.from , olddoc.to]);
+                            //requireUser([olddoc.from , olddoc.to]);
                         }
                     }
                 } else if (doc.type == "beamtag") {                  
