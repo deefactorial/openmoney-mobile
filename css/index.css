@@ -72,6 +72,14 @@ form input {
 	margin:0;
 }
 
+.verified {
+	font-style: italic; 
+}
+
+.strike {
+	text-decoration: line-through;
+}
+
 .what {
 	text-align:right;
 	float:left;

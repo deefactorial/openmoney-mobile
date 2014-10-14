@@ -731,11 +731,21 @@ function goList(parameters) {
 	var pageTitle = "Account Details";
 	
 	if (currentpage != pageTitle) {
+		
+		var currentIndex = window.History.getCurrentIndex();
+		
+		if (currentIndex > 1)
+			window.History.go( 1 - currentIndex ); // Return at the beginning
 	
 		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
 		
 		processAjaxData( response, "account_details.html" )
 	
+	} else {
+		
+		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
+		
+		updateAjaxData( response, "account_details.html" )
 	}
 	
     
@@ -791,6 +801,7 @@ function goList(parameters) {
             			displayTime += " " + transactionTime.toLocaleTimeString()
             		}
             		row.value.timestamp = displayTime;
+            		row.value.verified_at = new Date( row.value.verfied_at ).toLocaleTimeString();
             	})
             	
                 log( "account_details" + JSON.stringify( view ))
@@ -803,12 +814,19 @@ function goList(parameters) {
             
                 updateAjaxData( response , "account_details.html")
                 
-                $( "#scrollable" ).off( "click", "li" )
-                $( "#scrollable" ).on( "click", "li", function(e) {
+                $( "#scrollable" ).off( "click", "li" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
 		            view.rows.forEach( function( row ) {
 		            	if(id == row.id) {
-		            		navigator.notification.alert( "From: " + row.value.from + "\nTo: " + row.value.to +"\nAmount: "+ row.value.amount + "\nDescription:" + row.value.description + "\nTime:" + row.value.timestamp, function() {  }, "Transaction Details:" , "OK")
+		            		var message = 
+		            		"From: " + row.value.from + 
+		            		"\nTo: " + row.value.to +
+		            		"\nAmount: "+ row.value.amount + 
+		            		"\nDescription:" + row.value.description + 
+		            		"\nTime:" + row.value.timestamp;
+		            		if ( typeof row.value.verified != 'undefined' ) message += "\nVerified:" + row.value.verified;
+		            		if ( typeof row.value.verified_at != 'undefined' ) message += '\nVerified At:' + row.value.verified_at;
+		            		navigator.notification.alert( message, function() {  }, "Transaction Details:" , "OK")
 		            	}
 		            })
 		        } )
