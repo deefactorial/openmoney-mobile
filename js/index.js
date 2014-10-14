@@ -817,6 +817,8 @@ function goList(parameters) {
                 		journal.timestamp = displayTime;
                 		journal.verified_timestamp = new Date( journal.verfied_timestamp ).toLocaleTimeString();
                 		
+                		log ("journal:" + JSON.stringify( journal ) )
+                		
                 		drawContainer( "#" + row.id, config.t.journal( journal ) )
                          
                         var response = {
