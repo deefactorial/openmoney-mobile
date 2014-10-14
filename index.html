@@ -134,19 +134,21 @@
 <div class="topcoat-list__container">
     <ul class="topcoat-list">
     {{#rows}}
-        <li class="topcoat-list__item" data-id="{{id}}">
-        {{#journal}}
-            <div class="who {{#verified}}verified{{/verified}} {{#verified_reason}}strike{{/verified_reason}}"><b>{{subject}}</b> <i>{{description}}</i><br/>{{timestamp}}</div>
-			<div class="what {{#isPositive}}isPositive{{/isPositive}}{{^isPositive}}isNegative{{/isPositive}}">{{amount}} {{currency}}            
-				
-			</div>
-            
-            <br class="clear"/>
-        {{/journal}}
+        <li id="{{id}}" class="topcoat-list__item" data-id="{{id}}">
         </li>
     {{/rows}}
     </ul>
 </div>
+</script>
+<script type="text/mustache" id="listItems-mu">
+        {{#journal}}
+            <div class="who {{#verified}}verified{{/verified}} {{#verified_reason}}strike{{/verified_reason}}"><b>{{subject}}</b> <i>{{description}}</i><br/>{{timestamp}}</div>
+            <div class="what {{#isPositive}}isPositive{{/isPositive}}{{^isPositive}}isNegative{{/isPositive}}">{{amount}} {{currency}}            
+                
+            </div>
+            
+            <br class="clear"/>
+        {{/journal}}
 </script>
 <script type="text/mustache" id="share-mu">
 <header>

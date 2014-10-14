@@ -343,7 +343,7 @@ function connectToChanges() {
 	    	if (change.doc.type == 'trading_name_journal') {
 	    		if( typeof change.doc.verified != 'undefined' ) {
 	    			if (change.doc.verified === true) {
-	    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " succesfully verified by cloud."  , function() {  }, "Verified", "OK")
+	    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " succesfully verified by cloud.", function() { }, "Verified", "OK")
 	    			} else if (change.doc.verified === false){
 	    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " failed verification by cloud because " + change.doc.verified_reason  , function() {  }, "Failed Verification", "OK")
 	    			}
@@ -792,10 +792,12 @@ function goList(parameters) {
             	if(err) { return log( JSON.stringify( err ) ) }
             	window.plugins.spinnerDialog.hide();
             	
-            	view.rows.forEach(function(row){
+            	
+            	view.rows.forEach( function( row ) {
             		config.db.get( row.id , function( error, journal) {
-            			row.journal = journal;
-            			row.journal.isPositive = row.value.isPositive;
+            			if (error) { return log( JSON.stringify( error ) ) }
+            			
+            			journal.isPositive = row.value.isPositive;
             			var transactionTime = new Date( row.journal.timestamp)
                 		var now = Date.now()
                 		var elapsed = now - transactionTime.getTime()
@@ -803,11 +805,20 @@ function goList(parameters) {
                 		if (elapsed < 1000 * 60 * 60 * 24) {
                 			displayTime += " " + transactionTime.toLocaleTimeString()
                 		}
-                		row.journal.timestamp = displayTime;
-                		row.journal.verified_timestamp = new Date( row.journal.verfied_timestamp ).toLocaleTimeString();
-            		})
-            		
-            	})
+                		journal.timestamp = displayTime;
+                		journal.verified_timestamp = new Date( journal.verfied_timestamp ).toLocaleTimeString();
+                		
+                		drawContainer( "#" + row.id, config.t.journal( journal ) )
+                         
+                        var response = {
+                     		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
+                        }
+                     
+                        updateAjaxData( response , "account_details.html")
+            		 } )
+            	} )
+            	
+            	
             	
                 log( "account_details" + JSON.stringify( view ))
                 
