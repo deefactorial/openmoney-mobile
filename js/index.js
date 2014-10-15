@@ -799,7 +799,7 @@ function goList(parameters) {
             			window.plugins.spinnerDialog.hide();
             			
         				log( "journal row:" + JSON.stringify(row) )
-        				journal.isPositive = row.value.isPositive;
+        				
         				
             			var transactionTime = new Date( row.value.timestamp )
                 		var now = Date.now()
