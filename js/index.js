@@ -2557,7 +2557,11 @@ function goNewNFC(parameters) {
                         	var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
                             var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 
-                            var pinCode = doc.pinCode,
+                            var pinCode = doc.pinCode;
+                            
+                            if ( typeof pinCode == 'undefined' || pinCode == '') {
+                            	pincode = randomString( 64, '0123456789' );
+                            } 
 
                             // for more information on mcrypt
                             // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
@@ -2565,7 +2569,7 @@ function goNewNFC(parameters) {
                             // hashID
                             // should be
                             // the users private RSA key.
-                            encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
+                            var encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
 
                             var base64_encodedString = base64_encode( encodedString )
 
