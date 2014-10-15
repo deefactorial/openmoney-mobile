@@ -796,7 +796,7 @@ function goList(parameters) {
             	var find = ',';
             	var re = new RegExp(find, 'g');
             	view.rows.forEach( function( row ) {
-            		row.id.replace(re,"\\,")
+            		row.id.replace(re,".")
             	} )
             	
             	log( "account_details" + JSON.stringify( view ))
@@ -840,7 +840,7 @@ function goList(parameters) {
                 
                 $( "#scrollable" ).off( "click", "li" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
-		            var find = '\\,';
+		            var find = '.';
 		            var re = new RegExp(find, 'g');
 		            id.replace(re,",");
 		            config.db.get( id , function (error, journal) {
