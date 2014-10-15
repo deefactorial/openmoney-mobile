@@ -793,6 +793,10 @@ function goList(parameters) {
             	if(err) { return log( JSON.stringify( err ) ) }
             	window.plugins.spinnerDialog.hide();
             	
+            	view.rows.forEach( function( row ) {
+            		row.identifier = row.id.replace(",",".");
+            	})
+            	
             	log( "account_details" + JSON.stringify( view ))
                 
                 drawContainer( "#scrollable", config.t.listItems( view ) )
@@ -808,7 +812,7 @@ function goList(parameters) {
             			if (error) { return log( JSON.stringify( error ) ) } else {
             				log( "journal row:" + JSON.stringify(journal) )
             				journal.isPositive = row.value.isPositive;
-            				var timestamp = clone( journal.timestamp );
+            				
                 			var transactionTime = new Date( journal.timestamp )
                     		var now = Date.now()
                     		var elapsed = now - transactionTime.getTime()
@@ -816,13 +820,13 @@ function goList(parameters) {
                     		if (elapsed < 1000 * 60 * 60 * 24) {
                     			displayTime += " " + transactionTime.toLocaleTimeString()
                     		}
-                    		journal.timestamp = displayTime;
+                    		journal.timestamp_pretty = displayTime;
                     		if (typeof journal.verfied_timestamp != 'undefined')
                     		journal.verified_timestamp = new Date( journal.verfied_timestamp ).toLocaleTimeString();
                     		
                     		log ("journal:" + JSON.stringify( journal ) )
                     		
-                    		drawContainer( "#" + timestamp, config.t.journal( journal ) )
+                    		drawContainer( "#" + journal._id.replace(",","."), config.t.journal( journal ) )
                              
                             var response = {
                          		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
