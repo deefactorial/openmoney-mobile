@@ -343,7 +343,7 @@ function connectToChanges() {
 	    	if (change.doc.type == 'trading_name_journal') {
 	    		if( typeof change.doc.verified != 'undefined' ) {
 	    			if (change.doc.verified === true) {
-	    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " succesfully verified by cloud.", function() { }, "Verified", "OK")
+	    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " successfully verified by cloud.", function() { }, "Verified", "OK")
 	    			} else if (change.doc.verified === false){
 	    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " failed verification by cloud because " + change.doc.verified_reason  , function() {  }, "Failed Verification", "OK")
 	    			}
