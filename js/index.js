@@ -791,10 +791,10 @@ function goList(parameters) {
                 startkey : [ id, {} ], endkey : [ id ], descending : true
             } ], function(err, view) {
             	if(err) { return log( JSON.stringify( err ) ) }
-            	window.plugins.spinnerDialog.hide();
+            	
             	
             	view.rows.forEach( function( row ) {
-            		row.identifier = row.id.replace(",",".");
+            		row.identifier = row.id.replace(new RegExp(",", 'g'),".");
             	})
             	
             	log( "account_details" + JSON.stringify( view ))
@@ -809,6 +809,7 @@ function goList(parameters) {
             	
             	view.rows.forEach( function( row ) {
             		config.db.get( row.id , function( error, journal) {
+            			window.plugins.spinnerDialog.hide();
             			if (error) { return log( JSON.stringify( error ) ) } else {
             				log( "journal row:" + JSON.stringify(journal) )
             				journal.isPositive = row.value.isPositive;
@@ -826,7 +827,7 @@ function goList(parameters) {
                     		
                     		log ("journal:" + JSON.stringify( journal ) )
                     		
-                    		drawContainer( "#" + journal._id.replace(",","."), config.t.journal( journal ) )
+                    		drawContainer( "#" + journal._id.replace(new RegExp(",", 'g'),"."), config.t.journal( journal ) )
                              
                             var response = {
                          		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
