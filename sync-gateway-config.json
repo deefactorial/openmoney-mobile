@@ -127,12 +127,6 @@
                     if (olddoc == null) {
                         if (!doc.username || !doc.password || !doc.password_encryption_algorithm || !doc.created ) {
                             throw({forbidden: "Missing required properties"});
-                        } else if (doc.username.length < 2) {
-                            throw({forbidden: "Username length has to be greater than one character."});
-                        } else if (doc.password.length < 2) {
-                            throw({forbidden: "password has to be greater than one character"});
-                        } else if (! Array.isArray(doc.password_encryption_algorithm) ) { 
-                            throw({forbidden: "provide a valid encryption algorithm"});
                         }
                         access(doc.username, doc.type + channelDelimiter + doc.username);
                     } else {
@@ -141,13 +135,7 @@
                         } else {
                         	if (!doc.username || !doc.password || !doc.password_encryption_algorithm || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
-                            } else if (doc.username.length < 2) {
-                                throw({forbidden: "Username length has to be greater than one character."});
-                            } else if (doc.password.length < 2) {
-                                throw({forbidden: "password has to be greater than one character"});
-                            } else if (! Array.isArray(doc.password_encryption_algorithm) ) { 
-                                throw({forbidden: "provide a valid encryption algorithm"});
-                            }
+                            } 
                             if (olddoc.username != doc.username) {
                                 throw({forbidden: "Cannot change username! Delete first then create new user!"});
                             }
