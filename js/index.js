@@ -4396,10 +4396,10 @@ function setupConfig(done) {
                     map : function(doc) {
                         if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
                         	doc.isPositive = false;
-                        	doc.subject = doc.from + " " + doc.currency;
+                        	doc.subject = doc.to + " " + doc.currency;
                             emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], doc );
                             doc.isPositive = true;
-                            doc.subject = doc.to + " " + doc.currency;
+                            doc.subject = doc.from + " " + doc.currency;
                             emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc );
                         }
                     }.toString()
