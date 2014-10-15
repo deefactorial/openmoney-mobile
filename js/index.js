@@ -793,9 +793,25 @@ function goList(parameters) {
             	if(err) { return log( JSON.stringify( err ) ) }
             	
             	
+            	
             	view.rows.forEach( function( row ) {
-            		row.identifier = row.key[0].replace(new RegExp(",", 'g'),".") + row.key[1];
-            	})
+            		
+            			window.plugins.spinnerDialog.hide();
+            			
+        				log( "journal row:" + JSON.stringify(row) )
+        				journal.isPositive = row.value.isPositive;
+        				
+            			var transactionTime = new Date( row.value.timestamp )
+                		var now = Date.now()
+                		var elapsed = now - transactionTime.getTime()
+                		var displayTime = transactionTime.toLocaleDateString() ;
+                		if (elapsed < 1000 * 60 * 60 * 24) {
+                			displayTime += " " + transactionTime.toLocaleTimeString()
+                		}
+                		row.value.timestamp_pretty = displayTime;
+                		if (typeof row.value.verfied_timestamp != 'undefined')
+                		row.value.verified_timestamp = new Date( row.value.verfied_timestamp ).toLocaleTimeString();            		 
+            	} )
             	
             	log( "account_details" + JSON.stringify( view ))
                 
@@ -806,37 +822,6 @@ function goList(parameters) {
                 }
             	
             	updateAjaxData( response , "account_details.html")
-            	
-            	view.rows.forEach( function( row ) {
-            		config.db.get( row.id , function( error, journal) {
-            			window.plugins.spinnerDialog.hide();
-            			if (error) { return log( JSON.stringify( error ) ) } else {
-            				log( "journal row:" + JSON.stringify(journal) )
-            				journal.isPositive = row.value.isPositive;
-            				
-                			var transactionTime = new Date( journal.timestamp )
-                    		var now = Date.now()
-                    		var elapsed = now - transactionTime.getTime()
-                    		var displayTime = transactionTime.toLocaleDateString() ;
-                    		if (elapsed < 1000 * 60 * 60 * 24) {
-                    			displayTime += " " + transactionTime.toLocaleTimeString()
-                    		}
-                    		journal.timestamp_pretty = displayTime;
-                    		if (typeof journal.verfied_timestamp != 'undefined')
-                    		journal.verified_timestamp = new Date( journal.verfied_timestamp ).toLocaleTimeString();
-                    		
-                    		log ("journal:" + JSON.stringify( journal ) )
-                    		
-                    		drawContainer( "#" + row.key[0].replace(new RegExp(",", 'g'),".") + row.key[1], config.t.journal( journal ) )
-                             
-                            var response = {
-                         		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
-                            }
-                         
-                            updateAjaxData( response , "account_details.html")
-            			}
-            		 } )
-            	} )
                 
                 $( "#scrollable" ).off( "click", "li" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
@@ -4358,11 +4343,10 @@ function setupConfig(done) {
                 }, account_details : {
                     map : function(doc) {
                         if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
-                            emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], {
-                                isPositive : false } );
-                            emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], {
-                                isPositive : true 
-                            } );
+                        	doc.isPositive = false;
+                            emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], doc );
+                            doc.isPositive = true;
+                            emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc );
                         }
                     }.toString()
                 }, account_balance : {
