@@ -165,6 +165,9 @@
                             if ( doc.name != olddoc.name || doc.currency != olddoc.currency || doc.created != olddoc.created) {
                             	throw({forbidden: "unmutable properties"});
                             }
+                            if (doc.steward != olddoc.steward) {
+                            	requireUser(olddoc.steward);
+                            }
                             
                         }
                     }
@@ -183,7 +186,12 @@
                             if (!doc.steward || typeof doc.space == 'undefined' || !doc.created) {
                                 throw({forbidden: "Missing required properties"});
                             } 
-                            requireUser(olddoc.steward);
+                            if (doc.space != olddoc.space || doc.created != olddoc.created){
+                            	throw({forbidden: "unmutable properties"});
+                            }
+                            if (doc.steward != olddoc.steward) {
+                            	requireUser(olddoc.steward);
+                            }
                         }
                     }
                 } else if (doc.type == "currency") {
@@ -201,7 +209,12 @@
                             if (!doc.steward || !doc.currency || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
                             }
-                            requireUser(olddoc.steward);
+                            if (doc.currency != olddoc.currency || doc.created != olddoc.created) {
+                            	throw({forbidden: "unmutable properties"});
+                            }
+                            if (doc.steward != olddoc.steward) {
+                            	requireUser(olddoc.steward);
+                            }
                         }
                     }
                 } else if (doc.type == "currency_view") {
@@ -210,8 +223,6 @@
                     if (olddoc == null) {
                         if (!doc.steward || !doc.currency || !doc.created ) {
                             throw({forbidden: "Missing required properties"});
-                        } else if (! Array.isArray(doc.steward) ) {
-                            throw({forbidden: "Steward array missing."});
                         }
                         access(doc.steward, doc.type + channelDelimiter + currency);
                         access(doc.steward, "currency" + channelDelimiter + currency);
@@ -221,10 +232,13 @@
                         } else {
                             if (!doc.steward || !doc.currency || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
-                            } else if (! Array.isArray(doc.steward) ) {
-                                throw({forbidden: "Steward array missing."});
                             }
-                            requireUser(olddoc.steward);
+                            if (doc.currency != olddoc.currency || doc.created != olddoc.created) {
+                            	throw({forbidden: "unmutable properties"});
+                            }
+                            if (doc.steward != olddoc.steward) {
+                            	requireUser(olddoc.steward)
+                            }
                         }
                     }
                 } else if (doc.type == "trading_name_journal") {
@@ -247,10 +261,13 @@
                         //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                     } else {
                         if (doc._deleted) {
-                            requireUser([olddoc.from , olddoc.to]);
+                            throw({forbidden: "journal entries cannot be deleted!"});
                         } else {
                             if (!doc.from || !doc.to || !doc.amount || !doc.currency || !doc.timestamp ) {
                                 throw({forbidden: "Missing required properties"});
+                            }
+                            if (doc.from != olddoc.from || doc.to != olddoc.to || doc.amount != olddoc.amount || doc.currency != olddoc.currency || doc.timestamp != olddoc.timestamp) {
+                            	throw({forbidden: "unmutable properties"});
                             }
                             //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                             channel("trading_name" + channelDelimiter + from + channelDelimiter + currency)
