@@ -4408,11 +4408,11 @@ function setupConfig(done) {
                     	}
                         if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
                         	doc.isPositive = true;
-                            doc.subject = doc.to + " " + doc.currency;
+                            doc.subject = doc.from + " " + doc.currency;
                             emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc );
                             from = clone(doc);
                             from.isPositive = false;
-                            from.subject = from.from + " " + from.currency;
+                            from.subject = from.to + " " + from.currency;
                             from.amount = -from.amount;
                             emit( [ "trading_name," + from.from + "," + from.currency, from.timestamp ], from );
                         }
