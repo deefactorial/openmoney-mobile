@@ -769,6 +769,7 @@ function goList(parameters) {
             } ], function(err, view) {
             	
             	if(err) { return log( JSON.stringify( err ) ) }
+            	
                 log( "account_balance" + JSON.stringify( view ))
                 if (view.total_rows > 0)
                     doc.balance = view.rows[0].value;
@@ -792,9 +793,6 @@ function goList(parameters) {
             	if(err) { return log( JSON.stringify( err ) ) }
             	window.plugins.spinnerDialog.hide();
             	
-            	
-            
-            	
             	log( "account_details" + JSON.stringify( view ))
                 
                 drawContainer( "#scrollable", config.t.listItems( view ) )
@@ -810,6 +808,7 @@ function goList(parameters) {
             			if (error) { return log( JSON.stringify( error ) ) } else {
             				log( "journal row:" + JSON.stringify(journal) )
             				journal.isPositive = row.value.isPositive;
+            				var timestamp = clone( journal.timestamp );
                 			var transactionTime = new Date( journal.timestamp )
                     		var now = Date.now()
                     		var elapsed = now - transactionTime.getTime()
@@ -823,7 +822,7 @@ function goList(parameters) {
                     		
                     		log ("journal:" + JSON.stringify( journal ) )
                     		
-                    		drawContainer( "#" + journal.timestamp, config.t.journal( journal ) )
+                    		drawContainer( "#" + timestamp, config.t.journal( journal ) )
                              
                             var response = {
                          		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
