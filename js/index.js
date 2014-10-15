@@ -793,11 +793,7 @@ function goList(parameters) {
             	window.plugins.spinnerDialog.hide();
             	
             	
-            	var find = ',';
-            	var re = new RegExp(find, 'g');
-            	view.rows.forEach( function( row ) {
-            		row.id.replace(re,".")
-            	} )
+            
             	
             	log( "account_details" + JSON.stringify( view ))
                 
@@ -827,7 +823,7 @@ function goList(parameters) {
                     		
                     		log ("journal:" + JSON.stringify( journal ) )
                     		
-                    		drawContainer( "#" + row.id, config.t.journal( journal ) )
+                    		drawContainer( "#" + journal.timestamp, config.t.journal( journal ) )
                              
                             var response = {
                          		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
@@ -840,9 +836,6 @@ function goList(parameters) {
                 
                 $( "#scrollable" ).off( "click", "li" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
-		            var find = '.';
-		            var re = new RegExp(find, 'g');
-		            id.replace(re,",");
 		            config.db.get( id , function (error, journal) {
 		            	if (error) { alert ( JSON.stringify( error ) ) } else {
 		            		var transactionTime = new Date( journal.timestamp )
