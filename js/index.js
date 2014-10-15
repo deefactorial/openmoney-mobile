@@ -4394,6 +4394,18 @@ function setupConfig(done) {
                     }.toString()
                 }, account_details : {
                     map : function(doc) {
+                    	/*
+                    	 * Clone an Object https://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
+                    	 */
+
+                    	function clone(obj) {
+                    	    if (null == obj || "object" != typeof obj) return obj;
+                    	    var copy = obj.constructor();
+                    	    for (var attr in obj) {
+                    	        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+                    	    }
+                    	    return copy;
+                    	}
                         if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
                         	doc.isPositive = true;
                             doc.subject = doc.to + " " + doc.currency;
