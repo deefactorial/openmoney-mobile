@@ -794,7 +794,7 @@ function goList(parameters) {
             	
             	
             	view.rows.forEach( function( row ) {
-            		row.identifier = row.id.replace(new RegExp(",", 'g'),".");
+            		row.identifier = row.key[0].replace(new RegExp(",", 'g'),".") + row.key[1];
             	})
             	
             	log( "account_details" + JSON.stringify( view ))
@@ -827,7 +827,7 @@ function goList(parameters) {
                     		
                     		log ("journal:" + JSON.stringify( journal ) )
                     		
-                    		drawContainer( "#" + journal._id.replace(new RegExp(",", 'g'),"."), config.t.journal( journal ) )
+                    		drawContainer( "#" + row.key[0].replace(new RegExp(",", 'g'),".") + row.key[1], config.t.journal( journal ) )
                              
                             var response = {
                          		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
