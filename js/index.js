@@ -2909,6 +2909,17 @@ function goPayment(parameters) {
         $( "#content form" ).off("submit").submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
+            
+            if (typeof doc.to == 'undefined' || doc.to == '') {
+            	navigator.notification.alert( "Recipient Trading Name Required!"  , function() {  }, "Error", "OK")
+            	return false;
+            }
+            
+            if (typeof doc.amount == 'undefined' || parseInt( doc.amount ) < 1) {
+            	navigator.notification.alert( "Amount greater than zero Required!"  , function() {  }, "Error", "OK")
+            	return false;
+            }
+            
             doc.type = "trading_name_journal"
             doc.amount = parseInt( doc.amount )
             doc.timestamp = new Date().getTime();
