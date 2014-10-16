@@ -1262,7 +1262,12 @@ function goSettings(parameters) {
 		
 		processAjaxData( response, "settings.html" )
 		
-		//drawContent( config.t.settings() )
+		
+	} else {
+		
+		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : goSettings.toString(), "pageParameters" : [] }
+		
+		updateAjaxData( response, "settings.html" )
 		
 	}
 	
@@ -2210,7 +2215,7 @@ function goProfile(parameters) {
             }
             
             putProfile(doc, function(error, ok) {
-            	if(error) {alert(JSON.stringify(error))} 
+            	if(error) { log ( JSON.stringify( error ) ) } 
             	History.back()
             } )
             
@@ -3102,6 +3107,11 @@ function goTagPayment(parameters) {
             e.preventDefault()
             var doc = jsonform( this )
             doc.type = "trading_name_journal"
+            	
+            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseInt( doc.amount ) < 0 ){
+            	navigator.notification.alert( "Amount zero or greater required!"  , function() {  }, "Error", "OK")
+            	return false;
+            }
             doc.amount = parseInt( doc.amount )
             doc.timestamp = new Date().getTime();
             //doc.timestamp = doc.timestamp.toJSON()
@@ -3296,6 +3306,12 @@ function goMerchantPayment(parameters) {
         $( "#content form" ).off("submit").submit( function(e) {
             e.preventDefault()
             var doc = jsonform( this )
+            
+            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseInt( doc.amount ) < 0 ){
+            	navigator.notification.alert( "Amount zero or greater required!"  , function() {  }, "Error", "OK")
+            	return false;
+            }
+            
             doc.type = "trading_name_journal"
             doc.amount = parseInt( doc.amount )
             doc.timestamp = new Date().getTime();
