@@ -2915,7 +2915,7 @@ function goPayment(parameters) {
             	return false;
             }
             
-            if (typeof doc.amount == 'undefined' || doc.amount == '') {
+            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseInt( doc.amount ) < 1) {
             	navigator.notification.alert( "Amount greater than zero Required!"  , function() {  }, "Error", "OK")
             	return false;
             }
