@@ -172,7 +172,7 @@
                     var trading_name = doc.name ;
                     var currency = base64_encode( doc.currency );
                     channel(doc.type + channelDelimiter + trading_name + channelDelimiter + currency);
-                    //channel( "currency" + channelDelimiter + currency )
+                    channel( "currency" + channelDelimiter + currency )
                     if (olddoc == null) {
                         if (!doc.steward || !doc.name || !doc.currency || !doc.created ) {
                             throw( { forbidden: "Missing required properties" } );
