@@ -4436,7 +4436,7 @@ function setupConfig(done) {
                     	    }
                     	    return copy;
                     	}
-                        if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
+                        if (doc.type == "trading_name_journal" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseInt(doc.amount) >= 0 && doc.currency && doc.timestamp) {
                         	doc.isPositive = true;
                             doc.subject = doc.from + " " + doc.currency;
                             emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc );
@@ -4449,7 +4449,7 @@ function setupConfig(done) {
                     }.toString()
                 }, account_balance : {
                     map : function(doc) {
-                        if (doc.type == "trading_name_journal" && doc.from && doc.to && doc.amount && doc.currency && doc.timestamp) {
+                        if (doc.type == "trading_name_journal" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseInt(doc.amount) >= 0 && doc.currency && doc.timestamp) {
                         	if (typeof doc.verified != 'undefined' && doc.verified === false) {
                         		
                         	} else {
