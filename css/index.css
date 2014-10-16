@@ -73,11 +73,11 @@ form input {
 }
 
 .pending {
-	text-decoration: underline;
+	color: grey;
 }
 
 .verified {
-	color: green; 
+	
 }
 
 .strike {
