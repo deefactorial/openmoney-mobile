@@ -136,7 +136,7 @@
     {{#rows}}
         <li class="topcoat-list__item" data-id="{{id}}">
         {{#value}}
-            <div class="who {{#verified}}verified{{/verified}} {{#verified_reason}}strike{{/verified_reason}}"><b>{{subject}}</b> <i>{{description}}</i><br/>{{timestamp_pretty}}</div>
+            <div class="who {{#verified}}verified{{/verified}} {{#verified_reason}}strike{{/verified_reason}} {{^verified}}pending{{/verified}}"><b>{{subject}}</b> <i>{{description}}</i><br/>{{timestamp_pretty}}</div>
             <div class="what {{#isPositive}}isPositive{{/isPositive}}{{^isPositive}}isNegative{{/isPositive}} {{#verified_reason}}strike{{/verified_reason}}">{{amount}} {{currency}}</div>
             <br class="clear"/>
         {{/value}}

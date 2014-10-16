@@ -72,6 +72,10 @@ form input {
 	margin:0;
 }
 
+.pending {
+	text-decoration: blink;
+}
+
 .verified {
 	color: green; 
 }
