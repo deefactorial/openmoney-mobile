@@ -888,13 +888,14 @@ function goList(parameters) {
                     		}
                     		journal.timestamp = displayTime;
 		            		var message = 
-			            		"From: " + journal.from + 
-			            		"\nTo: " + journal.to +
-			            		"\nAmount: "+ journal.amount + 
+			            		"From: " + journal.from;
+		            		    if (typeof journal.from_verification_viewed != 'undefined') message += " (viewed)";
+			            		message += "\nTo: " + journal.to;
+			            		if (typeof journal.to_verification_viewed != 'undefined') message += " (viewed)";
+			            		message += "\nAmount: "+ journal.amount + 
 			            		"\nDescription:" + journal.description + 
 			            		"\nTime:" + journal.timestamp;
-			            		if ( typeof journal.verified != 'undefined' ) message += "\nVerified:" + journal.verified;
-			            		if ( typeof journal.verified_timestamp != 'undefined' ) message += '\nVerified At:' + new Date( journal.verified_timestamp ).toLocaleTimeString();
+			            		if ( typeof journal.verified_timestamp != 'undefined' ) message += '\nVerified at:' + new Date( journal.verified_timestamp ).toLocaleTimeString();
 			            		navigator.notification.alert( message, function() {  }, "Transaction Details:" , "OK")
 		            	}
 		            } )
