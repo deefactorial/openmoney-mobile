@@ -2920,13 +2920,13 @@ function goPayment(parameters) {
             	return false;
             }
             
-            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseInt( doc.amount ) < 0) {
+            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseFloat( doc.amount ) < 0) {
             	navigator.notification.alert( "Amount zero or greater Required!"  , function() {  }, "Error", "OK")
             	return false;
             }
             
             doc.type = "trading_name_journal"
-            doc.amount = parseInt( doc.amount )
+            doc.amount = parseFloat( doc.amount )
             doc.timestamp = new Date().getTime();
             //doc.timestamp = doc.timestamp.toJSON()
             config.db.get( doc.from, function(error, from) {
@@ -3108,11 +3108,11 @@ function goTagPayment(parameters) {
             var doc = jsonform( this )
             doc.type = "trading_name_journal"
             	
-            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseInt( doc.amount ) < 0 ){
+            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseFloat( doc.amount ) < 0 ){
             	navigator.notification.alert( "Amount zero or greater required!"  , function() {  }, "Error", "OK")
             	return false;
             }
-            doc.amount = parseInt( doc.amount )
+            doc.amount = parseFloat( doc.amount )
             doc.timestamp = new Date().getTime();
             //doc.timestamp = doc.timestamp.toJSON()
             delete doc.pair;
@@ -3307,13 +3307,13 @@ function goMerchantPayment(parameters) {
             e.preventDefault()
             var doc = jsonform( this )
             
-            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseInt( doc.amount ) < 0 ){
+            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseFloat( doc.amount ) < 0 ){
             	navigator.notification.alert( "Amount zero or greater required!"  , function() {  }, "Error", "OK")
             	return false;
             }
             
             doc.type = "trading_name_journal"
-            doc.amount = parseInt( doc.amount )
+            doc.amount = parseFloat( doc.amount )
             doc.timestamp = new Date().getTime();
             //doc.timestamp = doc.timestamp.toJSON()
             config.db.get( doc.to, function(error, to) {
@@ -4436,7 +4436,7 @@ function setupConfig(done) {
                     	    }
                     	    return copy;
                     	}
-                        if (doc.type == "trading_name_journal" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseInt(doc.amount) >= 0 && doc.currency && doc.timestamp) {
+                        if (doc.type == "trading_name_journal" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseFloat(doc.amount) >= 0 && doc.currency && doc.timestamp) {
                         	doc.isPositive = true;
                             doc.subject = doc.from + " " + doc.currency;
                             emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc );
@@ -4449,7 +4449,7 @@ function setupConfig(done) {
                     }.toString()
                 }, account_balance : {
                     map : function(doc) {
-                        if (doc.type == "trading_name_journal" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseInt(doc.amount) >= 0 && doc.currency && doc.timestamp) {
+                        if (doc.type == "trading_name_journal" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseFloat(doc.amount) >= 0 && doc.currency && doc.timestamp) {
                         	if (typeof doc.verified != 'undefined' && doc.verified === false) {
                         		
                         	} else {
