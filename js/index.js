@@ -2603,13 +2603,13 @@ function goNewNFC(parameters) {
                             nfc.write( message, function() {
                                 insertTagInDB( userTag )
                                 mutableLock = false;
-                                nfc.removeNdefListener( newTagListner, function() {}, function() {} );
-                                
-                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-                                    // success callback
-                                }, function() {
-                                    // failure callback
-                                } );
+                                nfc.removeNdefListener( newTagListner, function() {
+                                	nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                        // success callback
+                                    }, function() {
+                                        // failure callback
+                                    } );
+                                }, function() {} );
                                 navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { History.back(); }, "Success", "OK")
                             }, function() {
                                 //alert( "Failed to write to NFC Tag!" )
@@ -2915,8 +2915,8 @@ function goPayment(parameters) {
             	return false;
             }
             
-            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseInt( doc.amount ) < 1) {
-            	navigator.notification.alert( "Amount greater than zero Required!"  , function() {  }, "Error", "OK")
+            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseInt( doc.amount ) < 0) {
+            	navigator.notification.alert( "Amount zero or greater Required!"  , function() {  }, "Error", "OK")
             	return false;
             }
             
