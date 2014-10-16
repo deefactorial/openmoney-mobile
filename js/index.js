@@ -2559,7 +2559,7 @@ function goNewNFC(parameters) {
 
                             var pincode = randomString( 64, '0123456789' );
                             if (typeof doc.pinCode != 'undefined' && doc.pinCode != '') {
-                            	var pinCode = doc.pinCode;
+                            	pinCode = doc.pinCode;
                             }
 
                             // for more information on mcrypt
