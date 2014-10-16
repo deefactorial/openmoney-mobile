@@ -2557,11 +2557,10 @@ function goNewNFC(parameters) {
                         	var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
                             var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 
-                            var pinCode = doc.pinCode;
-                            
-                            if ( typeof pinCode == 'undefined' || pinCode == '') {
-                            	pincode = randomString( 64, '0123456789' );
-                            } 
+                            var pincode = randomString( 64, '0123456789' );
+                            if (typeof doc.pinCode != 'undefined' && doc.pinCode != '') {
+                            	var pinCode = doc.pinCode;
+                            }
 
                             // for more information on mcrypt
                             // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
