@@ -590,10 +590,6 @@ function processAjaxData(response, urlPath) {
 function updateAjaxData( response , urlPath) {
 	
 	log ("update page " + urlPath)
-	
-	drawContent( response.html );
-	
-	currentpage = response.pageTitle;
 
 	History.replaceState( response , null, urlPath );
 
@@ -803,6 +799,8 @@ function goList(parameters) {
 	} else {
 		
 		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
+		
+		drawContent( response.html );
 		
 		updateAjaxData( response, "account_details.html" )
 	}
@@ -1059,6 +1057,14 @@ function goServerLogin(parameters) {
 		
 		processAjaxData( response, "login.html" )
 		
+	} else {
+		
+		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : goServerLogin.toString(), "pageParameters" : [ callBack.toString() ]  };
+		
+		drawContent( response.html );
+		
+		updateAjaxData( response, "login.html" )
+		
 	}
 
     $( "#content .todo-index" ).off("click").click( function() {
@@ -1110,9 +1116,17 @@ function goServerRegistration(parameters) {
     
     var pageTitle = "Registration";
 	
-	if (History.getState().data.pageTite != pageTitle) {
+	if (currentpage != pageTitle) {
     
 		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : goServerRegistration.toString(), "pageParameters" : [ callBack.toString() ]  }
+		
+		processAjaxData( response, "registration.html" )
+		
+	} else {
+		
+		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : goServerRegistration.toString(), "pageParameters" : [ callBack.toString() ]  }
+		
+		drawContent( response.html );
 		
 		processAjaxData( response, "registration.html" )
 		
@@ -1194,6 +1208,14 @@ function goLostPassword(parameters) {
 		
 		processAjaxData( response, "lost.html" )
 		
+	} else {
+		
+		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : goLostPassword.toString(), "pageParameters" : [ callBack.toString() ]  }
+		
+		drawContent( response.html );
+		
+		updateAjaxData( response, "lost.html" )
+		
 	}
 	
     //drawContent( config.t.lost() )
@@ -1272,6 +1294,8 @@ function goSettings(parameters) {
 		
 		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : goSettings.toString(), "pageParameters" : [] }
 		
+		drawContent( response.html );
+		
 		updateAjaxData( response, "settings.html" )
 		
 	}
@@ -1345,6 +1369,8 @@ function goManageAccounts(parameters) {
 	} else {
 		
 		var response = { "html" : config.t.manage_accounts(), "pageTitle" : pageTitle, "pageFunction" : goManageAccounts.toString(), "pageParameters" : [ ]  };
+		
+		drawContent( response.html );
 		
 		updateAjaxData( response, "manage_accounts.html" )
 	}
@@ -1477,6 +1503,8 @@ function goCreateAccount(parameters) {
 	} else {
 		
 		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ JSON.parse( JSON.stringify( doc ) ) ]  } ;
+		
+		drawContent( response.html );
 		
 		updateAjaxData( response, "create.html" )
 	}
@@ -1768,6 +1796,8 @@ function goAddCurrency(parameters) {
 	} else {
 		
 		var response = { "html" : config.t.add_currency( ), "pageTitle" : pageTitle, "pageFunction" : goAddCurrency.toString(), "pageParameters" : [ ]  };
+		
+		drawContent( response.html );
 		
 		updateAjaxData( response, "add_currency.html" )
 		
@@ -2203,6 +2233,8 @@ function goProfile(parameters) {
 			
 			var response = { "html" : config.t.profile( profile ), "pageTitle" : pageTitle, "pageFunction" : goProfile.toString(), "pageParameters" : [ ]  };
 			
+			drawContent( response.html );
+			
 			updateAjaxData( response, "profile.html" )
 		}
 	
@@ -2308,6 +2340,8 @@ function goManageNFC(parameters) {
 			} else {
 				
 				var response = { "html" : config.t.manage_nfc( view )  , "pageTitle" : pageTitle, "pageFunction" : goManageNFC.toString(), "pageParameters" : [ ]  };
+				
+				drawContent( response.html );
 				
 				updateAjaxData( response, "manage_nfc.html" )
 			}
@@ -2549,6 +2583,8 @@ function goNewNFC(parameters) {
 				
 				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : goNewNFC.toString(), "pageParameters" : [ ]  };
 				
+				drawContent( response.html );
+				
 				updateAjaxData( response, "new_nfc.html" )
 			}
 
@@ -2719,6 +2755,14 @@ function goEditNFC(parameters) {
 			var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : goEditNFC.toString(), "pageParameters" : [ id ]  };
 			
 			processAjaxData( response, "edit_nfc.html" )
+			
+		} else {
+			
+			var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : goEditNFC.toString(), "pageParameters" : [ id ]  };
+			
+			drawContent( response.html );
+			
+			updateAjaxData( response, "edit_nfc.html" )
 			
 		}
 
@@ -2930,6 +2974,14 @@ function goPayment(parameters) {
 			
 			processAjaxData( response, "payment.html" )
 			
+		} else {
+			
+			var response = { "html" : config.t.payment( thisUsersAccounts )  , "pageTitle" : pageTitle, "pageFunction" : goPayment.toString(), "pageParameters" : [ ]  };
+			
+			drawContent( response.html );
+			
+			updateAjaxData( response, "payment.html" )
+			
 		}
 
         $( "#content .om-index" ).off("click").click( function() {
@@ -3028,9 +3080,6 @@ function goPayment(parameters) {
                 		}
                 	}
                 } )
-                
-                
-                
             } )
         } )
     } )
