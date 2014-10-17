@@ -590,6 +590,10 @@ function processAjaxData(response, urlPath) {
 function updateAjaxData( response , urlPath) {
 	
 	log ("update page " + urlPath)
+	
+	drawContent( response.html );
+	
+	currentpage = response.pageTitle;
 
 	History.replaceState( response , null, urlPath );
 
@@ -2541,10 +2545,15 @@ function goNewNFC(parameters) {
 				
 				processAjaxData( response, "new_nfc.html" )
 				
+			} else {
+				
+				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : goNewNFC.toString(), "pageParameters" : [ ]  };
+				
+				updateAjaxData( response, "new_nfc.html" )
 			}
 
             $( "#content .om-index" ).off("click").click( function() {
-            	if(typeof newTagListner != 'undefined') {
+            	if( typeof newTagListner != 'undefined') {
             		 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
             	}
             	
