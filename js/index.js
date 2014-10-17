@@ -1338,6 +1338,11 @@ function goManageAccounts(parameters) {
 		
 		processAjaxData( response, "manage_accounts.html" )
 		
+	} else {
+		
+		var response = { "html" : config.t.manage_accounts(), "pageTitle" : pageTitle, "pageFunction" : goManageAccounts.toString(), "pageParameters" : [ ]  };
+		
+		updateAjaxData( response, "manage_accounts.html" )
 	}
 
     $( "#content .om-index" ).off("click").click( function() {
@@ -1465,6 +1470,11 @@ function goCreateAccount(parameters) {
 		
 		processAjaxData( response, "create.html" )
 		
+	} else {
+		
+		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ JSON.parse( JSON.stringify( doc ) ) ]  } ;
+		
+		updateAjaxData( response, "create.html" )
 	}
 
     $( "#content .om-index" ).off("click").click( function() {
@@ -1750,6 +1760,12 @@ function goAddCurrency(parameters) {
 		var response = { "html" : config.t.add_currency( ), "pageTitle" : pageTitle, "pageFunction" : goAddCurrency.toString(), "pageParameters" : [ ]  };
 		
 		processAjaxData( response, "add_currency.html" )
+		
+	} else {
+		
+		var response = { "html" : config.t.add_currency( ), "pageTitle" : pageTitle, "pageFunction" : goAddCurrency.toString(), "pageParameters" : [ ]  };
+		
+		updateAjaxData( response, "add_currency.html" )
 		
 	}
 	
@@ -2179,6 +2195,11 @@ function goProfile(parameters) {
 			
 			processAjaxData( response, "profile.html" )
 			
+		} else {
+			
+			var response = { "html" : config.t.profile( profile ), "pageTitle" : pageTitle, "pageFunction" : goProfile.toString(), "pageParameters" : [ ]  };
+			
+			updateAjaxData( response, "profile.html" )
 		}
 	
 	    $( "#content .om-index" ).off("click").click( function() {
@@ -3492,10 +3513,25 @@ function goMerchantPayment(parameters) {
                 	                    // failure callback
                 	                	navigator.notification.alert( "Pass terminal to the customer."  , function() {  }, "Pass terminal", "OK")
                 	                } );
-                	
-                	                drawContent( config.t.customer_payment( {
+                	                
+                	                var response = { "html" :  config.t.customer_payment( {
                 	                    "amount" : doc.amount, "currency" : doc.currency
-                	                } ) )
+                	                } ) , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ fromAccounts ]  };
+			
+									drawContent( response.html );
+									
+									updateAjaxData( response, "merchant_payment.html" )
+                	                
+                	                
+        	                        $( "#content .om-index" ).off("click").click( function() {
+							            History.back();
+							        } )
+							
+							        setLoginLogoutButton();
+							
+							        setTabs()
+							
+							        setModes()
                 	
                 	                $( "#content form" ).off("submit").submit( function(e) {
                 	                    e.preventDefault()
