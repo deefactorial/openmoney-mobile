@@ -196,7 +196,7 @@ function doTagLookup(key, callBack) {
             reason : "No network connection"
         } ) }
     }
-    if (typeof config != 'undefined' && typeof config.user != 'undefined') {
+    if (typeof config != 'undefined' && typeof config.user != 'undefined' && typeof config.user.name != 'undefined') {
         var url = REMOTE_SERVER_TAG_LOOKUP_URL;
         var login = coax( url );
         var credentials = '{ "username" : "' + config.user.name + '", "password": "' + config.user.password + '", "key": "' + key + '" }';

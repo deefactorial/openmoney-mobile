@@ -602,15 +602,15 @@
 <script type="text/mustache" id="space_form-mu">
 <ul class="topcoat-list">
                 <li class="topcoat-list__item" data-id="name">
-                    <input type="text" class="topcoat-text-input" name="space" value="" placeholder="Requested Name" /> 
+                    <input type="text" class="topcoat-text-input" name="space" value="{{#doc}}{{space}}{{/doc}}" placeholder="Requested Name" /> 
                 </li>
 
                 <li class="topcoat-list__item" data-id="subspace">
                     <select name="subspace" class="om-select-dark" >
                         <option value="" selected="selected">in space (Optional)</option>
-                        {{#rows}}
+                        {{#spaces}}{{#rows}}
                             <option value="{{key}}">{{key}}</option>
-                        {{/rows}}
+                        {{/rows}}{{/spaces}}
                     </select>
                 </li>
                 <li class="topcoat-list__item" data-id="submit">
