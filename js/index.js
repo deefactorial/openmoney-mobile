@@ -97,7 +97,8 @@ function onDeviceReady() {
     							//if the parameter is a function make it back into one.
     							args.push( new Function('return ' + parameter)() );
     						} else {
-    							args.push( parameter );
+    							if (parameter != null)
+    								args.push( parameter );
     						}
     					} )
     					log (" Arguments:" + JSON.stringify( args ) )
