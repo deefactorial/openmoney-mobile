@@ -3467,211 +3467,8 @@ function goMerchantPayment(parameters) {
                                     } )
                                 } else { 
                 	
-                	                nfc.removeMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-                	                    // success callback
-                	                }, function() {
-                	                    // failure callback
-                	                } );
-                	
-                	                var customerListner = function(nfcEvent) {
-                	                    var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
-                	
-                	                    // dump the raw json of the message
-                	                    // note: real code will need to decode
-                	                    // the payload from each record
-                	                    log( JSON.stringify( tag ) );
-                	
-                	                    // assuming the first record in the message has
-                	                    // a payload that can be converted to a string.
-                	                    log( nfc.bytesToString( ndefMessage[0].payload ) );
-                	                    var payload = JSON.parse( nfc.bytesToString( ndefMessage[0].payload ) )
-                	                    if (typeof payload.key !== 'undefined') {
-                	                        // do a lookup of the key
-                	                        doTagLookup( payload.key, function(error, tradingnames) {
-                	                            if (error)
-                	                                alert( "Error: " + JSON.stringify( error ) )
-                	                            else {
-                	
-                	                                log( "Trading names: " + JSON.stringify( tradingnames ) )
-                	                                // select a trading name in the same currency.
-                	                                // TODO: have default currency accounts
-                	                                var once = 1;
-                	                                tradingnames.forEach( function(tradingname) {
-                	                                    if (once == 1 && tradingname.value.currency == doc.currency) {
-                	                                        doc.from = tradingname.id;
-                	                                        once = 0;
-                	                                    }
-                	                                } )
-                	
-                	                                if (!doc.from) { 
-                	                                	navigator.notification.alert( "No trading name found for that currency."  , function() {  }, "Not Found", "OK")
-                	                                	return false
-                	                                }
-                	                                
-                	                                config.db.get( doc.from, function(error, from) {
-                	                                    if (error) {
-                	                                        if (error.status == 404) {
-                	                                        	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Not Found", "OK")
-                	                                            return false
-                	                                        } else {
-                	                                            return alert( JSON.stringify( error ) )
-                	                                        }
-                	                                    }
-                	                                    doc.from = from.name
-                	                                    if (typeof from.enabled != 'undefined' && from.enabled === false ) {
-                		                                	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                		                                } else 
-                	                                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-                	                                        if (error) {
-                	                                            log( "Error: " + JSON.stringify( error ) )
-                	                                            if (error.status == 404) {
-                	                                                // doc does not exists
-                	                                                log( "insert new trading name journal" + JSON.stringify( doc ) )
-                	                                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                	                                                    if (error)
-                	                                                        return alert( JSON.stringify( error ) )
-                	                                                    $( "#content form input[name='to']" ).val( "" ) // Clear
-                	                                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
-                	                                                    $( "#content form textarea" ).val( "" ) // Clear
-                	                                                    nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
-                	                                                        // success callback
-                	                                                    }, function() {
-                	                                                        // failure callback
-                	                                                    } );
-                	                                                    nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-                	                                                        // success callback
-                	                                                    }, function() {
-                	                                                        // failure callback
-                	                                                    } );
-                	                                                    
-                	                                                    navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
-                	                                                    
-                	
-                	                                                    goList( [ "trading_name," + doc.to + "," + doc.currency ] )
-                	                                                } )
-                	                                            } else {
-                	                                                alert( "Error: ".JSON.stringify( error ) )
-                	                                            }
-                	                                        } else {
-                	                                            // doc exsits already
-                	                                        	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
-                	                                            
-                	                                        }
-                	                                    } )
-                	                                } )
-                	                            }
-                	                        } );
-                	                    }
-                	                };
-                	
-                	                nfc.addMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
-                	                    // success callback
-                	                	navigator.notification.alert( "Pass terminal to the customer or scan tag."  , function() {  }, "Pass terminal or scan", "OK")
-                	                }, function() {
-                	                    // failure callback
-                	                	navigator.notification.alert( "Pass terminal to the customer."  , function() {  }, "Pass terminal", "OK")
-                	                } );
+                	                goCustomerPayment( [ doc ] )
                 	                
-                	                var response = { "html" :  config.t.customer_payment( {
-                	                    "amount" : doc.amount, "currency" : doc.currency
-                	                } ) , "pageTitle" : pageTitle, "pageFunction" : goMerchantPayment.toString(), "pageParameters" : [ fromAccounts ]  };
-			
-									drawContent( response.html );
-									
-									updateAjaxData( response, "merchant_payment.html" )
-                	                
-                	                
-        	                        $( "#content .om-index" ).off("click").click( function() {
-							            History.back();
-							        } )
-							
-							        setLoginLogoutButton();
-							
-							        setTabs()
-							
-							        setModes()
-                	
-                	                $( "#content form" ).off("submit").submit( function(e) {
-                	                    e.preventDefault()
-                	                    var customer = jsonform( this )
-                	
-                	                    doc.description = customer.description;
-                	
-                	                    var credentials = '{ "username" : "' + customer.email + '", "password" : "' + customer.password + '" }';
-                	                    doCustomerTradingNameLookup( credentials, function(error, tradingnames) {
-                	                        if (error)
-                	                            return alert( JSON.stringify( error ) )
-                	
-                	                        log( "Trading names: " + JSON.stringify( tradingnames ) )
-                	                        // select a trading name in the same currency.
-                	                        // TODO: have default currency accounts
-                	                        var once = 1;
-                	                        tradingnames.forEach( function(tradingname) {
-                	                            if (once == 1 && tradingname.value.currency == doc.currency) {
-                	                                customer.from = tradingname.id;
-                	                                once = 0;
-                	                            }
-                	                        } )
-                	
-                	                        if (!customer.from) { 
-                	                        	navigator.notification.alert( "No trading name found for that currency."  , function() {  }, "Not Found", "OK")
-                	                        	return false
-                	                        }
-                	
-                	                        
-                	                        config.db.get( customer.from, function(error, from) {
-                	                            if (error) {
-                	                                if (error.status == 404) {
-                	                                	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" , function() {  }, "Not Found", "OK")
-                	                                    return false
-                	                                } else {
-                	                                    return alert( JSON.stringify( error ) )
-                	                                }
-                	                            }
-                	                            doc.from = from.name
-                	                            if (typeof from.enabled != 'undefined' && from.enabled === false ) {
-                                                	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                                                } else 
-                	                            config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-                	                                if (error) {
-                	                                    log( "Error: " + JSON.stringify( error ) )
-                	                                    if (error.status == 404) {
-                	                                        // doc does not exists
-                	                                        log( "insert new trading name journal" + JSON.stringify( doc ) )
-                	                                        config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                	                                            if (error)
-                	                                                return alert( JSON.stringify( error ) )
-                	                                            $( "#content form input[name='to']" ).val( "" ) // Clear
-                	                                            $( "#content form input[name='amount']" ).val( "" ) // Clear
-                	                                            $( "#content form textarea" ).val( "" ) // Clear
-                	
-                	                                            nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
-                	                                                // success callback
-                	                                            }, function() {
-                	                                                // failure callback
-                	                                            } );
-                	
-                	                                            nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-                	                                                // success callback
-                	                                            }, function() {
-                	                                                // failure callback
-                	                                            } );
-                	                                            navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( [ "trading_name," + doc.to + "," + doc.currency ] ); }, "Successful", "OK")
-                	                                            
-                	                                            
-                	                                        } )
-                	                                    } else {
-                	                                        alert( "Error: ".JSON.stringify( error ) )
-                	                                    }
-                	                                } else {
-                	                                    // doc exsits already
-                	                                	navigator.notification.alert( "Payment already exists!" , function() {  }, "Exists", "OK")
-                	                                    
-                	                                }
-                	                            } )
-                	                        } )
-                	                    } )
-                	                } )
                                 }
                     		}
                     	}
@@ -3680,6 +3477,223 @@ function goMerchantPayment(parameters) {
             } )
         } )
     } )
+}
+
+function goCustomerPayment(parameters) {
+	
+	log ("goCustomerPayment( " + JSON.stringify( parameters ) + ")" )
+	
+	doc = parameters.pop();
+	
+	window.dbChanged = function() { }
+	
+	nfc.removeMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+        // success callback
+    }, function() {
+        // failure callback
+    } );
+
+    var customerListner = function(nfcEvent) {
+        var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+
+        // dump the raw json of the message
+        // note: real code will need to decode
+        // the payload from each record
+        log( JSON.stringify( tag ) );
+
+        // assuming the first record in the message has
+        // a payload that can be converted to a string.
+        log( nfc.bytesToString( ndefMessage[0].payload ) );
+        var payload = JSON.parse( nfc.bytesToString( ndefMessage[0].payload ) )
+        if (typeof payload.key !== 'undefined') {
+            // do a lookup of the key
+            doTagLookup( payload.key, function(error, tradingnames) {
+                if (error)
+                    alert( "Error: " + JSON.stringify( error ) )
+                else {
+
+                    log( "Trading names: " + JSON.stringify( tradingnames ) )
+                    // select a trading name in the same currency.
+                    // TODO: have default currency accounts
+                    var once = 1;
+                    tradingnames.forEach( function(tradingname) {
+                        if (once == 1 && tradingname.value.currency == doc.currency) {
+                            doc.from = tradingname.id;
+                            once = 0;
+                        }
+                    } )
+
+                    if (!doc.from) { 
+                    	navigator.notification.alert( "No trading name found for that currency."  , function() {  }, "Not Found", "OK")
+                    	return false
+                    }
+                    
+                    config.db.get( doc.from, function(error, from) {
+                        if (error) {
+                            if (error.status == 404) {
+                            	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Not Found", "OK")
+                                return false
+                            } else {
+                                return alert( JSON.stringify( error ) )
+                            }
+                        }
+                        doc.from = from.name
+                        if (typeof from.enabled != 'undefined' && from.enabled === false ) {
+                        	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                        } else 
+                        config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                            if (error) {
+                                log( "Error: " + JSON.stringify( error ) )
+                                if (error.status == 404) {
+                                    // doc does not exists
+                                    log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                    config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                        if (error)
+                                            return alert( JSON.stringify( error ) )
+                                        $( "#content form input[name='to']" ).val( "" ) // Clear
+                                        $( "#content form input[name='amount']" ).val( "" ) // Clear
+                                        $( "#content form textarea" ).val( "" ) // Clear
+                                        nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
+                                            // success callback
+                                        }, function() {
+                                            // failure callback
+                                        } );
+                                        nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                            // success callback
+                                        }, function() {
+                                            // failure callback
+                                        } );
+                                        
+                                        navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
+                                        
+
+                                        goList( [ "trading_name," + doc.to + "," + doc.currency ] )
+                                    } )
+                                } else {
+                                    alert( "Error: ".JSON.stringify( error ) )
+                                }
+                            } else {
+                                // doc exsits already
+                            	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
+                                
+                            }
+                        } )
+                    } )
+                }
+            } );
+        }
+    };
+
+    nfc.addMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
+        // success callback
+    	navigator.notification.alert( "Pass terminal to the customer or scan tag."  , function() {  }, "Pass terminal or scan", "OK")
+    }, function() {
+        // failure callback
+    	navigator.notification.alert( "Pass terminal to the customer."  , function() {  }, "Pass terminal", "OK")
+    } );
+    
+    var pageTitle = "Customer Payment";
+    
+    var response = { "html" :  config.t.customer_payment( {
+        "amount" : doc.amount, "currency" : doc.currency
+    } ) , "pageTitle" : pageTitle, "pageFunction" : goCustomerPayment.toString(), "pageParameters" : [ doc ]  };
+	
+	processAjaxData( response, "customer_payment.html" )
+    
+    
+    $( "#content .om-index" ).off("click").click( function() {
+        History.back();
+    } )
+
+    setLoginLogoutButton();
+
+    setTabs()
+
+    setModes()
+	
+    
+    $( "#content form" ).off("submit").submit( function(e) {
+        e.preventDefault()
+        var customer = jsonform( this )
+
+        doc.description = customer.description;
+
+        var credentials = '{ "username" : "' + customer.email + '", "password" : "' + customer.password + '" }';
+        doCustomerTradingNameLookup( credentials, function(error, tradingnames) {
+            if (error)
+                return alert( JSON.stringify( error ) )
+
+            log( "Trading names: " + JSON.stringify( tradingnames ) )
+            // select a trading name in the same currency.
+            // TODO: have default currency accounts
+            var once = 1;
+            tradingnames.forEach( function(tradingname) {
+                if (once == 1 && tradingname.value.currency == doc.currency) {
+                    customer.from = tradingname.id;
+                    once = 0;
+                }
+            } )
+
+            if (!customer.from) { 
+            	navigator.notification.alert( "No trading name found for that currency."  , function() {  }, "Not Found", "OK")
+            	return false
+            }
+
+            
+            config.db.get( customer.from, function(error, from) {
+                if (error) {
+                    if (error.status == 404) {
+                    	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" , function() {  }, "Not Found", "OK")
+                        return false
+                    } else {
+                        return alert( JSON.stringify( error ) )
+                    }
+                }
+                doc.from = from.name
+                if (typeof from.enabled != 'undefined' && from.enabled === false ) {
+                	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                } else 
+                config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                    if (error) {
+                        log( "Error: " + JSON.stringify( error ) )
+                        if (error.status == 404) {
+                            // doc does not exists
+                            log( "insert new trading name journal" + JSON.stringify( doc ) )
+                            config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                if (error)
+                                    return alert( JSON.stringify( error ) )
+                                $( "#content form input[name='to']" ).val( "" ) // Clear
+                                $( "#content form input[name='amount']" ).val( "" ) // Clear
+                                $( "#content form textarea" ).val( "" ) // Clear
+
+                                nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
+                                    // success callback
+                                }, function() {
+                                    // failure callback
+                                } );
+
+                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                    // success callback
+                                }, function() {
+                                    // failure callback
+                                } );
+                                navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( [ "trading_name," + doc.to + "," + doc.currency ] ); }, "Successful", "OK")
+                                
+                                
+                            } )
+                        } else {
+                            alert( "Error: ".JSON.stringify( error ) )
+                        }
+                    } else {
+                        // doc exsits already
+                    	navigator.notification.alert( "Payment already exists!" , function() {  }, "Exists", "OK")
+                        
+                    }
+                } )
+            } )
+        } )
+    } )
+	
 }
 
 
