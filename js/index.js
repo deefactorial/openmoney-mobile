@@ -2621,7 +2621,7 @@ function goNewNFC(parameters) {
                 
                 $("#add").show();
                 
-                $("sekect[name='addtradingname']").insert(new Element('option', { value: id } ).update( id ));
+                $("select[name='addtradingname']").insert(new Element('option', { value: id } ).update( id ));
                 
                 listItem.parentNode.removeChild(listItem);
                 
