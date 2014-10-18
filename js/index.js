@@ -2620,7 +2620,7 @@ function goNewNFC(parameters) {
                 var target = document.getElementById ( "hidden");
                 target.appendChild( listItem );
                 
-                document.getelementById("add").show();
+                document.getElementById("add").show();
                 
                 $("select[name='addtradingname']").insert( new Element('option', { value: id } ).update( id ) );
                 
