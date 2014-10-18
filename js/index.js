@@ -2617,11 +2617,11 @@ function goNewNFC(parameters) {
                 
                 log( "swipe right " + id);
                 
-                $("#hidden").addChild(listItem);
+                $("#hidden").appendChild( listItem );
                 
                 $("#add").show();
                 
-                $("select[name='addtradingname']").insert(new Element('option', { value: id } ).update( id ));
+                $("select[name='addtradingname']").insert( new Element('option', { value: id } ).update( id ) );
                 
                 listItem.parentNode.removeChild(listItem);
                 
