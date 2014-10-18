@@ -2639,7 +2639,7 @@ function goNewNFC(parameters) {
             	
             	log (" add " + value) ;
             	
-            	var target = document.getElementById( value );
+            	var target = $( "#hidden #"+value );
             	
             	var form = document.getElementById("formlist");
             	
