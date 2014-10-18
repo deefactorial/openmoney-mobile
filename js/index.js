@@ -2629,7 +2629,9 @@ function goNewNFC(parameters) {
                 
             } )
             
-            $( "scrollable input[name='add']").off("click").on("click", function() {
+            $( "form #add-button").off("click").on("click", function() {
+            	
+            	log(" add button pressed ");
             	
             	var select = document.getElementById("addtradingname");
             	
