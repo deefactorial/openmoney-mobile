@@ -1041,16 +1041,16 @@
                     <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" id="pinCode" name="pinCode" value="" placeholder="Pin Code" onfocus="changeToPassword()"/> 
                 </li>
                 {{#trading_names}}
-                <li class="topcoat-list__item" data-id="{{trading_name}}{{currency}}" style="margin:0;padding:0;">
+                <li id="{{trading_name}}{{currency}}list" class="topcoat-list__item" data-id="{{trading_name}}{{currency}}" style="margin:0;padding:0;">
                     <div class="topcoat-list">
-                        <h3 class="topcoat-list__header" onclick="$({{trading_name}}{{currency}}).toggle();">{{trading_name}} {{currency}}</h3>
+                        <h2 class="topcoat-list__header" onclick="$({{trading_name}}{{currency}}).toggle();" onswipeRight="{{trading_name}}{{currency}}list.parentNode.removeChild({{trading_name}}{{currency}}list);">{{trading_name}} {{currency}}</h2>
                         <ul id="{{trading_name}}{{currency}}" class="topcoat-list__container" style="display:none;">
                             <li class="topcoat-list__item center" data-id="capacity">
-                                <label for="capacityLimit">CAPACITY LIMIT FOR {{trading_name}} {{currency}}</label>
+                                <label for="capacityLimit">{{trading_name}} {{currency}} capacity</label>
                                 <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="capacity{{trading_name}}{{currency}}" value="{{capacity}}" placeholder="Capacity Limit" />
                             </li>
                             <li class="topcoat-list__item center" data-id="transaction">
-                                <label for="transactionLimit">TRANSACTION LIMIT FOR {{trading_name}} {{currency}}</label>
+                                <label for="transactionLimit">{{trading_name}} {{currency}} transaction limit</label>
                                 <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="transaction{{trading_name}}{{currency}}" value="{{transaction}}" placeholder="Transaction Limit" /> 
                             </li>
                         </ul>
