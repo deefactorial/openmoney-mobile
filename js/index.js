@@ -2611,7 +2611,7 @@ function goNewNFC(parameters) {
                 History.back();
             } )
             
-            $( "#scrollable li.nfc_item" ).off("swipeRight").on( "swipeRight", function() {
+            $( "#scrollable li.trading_names" ).off("swipeRight").on( "swipeRight", function() {
 
                 var id = $( this ).attr( "data-id" ), listItem = this;
                 
