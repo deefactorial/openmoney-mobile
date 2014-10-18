@@ -2514,6 +2514,65 @@ function randomString(length, chars) {
 }
 
 function goNewNFC(parameters) {
+	
+	function UIhandlers() {
+		
+		$( "#scrollable li.trading_names" ).off("swipeRight").on( "swipeRight", function() {
+
+            var id = $( this ).attr( "data-id" ), listItem = this;
+            
+            log( "swipe right " + id);
+            
+            var hidden = document.getElementById ( "hidden");
+            hidden.appendChild( listItem.cloneNode(true) );
+            
+            document.getElementById("add").style.display = 'block';
+            
+            var select = document.getElementById("addtradingname");
+            select.options[select.options.length] = new Option(id, id);
+            
+            listItem.parentNode.removeChild(listItem);
+            
+        } )
+        
+        $( "form #add-button").off("click").on("click", function() {
+        	
+        	log(" add button pressed ");
+        	
+        	var select = document.getElementById("addtradingname");
+        	
+        	var value = select.options[select.selectedIndex].value;
+        	
+        	log (" add " + value) ;
+        	
+        	var target = document.getElementById( value );
+        	
+        	var form = document.getElementById("formlist");
+        	
+        	form.appendChild( target.cloneNode(true) );
+        	
+        	target.parentNode.removeChild(target);
+        	
+        	select.remove(select.selectedIndex);
+        	
+        	if (select.options.length == 0) {
+        		document.getElementById("add").style.display = 'none';
+        	}
+        	
+        	UIhandlers();
+        } )
+        
+        $( "#scrollable li.trading_names" ).off( "click", "p")
+		$( "#scrollable li.trading_names" ).on( "click", "p", function() {
+			var id = $( this ).attr( "data-id" );
+			
+			log ("name clicked " + id);
+			
+			$( "#" + id + 'list').toggle();
+			$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
+			
+		} )
+	}
 
 	window.dbChanged = function(){};
 	
@@ -2541,46 +2600,6 @@ function goNewNFC(parameters) {
             thisUsersAccounts.rows.forEach( function( row ) {
             	trading_names.push( { "trading_name" : row.key.trading_name, "currency" : row.key.currency, "capacity": Number.POSITIVE_INFINITY, "transaction": Number.POSITIVE_INFINITY }  )
             } ) 
-//            
-//            for ( var i = view.rows.length - 1; i >= 0; i--) {
-//                //log( "row:" + JSON.stringify( view.rows[i] ) )
-//                //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
-//                if (view.rows[i].key.steward.length) {
-//                    for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-//                        //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
-//                        if (view.rows[i].key.steward[j] == config.user.user_id) {
-//                            thisUsersAccounts.rows.push( view.rows[i] )
-//                        }
-//                    }
-//                }
-//            }
-//
-//            thisUsersAccounts.offset = view.offset
-//            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
-//
-//            var defaultMaxLimitBeforePinRequest = 100;
-//
-//            var maxLimitBeforePinRequestPerCurrency = [];
-//
-//            for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
-//                var currency = thisUsersAccounts.rows[i].key.currency;
-//                var exist = false;
-//                // check if currency exists in currency list.
-//                for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
-//                    if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
-//                        exist = true;
-//                    }
-//                }
-//
-//                if (!exist) {
-//                    // Set the default amount for the currency
-//                    maxLimitBeforePinRequestPerCurrency.push( {
-//                        "amount" : defaultMaxLimitBeforePinRequest, "currency" : currency
-//                    } )
-//                }
-//            }
-//
-//            defaultMaxLimitBeforePinRequest = "";
 
             var tag = {
                 "name" : "", "trading_names" : trading_names
@@ -2611,66 +2630,8 @@ function goNewNFC(parameters) {
                 History.back();
             } )
             
-            $( "#scrollable li.trading_names" ).off("swipeRight").on( "swipeRight", function() {
-
-                var id = $( this ).attr( "data-id" ), listItem = this;
-                
-                log( "swipe right " + id);
-                
-                var hidden = document.getElementById ( "hidden");
-                hidden.appendChild( listItem.cloneNode(true) );
-                
-                document.getElementById("add").style.display = 'block';
-                
-                var select = document.getElementById("addtradingname");
-                select.options[select.options.length] = new Option(id, id);
-                
-                listItem.parentNode.removeChild(listItem);
-                
-            } )
             
-            $( "form #add-button").off("click").on("click", function() {
-            	
-            	log(" add button pressed ");
-            	
-            	var select = document.getElementById("addtradingname");
-            	
-            	var value = select.options[select.selectedIndex].value;
-            	
-            	log (" add " + value) ;
-            	
-            	var target = document.getElementById( value );
-            	
-            	var form = document.getElementById("formlist");
-            	
-            	//log ("target" + JSON.stringify( target ) + "form" + form);
-            	
-            	form.appendChild( target.cloneNode(true) );
-            	
-            	target.parentNode.removeChild(target);
-            	
-            	select.remove(select.selectedIndex);
-            	
-            	
-            	if (select.options.length == 0) {
-            		document.getElementById("add").style.display = 'none';
-            	}
-            	
-            } )
-            
-            
-            
-            $( "#scrollable li.trading_names" ).off( "click", "p")
-			$( "#scrollable li.trading_names" ).on( "click", "p", function() {
-				var id = $( this ).attr( "data-id" );
-				
-				log ("name clicked " + id);
-				
-				$( "#" + id + 'list').toggle();
-				$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
-				
-			} )
-            
+            UIhandlers();
 
             $( "#content form" ).off("submit").submit( function(e) {
                 e.preventDefault()
