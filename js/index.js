@@ -2643,7 +2643,7 @@ function goNewNFC(parameters) {
             	
             	var form = document.getElementById("formlist");
             	
-            	log ("target" + JSON.stringify( target ) + "form" + form);
+            	//log ("target" + JSON.stringify( target ) + "form" + form);
             	
             	form.appendChild( target.cloneNode(true) );
             	
