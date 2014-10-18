@@ -2622,7 +2622,7 @@ function goNewNFC(parameters) {
                 
                 document.getElementById("add").style.display = 'block';
                 
-                $("select[name='addtradingname']").options[select.options.length] = new Option(id, id);
+                document.getElementById("addtradingname").options[select.options.length] = new Option(id, id);
                 
                 listItem.parentNode.removeChild(listItem);
                 
