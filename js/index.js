@@ -2588,7 +2588,7 @@ function goNewNFC(parameters) {
 
 	    // Sort the lis in descending order
 	    lis.sort(function(a, b){
-	       return b.childNodes[0].getAttribute("data-id").localeCompare(a.childNodes[0].getAttribute("data-id"));
+	       return b.getAttribute("data-id").localeCompare(a.getAttribute("data-id"));
 	    });
 
 	    // Add them into the ul in order
