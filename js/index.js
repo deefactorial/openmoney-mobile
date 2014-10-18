@@ -2618,7 +2618,7 @@ function goNewNFC(parameters) {
                 log( "swipe right " + id);
                 
                 var hidden = document.getElementById ( "hidden");
-                hidden.appendChild( listItem );
+                hidden.appendChild( listItem.cloneNode(true) );
                 
                 document.getElementById("add").style.display = 'block';
                 
