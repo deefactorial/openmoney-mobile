@@ -2617,8 +2617,8 @@ function goNewNFC(parameters) {
                 
                 log( "swipe right " + id);
                 
-                var target = document.getElementById ( "hidden");
-                target.appendChild( listItem );
+                var hidden = document.getElementById ( "hidden");
+                hidden.appendChild( listItem );
                 
                 document.getElementById("add").style.display = 'block';
                 
@@ -2627,6 +2627,30 @@ function goNewNFC(parameters) {
                 
                 listItem.parentNode.removeChild(listItem);
                 
+            } )
+            
+            $( "scrollable input[name='add']").off("click").on("click", function() {
+            	
+            	var select = document.getElementById("addtradingname");
+            	
+            	var value = select.options[select.selectedIndex].value;
+            	
+            	log (" add " + value) ;
+            	
+            	var target = $( "li.trading_names[data-id='" + value + "']" );
+            	
+            	var form = $( "ul.form");
+            	
+            	form.appendChild( target );
+            	
+            	target.parentNode.removeChild(target);
+            	
+            	delete(select.options[select.selectedIndex])
+            	
+            	if (select.options.length == 0) {
+            		document.getElementById("add").style.display = 'none';
+            	}
+            	
             } )
 
             $( "#content form" ).off("submit").submit( function(e) {
