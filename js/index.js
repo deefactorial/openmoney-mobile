@@ -2610,6 +2610,14 @@ function goNewNFC(parameters) {
             	
                 History.back();
             } )
+            
+            $( "#scrollable li.nfc_item" ).off("swipeRight").on( "swipeRight", function() {
+
+                var id = $( this ).attr( "data-id" ), listItem = this;
+                
+                listItem.parentNode.removeChild(listItem);
+                
+            } )
 
             $( "#content form" ).off("submit").submit( function(e) {
                 e.preventDefault()
