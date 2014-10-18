@@ -2617,6 +2617,12 @@ function goNewNFC(parameters) {
                 
                 log( "swipe right " + id);
                 
+                $("#hidden").addChild(listItem);
+                
+                $("#add").show();
+                
+                $("sekect[name='addtradingname']").insert(new Element('option', { value: id } ).update( id ));
+                
                 listItem.parentNode.removeChild(listItem);
                 
             } )
