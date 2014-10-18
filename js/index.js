@@ -2625,7 +2625,7 @@ function goNewNFC(parameters) {
                 var select = document.getElementById("addtradingname");
                 select.options[select.options.length] = new Option(id, id);
                 
-                //listItem.parentNode.removeChild(listItem);
+                listItem.parentNode.removeChild(listItem);
                 
             } )
             
@@ -2639,13 +2639,13 @@ function goNewNFC(parameters) {
             	
             	log (" add " + value) ;
             	
-            	var target = $( "#hidden #"+value );
+            	var target = document.getElementById("hidden").getElementById( value );
             	
             	var form = document.getElementById("formlist");
             	
-            	log ("target" + target + "form" + form);
+            	log ("target" + JSON.stringify( target ) + "form" + form);
             	
-            	form.appendChild( target );
+            	form.appendChild( target.cloneNode(true) );
             	
             	target.parentNode.removeChild(target);
             	
