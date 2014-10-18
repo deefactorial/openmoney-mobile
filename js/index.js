@@ -2817,6 +2817,88 @@ function goNewNFC(parameters) {
 
 function goEditNFC(parameters) {
 	
+	function UIhandlers() {
+		
+		$( "#scrollable li.trading_names" ).off("swipeRight").on( "swipeRight", function() {
+
+            var id = $( this ).attr( "data-id" ), listItem = this;
+            
+            log( "swipe right " + id);
+            
+            var hidden = document.getElementById ( "hidden");
+            hidden.appendChild( listItem.cloneNode(true) );
+            
+            document.getElementById("add").style.display = 'block';
+            
+            var select = document.getElementById("addtradingname");
+            select.options[select.options.length] = new Option(id, id);
+            
+            listItem.parentNode.removeChild(listItem);
+            
+        } )
+        
+        $( "form #add-button").off("click").on("click", function() {
+        	
+        	log(" add button pressed ");
+        	
+        	var select = document.getElementById("addtradingname");
+        	
+        	var value = select.options[select.selectedIndex].value;
+        	
+        	log (" add " + value) ;
+        	
+        	var target = document.getElementById( value );
+        	
+        	var form = document.getElementById("formlist");
+        	
+        	form.appendChild( target.cloneNode(true) );
+        	
+        	target.parentNode.removeChild(target);
+        	
+        	select.remove(select.selectedIndex);
+        	
+        	if (select.options.length == 0) {
+        		document.getElementById("add").style.display = 'none';
+        	}
+        	
+        	sortList(document.getElementsByClassName('formlist')[0]);
+        	
+        	UIhandlers();
+        } )
+        
+        $( "#scrollable li.trading_names" ).off( "click", "p")
+		$( "#scrollable li.trading_names" ).on( "click", "p", function() {
+			var id = $( this ).attr( "data-id" );
+			
+			log ("name clicked " + id);
+			
+			$( "#" + id + 'list').toggle();
+			$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
+			
+		} )
+	}
+	
+	function sortList(ul){
+	    var new_ul = ul.cloneNode(false);
+
+	    // Add all lis to an array
+	    var lis = [];
+	    for(var i = ul.childNodes.length; i--;){
+	        if(ul.childNodes[i].nodeName === 'LI')
+	            lis.push(ul.childNodes[i]);
+	    }
+
+	    // Sort the lis in descending order
+	    lis.sort(function(a, b){
+	       return b.getAttribute("data-id").localeCompare(a.getAttribute("data-id"));
+	    });
+
+	    // Add them into the ul in order
+	    for(var i = 0; i < lis.length; i++)
+	        new_ul.appendChild(lis[i]);
+	    ul.parentNode.replaceChild(new_ul, ul);
+	}
+	
 	window.dbChanged = function(){};
 	
 	var id = parameters.pop();
@@ -2848,6 +2930,8 @@ function goEditNFC(parameters) {
         $( "#content .om-index" ).off("click").click( function() {
             History.back();
         } )
+        
+        UIhandlers();
 
         $( "#content form" ).off("submit").submit( function(e) {
             e.preventDefault()
@@ -2879,11 +2963,7 @@ function goEditNFC(parameters) {
             var name = thisTag.name;
             if (doc.name)
                 name = doc.name;
-//            var defaultMaxLimitBeforePinRequest = thisTag.defaultMaxLimitBeforePinRequest;
-//            if (doc.defaultMaxLimitBeforePinRequest)
-//                defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
-//            var maxLimitBeforePinRequestPerCurrency = thisTag.maxLimitBeforePinRequestPerCurrency;
-            
+
 
             config.views( [ "accounts", {
                 descending : true
@@ -2927,41 +3007,6 @@ function goEditNFC(parameters) {
                 	trading_names.push( trading_name  );
                 	
                 } ) 
-//
-//                for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
-//                    var currency = thisUsersAccounts.rows[i].key.currency;
-//                    var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + currency;
-//
-//                    var exist = false;
-//
-//                    if (typeof maxLimitBeforePinRequestPerCurrency != 'undefined') {
-//                        // check if currency exists in currency list.
-//                        for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
-//                            if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
-//                                exist = true;
-//                                if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
-//                                    if (maxLimitBeforePinRequestPerCurrency[j].amount != doc[maxLimitBeforePinRequestPerCurrencyName]) {
-//                                        maxLimitBeforePinRequestPerCurrency[j].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    if (!exist) {
-//                        // check if form defined an amount for this currency
-//                        if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] != 'undefined') {
-//                            maxLimitBeforePinRequestPerCurrency.push( {
-//                                "amount" : doc[maxLimitBeforePinRequestPerCurrencyName], "currency" : currency
-//                            } )
-//                        } else {
-//                            // Set the default amount for the currency
-//                            maxLimitBeforePinRequestPerCurrency.push( {
-//                                "amount" : defaultMaxLimitBeforePinRequest, "currency" : currency
-//                            } )
-//                        }
-//                    }
-//                }
 
                 var userTag = {
                     "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names" : trading_names, "created": thisTag.created, "modified": doc.modified
