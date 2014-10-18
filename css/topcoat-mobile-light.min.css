@@ -8,6 +8,7 @@
   line-height: 3em;
   line-height: 52px\9; /*for IE */
   padding-left: 10px;
+  padding-right: 50px;
   border: 1px solid #9daca9;
   border-radius: 6px;
   background: url('../img/light-select.png') 99% center no-repeat;
