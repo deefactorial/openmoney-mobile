@@ -2734,18 +2734,9 @@ function goNewNFC(parameters) {
                             	
                             } ) 
                             
-//                            
-//                            defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
-//
-//                            for ( var i = 0; i < maxLimitBeforePinRequestPerCurrency.length; i++) {
-//                                var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + maxLimitBeforePinRequestPerCurrency[i].currency;
-//                                if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
-//                                    maxLimitBeforePinRequestPerCurrency[i].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
-//                                }
-//                            }
 
                             var userTag = {
-                                "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency, "created": doc.created
+                                "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names": trading_names, "created": doc.created
                             };
 
                             log( " userTag:" + JSON.stringify( userTag ) )
