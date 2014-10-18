@@ -1039,20 +1039,12 @@
                 <li class="topcoat-list__item center" data-id="pincode">
                     <label for="pinCode">Pin Code</label>
                     <input type="number" class="topcoat-text-input" id="pinCode" name="pinCode" value="" placeholder="Pin Code" onfocus="changeToPassword()"/> 
-                </li>
-                <li class="topcoat-list__item center" data-id="capacityLimit">
-                    <label for="capacityLimit">CAPACITY LIMIT</label>
-                    <input type="number" class="topcoat-text-input" name="capacityLimit" value="{{capacityLimit}}" placeholder="Capacity Limit" />
-                </li>
-                <li class="topcoat-list__item center" data-id="transactionLimit">
-                    <label for="transactionLimit">TRANSACTION LIMIT</label>
-                    <input type="number" class="topcoat-text-input" name="transactionLimit" value="{{transactionLimit}}" placeholder="Transaction Limit" /> 
-                </li>
+                </li>>
                 {{#trading_names}}
-                <li class="topcoat-list__item" data-id="{{trading_name}}{{currency}}">
+                <li class="topcoat-list__item" data-id="{{trading_name}}{{currency}}" style="margin:0;padding:0;">
                     <div class="topcoat-list">
                         <p class="topcoat-list__header" onclick="$({{trading_name}}{{currency}}).toggle();">{{trading_name}} {{currency}}</p>
-                        <ul id="{{trading_name}}{{currency}}" class="topcoat-list__container" style="display:hidden">
+                        <ul id="{{trading_name}}{{currency}}" class="topcoat-list__container" style="display:none;">
                             <li class="topcoat-list__item center" data-id="capacity">
                                 <label for="capacityLimit">CAPACITY LIMIT FOR {{trading_name}} {{currency}}</label>
                                 <input type="number" class="topcoat-text-input" name="capacity{{trading_name}}{{currency}}" value="{{capacity}}" placeholder="Capacity Limit" />
