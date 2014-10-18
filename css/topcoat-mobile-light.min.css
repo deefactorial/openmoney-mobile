@@ -1,5 +1,8 @@
 .om-select-dark {
   -webkit-appearance: listbox;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   width: 100%;
   height: 50px;       
   line-height: 3em;

@@ -2665,8 +2665,8 @@ function goNewNFC(parameters) {
 				
 				log ("name clicked " + id);
 				
-				$( id + 'list').toggle();
-				$( id + 'icon').toggleClass("next").toggleClass("down");
+				$( "#" + id + 'list').toggle();
+				$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
 				
 			} )
             
