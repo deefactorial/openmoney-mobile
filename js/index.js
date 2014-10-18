@@ -2641,7 +2641,7 @@ function goNewNFC(parameters) {
             	
             	var target = $( "li.trading_names[data-id='" + value + "']" );
             	
-            	var form = $( "form ul.form");
+            	var form = document.getElementById("#formlist");
             	
             	form.appendChild( target );
             	
