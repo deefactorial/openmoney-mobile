@@ -2658,8 +2658,8 @@ function goNewNFC(parameters) {
             } )
             
             
-            $( "li.trading_names" ).off( "click", "li")
-			$( "li.trading_names" ).on( "click", "li", function() {
+            $( "#scrollable li.trading_names" ).off( "click", "li")
+			$( "#scrollable li.trading_names" ).on( "click", "li", function() {
 				var id = $( this ).attr( "data-id" );
 				$( id + 'list').toggle();
 			} )
