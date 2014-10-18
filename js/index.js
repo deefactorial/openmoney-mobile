@@ -2274,8 +2274,8 @@ function goProfile(parameters) {
             }
             
             putProfile(doc, function(error, ok) {
-            	if(error) { log ( JSON.stringify( error ) ) } 
-            	History.back()
+            	if(error) { log ( "Profile Put Error:" + JSON.stringify( error ) ) } 
+            	History.back();
             } )
             
 	    } )
@@ -2528,48 +2528,62 @@ function goNewNFC(parameters) {
                 rows : []
             }
 
-            for ( var i = view.rows.length - 1; i >= 0; i--) {
-                //log( "row:" + JSON.stringify( view.rows[i] ) )
-                //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
-                if (view.rows[i].key.steward.length) {
-                    for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                        //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
-                        if (view.rows[i].key.steward[j] == config.user.user_id) {
-                            thisUsersAccounts.rows.push( view.rows[i] )
-                        }
-                    }
-                }
+            
+            if (typeof view.rows != 'undefined' && config.user != null) {
+            	view.rows.forEach(function(row) {
+            		row.key.steward.forEach(function(steward) {
+            			if(steward == config.user.name)
+            				thisUsersAccounts.rows.push( row );
+            		} )
+            	} )
             }
-
-            thisUsersAccounts.offset = view.offset
-            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
-
-            var defaultMaxLimitBeforePinRequest = 100;
-
-            var maxLimitBeforePinRequestPerCurrency = [];
-
-            for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
-                var currency = thisUsersAccounts.rows[i].key.currency;
-                var exist = false;
-                // check if currency exists in currency list.
-                for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
-                    if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
-                        exist = true;
-                    }
-                }
-
-                if (!exist) {
-                    // Set the default amount for the currency
-                    maxLimitBeforePinRequestPerCurrency.push( {
-                        "amount" : defaultMaxLimitBeforePinRequest, "currency" : currency
-                    } )
-                }
-            }
-
-            defaultMaxLimitBeforePinRequest = "";
+            var trading_names = [];
+            thisUsersAccounts.rows.forEach( function( row ) {
+            	trading_names.push( { "trading_name" : row.key.trading_name, "currency" : row.key.currency, "capacity": Number.POSITIVE_INFINITY, "transaction": Number.POSITIVE_INFINITY }  )
+            } ) 
+//            
+//            for ( var i = view.rows.length - 1; i >= 0; i--) {
+//                //log( "row:" + JSON.stringify( view.rows[i] ) )
+//                //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+//                if (view.rows[i].key.steward.length) {
+//                    for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
+//                        //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+//                        if (view.rows[i].key.steward[j] == config.user.user_id) {
+//                            thisUsersAccounts.rows.push( view.rows[i] )
+//                        }
+//                    }
+//                }
+//            }
+//
+//            thisUsersAccounts.offset = view.offset
+//            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+//
+//            var defaultMaxLimitBeforePinRequest = 100;
+//
+//            var maxLimitBeforePinRequestPerCurrency = [];
+//
+//            for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
+//                var currency = thisUsersAccounts.rows[i].key.currency;
+//                var exist = false;
+//                // check if currency exists in currency list.
+//                for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
+//                    if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
+//                        exist = true;
+//                    }
+//                }
+//
+//                if (!exist) {
+//                    // Set the default amount for the currency
+//                    maxLimitBeforePinRequestPerCurrency.push( {
+//                        "amount" : defaultMaxLimitBeforePinRequest, "currency" : currency
+//                    } )
+//                }
+//            }
+//
+//            defaultMaxLimitBeforePinRequest = "";
 
             var tag = {
-                "name" : "", "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency
+                "name" : "", "trading_names" : trading_names
             };
             
 			var pageTitle = "New NFC";
@@ -2648,14 +2662,42 @@ function goNewNFC(parameters) {
                             var name = config.user.name;
                             if (doc.name)
                                 name = doc.name;
-                            defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
+                            
+                            var trading_names = [];
+                            
+                            thisUsersAccounts.rows.forEach( function( row ) {
+                            	var trading_name = {};
+                            	trading_name.trading_name = row.key.trading_name;
+                            	trading_name.currency = row.key.currency;
+                            	
+                            	var capacityName = "capacity" + row.key.trading_name + row.key.currency;
+                            	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
+                            	
+                            	if (typeof doc[capacityName] != 'undefined') {
+                            		trading_name.capacity = parseFloat( doc[capacityName] );
+                            	} else {
+                            		trading_name.capacity = Number.POSITIVE_INFINITY;
+                            	}
+                            	
+                            	if (typeof doc[transactionName] != 'undefined') {
+                            		trading_name.transaction = parseFloat( doc[transactionName] );
+                            	} else {
+                            		trading_name.transaction = Number.POSITIVE_INFINITY;
+                            	}
 
-                            for ( var i = 0; i < maxLimitBeforePinRequestPerCurrency.length; i++) {
-                                var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + maxLimitBeforePinRequestPerCurrency[i].currency;
-                                if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
-                                    maxLimitBeforePinRequestPerCurrency[i].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
-                                }
-                            }
+                            	trading_names.push( trading_name  );
+                            	
+                            } ) 
+                            
+//                            
+//                            defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
+//
+//                            for ( var i = 0; i < maxLimitBeforePinRequestPerCurrency.length; i++) {
+//                                var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + maxLimitBeforePinRequestPerCurrency[i].currency;
+//                                if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
+//                                    maxLimitBeforePinRequestPerCurrency[i].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
+//                                }
+//                            }
 
                             var userTag = {
                                 "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency, "created": doc.created
@@ -2801,10 +2843,11 @@ function goEditNFC(parameters) {
             var name = thisTag.name;
             if (doc.name)
                 name = doc.name;
-            var defaultMaxLimitBeforePinRequest = thisTag.defaultMaxLimitBeforePinRequest;
-            if (doc.defaultMaxLimitBeforePinRequest)
-                defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
-            var maxLimitBeforePinRequestPerCurrency = thisTag.maxLimitBeforePinRequestPerCurrency;
+//            var defaultMaxLimitBeforePinRequest = thisTag.defaultMaxLimitBeforePinRequest;
+//            if (doc.defaultMaxLimitBeforePinRequest)
+//                defaultMaxLimitBeforePinRequest = doc.defaultMaxLimitBeforePinRequest;
+//            var maxLimitBeforePinRequestPerCurrency = thisTag.maxLimitBeforePinRequestPerCurrency;
+            
 
             config.views( [ "accounts", {
                 descending : true
@@ -2814,59 +2857,78 @@ function goEditNFC(parameters) {
                     rows : []
                 }
 
-                for ( var i = view.rows.length - 1; i >= 0; i--) {
-                    //log( "row:" + JSON.stringify( view.rows[i] ) )
-                    //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
-                    if (view.rows[i].key.steward.length) {
-                        for ( var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-                            //log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
-                            if (view.rows[i].key.steward[j] == config.user.user_id) {
-                                thisUsersAccounts.rows.push( view.rows[i] )
-                            }
-                        }
-                    }
-                }
+	            if (typeof view.rows != 'undefined' && config.user != null) {
+	            	view.rows.forEach(function(row) {
+	            		row.key.steward.forEach(function(steward) {
+	            			if(steward == config.user.name)
+	            				thisUsersAccounts.rows.push( row );
+	            		} )
+	            	} )
+	            }
+                
+                var trading_names = [];
+                
+                thisUsersAccounts.rows.forEach( function( row ) {
+                	var trading_name = {};
+                	trading_name.trading_name = row.key.trading_name;
+                	trading_name.currency = row.key.currency;
+                	
+                	var capacityName = "capacity" + row.key.trading_name + row.key.currency;
+                	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
+                	
+                	if (typeof doc[capacityName] != 'undefined') {
+                		trading_name.capacity = parseFloat( doc[capacityName] );
+                	} else {
+                		trading_name.capacity = Number.POSITIVE_INFINITY;
+                	}
+                	
+                	if (typeof doc[transactionName] != 'undefined') {
+                		trading_name.transaction = parseFloat( doc[transactionName] );
+                	} else {
+                		trading_name.transaction = Number.POSITIVE_INFINITY;
+                	}
 
-                thisUsersAccounts.offset = view.offset
-                thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
-
-                for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
-                    var currency = thisUsersAccounts.rows[i].key.currency;
-                    var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + currency;
-
-                    var exist = false;
-
-                    if (typeof maxLimitBeforePinRequestPerCurrency != 'undefined') {
-                        // check if currency exists in currency list.
-                        for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
-                            if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
-                                exist = true;
-                                if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
-                                    if (maxLimitBeforePinRequestPerCurrency[j].amount != doc[maxLimitBeforePinRequestPerCurrencyName]) {
-                                        maxLimitBeforePinRequestPerCurrency[j].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (!exist) {
-                        // check if form defined an amount for this currency
-                        if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] != 'undefined') {
-                            maxLimitBeforePinRequestPerCurrency.push( {
-                                "amount" : doc[maxLimitBeforePinRequestPerCurrencyName], "currency" : currency
-                            } )
-                        } else {
-                            // Set the default amount for the currency
-                            maxLimitBeforePinRequestPerCurrency.push( {
-                                "amount" : defaultMaxLimitBeforePinRequest, "currency" : currency
-                            } )
-                        }
-                    }
-                }
+                	trading_names.push( trading_name  );
+                	
+                } ) 
+//
+//                for ( var i = 0; i < thisUsersAccounts.rows.length; i++) {
+//                    var currency = thisUsersAccounts.rows[i].key.currency;
+//                    var maxLimitBeforePinRequestPerCurrencyName = "maxLimitBeforePinRequestPer" + currency;
+//
+//                    var exist = false;
+//
+//                    if (typeof maxLimitBeforePinRequestPerCurrency != 'undefined') {
+//                        // check if currency exists in currency list.
+//                        for ( var j = 0; j < maxLimitBeforePinRequestPerCurrency.length; j++) {
+//                            if (currency == maxLimitBeforePinRequestPerCurrency[j].currency) {
+//                                exist = true;
+//                                if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] !== 'undefined') {
+//                                    if (maxLimitBeforePinRequestPerCurrency[j].amount != doc[maxLimitBeforePinRequestPerCurrencyName]) {
+//                                        maxLimitBeforePinRequestPerCurrency[j].amount = doc[maxLimitBeforePinRequestPerCurrencyName];
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                    if (!exist) {
+//                        // check if form defined an amount for this currency
+//                        if (typeof doc[maxLimitBeforePinRequestPerCurrencyName] != 'undefined') {
+//                            maxLimitBeforePinRequestPerCurrency.push( {
+//                                "amount" : doc[maxLimitBeforePinRequestPerCurrencyName], "currency" : currency
+//                            } )
+//                        } else {
+//                            // Set the default amount for the currency
+//                            maxLimitBeforePinRequestPerCurrency.push( {
+//                                "amount" : defaultMaxLimitBeforePinRequest, "currency" : currency
+//                            } )
+//                        }
+//                    }
+//                }
 
                 var userTag = {
-                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "defaultMaxLimitBeforePinRequest" : defaultMaxLimitBeforePinRequest, "maxLimitBeforePinRequestPerCurrency" : maxLimitBeforePinRequestPerCurrency, "created": thisTag.created, "modified": doc.modified
+                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names" : trading_names, "created": thisTag.created, "modified": doc.modified
                 };
 
                 log( " userTag:" + JSON.stringify( userTag ) )
@@ -2920,8 +2982,7 @@ function insertTagInDB(tag) {
     		doc.name = tag.name;
     		doc.initializationVector = tag.initializationVector;
     		doc.pinCode = tag.pinCode;
-    		doc.defaultMaxLimitBeforePinRequest = tag.defaultMaxLimitBeforePinRequest;
-    		doc.maxLimitBeforePinRequestPerCurrency = tag.maxLimitBeforePinRequestPerCurrency;
+    		doc.trading_names = tag.trading_names;
     		doc.created = new Date().getTime();
     		
     		config.db.put( "beamtag," + tag.username + "," + tag.hashTag, doc, function() {

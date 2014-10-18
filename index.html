@@ -1032,18 +1032,43 @@
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
-                <li class="topcoat-list__item" data-id="name">
+                <li class="topcoat-list__item center" data-id="name">
+                    <label for="name">TAG NAME</label>
                     <input type="text" class="topcoat-text-input" name="name" value="{{name}}" placeholder="Name Your Tag" /> 
                 </li>
-                <li class="topcoat-list__item" data-id="pincode">
+                <li class="topcoat-list__item center" data-id="pincode">
+                    <label for="pinCode">Pin Code</label>
                     <input type="number" class="topcoat-text-input" id="pinCode" name="pinCode" value="" placeholder="Pin Code" onfocus="changeToPassword()"/> 
                 </li>
-                <li class="topcoat-list__item" data-id="defaultMaxLimitBeforePinRequest">
-                    <input type="number" class="topcoat-text-input" name="defaultMaxLimitBeforePinRequest" value="{{defaultMaxLimitBeforePinRequest}}" placeholder="Default Max Limit Before Pin Request" /> 
+                <li class="topcoat-list__item center" data-id="capacityLimit">
+                    <label for="capacityLimit">CAPACITY LIMIT</label>
+                    <input type="number" class="topcoat-text-input" name="capacityLimit" value="{{capacityLimit}}" placeholder="Capacity Limit" />
                 </li>
+                <li class="topcoat-list__item center" data-id="transactionLimit">
+                    <label for="transactionLimit">TRANSACTION LIMIT</label>
+                    <input type="number" class="topcoat-text-input" name="transactionLimit" value="{{transactionLimit}}" placeholder="Transaction Limit" /> 
+                </li>
+                {{#trading_names}}
+                <li class="topcoat-list__item" data-id="{{trading_name}}{{currency}}">
+                    <div class="topcoat-list">
+                        <p class="topcoat-list__header" onclick="$({{trading_name}}{{currency}}).toggle();">{{trading_name}} {{currency}}</p>
+                        <ul id="{{trading_name}}{{currency}}" class="topcoat-list__container" style="display:hidden">
+                            <li class="topcoat-list__item center" data-id="capacity">
+                                <label for="capacityLimit">CAPACITY LIMIT FOR {{trading_name}} {{currency}}</label>
+                                <input type="number" class="topcoat-text-input" name="capacity{{trading_name}}{{currency}}" value="{{capacity}}" placeholder="Capacity Limit" />
+                            </li>
+                            <li class="topcoat-list__item center" data-id="transaction">
+                                <label for="transactionLimit">TRANSACTION LIMIT FOR {{trading_name}} {{currency}}</label>
+                                <input type="number" class="topcoat-text-input" name="transaction{{trading_name}}{{currency}}" value="{{transaction}}" placeholder="Transaction Limit" /> 
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                {{/trading_names}}
                 {{#maxLimitBeforePinRequestPerCurrency}}
                 <li class="topcoat-list__item" data-id="{{currency}}">
-                    <input type="number" class="topcoat-text-input" name="maxLimitBeforePinRequestPer{{currency}}" value="{{amount}}" placeholder="Max Limit Before Pin Request" style="width:80%"/> in {{currency}}
+                    <label for="defaultMaxLimitBeforePinRequest">TRANSACTION LIMIT FOR {{currency}}</label>
+                    <input type="number" class="topcoat-text-input" name="maxLimitBeforePinRequestPer{{currency}}" value="{{amount}}" placeholder="Transaction Limit for {{currency}}"/>
                 </li>
                 {{/maxLimitBeforePinRequestPerCurrency}}
                 <li class="topcoat-list__item" data-id="submit">
