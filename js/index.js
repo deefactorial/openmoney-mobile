@@ -2625,7 +2625,7 @@ function goNewNFC(parameters) {
                 var select = document.getElementById("addtradingname");
                 select.options[select.options.length] = new Option(id, id);
                 
-                listItem.parentNode.removeChild(listItem);
+                //listItem.parentNode.removeChild(listItem);
                 
             } )
             
@@ -2658,10 +2658,16 @@ function goNewNFC(parameters) {
             } )
             
             
-            $( "#scrollable li.trading_names" ).off( "click", "li")
-			$( "#scrollable li.trading_names" ).on( "click", "li", function() {
+            
+            $( "#scrollable li.trading_names" ).off( "click", "p")
+			$( "#scrollable li.trading_names" ).on( "click", "p", function() {
 				var id = $( this ).attr( "data-id" );
+				
+				log ("name clicked " + id);
+				
 				$( id + 'list').toggle();
+				$( id + 'icon').toggleClass("next").toggleClass("down");
+				
 			} )
             
 
