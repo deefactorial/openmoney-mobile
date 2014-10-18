@@ -2649,7 +2649,8 @@ function goNewNFC(parameters) {
             	
             	target.parentNode.removeChild(target);
             	
-            	select.options[select.selectedIndex].remove();
+            	select.remove(select.selectedIndex);
+            	
             	
             	if (select.options.length == 0) {
             		document.getElementById("add").style.display = 'none';
