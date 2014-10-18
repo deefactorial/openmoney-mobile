@@ -2615,6 +2615,8 @@ function goNewNFC(parameters) {
 
                 var id = $( this ).attr( "data-id" ), listItem = this;
                 
+                log( "swipe right " + id);
+                
                 listItem.parentNode.removeChild(listItem);
                 
             } )
