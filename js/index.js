@@ -3002,7 +3002,7 @@ function goEditNFC(parameters) {
                 	
                 	if (typeof doc[capacityName] != 'undefined' && doc[transactionName] != '') {
                 		trading_name.capacity = parseFloat( doc[capacityName] );
-                		if (trading_name.capacity == NaN) {
+                		if (isNaN( trading_name.capacity) ) {
                 			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 			finished = true;
@@ -3013,7 +3013,7 @@ function goEditNFC(parameters) {
                 	
                 	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '') {
                 		trading_name.transaction = parseFloat( doc[transactionName] );
-                		if (trading_name.transaction == NaN) {
+                		if (isNaN( trading_name.transaction) ) {
                 			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 			finished = true;
