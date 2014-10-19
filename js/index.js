@@ -2943,6 +2943,8 @@ function goEditNFC(parameters) {
             e.preventDefault()
             var doc = jsonform( this )
             
+            $("input[pattern='not-fail']").attr("pattern","");
+            
             doc.modified = new Date().getTime();
 
             if (!doc.name) {
@@ -3001,23 +3003,23 @@ function goEditNFC(parameters) {
                 	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
                 	
                 	if (typeof doc[capacityName] != 'undefined' && doc[transactionName] != '') {
-                		trading_name.capacity = parseFloat( doc[capacityName] );
-                		if (isNaN( trading_name.capacity) ) {
+                		if (isNaN( doc[capacityName] ) ) {
                 			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 			finished = true;
                 		}
+                		trading_name.capacity = parseFloat( doc[capacityName] );
                 	} else {
                 		trading_name.capacity = Number.POSITIVE_INFINITY;
                 	}
                 	
                 	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '') {
-                		trading_name.transaction = parseFloat( doc[transactionName] );
-                		if (isNaN( trading_name.transaction) ) {
+                		if (isNaN( doc[transactionName] ) ) {
                 			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 			finished = true;
                 		}
+                		trading_name.transaction = parseFloat( doc[transactionName] );
                 	} else {
                 		trading_name.transaction = Number.POSITIVE_INFINITY;
                 	}
