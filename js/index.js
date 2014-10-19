@@ -2973,93 +2973,24 @@ function goEditNFC(parameters) {
                 name = doc.name;
 
 
-            config.views( [ "accounts", {
-                descending : true
-            } ], function(err, view) {
-
-                var thisUsersAccounts = {
-                    rows : []
-                }
-
-	            if (typeof view.rows != 'undefined' && config.user != null) {
-	            	view.rows.forEach(function(row) {
-	            		row.key.steward.forEach(function(steward) {
-	            			if(steward == config.user.name)
-	            				thisUsersAccounts.rows.push( row );
-	            		} )
-	            	} )
-	            }
+            getThisUsersAccounts( function (thisUsersAccounts) {
                 
-                var trading_names = [];
-                
-                var finished = false;
-                
-                var count = thusUserAccounts.rows.length;
-                
-                thisUsersAccounts.rows.forEach( function( row ) {
-                	var trading_name = {};
-                	trading_name.trading_name = row.key.trading_name;
-                	trading_name.currency = row.key.currency;
-                	
-                	var capacityName = "capacity" + row.key.trading_name + row.key.currency;
-                	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
-
-                	function isNumber(n) {
-                	  return isNaN(parseFloat(n));
-                	}
-                	
-                	if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
-                		trading_name.capacity = parseFloat( doc[capacityName] );
-                		if (Number.isNaN( trading_name.capacity ) || trading_name.capacity == null) {
-		        			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
-		        			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
-		        			finished = true;
-		        		}
+                getTradingNames(thisUsersAccounts, doc, function(error, trading_names) {
+                	if( error ) {
+                		
                 	} else {
-                		trading_name.capacity = Number.POSITIVE_INFINITY;
+                		var userTag = {
+		                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names" : trading_names, "created": thisTag.created, "modified": doc.modified
+		                };
+		
+		                log( " userTag:" + JSON.stringify( userTag ) )
+		
+		                insertTagInDB( userTag )
+		                
+		                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
                 	}
-                	
-                	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '' && doc[transactionName] != null) {
-                		trading_name.transaction = parseFloat( doc[transactionName] );
-                		if (Number.isNaN( trading_name.transaction ) || trading_name.transaction == null) {
-                			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
-                			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
-                			finished = true;
-                		}
-                	} else {
-                		trading_name.transaction = Number.POSITIVE_INFINITY;
-                	}
-
-                	trading_names.push( trading_name  );
-                	count--;
-                } ) 
+                })
                 
-                
-                //poll for when they are all complete then call callback
-    
-			    function pollCompleted() {
-			    	if (count == 0) {
-			    		if (!finished) {
-
-			                var userTag = {
-			                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names" : trading_names, "created": thisTag.created, "modified": doc.modified
-			                };
-			
-			                log( " userTag:" + JSON.stringify( userTag ) )
-			
-			                insertTagInDB( userTag )
-			                
-			                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
-			                
-		                }
-			    	} else {
-			    	    setTimeout(function () { 
-			    	    	pollCompleted()
-			    	    }, 125);
-			    	}
-			    }
-			    
-			    pollCompleted()
             } )
 
         } )
@@ -3068,6 +2999,86 @@ function goEditNFC(parameters) {
 
     } )
 
+}
+
+function getTradingNames(thisUsersAccounts, doc, callback) {
+	
+	var trading_names = [];
+    
+    async.each(thisUsersAccounts.rows, function(row, callback) {
+        getTradingName(row, trading_names, callback);
+    }, function(error) {
+        // All done
+    	if (error) {
+    		callback(error)
+    	} else {
+    		callback(null, trading_names);
+    	}
+    	
+    });
+
+}
+
+function getTradingName(row, trading_names, callback) {
+	var trading_name = {};
+	trading_name.trading_name = row.key.trading_name;
+	trading_name.currency = row.key.currency;
+	
+	var capacityName = "capacity" + row.key.trading_name + row.key.currency;
+	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
+
+	function isNumber(n) {
+	  return isNaN(parseFloat(n));
+	}
+	
+	if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
+		trading_name.capacity = parseFloat( doc[capacityName] );
+		if (Number.isNaN( trading_name.capacity ) || trading_name.capacity == null) {
+			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
+			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+			callback('Not a Number')
+		}
+	} else {
+		trading_name.capacity = Number.POSITIVE_INFINITY;
+	}
+	
+	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '' && doc[transactionName] != null) {
+		trading_name.transaction = parseFloat( doc[transactionName] );
+		if (Number.isNaN( trading_name.transaction ) || trading_name.transaction == null) {
+			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
+			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+			callback('Not a Number')
+		}
+	} else {
+		trading_name.transaction = Number.POSITIVE_INFINITY;
+	}
+
+	trading_names.push( trading_name  );
+	callback();
+}
+
+
+function getThisUsersAccounts(callback) {
+	
+    config.views( [ "accounts", {
+        descending : true
+    } ], function(err, view) {
+	
+    	var thisUsersAccounts = {
+            rows : []
+        }
+
+        if (typeof view.rows != 'undefined' && config.user != null) {
+        	view.rows.forEach(function(row) {
+        		row.key.steward.forEach(function(steward) {
+        			if(steward == config.user.name)
+        				thisUsersAccounts.rows.push( row );
+        		} )
+        	} )
+        }
+    	
+    	callback(thisUsersAccounts);
+    } );
 }
 
 // change the type of the input to password
