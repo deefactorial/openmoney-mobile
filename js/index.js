@@ -3005,14 +3005,14 @@ function getTradingNames(thisUsersAccounts, doc, callback) {
 	
 	var trading_names = [];
     
-    async.each(thisUsersAccounts.rows, function(row, callback) {
+    async.eachSeries(thisUsersAccounts.rows, function(row, callback) {
         getTradingName(row, doc, trading_names, callback);
     }, function(error) {
         // All done
     	if (error) {
     		callback(error)
     	} else {
-    		callback(null, trading_names);
+    		callback(false, trading_names);
     	}
     	
     });
