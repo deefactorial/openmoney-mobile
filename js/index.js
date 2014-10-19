@@ -3006,7 +3006,7 @@ function getTradingNames(thisUsersAccounts, doc, callback) {
 	var trading_names = [];
     
     async.each(thisUsersAccounts.rows, function(row, callback) {
-        getTradingName(row, trading_names, callback);
+        getTradingName(row, doc, trading_names, callback);
     }, function(error) {
         // All done
     	if (error) {
@@ -3019,7 +3019,7 @@ function getTradingNames(thisUsersAccounts, doc, callback) {
 
 }
 
-function getTradingName(row, trading_names, callback) {
+function getTradingName(row, doc, trading_names, callback) {
 	var trading_name = {};
 	trading_name.trading_name = row.key.trading_name;
 	trading_name.currency = row.key.currency;
