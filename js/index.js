@@ -2724,7 +2724,7 @@ function goNewNFC(parameters) {
                             			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                             		}
                             	} else {
-                            		trading_name.capacity = Number.POSITIVE_INFINITY;
+                            		trading_name.capacity = Number.NEGATIVE_INFINITY;
                             	}
                             	
                             	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '') {
@@ -2733,7 +2733,7 @@ function goNewNFC(parameters) {
                             			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                             		}
                             	} else {
-                            		trading_name.transaction = Number.POSITIVE_INFINITY;
+                            		trading_name.transaction = Number.NEGATIVE_INFINITY;
                             	}
 
                             	trading_names.push( trading_name  );
@@ -3004,7 +3004,7 @@ function goEditNFC(parameters) {
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 		}
                 	} else {
-                		trading_name.capacity = Number.POSITIVE_INFINITY;
+                		trading_name.capacity = Number.NEGATIVE_INFINITY;
                 	}
                 	
                 	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '') {
@@ -3013,7 +3013,7 @@ function goEditNFC(parameters) {
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 		}
                 	} else {
-                		trading_name.transaction = Number.POSITIVE_INFINITY;
+                		trading_name.transaction = Number.NEGATIVE_INFINITY;
                 	}
 
                 	trading_names.push( trading_name  );
