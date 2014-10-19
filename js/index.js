@@ -2990,6 +2990,8 @@ function goEditNFC(parameters) {
                 
                 var trading_names = [];
                 
+                var finished = false;
+                
                 thisUsersAccounts.rows.forEach( function( row ) {
                 	var trading_name = {};
                 	trading_name.trading_name = row.key.trading_name;
@@ -3001,7 +3003,9 @@ function goEditNFC(parameters) {
                 	if (typeof doc[capacityName] != 'undefined' && doc[transactionName] != '') {
                 		trading_name.capacity = parseFloat( doc[capacityName] );
                 		if (trading_name.capacity == NaN) {
+                			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+                			finished = true;
                 		}
                 	} else {
                 		trading_name.capacity = Number.POSITIVE_INFINITY;
@@ -3010,7 +3014,9 @@ function goEditNFC(parameters) {
                 	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '') {
                 		trading_name.transaction = parseFloat( doc[transactionName] );
                 		if (trading_name.transaction == NaN) {
+                			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+                			finished = true;
                 		}
                 	} else {
                 		trading_name.transaction = Number.POSITIVE_INFINITY;
@@ -3019,16 +3025,20 @@ function goEditNFC(parameters) {
                 	trading_names.push( trading_name  );
                 	
                 } ) 
-
-                var userTag = {
-                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names" : trading_names, "created": thisTag.created, "modified": doc.modified
-                };
-
-                log( " userTag:" + JSON.stringify( userTag ) )
-
-                insertTagInDB( userTag )
                 
-                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
+                if (!finished) {
+
+	                var userTag = {
+	                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names" : trading_names, "created": thisTag.created, "modified": doc.modified
+	                };
+	
+	                log( " userTag:" + JSON.stringify( userTag ) )
+	
+	                insertTagInDB( userTag )
+	                
+	                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
+	                
+                }
                 
             } )
 
