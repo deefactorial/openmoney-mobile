@@ -2718,14 +2718,20 @@ function goNewNFC(parameters) {
                             	var capacityName = "capacity" + row.key.trading_name + row.key.currency;
                             	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
                             	
-                            	if (typeof doc[capacityName] != 'undefined') {
+                            	if (typeof doc[capacityName] != 'undefined' && doc[transactionName] != '') {
                             		trading_name.capacity = parseFloat( doc[capacityName] );
+                            		if (trading_name.capacity == NaN) {
+                            			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+                            		}
                             	} else {
                             		trading_name.capacity = Number.POSITIVE_INFINITY;
                             	}
                             	
-                            	if (typeof doc[transactionName] != 'undefined') {
+                            	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '') {
                             		trading_name.transaction = parseFloat( doc[transactionName] );
+                            		if (trading_name.transaction == NaN) {
+                            			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+                            		}
                             	} else {
                             		trading_name.transaction = Number.POSITIVE_INFINITY;
                             	}
@@ -2992,14 +2998,20 @@ function goEditNFC(parameters) {
                 	var capacityName = "capacity" + row.key.trading_name + row.key.currency;
                 	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
                 	
-                	if (typeof doc[capacityName] != 'undefined') {
+                	if (typeof doc[capacityName] != 'undefined' && doc[transactionName] != '') {
                 		trading_name.capacity = parseFloat( doc[capacityName] );
+                		if (trading_name.capacity == NaN) {
+                			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+                		}
                 	} else {
                 		trading_name.capacity = Number.POSITIVE_INFINITY;
                 	}
                 	
-                	if (typeof doc[transactionName] != 'undefined') {
+                	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '') {
                 		trading_name.transaction = parseFloat( doc[transactionName] );
+                		if (trading_name.transaction == NaN) {
+                			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+                		}
                 	} else {
                 		trading_name.transaction = Number.POSITIVE_INFINITY;
                 	}
