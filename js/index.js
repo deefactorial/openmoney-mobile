@@ -2659,7 +2659,7 @@ function goNewNFC(parameters) {
             $( "#content form" ).off("submit").submit( function(e) {
                 e.preventDefault()
                 var doc = jsonform( this )
-                
+               
                 doc.created = new Date().getTime();
 
                 if (!doc.name) {
@@ -3048,7 +3048,7 @@ function insertTagInDB(tag) {
     log( "Insert Tag:" + JSON.stringify( tag ) )
     config.db.get( "beamtag," + tag.username + "," + tag.hashTag, function(error, doc) {
     	if( error ) { 
-    		 log( "Error: " + JSON.stringify( error ) )
+    		 log( "Tag Error: " + JSON.stringify( error ) )
              if (error.status == 404) {
                  config.db.put( "beamtag," + tag.username + "," + tag.hashTag, tag, function() {
                 	 
@@ -3064,7 +3064,7 @@ function insertTagInDB(tag) {
     		doc.initializationVector = tag.initializationVector;
     		doc.pinCode = tag.pinCode;
     		doc.trading_names = tag.trading_names;
-    		doc.created = new Date().getTime();
+    		doc.created = doc.created;
     		
     		config.db.put( "beamtag," + tag.username + "," + tag.hashTag, doc, function() {
                 	 

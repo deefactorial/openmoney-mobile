@@ -307,7 +307,7 @@
                     
                     channel(doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
                     if (olddoc == null) {
-                    	if (!doc.username || !doc.hashTag || !doc.type || !doc.created) {
+                    	if (!doc.username || !doc.hashTag || !doc.created) {
                             throw({forbidden: "Missing required properties"});
                         }
                         access(doc.username, doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
@@ -315,7 +315,7 @@
                         if (doc._deleted) {
                             requireUser(olddoc.username);
                         } else {
-                            if (!doc.username || !doc.hashTag || !doc.type || !doc.created) {
+                            if (!doc.username || !doc.hashTag || !doc.created) {
                                 throw( { forbidden: "Missing required properties" } );
                             } 
                             if (doc.username != olddoc.username || doc.hashTag != olddoc.hashTag || doc.created != olddoc.created) {
