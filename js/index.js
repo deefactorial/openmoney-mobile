@@ -2994,6 +2994,8 @@ function goEditNFC(parameters) {
                 
                 var finished = false;
                 
+                var count = thusUserAccounts.rows.length;
+                
                 thisUsersAccounts.rows.forEach( function( row ) {
                 	var trading_name = {};
                 	trading_name.trading_name = row.key.trading_name;
@@ -3001,8 +3003,6 @@ function goEditNFC(parameters) {
                 	
                 	var capacityName = "capacity" + row.key.trading_name + row.key.currency;
                 	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
-                	
-
 
                 	function isNumber(n) {
                 	  return isNaN(parseFloat(n));
@@ -3010,7 +3010,7 @@ function goEditNFC(parameters) {
                 	
                 	if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
                 		trading_name.capacity = parseFloat( doc[capacityName] );
-                		if( isNaN( trading_name.capacity ) ) {
+                		if (Number.isNaN( trading_name.capacity ) || trading_name.capacity == null) {
 		        			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
 		        			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
 		        			finished = true;
@@ -3021,7 +3021,7 @@ function goEditNFC(parameters) {
                 	
                 	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '' && doc[transactionName] != null) {
                 		trading_name.transaction = parseFloat( doc[transactionName] );
-                		if (Number.isNaN( trading_name.transaction ) &&  trading_name.transaction != null) {
+                		if (Number.isNaN( trading_name.transaction ) || trading_name.transaction == null) {
                 			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 			finished = true;
@@ -3031,23 +3031,35 @@ function goEditNFC(parameters) {
                 	}
 
                 	trading_names.push( trading_name  );
-                	
+                	count--;
                 } ) 
                 
-                if (!finished) {
-
-	                var userTag = {
-	                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names" : trading_names, "created": thisTag.created, "modified": doc.modified
-	                };
-	
-	                log( " userTag:" + JSON.stringify( userTag ) )
-	
-	                insertTagInDB( userTag )
-	                
-	                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
-	                
-                }
                 
+                //poll for when they are all complete then call callback
+    
+			    function pollCompleted() {
+			    	if (count == 0) {
+			    		if (!finished) {
+
+			                var userTag = {
+			                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names" : trading_names, "created": thisTag.created, "modified": doc.modified
+			                };
+			
+			                log( " userTag:" + JSON.stringify( userTag ) )
+			
+			                insertTagInDB( userTag )
+			                
+			                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
+			                
+		                }
+			    	} else {
+			    	    setTimeout(function () { 
+			    	    	pollCompleted()
+			    	    }, 125);
+			    	}
+			    }
+			    
+			    pollCompleted()
             } )
 
         } )
