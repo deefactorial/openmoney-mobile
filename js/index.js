@@ -3021,7 +3021,7 @@ function goEditNFC(parameters) {
                 	
                 	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '' && doc[transactionName] != null) {
                 		trading_name.transaction = parseFloat( doc[transactionName] );
-                		if (Number.isNaN( trading_name.transaction ) ) {
+                		if (Number.isNaN( trading_name.transaction ) &&  trading_name.transaction != null) {
                 			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 			finished = true;
