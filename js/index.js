@@ -3033,7 +3033,7 @@ function getTradingName(row, doc, trading_names, callback) {
 	
 	if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
 		trading_name.capacity = parseFloat( doc[capacityName] );
-		if (Number.isNaN( trading_name.capacity ) || trading_name.capacity == null) {
+		if (Number.isNaN( trading_name.capacity ) || trading_name.capacity == null || typeof  trading_name.capacity == 'undefined') {
 			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
 			callback('Not a Number')
@@ -3044,7 +3044,7 @@ function getTradingName(row, doc, trading_names, callback) {
 	
 	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '' && doc[transactionName] != null) {
 		trading_name.transaction = parseFloat( doc[transactionName] );
-		if (Number.isNaN( trading_name.transaction ) || trading_name.transaction == null) {
+		if (Number.isNaN( trading_name.transaction ) || trading_name.transaction == null || typeof  trading_name.transaction == 'undefined') {
 			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
 			callback('Not a Number')
