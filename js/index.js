@@ -3002,8 +3002,8 @@ function goEditNFC(parameters) {
                 	var capacityName = "capacity" + row.key.trading_name + row.key.currency;
                 	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
                 	
-                	if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '') {
-                		if (Number.isNaN( Number( doc[capacityName] ) ) ) {
+                	if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
+                		if (Number.isNaN( new Number( doc[capacityName] ) ) ) {
                 			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 			finished = true;
@@ -3013,8 +3013,8 @@ function goEditNFC(parameters) {
                 		trading_name.capacity = Number.POSITIVE_INFINITY;
                 	}
                 	
-                	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '') {
-                		if (Number.isNaN( Number( doc[transactionName] ) ) ) {
+                	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '' && doc[transactionName] != null) {
+                		if (Number.isNaN( new Number( doc[transactionName] ) ) ) {
                 			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 			finished = true;
