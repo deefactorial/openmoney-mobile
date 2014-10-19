@@ -3026,10 +3026,6 @@ function getTradingName(row, doc, trading_names, callback) {
 	
 	var capacityName = "capacity" + row.key.trading_name + row.key.currency;
 	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
-
-	function isNumber(n) {
-	  return isNaN(parseFloat(n));
-	}
 	
 	if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
 		trading_name.capacity = parseFloat( doc[capacityName] );
@@ -3038,6 +3034,7 @@ function getTradingName(row, doc, trading_names, callback) {
 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
 			callback('Not a Number')
 		}
+		alert(trading_name.capacity)
 	} else {
 		trading_name.capacity = Number.POSITIVE_INFINITY;
 	}
