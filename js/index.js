@@ -3034,7 +3034,7 @@ function getTradingName(row, doc, trading_names, callback) {
 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
 			callback('Not a Number')
 		}
-		alert(trading_name.capacity)
+		log(trading_name.capacity)
 	} else {
 		trading_name.capacity = Number.POSITIVE_INFINITY;
 	}
