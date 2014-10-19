@@ -3002,24 +3002,30 @@ function goEditNFC(parameters) {
                 	var capacityName = "capacity" + row.key.trading_name + row.key.currency;
                 	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
                 	
+
+
+                	function isNumber(n) {
+                	  return isNaN(parseFloat(n));
+                	}
+                	
                 	if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
-                		if (Number.isNaN( new Number( doc[capacityName] ) ) ) {
-                			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
-                			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
-                			finished = true;
-                		}
                 		trading_name.capacity = parseFloat( doc[capacityName] );
+                		if( isNaN( trading_name.capacity ) ) {
+		        			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
+		        			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+		        			finished = true;
+		        		}
                 	} else {
                 		trading_name.capacity = Number.POSITIVE_INFINITY;
                 	}
                 	
                 	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '' && doc[transactionName] != null) {
-                		if (Number.isNaN( new Number( doc[transactionName] ) ) ) {
+                		trading_name.transaction = parseFloat( doc[transactionName] );
+                		if (Number.isNaN( trading_name.transaction ) ) {
                 			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
                 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
                 			finished = true;
                 		}
-                		trading_name.transaction = parseFloat( doc[transactionName] );
                 	} else {
                 		trading_name.transaction = Number.POSITIVE_INFINITY;
                 	}
