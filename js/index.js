@@ -1372,24 +1372,13 @@ function goManageAccounts(parameters) {
                 if (result) {
                     //$( listItem ).find( ".om-activate" ).show().click( function() {
                         activateTradingName( id , function(error, ok) {
-                        	if (error) {
-                        		
-                        	} else {
-                        		id = id.replace(" ", "");
-                        		id = id.replace(",", "");
-                        		$("#scrollable p#" + id + "p").toggleClass("archived")
-                        	}
+
                         })
                     //} )
                 } else {
                     //$( listItem ).find( ".om-archive" ).show().click( function() {
                         archiveTradingName( id , function (error, ok) {
-                        	if (error) {
-                        		
-                        	} else {
-                        		id = id.replace(",", "");
-                        		$("#scrollable p#" + id + "p").toggleClass("archived")
-                        	}
+
                         })
                     //} )
                 }
