@@ -3035,16 +3035,15 @@ function getTradingName(row, doc, trading_names, callback) {
 		log(doc[capacityName]);
 		trading_name.capacity = parseFloat( doc[capacityName] );
 		if (! isNumberic( trading_name.capacity ) || trading_name.capacity == null || typeof  trading_name.capacity == 'undefined') {
-			$("input[name='" + capacityName + "']").focus();
+			$("#scrollable input[name='" + capacityName + "']").focus();
 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
 			callback('Not a Number')
 		}
-		if (trading_name.capacity >= 0) {
+		if (trading_name.capacity < 0) {
 			$("#scrollable input[name='" + capacityName + "']").focus();
 			navigator.notification.alert( "Number has to be greater than or equal to zero."  , function() {  }, "Greater than or equal to zero", "OK")
 			callback('Greater than or equal to zero')
 		}
-		log(trading_name.capacity)
 	} else {
 		trading_name.capacity = Number.POSITIVE_INFINITY;
 	}
@@ -3052,9 +3051,14 @@ function getTradingName(row, doc, trading_names, callback) {
 	if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '' && doc[transactionName] != null) {
 		trading_name.transaction = parseFloat( doc[transactionName] );
 		if (Number.isNaN( trading_name.transaction ) || trading_name.transaction == null || typeof  trading_name.transaction == 'undefined') {
-			$("input[name='" + transactionName + "']").attr("pattern","not-fail").focus();
+			$("#scrollable input[name='" + transactionName + "']").focus();
 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
 			callback('Not a Number')
+		}
+		if (trading_name.transaction < 0) {
+			$("#scrollable input[name='" + transactionName + "']").focus();
+			navigator.notification.alert( "Number has to be greater than or equal to zero."  , function() {  }, "Greater than or equal to zero", "OK")
+			callback('Greater than or equal to zero')
 		}
 	} else {
 		trading_name.transaction = Number.POSITIVE_INFINITY;
