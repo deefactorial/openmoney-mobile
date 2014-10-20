@@ -3039,6 +3039,11 @@ function getTradingName(row, doc, trading_names, callback) {
 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
 			callback('Not a Number')
 		}
+		if (trading_name.capacity < 0) {
+			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
+			navigator.notification.alert( "Number has to be greater than zero."  , function() {  }, "Greater than zero", "OK")
+			callback('Greater than zero')
+		}
 		log(trading_name.capacity)
 	} else {
 		trading_name.capacity = Number.POSITIVE_INFINITY;
