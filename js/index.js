@@ -1538,7 +1538,7 @@ function goManageAccounts(parameters) {
  */
 
 function isTradingNameArchived(id, callback) {
-	id.replace(" ", ",");
+	id = id.replace(" ", ",");
     var result = false;
     config.db.get( "trading_name," + id, function(error, doc) {
     	if (error) {

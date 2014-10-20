@@ -381,5 +381,5 @@ br.clear {
 }
 
 .archived {
-	color: grey;
-}}
+	text-decoration: line-through;
+} }
