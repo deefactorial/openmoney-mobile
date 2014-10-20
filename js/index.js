@@ -3019,6 +3019,10 @@ function getTradingNames(thisUsersAccounts, doc, callback) {
 
 }
 
+function isNumberic( n ) {
+	  return !Number.isNaN( parseFloat( n ) ) && Number.isFinite( n );
+}
+
 function getTradingName(row, doc, trading_names, callback) {
 	var trading_name = {};
 	trading_name.trading_name = row.key.trading_name;
@@ -3028,8 +3032,9 @@ function getTradingName(row, doc, trading_names, callback) {
 	var transactionName = "transaction" + row.key.trading_name + row.key.currency;
 	
 	if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
+		alert(doc[capacityName]);
 		trading_name.capacity = parseFloat( doc[capacityName] );
-		if (!$.isNumeric( trading_name.capacity ) || trading_name.capacity == null || typeof  trading_name.capacity == 'undefined') {
+		if (! isNumeric( trading_name.capacity ) || trading_name.capacity == null || typeof  trading_name.capacity == 'undefined') {
 			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
 			callback('Not a Number')
