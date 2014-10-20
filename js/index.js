@@ -1530,6 +1530,24 @@ function goManageAccounts(parameters) {
 
 
 /*
+ * check tag for archived status
+ */
+
+function isTradingNameArchived(id, callback) {
+	id.replace(" ", ",");
+    var result = false;
+    config.db.get( "trading_name," + id, function(error, doc) {
+    	if (error) {
+
+    	} else {
+    		result = doc.archived;
+    	}
+        log( "is Tag (" + id + ") Archived:" + result )
+        callback( error, result )
+    } )
+}
+
+/*
  * This is will find the tag on the users account and archive it
  */
 
