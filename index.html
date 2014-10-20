@@ -1064,11 +1064,11 @@
                         <p class="topcoat-list__header" data-id="{{trading_name}}{{currency}}" style="font-size:24px;padding:20px;vertical-align:middle;"><img id="{{trading_name}}{{currency}}icon" class="next" style="float:left;margin-right:20px;" />{{trading_name}} {{currency}}</p>
                         <ul id="{{trading_name}}{{currency}}list" class="topcoat-list__container" style="display:none;">
                             <li class="topcoat-list__item center" data-id="capacity">
-                                <label for="capacityLimit">{{trading_name}} {{currency}} capacity</label>
-                                <input type="number" class="topcoat-text-input" name="capacity{{trading_name}}{{currency}}" value="{{capacity}}" placeholder="Capacity Limit" step="any"/>
+                                <label for="capacity{{trading_name}}{{currency}}">{{trading_name}} {{currency}} capacity</label>
+                                <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="capacity{{trading_name}}{{currency}}" value="{{capacity}}" placeholder="Capacity Limit" step="any"/>
                             </li>
                             <li class="topcoat-list__item center" data-id="transaction">
-                                <label for="transactionLimit">{{trading_name}} {{currency}} transaction limit</label>
+                                <label for="transaction{{trading_name}}{{currency}}">{{trading_name}} {{currency}} transaction limit</label>
                                 <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="transaction{{trading_name}}{{currency}}" value="{{transaction}}" placeholder="Transaction Limit" step="any"/> 
                             </li>
                         </ul>

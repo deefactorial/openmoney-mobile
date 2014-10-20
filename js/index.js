@@ -3040,7 +3040,7 @@ function getTradingName(row, doc, trading_names, callback) {
 			callback('Not a Number')
 		}
 		if (trading_name.capacity >= 0) {
-			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
+			$("#scrollable input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
 			navigator.notification.alert( "Number has to be greater than or equal to zero."  , function() {  }, "Greater than or equal to zero", "OK")
 			callback('Greater than or equal to zero')
 		}
