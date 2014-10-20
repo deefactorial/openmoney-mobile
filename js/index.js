@@ -1375,7 +1375,7 @@ function goManageAccounts(parameters) {
                         	if (error) {
                         		
                         	} else {
-                        		$("#scrollable p#" + id).toggleClass("archived")
+                        		$("#scrollable p#" + id + "p").toggleClass("archived")
                         	}
                         })
                     //} )
@@ -1385,7 +1385,7 @@ function goManageAccounts(parameters) {
                         	if (error) {
                         		
                         	} else {
-                        		$("#scrollable p#" + id).toggleClass("archived")
+                        		$("#scrollable p#" + id + "p").toggleClass("archived")
                         	}
                         })
                     //} )
@@ -1554,7 +1554,7 @@ function isTradingNameArchived(id, callback) {
     	} else {
     		result = doc.archived;
     	}
-        log( "is Tag (" + id + ") Archived:" + result )
+        log( "is TradingName (" + id + ") Archived:" + result )
         callback( error, result )
     } )
 }
