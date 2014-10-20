@@ -380,3 +380,6 @@ br.clear {
 	content:url("../img/light-down.png");
 }
 
+.archived {
+	color: grey;
+}}

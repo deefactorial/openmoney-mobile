@@ -1370,13 +1370,25 @@ function goManageAccounts(parameters) {
             isTradingNameArchived( id, function(error, result) {
                 // log ( "received result:" + result)
                 if (result) {
-                    $( listItem ).find( ".om-activate" ).show().click( function() {
-                        activateTradingName( id )
-                    } )
+                    //$( listItem ).find( ".om-activate" ).show().click( function() {
+                        activateTradingName( id , function(error, ok) {
+                        	if (error) {
+                        		
+                        	} else {
+                        		$("#scrollable p#" + id).toggleClass("archived")
+                        	}
+                        })
+                    //} )
                 } else {
-                    $( listItem ).find( ".om-archive" ).show().click( function() {
-                        archiveTradingName( id )
-                    } )
+                    //$( listItem ).find( ".om-archive" ).show().click( function() {
+                        archiveTradingName( id , function (error, ok) {
+                        	if (error) {
+                        		
+                        	} else {
+                        		$("#scrollable p#" + id).toggleClass("archived")
+                        	}
+                        })
+                    //} )
                 }
             } )
         } )
@@ -1551,14 +1563,13 @@ function isTradingNameArchived(id, callback) {
  * This is will find the tag on the users account and archive it
  */
 
-function archiveTradingName(id) {
+function archiveTradingName(id, callback) {
 	id.replace(" ", ",")
     log( "Archive Trading Name", id )
     config.db.get( "trading_name," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = true;
-	        config.db.put( "trading_name," + id, doc, function() {
-	        } )
+	        config.db.put( "trading_name," + id, doc, callback )
     	}
     } )
 }
@@ -1567,14 +1578,13 @@ function archiveTradingName(id) {
  * This is will find the tag on the users account and archive it
  */
 
-function activateTradingName(id) {
+function activateTradingName(id, callback) {
 	id.replace(" ", ",")
     log( "Activate Trading Name", id )
     config.db.get( "trading_name," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = false;
-	        config.db.put( "trading_name," + id, doc, function() {
-	        } )
+	        config.db.put( "trading_name," + id, doc, callback )
     	}
     } )
 }
