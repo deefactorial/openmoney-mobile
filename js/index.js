@@ -1375,6 +1375,8 @@ function goManageAccounts(parameters) {
                         	if (error) {
                         		
                         	} else {
+                        		id = id.replace(" ", "");
+                        		id = id.replace(",", "");
                         		$("#scrollable p#" + id + "p").toggleClass("archived")
                         	}
                         })
@@ -1385,6 +1387,7 @@ function goManageAccounts(parameters) {
                         	if (error) {
                         		
                         	} else {
+                        		id = id.replace(",", "");
                         		$("#scrollable p#" + id + "p").toggleClass("archived")
                         	}
                         })
@@ -1564,8 +1567,8 @@ function isTradingNameArchived(id, callback) {
  */
 
 function archiveTradingName(id, callback) {
-	id.replace(" ", ",")
-    log( "Archive Trading Name", id )
+	id = id.replace(" ", ",");
+    log( "Archive trading_name," + id )
     config.db.get( "trading_name," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = true;
@@ -1579,7 +1582,7 @@ function archiveTradingName(id, callback) {
  */
 
 function activateTradingName(id, callback) {
-	id.replace(" ", ",")
+	id = id.replace(" ", ",")
     log( "Activate Trading Name", id )
     config.db.get( "trading_name," + id, function(error, doc) {
     	if (!error) {
