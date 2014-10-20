@@ -3029,7 +3029,7 @@ function getTradingName(row, doc, trading_names, callback) {
 	
 	if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
 		trading_name.capacity = parseFloat( doc[capacityName] );
-		if (!$,isNumeric( trading_name.capacity ) || trading_name.capacity == null || typeof  trading_name.capacity == 'undefined') {
+		if (!jQuery.isNumeric( trading_name.capacity ) || trading_name.capacity == null || typeof  trading_name.capacity == 'undefined') {
 			$("input[name='" + capacityName + "']").attr("pattern","not-fail").focus();
 			navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
 			callback('Not a Number')
