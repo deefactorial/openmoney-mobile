@@ -1359,6 +1359,63 @@ function goSettings(parameters) {
 function goManageAccounts(parameters) {
 	
 	
+	function UIhandlers() {
+		
+		$( "#scrollable li.trading_names" ).off("swipeRight").on( "swipeRight", function() {
+			
+            var id = $( this ).attr( "data-id" ), listItem = this;
+            
+            log( "swipe right " + id);
+            
+            isTradingNameArchived( id, function(error, result) {
+                // log ( "received result:" + result)
+                if (result) {
+                    $( listItem ).find( ".om-activate" ).show().click( function() {
+                        activateTradingName( id )
+                    } )
+                } else {
+                    $( listItem ).find( ".om-archive" ).show().click( function() {
+                        archiveTradingName( id )
+                    } )
+                }
+            } )
+        } )
+        
+        
+        $( "#scrollable li.trading_names" ).off( "click", "p")
+		$( "#scrollable li.trading_names" ).on( "click", "p", function() {
+			var id = $( this ).attr( "data-id" );
+			
+			log ("name clicked " + id);
+			
+			$( "#" + id + 'list').toggle();
+			$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
+			
+		} )
+		
+		$( "#content form" ).off("submit").submit( function(e) {
+			e.preventDefault() 
+			
+	        var doc = jsonform( this );
+			
+			doc.modified = new Date().getTime();
+			
+			getThisUsersAccounts( function (thisUsersAccounts) {
+			        
+				updateTradingNames(thisUsersAccounts, doc, function(error, trading_names) {
+					if( error ) {
+						
+					} else {
+				    
+						navigator.notification.alert( "Successfully updated Trading Names!"  , function() {  }, "Success", "OK")
+					}
+				} ) 
+			    
+			} )
+			
+		} )
+	}
+	
 	var pageTitle = "Manage Accounts";
 	
 	if (currentpage != pageTitle) {
@@ -1414,6 +1471,8 @@ function goManageAccounts(parameters) {
         
             updateAjaxData( response , "manage_accounts.html")
             
+            UIhandlers();
+            
             accounts = true;
             
         } )
@@ -1467,6 +1526,124 @@ function goManageAccounts(parameters) {
     }
 	
 	window.dbChanged();
+}
+
+
+/*
+ * This is will find the tag on the users account and archive it
+ */
+
+function archiveTradingName(id) {
+	id.replace(" ", ",")
+    log( "Archive Trading Name", id )
+    config.db.get( "trading_name," + id, function(error, doc) {
+    	if (!error) {
+	        doc.archived = true;
+	        config.db.put( "trading_name," + id, doc, function() {
+	        } )
+    	}
+    } )
+}
+
+/*
+ * This is will find the tag on the users account and archive it
+ */
+
+function activateTradingName(id) {
+	id.replace(" ", ",")
+    log( "Activate Trading Name", id )
+    config.db.get( "trading_name," + id, function(error, doc) {
+    	if (!error) {
+	        doc.archived = false;
+	        config.db.put( "trading_name," + id, doc, function() {
+	        } )
+    	}
+    } )
+}
+
+function updateTradingNames(thisUsersAccounts, doc, callback) {
+    
+    async.each(thisUsersAccounts.rows, function(row, callback) {
+        updateTradingName(row, doc, callback);
+    }, function(error) {
+        // All done
+    	if (error) {
+    		callback(error)
+    	} else {
+    		callback(false, true);
+    	}
+    	
+    });
+}
+
+/*
+ * https://github.com/mikolalysenko/almost-equal/blob/master/almost_equal.js
+ */
+
+function almostEqual(a, b, absoluteError, relativeError) {
+	var d = Math.abs( a - b )
+	if (d <= absoluteError) { return true }
+	if (d <= relativeError * Math.min( Math.abs( a ), Math.abs( b ) )) { return true }
+	return a === b
+}
+
+FLT_EPSILON = 1.19209290e-7;
+DBL_EPSILON = 2.2204460492503131e-16;
+
+function updateTradingName(row, doc, callback) {
+	var changed = false;
+//	var trading_name = {};
+//	trading_name.trading_name = row.key.trading_name;
+//	trading_name.currency = row.key.currency;
+	config.db.get("trading_name," + row.key.trading_name + "," + row.key.currency, function(error, trading_name){
+		if(error) { return log("Could not get trading name" + JSON.stringify(error) ) } else {
+			var capacityName = "capacity" + trading_name.trading_name + trading_name.currency;
+			var transactionName = "transaction" + trading_name.trading_name + trading_name.currency;
+			
+			if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
+				log(doc[capacityName]);
+				if (! almostEqual(trading_name.capacity, parseFloat( doc[capacityName] ), FLT_EPSILON, FLT_EPSILON) ) {
+					changed = true;
+					trading_name.capacity = parseFloat( doc[capacityName] );
+					if (! isNumberic( trading_name.capacity ) || trading_name.capacity == null || typeof  trading_name.capacity == 'undefined') {
+						$("#scrollable input[name='" + capacityName + "']").focus();
+						navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+						callback('Not a Number')
+					}
+					if (trading_name.capacity < 0) {
+						$("#scrollable input[name='" + capacityName + "']").focus();
+						navigator.notification.alert( "Number has to be greater than or equal to zero."  , function() {  }, "Greater than or equal to zero", "OK")
+						callback('Greater than or equal to zero')
+					}
+				}
+			} else {
+				trading_name.capacity = Number.POSITIVE_INFINITY;
+			}
+			
+			if (typeof doc[transactionName] != 'undefined' && doc[transactionName] != '' && doc[transactionName] != null) {
+				if (! almostEqual(trading_name.transaction, parseFloat( doc[transactionName] ), FLT_EPSILON, FLT_EPSILON) ) {
+					changed = true;
+					trading_name.transaction = parseFloat( doc[transactionName] );
+					if (Number.isNaN( trading_name.transaction ) || trading_name.transaction == null || typeof  trading_name.transaction == 'undefined') {
+						$("#scrollable input[name='" + transactionName + "']").focus();
+						navigator.notification.alert( "Could not parse number."  , function() {  }, "Not a Number", "OK")
+						callback('Not a Number')
+					}
+					if (trading_name.transaction < 0) {
+						$("#scrollable input[name='" + transactionName + "']").focus();
+						navigator.notification.alert( "Number has to be greater than or equal to zero."  , function() {  }, "Greater than or equal to zero", "OK")
+						callback('Greater than or equal to zero')
+					}
+				}
+			} else {
+				trading_name.transaction = Number.POSITIVE_INFINITY;
+			}
+
+			config.db.put("trading_name," + row.key.trading_name + "," + row.key.currency, trading_name, callback);
+		}
+	} )
+	
+	
 }
 
 
@@ -2943,8 +3120,6 @@ function goEditNFC(parameters) {
             e.preventDefault()
             var doc = jsonform( this )
             
-            $("input[pattern='not-fail']").attr("pattern","");
-            
             doc.modified = new Date().getTime();
 
             if (!doc.name) {
@@ -3352,7 +3527,7 @@ function goTagPayment(parameters) {
 
         tradingNames.forEach( function(tradingname) {
             toAccounts.push( {
-                "to" : tradingname.id, "name" : tradingname.value.name + " " + tradingname.value.currency
+                "to" : "trading_anme," + tradingname.trading_name + "," + tradingname.currency , "name" : tradingname.trading_name + " " + tradingname.currency
             } )
         } )
         
@@ -3399,84 +3574,117 @@ function goTagPayment(parameters) {
             	navigator.notification.alert( "Amount zero or greater required!"  , function() {  }, "Error", "OK")
             	return false;
             }
+            
             doc.amount = parseFloat( doc.amount )
-            doc.timestamp = new Date().getTime();
-            //doc.timestamp = doc.timestamp.toJSON()
-            delete doc.pair;
-            log( " form doc: " + JSON.stringify( doc ) )
-            config.db.get( doc.from, function(error, from) {
-                if (error) {
-                    if (error.status == 404) {
-                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Exists", "OK")
-                        return false;
-                    } else {
-                        return alert( JSON.stringify( error ) )
-                    }
-                }
-                doc.from = from.name
-                doc.currency = from.currency
-                if (typeof from.enabled != 'undefined' && from.enabled === false ) {
-                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                } else {
-                	config.db.get( "currency," + doc.currency, function(error, currency) {
-                    	if (error) {
-                    		if (error.status == 404) {
-                            	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
-                                return false
+            
+            async.each(trading_names,function(trading_name, callback){
+            	if("trading_name," + trading_name.trading_name + "," + trading_name.currency == doc.to){
+            		if(trading_name.capacity != null && trading_name.capacity > doc.amount) {
+            			navigator.notification.alert( "Amount is greater than cards capacity!"  , function() {  }, "Error", "OK")
+                    	callback('Error');
+            		} else if (trading_name.transaction != null && trading_name.transaction > doc.amount) {
+            			//the customers pin code is required to authorize this transaction
+            			goAuthorizePinCode(callback)
+            		} else {
+            			callback();
+            		}
+            	} else {
+            		callback();
+            	}
+            }, function(error) {
+            	if (error) {
+            		
+            	} else {
+
+                    doc.timestamp = new Date().getTime();
+                    //doc.timestamp = doc.timestamp.toJSON()
+                    delete doc.pair;
+                    log( " form doc: " + JSON.stringify( doc ) )
+                    config.db.get( doc.from, function(error, from) {
+                        if (error) {
+                            if (error.status == 404) {
+                            	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Exists", "OK")
+                                return false;
                             } else {
                                 return alert( JSON.stringify( error ) )
                             }
-                    	} else {
-                    		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
-                    			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                    		} else {
-                    			config.db.get( doc.to, function(error, to) {
-                                    if (error) {
-                                        if (error.status == 404) {
-                                        	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Exists", "OK")
-                                            return false
-                                        } else {
-                                            return alert( JSON.stringify( error ) )
-                                        }
+                        }
+                        doc.from = from.name
+                        doc.currency = from.currency
+                        if (typeof from.enabled != 'undefined' && from.enabled === false ) {
+                        	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                        } else {
+                        	config.db.get( "currency," + doc.currency, function(error, currency) {
+                            	if (error) {
+                            		if (error.status == 404) {
+                                    	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
+                                        return false
+                                    } else {
+                                        return alert( JSON.stringify( error ) )
                                     }
-                                    doc.to = to.name
-                                    if (typeof to.enabled != 'undefined' && to.enabled === false ) {
-                                    	navigator.notification.alert( "the recipient trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                                    } else 
-                                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-                                        if (error) {
-                                            log( "Error: " + JSON.stringify( error ) )
-                                            if (error.status == 404) {
-                                                // doc does not exists
-                                                log( "insert new trading name journal" + JSON.stringify( doc ) )
-                                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                                                    if (error)
-                                                        return alert( JSON.stringify( error ) )
-                                                    $( "#content form input[name='to']" ).val( "" ) // Clear
-                                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
-                                                    $( "#content form textarea" ).val( "" ) // Clear
-                                                    navigator.notification.alert( "You successfully made a payment !"  , function() {  }, "Exists", "OK")
-                                                    
-                                                    goList( [ "trading_name," + doc.from + "," + doc.currency ] )
-                                                } )
-                                            } else {
-                                                alert( "Error: ".JSON.stringify( error ) )
+                            	} else {
+                            		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
+                            			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                            		} else {
+                            			config.db.get( doc.to, function(error, to) {
+                                            if (error) {
+                                                if (error.status == 404) {
+                                                	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Exists", "OK")
+                                                    return false
+                                                } else {
+                                                    return alert( JSON.stringify( error ) )
+                                                }
                                             }
-                                        } else {
-                                            // doc exsits already
-                                        	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
-                                            
-                                        }
-                                    } )
-                                } )
-                    		}
-                    	}
-                	} )
-                }
+                                            doc.to = to.name
+                                            if (typeof to.enabled != 'undefined' && to.enabled === false ) {
+                                            	navigator.notification.alert( "the recipient trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                                            } else 
+                                            config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                                                if (error) {
+                                                    log( "Error: " + JSON.stringify( error ) )
+                                                    if (error.status == 404) {
+                                                        // doc does not exists
+                                                        log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                                        config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                                            if (error)
+                                                                return alert( JSON.stringify( error ) )
+                                                            $( "#content form input[name='to']" ).val( "" ) // Clear
+                                                            $( "#content form input[name='amount']" ).val( "" ) // Clear
+                                                            $( "#content form textarea" ).val( "" ) // Clear
+                                                            navigator.notification.alert( "You successfully made a payment !"  , function() {  }, "Exists", "OK")
+                                                            
+                                                            goList( [ "trading_name," + doc.from + "," + doc.currency ] )
+                                                        } )
+                                                    } else {
+                                                        alert( "Error: ".JSON.stringify( error ) )
+                                                    }
+                                                } else {
+                                                    // doc exsits already
+                                                	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
+                                                    
+                                                }
+                                            } )
+                                        } )
+                            		}
+                            	}
+                        	} )
+                        }
+                    } )
+            	}
             } )
+            
         } )
     } )
 }
+
+/*
+ * TODO: define the authorization of pin code page.
+ */
+
+function goAuthorizePinCode( callback ) {
+	callback();
+}
+
 
 /*
  * this updates the options available to select from in TagPayments
