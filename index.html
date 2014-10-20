@@ -1065,11 +1065,11 @@
                         <ul id="{{trading_name}}{{currency}}list" class="topcoat-list__container" style="display:none;">
                             <li class="topcoat-list__item center" data-id="capacity">
                                 <label for="capacity{{trading_name}}{{currency}}">{{trading_name}} {{currency}} capacity</label>
-                                <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="capacity{{trading_name}}{{currency}}" value="{{capacity}}" placeholder="Capacity Limit" step="any"/>
+                                <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="capacity{{trading_name}}{{currency}}" value="{{capacity}}" placeholder="Capacity Limit" pattern="^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$"/>
                             </li>
                             <li class="topcoat-list__item center" data-id="transaction">
                                 <label for="transaction{{trading_name}}{{currency}}">{{trading_name}} {{currency}} transaction limit</label>
-                                <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="transaction{{trading_name}}{{currency}}" value="{{transaction}}" placeholder="Transaction Limit" step="any"/> 
+                                <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="transaction{{trading_name}}{{currency}}" value="{{transaction}}" placeholder="Transaction Limit" pattern="^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$" /> 
                             </li>
                         </ul>
                     </div>
