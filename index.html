@@ -1062,7 +1062,7 @@
                     <label for="pinCode">Pin Code</label>
                     <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" id="pinCode" name="pinCode" value="" placeholder="Pin Code" onfocus="changeToPassword()"/> 
                 </li>
-                <li id="add" class="topcoat-list__item" data-id="add" style="display:none;">
+                <li id="add" class="topcoat-list__item" data-id="add" {{^addtradingnames}}style="display:none;"{{/addtradingnames}}>
                     <div style="display:table; padding:0; margin: 0; width:100%">
                         <div style="width: 50%;display:table-cell;vertical-align: middle;">
                             <select id="addtradingname" name="addtradingname" class="om-select-dark" >
@@ -1080,9 +1080,7 @@
             <ul class="topcoat-list formlist" id="formlist">
                 {{#trading_names}}
                 <li id="{{trading_name}} {{currency}}" class="topcoat-list__item trading_names" data-id="{{trading_name}} {{currency}}" style="font-size:24px;vertical-align:middle;">
-                   
                         {{trading_name}} {{currency}}
-                    
                 </li>
                 {{/trading_names}}
             </ul>
@@ -1094,7 +1092,11 @@
         </form>
     </div>
     <div id="hidden" style="display:none;">
-        
+        {{#addtradingnames}}
+            <li id="{{trading_name}} {{currency}}" class="topcoat-list__item trading_names" data-id="{{trading_name}} {{currency}}" style="font-size:24px;vertical-align:middle;">
+                 {{trading_name}} {{currency}}
+            </li>
+        {{/addtradingnames}}
     </div>
 </div>
 </script>

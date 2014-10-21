@@ -3061,97 +3061,122 @@ function goEditNFC(parameters) {
 	    ul.parentNode.replaceChild(new_ul, ul);
 	}
 	
-	window.dbChanged = function(){};
+	window.dbChanged = function() {
+			
+		var id = parameters.pop();
 	
-	var id = parameters.pop();
-
-    config.db.get( "beamtag," + config.user.name + "," + id, function(err, doc) {
-
-        var thisTag = doc;
-
-        log( "This Tag: " + JSON.stringify( thisTag ) )
-
-    	var pageTitle = "Edit NFC";
+	    config.db.get( "beamtag," + config.user.name + "," + id, function(err, doc) {
+	    	
+	    	var thisTag = doc;
+	    	
+	    	getThisUsersAccounts( function (thisUsersAccounts) {
+	    		
+	    		thisUsersAccounts.rows.forEach(function(trading_name) { 
+	    			var found = false;
+	    			doc.trading_names.forEach(function(name) {
+	    				if(name.trading_name == trading_name.trading_name) {
+	    					found = true;
+	    				}
+	    			} )
+	    			if (!found) {
+	    				if(typeof thisTag.addTradingNames == 'undefined') {
+	    					thisTag.addTradingNames = [];
+	    				}
+	    				thisTag.addTradingNames.push( { "trading_name":trading_name.trading_name, "currency":trading_name.currency } )
+	    			}
+	    		} )
+	    		
+	    		
+	    		log( "This Tag: " + JSON.stringify( thisTag ) )
+	
+		    	var pageTitle = "Edit NFC";
+				
+				if (currentpage != pageTitle) {
+			    
+					var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : goEditNFC.toString(), "pageParameters" : [ id ]  };
+					
+					processAjaxData( response, "edit_nfc.html" )
+					
+				} else {
+					
+					var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : goEditNFC.toString(), "pageParameters" : [ id ]  };
+					
+					drawContent( response.html );
+					
+					updateAjaxData( response, "edit_nfc.html" )
+					
+				}
 		
-		if (currentpage != pageTitle) {
-	    
-			var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : goEditNFC.toString(), "pageParameters" : [ id ]  };
-			
-			processAjaxData( response, "edit_nfc.html" )
-			
-		} else {
-			
-			var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : goEditNFC.toString(), "pageParameters" : [ id ]  };
-			
-			drawContent( response.html );
-			
-			updateAjaxData( response, "edit_nfc.html" )
-			
-		}
-
-        $( "#content .om-index" ).off("click").click( function() {
-            History.back();
-        } )
-        
-        UIhandlers();
-
-        $( "#content form" ).off("submit").submit( function(e) {
-            e.preventDefault()
-            var doc = jsonform( this )
-            
-            doc.modified = new Date().getTime();
-
-            if (!doc.name) {
-            	navigator.notification.alert( "You must specify a name for your Tag."  , function() {  }, "Error", "OK")
-            	return false;
-            }
-
-            var hashTag = thisTag.hashTag;
-            var initializationVector = thisTag.initializationVector;
-            var base64_encodedString = thisTag.pinCode;
-            var pinCode = doc.pinCode;
-            if (pinCode) {
-                initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-
-                // for more information on mcrypt
-                // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
-                // note the key that should be used instead of the hashID
-                // should be
-                // the users private RSA key.
-                encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
-                base64_encodedString = base64_encode( encodedString );
-            }
-
-            var name = thisTag.name;
-            if (doc.name)
-                name = doc.name;
-
-
-            getThisUsersAccounts( function (thisUsersAccounts) {
-                
-                getTradingNames(thisUsersAccounts, doc, function(error, trading_names) {
-                	if( error ) {
-                		
-                	} else {
-                		var userTag = {
-		                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names" : trading_names, "created": thisTag.created, "modified": doc.modified
-		                };
+		        $( "#content .om-index" ).off("click").click( function() {
+		            History.back();
+		        } )
+		        
+		        UIhandlers();
 		
-		                log( " userTag:" + JSON.stringify( userTag ) )
+		        $( "#content form" ).off("submit").submit( function(e) {
+		            e.preventDefault()
+		            var doc = jsonform( this )
+		            
+		            doc.modified = new Date().getTime();
 		
-		                insertTagInDB( userTag )
+		            if (!doc.name) {
+		            	navigator.notification.alert( "You must specify a name for your Tag."  , function() {  }, "Error", "OK")
+		            	return false;
+		            }
+		
+		            var hashTag = thisTag.hashTag;
+		            var initializationVector = thisTag.initializationVector;
+		            var base64_encodedString = thisTag.pinCode;
+		            var pinCode = doc.pinCode;
+		            if (pinCode) {
+		                initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+		
+		                // for more information on mcrypt
+		                // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
+		                // note the key that should be used instead of the hashID
+		                // should be
+		                // the users private RSA key.
+		                encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
+		                base64_encodedString = base64_encode( encodedString );
+		            }
+		
+		            var name = thisTag.name;
+		            if (doc.name)
+		                name = doc.name;
+		
+		
+		            getThisUsersAccounts( function (thisUsersAccounts) {
 		                
-		                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
-                	}
-                })
-                
-            } )
-
-        } )
-
-        setTabs()
-
-    } )
+		                getTradingNames(thisUsersAccounts, doc, function(error, trading_names) {
+		                	if( error ) {
+		                		
+		                	} else {
+		                		var userTag = {
+				                    "tagID" : thisTag.tagID, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names" : trading_names, "created": thisTag.created, "modified": doc.modified
+				                };
+				
+				                log( " userTag:" + JSON.stringify( userTag ) )
+				
+				                insertTagInDB( userTag )
+				                
+				                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
+		                	}
+		                })
+		                
+		            } )
+		
+		        } )
+		
+		        setTabs()
+	    	} )
+	
+	       
+	
+	        
+	
+	    } )
+    
+	}
 
 }
 
@@ -3350,7 +3375,7 @@ function goPayment(parameters) {
                 }
                 doc.from = from.name
                 doc.currency = from.currency
-                if (typeof from.capacity != 'undefined' && from.capacity < doc.amount) {
+                if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null && from.capacity < doc.amount) {
                 	navigator.notification.alert( "Your trading account doesn't have the capacity for this transaction!"  , function() { goManageAccounts([]) }, "Error", "OK")
                 	return false
                 }
@@ -3548,7 +3573,7 @@ function goTagPayment(parameters) {
                 doc.from = from.name
                 doc.currency = from.currency
                 
-                if (typeof from.capacity != 'undefined' && from.capacity < doc.amount) {
+                if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null && from.capacity < doc.amount) {
                 	navigator.notification.alert( "Your trading account doesn't have the capacity for this transaction!"  , function() { goManageAccounts([]) }, "Error", "OK")
                 	return false
                 }
@@ -3762,10 +3787,7 @@ function goMerchantPayment(parameters) {
                 doc.to = to.name
                 doc.currency = to.currency
                 
-                if (typeof to.capacity != 'undefined' && to.capacity < doc.amount) {
-                	navigator.notification.alert( "Customers trading account doesn't have the capacity for this transaction!"  , function() {  }, "Error", "OK")
-                	return false
-                }
+                
                 
                 if (typeof to.enabled != 'undefined' && to.enabled === false ) {
                 	navigator.notification.alert( "Merchants trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
@@ -3793,6 +3815,12 @@ function goMerchantPayment(parameters) {
                                             }
                                         }
                                         doc.from = from.name
+                                        
+                                        if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null&& from.capacity < doc.amount) {
+                                        	navigator.notification.alert( "Customers trading account doesn't have the capacity for this transaction!"  , function() {  }, "Error", "OK")
+                                        	return false
+                                        }
+                                        
                                         if (typeof from.enabled != 'undefined' && from.enabled === false ) {
                                         	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
                                         } else 
@@ -3898,46 +3926,54 @@ function goCustomerPayment(parameters) {
                             }
                         }
                         doc.from = from.name
+                        
+                        if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null&& from.capacity < doc.amount) {
+                        	navigator.notification.alert( "Customers trading account doesn't have the capacity for this transaction!"  , function() {  }, "Error", "OK")
+                        	return false
+                        }
+                        
                         if (typeof from.enabled != 'undefined' && from.enabled === false ) {
                         	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                        } else 
-                        config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-                            if (error) {
-                                log( "Error: " + JSON.stringify( error ) )
-                                if (error.status == 404) {
-                                    // doc does not exists
-                                    log( "insert new trading name journal" + JSON.stringify( doc ) )
-                                    config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                                        if (error)
-                                            return alert( JSON.stringify( error ) )
-                                        $( "#content form input[name='to']" ).val( "" ) // Clear
-                                        $( "#content form input[name='amount']" ).val( "" ) // Clear
-                                        $( "#content form textarea" ).val( "" ) // Clear
-                                        nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
-                                            // success callback
-                                        }, function() {
-                                            // failure callback
-                                        } );
-                                        nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-                                            // success callback
-                                        }, function() {
-                                            // failure callback
-                                        } );
-                                        
-                                        navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
-                                        
-
-                                        goList( [ "trading_name," + doc.to + "," + doc.currency ] )
-                                    } )
-                                } else {
-                                    alert( "Error: ".JSON.stringify( error ) )
-                                }
-                            } else {
-                                // doc exsits already
-                            	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
-                                
-                            }
-                        } )
+                        } else {
+                        	
+	                        config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+	                            if (error) {
+	                                log( "Error: " + JSON.stringify( error ) )
+	                                if (error.status == 404) {
+	                                    // doc does not exists
+	                                    log( "insert new trading name journal" + JSON.stringify( doc ) )
+	                                    config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	                                        if (error)
+	                                            return alert( JSON.stringify( error ) )
+	                                        $( "#content form input[name='to']" ).val( "" ) // Clear
+	                                        $( "#content form input[name='amount']" ).val( "" ) // Clear
+	                                        $( "#content form textarea" ).val( "" ) // Clear
+	                                        nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
+	                                            // success callback
+	                                        }, function() {
+	                                            // failure callback
+	                                        } );
+	                                        nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+	                                            // success callback
+	                                        }, function() {
+	                                            // failure callback
+	                                        } );
+	                                        
+	                                        navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
+	                                        
+	
+	                                        goList( [ "trading_name," + doc.to + "," + doc.currency ] )
+	                                    } )
+	                                } else {
+	                                    alert( "Error: ".JSON.stringify( error ) )
+	                                }
+	                            } else {
+	                                // doc exsits already
+	                            	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
+	                                
+	                            }
+	                        } )
+                        }
                     } )
                 }
             } );
@@ -4010,6 +4046,13 @@ function goCustomerPayment(parameters) {
                     }
                 }
                 doc.from = from.name
+                
+                
+                if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null && from.capacity < doc.amount) {
+                	navigator.notification.alert( "Customers trading account doesn't have the capacity for this transaction!"  , function() {  }, "Error", "OK")
+                	return false
+                }
+                
                 if (typeof from.enabled != 'undefined' && from.enabled === false ) {
                 	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
                 } else 
