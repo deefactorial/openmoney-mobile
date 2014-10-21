@@ -3242,11 +3242,13 @@ function insertTagInDB(tag) {
     		log( "Document already exists: " + JSON.stringify( doc ) )
     		
     		doc.tagID = tag.tagID;
+    		doc.hashTag = tag.hashTag;
     		doc.name = tag.name;
+    		doc.username = tag.username;
     		doc.initializationVector = tag.initializationVector;
     		doc.pinCode = tag.pinCode;
     		doc.trading_names = tag.trading_names;
-    		doc.created = doc.created;
+    		doc.created = doc.created.toFixed();
     		
     		config.db.put( "beamtag," + tag.username + "," + tag.hashTag, doc, function() {
                 	 

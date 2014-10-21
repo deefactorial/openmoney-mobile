@@ -191,7 +191,7 @@
                             if ( doc.name != olddoc.name || doc.currency != olddoc.currency || doc.created != olddoc.created) {
                             	throw({forbidden: "unmutable properties"});
                             }
-                            if (doc.steward.equals( olddoc.steward ) ) {
+                            if (! doc.steward.equals( olddoc.steward ) ) {
                             	requireUser(olddoc.steward);
                             }
                             access( doc.steward , "currency" + channelDelimiter + currency)
@@ -216,7 +216,7 @@
                             if (doc.space != olddoc.space || doc.created != olddoc.created){
                             	throw({forbidden: "unmutable properties"});
                             }
-                            if (doc.steward.equals(  olddoc.steward ) ) {
+                            if (! doc.steward.equals(  olddoc.steward ) ) {
                             	requireUser(olddoc.steward);
                             }
                             access(doc.steward, doc.type + channelDelimiter + space);
@@ -240,7 +240,7 @@
                             if (doc.currency != olddoc.currency || doc.created != olddoc.created) {
                             	throw({forbidden: "unmutable properties"});
                             }
-                            if (doc.steward.equals( olddoc.steward ) ) {
+                            if (! doc.steward.equals( olddoc.steward ) ) {
                             	requireUser(olddoc.steward);
                             }
                             access(doc.steward, doc.type + channelDelimiter + currency);
@@ -265,7 +265,7 @@
                             if (doc.currency != olddoc.currency || doc.created != olddoc.created) {
                             	throw({forbidden: "unmutable properties"});
                             }
-                            if (doc.steward.equals( olddoc.steward ) ) {
+                            if (! doc.steward.equals( olddoc.steward ) ) {
                             	requireUser(olddoc.steward)
                             }
                             access(doc.steward, doc.type + channelDelimiter + currency);
@@ -319,7 +319,15 @@
                                 throw( { forbidden: "Missing required properties" } );
                             } 
                             if (doc.username != olddoc.username || doc.hashTag != olddoc.hashTag || doc.created != olddoc.created) {
-                            	throw( { forbidden: "unmutable properites" } ); 
+                            	if (doc.username != olddoc.username) {
+                            		throw( { forbidden: "unmutable username: " + olddoc.username + "!=" + doc.username } ); 
+                            	}
+                            	if (doc.hashTag != olddoc.hashTag) {
+                            		throw( { forbidden: "unmutable hashTag: " + olddoc.hashTag + "!=" + doc.hashTag } ); 
+                            	}
+                            	if (doc.created != olddoc.created) {
+                            		throw( { forbidden: "unmutable created: " + olddoc.created + "!=" + doc.created } );
+                            	}
                             }
                             requireUser(olddoc.username);
                             access(doc.username, doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
