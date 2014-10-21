@@ -3904,8 +3904,8 @@ function goCustomerPayment(parameters) {
                     // TODO: have default currency accounts
                     var once = 1;
                     tradingnames.forEach( function(tradingname) {
-                        if (once == 1 && tradingname.value.currency == doc.currency) {
-                            doc.from = tradingname.id;
+                        if (once == 1 && tradingname.currency == doc.currency) {
+                            doc.from = "trading_name," + tradingname.trading_name + "," + trading_name.currency;
                             once = 0;
                         }
                     } )
