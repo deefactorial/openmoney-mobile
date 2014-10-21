@@ -3076,7 +3076,7 @@ function goEditNFC(parameters) {
 	    			var found = false;
 	    			if(typeof thisTag.trading_names != 'undefined')
 	    				thisTag.trading_names.forEach(function(name) {
-		    				if(name.trading_name == trading_name.name) {
+		    				if(name.trading_name == trading_name.key.trading_name) {
 		    					found = true;
 		    				}
 		    			} )
@@ -3084,7 +3084,7 @@ function goEditNFC(parameters) {
 	    				if(typeof thisTag.addtradingnames == 'undefined') {
 	    					thisTag.addtradingnames = [];
 	    				}
-	    				thisTag.addtradingnames.push( { "trading_name":trading_name.name, "currency":trading_name.currency } )
+	    				thisTag.addtradingnames.push( { "trading_name":trading_name.key.trading_name, "currency":trading_name.key.currency } )
 	    			}
 	    		} )
 	    		
