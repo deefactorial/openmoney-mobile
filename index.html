@@ -1081,6 +1081,7 @@
                 {{#trading_names}}
                 <li id="{{trading_name}} {{currency}}" class="topcoat-list__item trading_names" data-id="{{trading_name}} {{currency}}" style="font-size:24px;vertical-align:middle;">
                         {{trading_name}} {{currency}}
+                    <input type="hidden" name="{{trading_name}}{{currency}}" value="true" />
                 </li>
                 {{/trading_names}}
             </ul>
@@ -1095,6 +1096,7 @@
         {{#addtradingnames}}
             <li id="{{trading_name}} {{currency}}" class="topcoat-list__item trading_names" data-id="{{trading_name}} {{currency}}" style="font-size:24px;vertical-align:middle;">
                  {{trading_name}} {{currency}}
+                 <input type="hidden" name="{{trading_name}}{{currency}}" value="true" />
             </li>
         {{/addtradingnames}}
     </div>

@@ -3073,11 +3073,12 @@ function goEditNFC(parameters) {
 	    		
 	    		thisUsersAccounts.rows.forEach(function(trading_name) { 
 	    			var found = false;
-	    			doc.trading_names.forEach(function(name) {
-	    				if(name.trading_name == trading_name.trading_name) {
-	    					found = true;
-	    				}
-	    			} )
+	    			if(typeof thisTag.trading_names != 'undefined')
+	    				thisTag.trading_names.forEach(function(name) {
+		    				if(name.trading_name == trading_name.trading_name) {
+		    					found = true;
+		    				}
+		    			} )
 	    			if (!found) {
 	    				if(typeof thisTag.addTradingNames == 'undefined') {
 	    					thisTag.addTradingNames = [];
@@ -3200,8 +3201,11 @@ function getTradingName(row, doc, trading_names, callback) {
 	var trading_name = {};
 	trading_name.trading_name = row.key.trading_name;
 	trading_name.currency = row.key.currency;
-
-	trading_names.push( trading_name  );
+	
+	if (doc[trading_name.trading_name + trading_name.currency]) {
+		trading_names.push( trading_name  );
+	}
+	
 	callback();
 }
 
