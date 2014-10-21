@@ -3048,16 +3048,6 @@ function goEditNFC(parameters) {
         	UIhandlers();
         } )
         
-        $( "#scrollable li.trading_names" ).off( "click", "p")
-		$( "#scrollable li.trading_names" ).on( "click", "p", function() {
-			var id = $( this ).attr( "data-id" );
-			
-			log ("name clicked " + id);
-			
-			$( "#" + id + 'list').toggle();
-			$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
-			
-		} )
 	}
 	
 	function sortList(ul){
