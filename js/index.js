@@ -3271,7 +3271,7 @@ function insertTagInDB(tag) {
     		doc.initializationVector = tag.initializationVector;
     		doc.pinCode = tag.pinCode;
     		doc.trading_names = tag.trading_names;
-    		doc.created = doc.created.toFixed();
+    		doc.created = doc.created;
     		
     		config.db.put( "beamtag," + tag.username + "," + tag.hashTag, doc, function() {
                 	 
