@@ -1561,6 +1561,7 @@ function archiveTradingName(id, callback) {
     config.db.get( "trading_name," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = true;
+	        doc.archived_at = new Date().getTime();
 	        config.db.put( "trading_name," + id, doc, callback )
     	}
     } )
@@ -1576,6 +1577,7 @@ function activateTradingName(id, callback) {
     config.db.get( "trading_name," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = false;
+	        doc.archived_at = new Date().getTime();
 	        config.db.put( "trading_name," + id, doc, callback )
     	}
     } )
@@ -2682,6 +2684,7 @@ function archiveTag(id) {
     config.db.get( "beamtag," + config.user.name + "," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = true;
+	        doc.archived_at = new Date().getTime();
 	        config.db.put( "beamtag," + config.user.name + "," + id, doc, function() {
 	        } )
     	}
@@ -2697,6 +2700,7 @@ function activateTag(id) {
     config.db.get( "beamtag," + config.user.name + "," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = false;
+	        doc.archived_at = new Date().getTime();
 	        config.db.put( "beamtag," + config.user.name + "," + id, doc, function() {
 	        } )
     	}
