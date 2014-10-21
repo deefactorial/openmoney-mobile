@@ -3169,15 +3169,9 @@ function goEditNFC(parameters) {
 		
 		        setTabs()
 	    	} )
-	
-	       
-	
-	        
-	
 	    } )
-    
 	}
-
+	window.dbChanged();
 }
 
 function getTradingNames(thisUsersAccounts, doc, callback) {
