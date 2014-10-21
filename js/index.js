@@ -2638,13 +2638,13 @@ function goManageNFC(parameters) {
                 isTagArchived( id, function(error, result) {
                     // log ( "received result:" + result)
                     if (result) {
-                        $( listItem ).find( ".om-activate" ).show().click( function() {
+                        //$( listItem ).find( ".om-activate" ).show().click( function() {
                             activateTag( id )
-                        } )
+                        //} )
                     } else {
-                        $( listItem ).find( ".om-archive" ).show().click( function() {
+                        //$( listItem ).find( ".om-archive" ).show().click( function() {
                             archiveTag( id )
-                        } )
+                        //} )
                     }
                 } )
             } )
