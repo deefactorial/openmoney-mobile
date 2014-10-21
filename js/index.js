@@ -3076,7 +3076,7 @@ function goEditNFC(parameters) {
 	    			var found = false;
 	    			if(typeof thisTag.trading_names != 'undefined')
 	    				thisTag.trading_names.forEach(function(name) {
-		    				if(name.trading_name == trading_name.key.trading_name) {
+		    				if(name.trading_name == trading_name.key.trading_name && name.currency == trading_name.key.currency) {
 		    					found = true;
 		    				}
 		    			} )
