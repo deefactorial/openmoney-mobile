@@ -2761,16 +2761,6 @@ function goNewNFC(parameters) {
         	UIhandlers();
         } )
         
-        $( "#scrollable li.trading_names" ).off( "click", "p")
-		$( "#scrollable li.trading_names" ).on( "click", "p", function() {
-			var id = $( this ).attr( "data-id" );
-			
-			log ("name clicked " + id);
-			
-			$( "#" + id + 'list').toggle();
-			$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
-			
-		} )
 	}
 	
 	function sortList(ul){
@@ -2783,9 +2773,9 @@ function goNewNFC(parameters) {
 	            lis.push(ul.childNodes[i]);
 	    }
 
-	    // Sort the lis in descending order
+	    // Sort the lis in ascending order
 	    lis.sort(function(a, b){
-	       return b.getAttribute("data-id").localeCompare(a.getAttribute("data-id"));
+	       return a.getAttribute("data-id").localeCompare(b.getAttribute("data-id"));
 	    });
 
 	    // Add them into the ul in order
@@ -3060,9 +3050,9 @@ function goEditNFC(parameters) {
 	            lis.push(ul.childNodes[i]);
 	    }
 
-	    // Sort the lis in descending order
+	    // Sort the lis in ascending order
 	    lis.sort(function(a, b){
-	       return b.getAttribute("data-id").localeCompare(a.getAttribute("data-id"));
+	       return a.getAttribute("data-id").localeCompare(b.getAttribute("data-id"));
 	    });
 
 	    // Add them into the ul in order
