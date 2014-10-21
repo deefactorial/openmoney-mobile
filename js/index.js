@@ -3383,11 +3383,16 @@ function goPayment(parameters) {
                 	return false
                 }
                 
+                if (typeof from.archived != 'undefined' && from.archived === true ) {
+                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
+                	return false
+                } 
                 
                 
                 if (typeof from.enabled != 'undefined' && from.enabled === false ) {
                 	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                } else 
+                	return false
+                } 
                 config.db.get( "currency," + doc.currency, function(error, currency) {
                 	if (error) {
                 		if (error.status == 404) {
@@ -3411,9 +3416,15 @@ function goPayment(parameters) {
                                 }
                                 doc.to = to.name
                                
+                                if (typeof to.archived != 'undefined' && to.archived === true ) {
+                                	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
+                                	return false
+                                } 
+                                
                                 if (typeof to.enabled != 'undefined' && to.enabled === false ) {
-                                	navigator.notification.alert( "the recipient trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                                } else 
+                                	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                                	return false
+                                }  
                                 config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
                                     if (error) {
                                         log( "Error: " + JSON.stringify( error ) )
@@ -3581,64 +3592,78 @@ function goTagPayment(parameters) {
                 	return false
                 }
                 
+                if (typeof from.archived != 'undefined' && from.archived === true ) {
+                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
+                	return false
+                } 
+                
                 if (typeof from.enabled != 'undefined' && from.enabled === false ) {
                 	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                } else {
-                	config.db.get( "currency," + doc.currency, function(error, currency) {
-                    	if (error) {
-                    		if (error.status == 404) {
-                            	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
-                                return false
-                            } else {
-                                return alert( JSON.stringify( error ) )
-                            }
-                    	} else {
-                    		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
-                    			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                    		} else {
-                    			config.db.get( doc.to, function(error, to) {
-                                    if (error) {
-                                        if (error.status == 404) {
-                                        	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Exists", "OK")
-                                            return false
-                                        } else {
-                                            return alert( JSON.stringify( error ) )
-                                        }
+                	return false
+                } 
+
+            	config.db.get( "currency," + doc.currency, function(error, currency) {
+                	if (error) {
+                		if (error.status == 404) {
+                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
+                            return false
+                        } else {
+                            return alert( JSON.stringify( error ) )
+                        }
+                	} else {
+                		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
+                			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                		} else {
+                			config.db.get( doc.to, function(error, to) {
+                                if (error) {
+                                    if (error.status == 404) {
+                                    	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Exists", "OK")
+                                        return false
+                                    } else {
+                                        return alert( JSON.stringify( error ) )
                                     }
-                                    doc.to = to.name
-                                    if (typeof to.enabled != 'undefined' && to.enabled === false ) {
-                                    	navigator.notification.alert( "the recipient trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                                    } else 
-                                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-                                        if (error) {
-                                            log( "Error: " + JSON.stringify( error ) )
-                                            if (error.status == 404) {
-                                                // doc does not exists
-                                                log( "insert new trading name journal" + JSON.stringify( doc ) )
-                                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                                                    if (error)
-                                                        return alert( JSON.stringify( error ) )
-                                                    $( "#content form input[name='to']" ).val( "" ) // Clear
-                                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
-                                                    $( "#content form textarea" ).val( "" ) // Clear
-                                                    navigator.notification.alert( "You successfully made a payment !"  , function() {  }, "Exists", "OK")
-                                                    
-                                                    goList( [ "trading_name," + doc.from + "," + doc.currency ] )
-                                                } )
-                                            } else {
-                                                alert( "Error: ".JSON.stringify( error ) )
-                                            }
+                                }
+                                doc.to = to.name
+                                
+                                if (typeof to.archived != 'undefined' && to.archived === true ) {
+                                	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
+                                	return false
+                                } 
+                                
+                                if (typeof to.enabled != 'undefined' && to.enabled === false ) {
+                                	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                                	return false
+                                } 
+                                config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                                    if (error) {
+                                        log( "Error: " + JSON.stringify( error ) )
+                                        if (error.status == 404) {
+                                            // doc does not exists
+                                            log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                            config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                                if (error)
+                                                    return alert( JSON.stringify( error ) )
+                                                $( "#content form input[name='to']" ).val( "" ) // Clear
+                                                $( "#content form input[name='amount']" ).val( "" ) // Clear
+                                                $( "#content form textarea" ).val( "" ) // Clear
+                                                navigator.notification.alert( "You successfully made a payment !"  , function() {  }, "Exists", "OK")
+                                                
+                                                goList( [ "trading_name," + doc.from + "," + doc.currency ] )
+                                            } )
                                         } else {
-                                            // doc exsits already
-                                        	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
-                                            
+                                            alert( "Error: ".JSON.stringify( error ) )
                                         }
-                                    } )
+                                    } else {
+                                        // doc exsits already
+                                    	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
+                                        
+                                    }
                                 } )
-                    		}
-                    	}
-                	} )
-                }
+                            } )
+                		}
+                	}
+            	} )
+                
             } )
         } )
     } )
@@ -3790,81 +3815,99 @@ function goMerchantPayment(parameters) {
                 doc.to = to.name
                 doc.currency = to.currency
                 
+
+                if (typeof to.archived != 'undefined' && to.archived === true ) {
+                	navigator.notification.alert( "Merchants trading account " + doc.to + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
+                	return false
+                } 
                 
+                if (typeof to.enabled != 'undefined' && to.enabled === false ) {
+                	navigator.notification.alert( "Merchants trading account " + doc.to + " in currency " + doc.currency + " has been disabled!"  , function() { goManageAccounts([]) }, "Error", "OK")
+                	return false
+                } 
                 
                 if (typeof to.enabled != 'undefined' && to.enabled === false ) {
                 	navigator.notification.alert( "Merchants trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                } else {
-                	config.db.get( "currency," + doc.currency, function(error, currency) {
-                    	if (error) {
-                    		if (error.status == 404) {
-                            	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
-                                return false
-                            } else {
-                                return alert( JSON.stringify( error ) )
-                            }
-                    	} else {
-                    		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
-                    			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                    		} else {
-                    			if (typeof doc.from != 'undefined') {
-                                	config.db.get( doc.from, function(error, from) {
+                	return false
+                } 
+            	config.db.get( "currency," + doc.currency, function(error, currency) {
+                	if (error) {
+                		if (error.status == 404) {
+                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
+                            return false
+                        } else {
+                            return alert( JSON.stringify( error ) )
+                        }
+                	} else {
+                		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
+                			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                		} else {
+                			if (typeof doc.from != 'undefined') {
+                            	config.db.get( doc.from, function(error, from) {
+                                    if (error) {
+                                        if (error.status == 404) {
+                                        	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Not Found", "OK")
+                                            return false
+                                        } else {
+                                            return alert( JSON.stringify( error ) )
+                                        }
+                                    }
+                                    doc.from = from.name
+                                    
+                                   
+                                    
+                                    if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null&& from.capacity < doc.amount) {
+                                    	navigator.notification.alert( "Customers trading account doesn't have the capacity for this transaction!"  , function() {  }, "Error", "OK")
+                                    	return false
+                                    }
+                                    
+                                    if (typeof from.archived != 'undefined' && from.archived === true ) {
+                                    	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() {  }, "Error", "OK")
+                                    	return false
+                                    } 
+                                    
+                                    if (typeof from.enabled != 'undefined' && from.enabled === false ) {
+                                    	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                                    	return false
+                                    } 
+                                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
                                         if (error) {
+                                            log( "Error: " + JSON.stringify( error ) )
                                             if (error.status == 404) {
-                                            	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Not Found", "OK")
-                                                return false
-                                            } else {
-                                                return alert( JSON.stringify( error ) )
-                                            }
-                                        }
-                                        doc.from = from.name
-                                        
-                                        if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null&& from.capacity < doc.amount) {
-                                        	navigator.notification.alert( "Customers trading account doesn't have the capacity for this transaction!"  , function() {  }, "Error", "OK")
-                                        	return false
-                                        }
-                                        
-                                        if (typeof from.enabled != 'undefined' && from.enabled === false ) {
-                                        	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                                        } else 
-                                        config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-                                            if (error) {
-                                                log( "Error: " + JSON.stringify( error ) )
-                                                if (error.status == 404) {
-                                                    // doc does not exists
-                                                    log( "insert new trading name journal" + JSON.stringify( doc ) )
-                                                    config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                                                        if (error)
-                                                            return alert( JSON.stringify( error ) )
-                                                        $( "#content form input[name='to']" ).val( "" ) // Clear
-                                                        $( "#content form input[name='amount']" ).val( "" ) // Clear
-                                                        $( "#content form textarea" ).val( "" ) // Clear
+                                                // doc does not exists
+                                                log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                                    if (error)
+                                                        return alert( JSON.stringify( error ) )
+                                                    $( "#content form input[name='to']" ).val( "" ) // Clear
+                                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
+                                                    $( "#content form textarea" ).val( "" ) // Clear
 
-                                                        
-                                                        navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
-                                                        
+                                                    
+                                                    navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
+                                                    
 
-                                                        goList( [ "trading_name," + doc.to + "," + doc.currency ] )
-                                                    } )
-                                                } else {
-                                                    alert( "Error: ".JSON.stringify( error ) )
-                                                }
+                                                    goList( [ "trading_name," + doc.to + "," + doc.currency ] )
+                                                } )
                                             } else {
-                                                // doc exsits already
-                                            	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
-                                                
+                                                alert( "Error: ".JSON.stringify( error ) )
                                             }
-                                        } )
+                                        } else {
+                                            // doc exsits already
+                                        	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
+                                            
+                                        }
                                     } )
-                                } else { 
-                	
-                	                goCustomerPayment( [ doc ] )
-                	                
-                                }
-                    		}
-                    	}
-                	} )
-                }
+                                } )
+                            } else { 
+            	
+            	                goCustomerPayment( [ doc ] )
+            	                
+                            }
+                		}
+                	}
+            	} )
+                
             } )
         } )
     } )
@@ -3935,48 +3978,54 @@ function goCustomerPayment(parameters) {
                         	return false
                         }
                         
+                        if (typeof from.archived != 'undefined' && from.archived === true ) {
+                        	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() {  }, "Error", "OK")
+                        	return false
+                        } 
+                        
                         if (typeof from.enabled != 'undefined' && from.enabled === false ) {
                         	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                        } else {
+                        	return false
+                        } 
                         	
-	                        config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-	                            if (error) {
-	                                log( "Error: " + JSON.stringify( error ) )
-	                                if (error.status == 404) {
-	                                    // doc does not exists
-	                                    log( "insert new trading name journal" + JSON.stringify( doc ) )
-	                                    config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-	                                        if (error)
-	                                            return alert( JSON.stringify( error ) )
-	                                        $( "#content form input[name='to']" ).val( "" ) // Clear
-	                                        $( "#content form input[name='amount']" ).val( "" ) // Clear
-	                                        $( "#content form textarea" ).val( "" ) // Clear
-	                                        nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
-	                                            // success callback
-	                                        }, function() {
-	                                            // failure callback
-	                                        } );
-	                                        nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-	                                            // success callback
-	                                        }, function() {
-	                                            // failure callback
-	                                        } );
-	                                        
-	                                        navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
-	                                        
-	
-	                                        goList( [ "trading_name," + doc.to + "," + doc.currency ] )
-	                                    } )
-	                                } else {
-	                                    alert( "Error: ".JSON.stringify( error ) )
-	                                }
-	                            } else {
-	                                // doc exsits already
-	                            	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
-	                                
-	                            }
-	                        } )
-                        }
+                        config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                            if (error) {
+                                log( "Error: " + JSON.stringify( error ) )
+                                if (error.status == 404) {
+                                    // doc does not exists
+                                    log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                    config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                        if (error)
+                                            return alert( JSON.stringify( error ) )
+                                        $( "#content form input[name='to']" ).val( "" ) // Clear
+                                        $( "#content form input[name='amount']" ).val( "" ) // Clear
+                                        $( "#content form textarea" ).val( "" ) // Clear
+                                        nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
+                                            // success callback
+                                        }, function() {
+                                            // failure callback
+                                        } );
+                                        nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+                                            // success callback
+                                        }, function() {
+                                            // failure callback
+                                        } );
+                                        
+                                        navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
+                                        
+
+                                        goList( [ "trading_name," + doc.to + "," + doc.currency ] )
+                                    } )
+                                } else {
+                                    alert( "Error: ".JSON.stringify( error ) )
+                                }
+                            } else {
+                                // doc exsits already
+                            	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
+                                
+                            }
+                        } )
+                        
                     } )
                 }
             } );
@@ -4056,9 +4105,15 @@ function goCustomerPayment(parameters) {
                 	return false
                 }
                 
+                if (typeof from.archived != 'undefined' && from.archived === true ) {
+                	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() {  }, "Error", "OK")
+                	return false
+                } 
+                
                 if (typeof from.enabled != 'undefined' && from.enabled === false ) {
                 	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-                } else 
+                	return false
+                } 
                 config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
                     if (error) {
                         log( "Error: " + JSON.stringify( error ) )
