@@ -3072,18 +3072,19 @@ function goEditNFC(parameters) {
 	    	getThisUsersAccounts( function (thisUsersAccounts) {
 	    		
 	    		thisUsersAccounts.rows.forEach(function(trading_name) { 
+	    			log( "Users Trading Names" + JSON.stringify( trading_name ) );
 	    			var found = false;
 	    			if(typeof thisTag.trading_names != 'undefined')
 	    				thisTag.trading_names.forEach(function(name) {
-		    				if(name.trading_name == trading_name.trading_name) {
+		    				if(name.trading_name == trading_name.name) {
 		    					found = true;
 		    				}
 		    			} )
 	    			if (!found) {
-	    				if(typeof thisTag.addTradingNames == 'undefined') {
-	    					thisTag.addTradingNames = [];
+	    				if(typeof thisTag.addtradingnames == 'undefined') {
+	    					thisTag.addtradingnames = [];
 	    				}
-	    				thisTag.addTradingNames.push( { "trading_name":trading_name.trading_name, "currency":trading_name.currency } )
+	    				thisTag.addtradingnames.push( { "trading_name":trading_name.name, "currency":trading_name.currency } )
 	    			}
 	    		} )
 	    		
