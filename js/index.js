@@ -3905,7 +3905,7 @@ function goCustomerPayment(parameters) {
                     var once = 1;
                     tradingnames.forEach( function(tradingname) {
                         if (once == 1 && tradingname.currency == doc.currency) {
-                            doc.from = "trading_name," + tradingname.trading_name + "," + trading_name.currency;
+                            doc.from = "trading_name," + tradingname.trading_name + "," + tradingname.currency;
                             once = 0;
                         }
                     } )
