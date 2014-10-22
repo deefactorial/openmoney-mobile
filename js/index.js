@@ -1463,6 +1463,8 @@ function goManageAccounts(parameters) {
             			usersAccounts.rows.push( row )
             		}
             	} )
+            	row.doc._id = row.doc._id.replace(/,/g,"-");
+            	row.doc._id = row.doc._id.replace(/\./g,":");
             } )
             
             log("accounts view:" + JSON.stringify( usersAccounts ) ) 
@@ -1538,9 +1540,11 @@ function goManageAccounts(parameters) {
  */
 
 function isTradingNameArchived(id, callback) {
-	id = id.replace(" ", ",");
+	//id = id.replace(" ", ",");
+	id = id.replace(/-/g,",");
+	id = id.replace(/:/g,".");
     var result = false;
-    config.db.get( "trading_name," + id, function(error, doc) {
+    config.db.get( id, function(error, doc) {
     	if (error) {
 
     	} else {
@@ -1556,9 +1560,11 @@ function isTradingNameArchived(id, callback) {
  */
 
 function archiveTradingName(id, callback) {
-	id = id.replace(" ", ",");
+	//id = id.replace(" ", ",");
+	id = id.replace(/-/g,",");
+	id = id.replace(/:/g,".");
     log( "Archive trading_name," + id )
-    config.db.get( "trading_name," + id, function(error, doc) {
+    config.db.get( id, function(error, doc) {
     	if (!error) {
 	        doc.archived = true;
 	        doc.archived_at = new Date().getTime();
@@ -1572,9 +1578,11 @@ function archiveTradingName(id, callback) {
  */
 
 function activateTradingName(id, callback) {
-	id = id.replace(" ", ",")
+	//id = id.replace(" ", ",")
+	id = id.replace(/-/g,",");
+	id = id.replace(/:/g,".");
     log( "Activate Trading Name", id )
-    config.db.get( "trading_name," + id, function(error, doc) {
+    config.db.get( id, function(error, doc) {
     	if (!error) {
 	        doc.archived = false;
 	        doc.archived_at = new Date().getTime();
@@ -1619,8 +1627,8 @@ function updateTradingName(row, doc, callback) {
 //	trading_name.currency = row.key.currency;
 	config.db.get("trading_name," + row.key.trading_name + "," + row.key.currency, function(error, trading_name){
 		if(error) { return log("Could not get trading name" + JSON.stringify(error) ) } else {
-			var capacityName = "capacity" + trading_name.trading_name + trading_name.currency;
-			var transactionName = "transaction" + trading_name.trading_name + trading_name.currency;
+			var capacityName = "capacity" + trading_name.name + trading_name.currency;
+			var transactionName = "transaction" + trading_name.name + trading_name.currency;
 			
 			if (typeof doc[capacityName] != 'undefined' && doc[capacityName] != '' && doc[capacityName] != null) {
 				log(doc[capacityName]);
