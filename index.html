@@ -413,14 +413,14 @@
      <form>
         
         <ul class="topcoat-list">
-            <li class="topcoat-list__item" data-id="list" style="text-align:center;">
+            <li class="topcoat-list__header" data-id="list" style="text-align:center;padding:20px;">
                 <b>Trading Name Accounts</b>
             </li>
         {{#rows}}
             {{#doc}}
                 <li id="{{_id}}" class="topcoat-list__item trading_names" data-id="{{_id}}" style="margin:0;padding:0;">
                     <div class="topcoat-list">
-                        <div class="topcoat-list__header header" style="height:70px;padding-left:20px;padding-right:20px;">
+                        <div id="{{_id}}div" class="topcoat-list__item header" style="height:70px;padding-left:20px;padding-right:20px;">
                             <img id="{{_id}}icon" class="next" style="float:left;margin-right:20px;margin-top:20px;margin-bottom:20px;" />
                             <p id="{{_id}}p" class="{{#archived}}archived{{/archived}}" data-id="{{_id}}" style="bachground:white;line-height:48px;">{{name}} {{currency}}</p>
                         </div>
@@ -447,7 +447,7 @@
 </script>
 <script type="text/mustache" id="currencies_list-mu">
         <ul class="topcoat-list">
-            <li class="topcoat-list__header" data-id="list" style="text-align:center;">
+            <li class="topcoat-list__header" data-id="list" style="text-align:center;padding:20px;">
                 <b>Currencies</b>
             </li>
         {{#rows}}
@@ -462,7 +462,7 @@
 <script type="text/mustache" id="spaces_list-mu">
     
         <ul class="topcoat-list">
-            <li class="topcoat-list__item" data-id="list" style="text-align:center;">
+            <li class="topcoat-list__header" data-id="list" style="text-align:center;padding:20px;">
                 <b>Spaces</b>
             </li>
         {{#rows}}
