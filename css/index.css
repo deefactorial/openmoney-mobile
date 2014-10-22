@@ -382,4 +382,9 @@ br.clear {
 
 .archived {
 	text-decoration: line-through;
-} }
+}
+
+.topcoat-list__header {
+    padding: 1.25rem;
+}
+}
