@@ -1391,7 +1391,7 @@ function goManageAccounts(parameters) {
 			var id = $( this ).attr( "data-id" );
 			
 			log ("name clicked " + id);
-			
+			id.replace(/\./g,"\\.")
 			$( "#" + id + 'list').toggle();
 			$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
 			
@@ -1464,7 +1464,7 @@ function goManageAccounts(parameters) {
             		}
             	} )
             	row.doc._id = row.doc._id.replace(/,/g,"-");
-            	row.doc._id = row.doc._id.replace(/\./g,":");
+            	//row.doc._id = row.doc._id.replace(/\./g,":");
             } )
             
             log("accounts view:" + JSON.stringify( usersAccounts ) ) 
@@ -1542,7 +1542,7 @@ function goManageAccounts(parameters) {
 function isTradingNameArchived(id, callback) {
 	//id = id.replace(" ", ",");
 	id = id.replace(/-/g,",");
-	id = id.replace(/:/g,".");
+	//id = id.replace(/:/g,".");
     var result = false;
     config.db.get( id, function(error, doc) {
     	if (error) {
@@ -1562,13 +1562,13 @@ function isTradingNameArchived(id, callback) {
 function archiveTradingName(id, callback) {
 	//id = id.replace(" ", ",");
 	id = id.replace(/-/g,",");
-	id = id.replace(/:/g,".");
+	//id = id.replace(/:/g,".");
     log( "Archive trading_name," + id )
     config.db.get( id, function(error, doc) {
     	if (!error) {
 	        doc.archived = true;
 	        doc.archived_at = new Date().getTime();
-	        config.db.put( "trading_name," + id, doc, callback )
+	        config.db.put( id, doc, callback )
     	}
     } )
 }
@@ -1586,7 +1586,7 @@ function activateTradingName(id, callback) {
     	if (!error) {
 	        doc.archived = false;
 	        doc.archived_at = new Date().getTime();
-	        config.db.put( "trading_name," + id, doc, callback )
+	        config.db.put( id, doc, callback )
     	}
     } )
 }
