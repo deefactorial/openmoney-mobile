@@ -1390,8 +1390,10 @@ function goManageAccounts(parameters) {
 		$( "#scrollable li.trading_names" ).on( "click", "p", function() {
 			var id = $( this ).attr( "data-id" );
 			
+			
+			id = id.replace(/\./g,"\\.")
+			
 			log ("name clicked " + id);
-			id.replace(/\./g,"\\.")
 			$( "#" + id + 'list').toggle();
 			$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
 			
