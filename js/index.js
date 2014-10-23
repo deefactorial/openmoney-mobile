@@ -294,13 +294,13 @@ function connectToChanges() {
 		        		}
 		        		if(addCreated != null){
 		        			addCreated.created = new Date().getTime();
-		        			addCreated.steward.forEach(function(steward) {
-			        			config.db.put(change.doc._id, addCreated, function(error, ok) {
-		    						if(error) {
-		    							alert("could not add created to doc:" + JSON.stringify(error))
-		    						}
-		            			} )
-			        		})
+		        			
+		        			config.db.put(change.doc._id, addCreated, function(error, ok) {
+	    						if(error) {
+	    							alert("could not add created to doc:" + JSON.stringify(error))
+	    						}
+	            			} )
+			        		
 		        		} else {
 			        		//find the me in steward.
 		        			log ("deleted Document:" + JSON.stringify( deletedDocument ) )
@@ -1806,38 +1806,73 @@ function goCreateAccount(parameters) {
 	        	navigator.notification.alert( 'The currency name cannot contain a space, comma or @.' , function() {}, "Invalid Currency Name", "OK");
 	        	return false;
 	        }
+	        
+	        config.db.get( currency_view.type + "," + config.user.name + "," + currency_view.currency, function(error, doc) {
+	        	if (error) {
+	        		if (error.status == 404) {
+	        			// insert
+	        			config.db.put( currency_view.type + "," + config.user.name + "," + currency_view.currency, JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
+	        	   		 	if (error)
+	        	                return alert( JSON.stringify( error ) )
+	        	                config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
+	        	                if (error) {
+	        	                    log( "Error: " + JSON.stringify( error ) )
+	        	                    if (error.status == 404) {
+	        	                        // doc does not exists
+	        	                        log( "insert new currency" + JSON.stringify( doc ) )
+	        	                        
+	        	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	        	                            if (error)
+	        	                                return alert( JSON.stringify( error ) )
+	        	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
+	        	                            
+	        	                            History.back() 
+	        	                        } )
+	        	
+	        	                        
+	        	                    } else {
+	        	                        alert( "Error: ".JSON.stringify( error ) )
+	        	                    }
+	        	                } else {
+	        	                    // doc exsits already
+	        	                    //alert( "Currency already exists!" )
+	        	                    navigator.notification.alert( "Currency already exists!" , function() {  }, "Existing Currency", "OK")
+	        	                }
+	        	            } )
+	        	        } )
+	        		}
+	        	} else {
+	        		config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
+    	                if (error) {
+    	                    log( "Error: " + JSON.stringify( error ) )
+    	                    if (error.status == 404) {
+    	                        // doc does not exists
+    	                        log( "insert new currency" + JSON.stringify( doc ) )
+    	                        
+    	
+    	                        
+    	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+    	                            if (error)
+    	                                return alert( JSON.stringify( error ) )
+    	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
+    	                            
+    	                            History.back() 
+    	                        } )
+    	
+    	                        
+    	                    } else {
+    	                        alert( "Error: ".JSON.stringify( error ) )
+    	                    }
+    	                } else {
+    	                    // doc exsits already
+    	                    //alert( "Currency already exists!" )
+    	                    navigator.notification.alert( "Currency already exists!" , function() {  }, "Existing Currency", "OK")
+    	                }
+	        		} )
+	        	}
+	        } )
 		    
-	        config.db.put( currency_view.type + "," + config.user.name + "," + currency_view.currency, JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
-	   		 	if (error)
-	                return alert( JSON.stringify( error ) )
-	            config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
-	                if (error) {
-	                    log( "Error: " + JSON.stringify( error ) )
-	                    if (error.status == 404) {
-	                        // doc does not exists
-	                        log( "insert new currency" + JSON.stringify( doc ) )
-	                        
-	
-	                        
-	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-	                            if (error)
-	                                return alert( JSON.stringify( error ) )
-	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
-	                            
-	                            History.back() 
-	                        } )
-	
-	                        
-	                    } else {
-	                        alert( "Error: ".JSON.stringify( error ) )
-	                    }
-	                } else {
-	                    // doc exsits already
-	                    //alert( "Currency already exists!" )
-	                    navigator.notification.alert( "Currency already exists!" , function() {  }, "Existing Currency", "OK")
-	                }
-	            } );
-	        } );
+	        
         	
         } else if (doc.type == "space") {
         	
