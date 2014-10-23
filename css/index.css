@@ -385,6 +385,10 @@ br.clear {
 }
 
 .topcoat-list__header {
+	font-size:inherit;
+	font-weight:inherit;
     padding: 1.25rem;
 }
+
+
 }
