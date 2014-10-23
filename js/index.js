@@ -1807,10 +1807,10 @@ function goCreateAccount(parameters) {
 	        	return false;
 	        }
 	        
-	        config.db.get( currency_view.type + "," + config.user.name + "," + currency_view.currency, function(error, doc) {
+	        config.db.get( currency_view.type + "," + config.user.name + "," + currency_view.currency, function(error, view) {
 	        	if (error) {
 	        		if (error.status == 404) {
-	        			// insert
+	        			// insert document
 	        			config.db.put( currency_view.type + "," + config.user.name + "," + currency_view.currency, JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
 	        	   		 	if (error)
 	        	                return alert( JSON.stringify( error ) )
