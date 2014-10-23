@@ -471,6 +471,15 @@ function connectToChanges() {
 	    			}
 	    		})
 	    		
+	    	} else if (change.doc.type == 'currency') {
+	    		if (change.doc._deleted) {
+	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
+	    			navigator.notification.alert( "The currency you created has already been taken!",
+		    				function() { 
+								alert(change.doc)
+		    					
+		    				}, "Taken", "OK")
+	    		}
 	    	}
 	    }
 	    
@@ -1818,19 +1827,6 @@ function goCreateAccount(parameters) {
 	                            History.back() 
 	                        } )
 	
-	                        if (! doc.currency.match( /[^A-Za-z0-9\-_]/ ) ) {
-		                        
-		                        var spaceDoc = { "type":"space",
-		                        				 "space": doc.currency,
-		                        				 "subspace": doc.space,
-		                        				 "steward": [ config.user.name ],
-		                        				 "created": new Date().getTime() };
-		                    	config.db.put( spaceDoc.type + "," + spaceDoc.space, JSON.parse( JSON.stringify( spaceDoc ) ), function(error, ok) {
-		                    		 if (error)
-		                                 return alert( JSON.stringify( error ) )
-		                    	} );
-	                    	
-	                        }
 	                        
 	                    } else {
 	                        alert( "Error: ".JSON.stringify( error ) )
@@ -1842,9 +1838,6 @@ function goCreateAccount(parameters) {
 	                }
 	            } );
 	        } );
-        	
-            
-        	
         	
         } else if (doc.type == "space") {
         	
@@ -1870,22 +1863,6 @@ function goCreateAccount(parameters) {
                             $( "#content form input[name='space']" ).val( "" ) // Clear
                             navigator.notification.alert( "You successfully created a new space !" , function() { History.back() }, "New Space", "OK")
                         } )
-                        
-                        var name = doc.space + " Currency";
-	                    if (typeof doc.subspace == 'undefined' || doc.subspace == '') {
-                    		name += " in " + doc.subspace + " Space";
-                    	}
-                        
-                        var currencyDoc = { "type": "currency",
-                        					"currency": doc.space,
-                        					"space": doc.subspace,
-                        					"name": name,
-                        					"steward": [ config.user.name ],
-                        					"created": new Date().getTime() };
-                    	config.db.put( currencyDoc.type + "," + doc.space, JSON.parse( JSON.stringify( currencyDoc ) ), function( error, ok ) { 
-                    		 if (error)
-                                 return alert( JSON.stringify( error ) )
-                    	} );
                    
                         
                     } else {
