@@ -476,7 +476,11 @@ function connectToChanges() {
 	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
 	    			navigator.notification.alert( "The currency you created has already been taken!",
 		    				function() { 
-								alert(JSON.stringify(change))
+								log(JSON.stringify(change))
+								config.db.get( { "_id": change.doc._id, "_rev" : change.doc._revisions.start + "-" + change.doc._revisions.ids[0] } , function(error, doc) {
+									if (error) { alert( JSON.stringify( error ) ) } else 
+									alert( JSON.stringify( doc ) )  
+								} )
 		    					
 		    				}, "Taken", "OK")
 	    		}
@@ -1955,7 +1959,7 @@ function goCreateAccount(parameters) {
     		
     	} else if (type == "currency") {
         	config.views( [ "spaces", {
-                include_docs : true
+                include_docs : true, descending : true
             } ], function(error, spaces) {
         		window.plugins.spinnerDialog.hide();
                 if (error) { return alert( JSON.stringify( error ) ) }
