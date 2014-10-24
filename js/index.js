@@ -471,7 +471,7 @@ function connectToChanges() {
 	    			}
 	    		})
 	    		
-	    	} else if (change.doc.type == 'currency') {
+	    	} else if (change.doc._id.substring(0,change.doc._id.indexOf(",")) == 'currency') {
 	    		if (change.doc._deleted) {
 	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
 	    			navigator.notification.alert( "The currency you created has already been taken!",
