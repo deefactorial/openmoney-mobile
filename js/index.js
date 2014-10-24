@@ -480,7 +480,9 @@ function connectToChanges() {
 								var olddoc = [ change.doc._id, { "rev": (change.doc._revisions.start - 1) + "-" + change.doc._revisions.ids[1] } ] ;
 								config.db.get( olddoc , function(error, doc) {
 									if (error) { alert( JSON.stringify( error ) ) } else 
-									alert( JSON.stringify( doc ) )  
+									log("olddoc:" + JSON.stringify( doc ) )  
+									
+									goCreateAccount( [ doc ] )
 								} )
 		    					
 		    				}, "Taken", "OK")
