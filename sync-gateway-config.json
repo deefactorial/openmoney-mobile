@@ -148,7 +148,7 @@
             if (doc._id != null) {
                 var table = doc._id.substring(0,doc._id.indexOf(","));
                 var index = doc._id.substring(doc._id.indexOf(",")+1);
-                if (doc.type == "users") {
+                if (olddoc.type == "users" || (olddoc == null && doc.type == "users") ) {
                     channel(doc.type + channelDelimiter + doc.username);
                     if (olddoc == null) {
                         if (!doc.username || !doc.password || !doc.password_encryption_algorithm || !doc.created ) {
@@ -168,7 +168,7 @@
                             requireUser(olddoc.username);
                         }
                     }
-                } else if (doc.type == "trading_name") {
+                } else if (olddoc.type == "trading_name" || (olddoc == null && doc.type == "trading_name") ) {
                     var trading_name = doc.name ;
                     var currency = base64_encode( doc.currency );
                     channel(doc.type + channelDelimiter + trading_name + channelDelimiter + currency);
@@ -198,7 +198,7 @@
                             access( doc.steward , doc.type + channelDelimiter + trading_name + channelDelimiter + currency )
                         }
                     }
-                } else if (doc.type == "space") {
+                } else if (olddoc.type == "space" || (olddoc == null && doc.type == "space")) {
                     var space = doc.space;              
                     channel(doc.type + channelDelimiter + space);
                     if (olddoc == null) {
@@ -222,7 +222,7 @@
                             access(doc.steward, doc.type + channelDelimiter + space);
                         }
                     }
-                } else if (doc.type == "currency") {
+                } else if (olddoc.type == "currency" || (olddoc == null && doc.type == "currency") ) {
                     var currency = base64_encode( doc.currency );
                     channel(doc.type + channelDelimiter + currency);
                     if (olddoc == null) {
@@ -246,7 +246,7 @@
                             access(doc.steward, doc.type + channelDelimiter + currency);
                         }
                     }
-                } else if (doc.type == "currency_view") {
+                } else if (olddoc.type == "currency_view" || (olddoc == null && doc.type == "currency_view") ) {
                     var currency = base64_encode( doc.currency );
                     channel(doc.type + channelDelimiter + currency);
                     if (olddoc == null) {
@@ -272,7 +272,7 @@
                             access(doc.steward, "currency" + channelDelimiter + currency);
                         }
                     }
-                } else if (doc.type == "trading_name_journal") {
+                } else if (olddoc.type == "trading_name_journal" || (olddoc == null && doc.type == "trading_name_journal") ) {
                     var from = doc.from;
                     var to = doc.to; 
                     var timestamp = doc.timestamp;
@@ -333,14 +333,14 @@
                             access(doc.username, doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
                         }
                     }
-                } else if (doc.type == "profile") {
+                } else if (olddoc.type == "profile" || (olddoc == null && doc.type == "profile")) {
                 	if (!doc.type || !doc.username ) {
                 		throw({forbidden: "Missing required properties"});
                 	}
                 	channel(doc.type + channelDelimiter + doc.username)
                 	access(doc.username, doc.type + channelDelimiter + doc.username);
                 	if (olddoc != null) {
-                		if(doc.username != 'anonymous')
+                		if(olddoc.username != 'anonymous')
                 			requireUser(olddoc.username);
                 	}
                 }
