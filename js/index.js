@@ -476,7 +476,7 @@ function connectToChanges() {
 	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
 	    			navigator.notification.alert( "The currency you created has already been taken!",
 		    				function() { 
-								alert(change.doc)
+								alert(JSON.stringify(change))
 		    					
 		    				}, "Taken", "OK")
 	    		}
