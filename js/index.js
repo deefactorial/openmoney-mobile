@@ -516,6 +516,7 @@ function connectToChanges() {
 	    // window.checkConflicts( change )
 	};
 	
+	if (typeof config.user.name != 'undefined')
     config.db.changes( {
     	since : config.info.update_seq,
         conflicts : true,
