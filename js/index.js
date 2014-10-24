@@ -473,17 +473,36 @@ function connectToChanges() {
 	    		
 	    	} else if (change.doc._id.substring(0,change.doc._id.indexOf(",")) == 'currency') {
 	    		if (change.doc._deleted) {
+	    			var currency = change.doc._id.substring(change.doc._id.indexOf(","),change.doc._id.length)
 	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
-	    			navigator.notification.alert( "The currency you created has already been taken!",
+	    			navigator.notification.alert( "The currency " + currency + " you created has already been taken!",
 		    				function() { 
 								log(JSON.stringify(change))
-								var olddoc = [ change.doc._id, { "rev": (change.doc._revisions.start - 1) + "-" + change.doc._revisions.ids[1] } ] ;
-								config.db.get( olddoc , function(error, doc) {
-									if (error) { alert( JSON.stringify( error ) ) } else 
-									log("olddoc:" + JSON.stringify( doc ) )  
-									
-									goCreateAccount( [ doc ] )
-								} )
+								if (typeof change.doc._revisions != 'undefined') {
+									var olddoc = [ change.doc._id, { "rev": (change.doc._revisions.start - 1) + "-" + change.doc._revisions.ids[1] } ] ;
+									config.db.get( olddoc , function(error, doc) {
+										if (error) { alert( JSON.stringify( error ) ) } else 
+										log("olddoc:" + JSON.stringify( doc ) )  
+										
+										goCreateAccount( [ doc ] )
+									} )
+								} else {
+									var current = [ change.doc._id, { "revs": true } ] ;
+									config.db.get( current , function(error, doc) {
+										if (error) { alert( JSON.stringify( error ) ) } else 
+										log("doc:" + JSON.stringify( doc ) )  
+										
+										var olddoc = [ doc._id, { "rev": (doc._revisions.start - 1) + "-" + doc._revisions.ids[1] } ] ;
+										config.db.get( olddoc , function(error, doc) {
+											if (error) { alert( JSON.stringify( error ) ) } else 
+											log("olddoc:" + JSON.stringify( doc ) )  
+											
+											goCreateAccount( [ doc ] )
+										} )
+										
+									} )
+								}
+								
 		    					
 		    				}, "Taken", "OK")
 	    		}
