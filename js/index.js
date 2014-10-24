@@ -477,7 +477,8 @@ function connectToChanges() {
 	    			navigator.notification.alert( "The currency you created has already been taken!",
 		    				function() { 
 								log(JSON.stringify(change))
-								config.db.get( { "_id": change.doc._id, "_rev" : (change.doc._revisions.start - 1) + "-" + change.doc._revisions.ids[1] } , function(error, doc) {
+								var olddoc = [ change.doc._id, { "rev": (change.doc._revisions.start - 1) + "-" + change.doc._revisions.ids[1] } ] ;
+								config.db.get( olddoc , function(error, doc) {
 									if (error) { alert( JSON.stringify( error ) ) } else 
 									alert( JSON.stringify( doc ) )  
 								} )
