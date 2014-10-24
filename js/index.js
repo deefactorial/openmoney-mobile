@@ -1959,12 +1959,13 @@ function goCreateAccount(parameters) {
     		
     	} else if (type == "currency") {
         	config.views( [ "spaces", {
-                include_docs : true, descending : true
+                include_docs : true
             } ], function(error, spaces) {
         		window.plugins.spinnerDialog.hide();
                 if (error) { return alert( JSON.stringify( error ) ) }
                 
                 var found = false;
+                if (typeof doc.space != 'undefined')
                 spaces.rows.forEach( function( space ) {
                 	if(space.space == doc.space) {
                 		space.selected = true;
