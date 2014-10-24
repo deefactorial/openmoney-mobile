@@ -487,7 +487,7 @@ function connectToChanges() {
 										goCreateAccount( [ doc ] )
 									} )
 								} else {
-									var current = [ change.doc._id, { "revs": true } ] ;
+									var current = [ change.doc._id, { "rev": change.doc._rev, "revs": true } ] ;
 									config.db.get( current , function(error, doc) {
 										if (error) { alert( JSON.stringify( error ) ) } else 
 										log("doc:" + JSON.stringify( doc ) )  
