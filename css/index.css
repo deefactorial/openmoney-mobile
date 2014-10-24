@@ -372,13 +372,7 @@ br.clear {
 }
 
 
-.next {
-    content:url("../img/light-next.png");
-}
 
-.down {
-	content:url("../img/light-down.png");
-}
 
 .archived {
 	text-decoration: line-through;
