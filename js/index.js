@@ -245,6 +245,8 @@ function connectToChanges() {
 	var changes = function(err, change) {
 	    if (err) {
 	        log( " Changes Error: " + JSON.stringify( err ) )
+	        connectToChanges();
+	        return false;
 	    }
 	    if (change)
 	        lastSeq = change.seq;
@@ -482,19 +484,19 @@ function connectToChanges() {
 									var olddoc = [ change.doc._id, { "rev": (change.doc._revisions.start - 1) + "-" + change.doc._revisions.ids[1] } ] ;
 									config.db.get( olddoc , function(error, doc) {
 										if (error) { alert( JSON.stringify( error ) ) } else 
-										log("olddoc:" + JSON.stringify( doc ) )  
+										log("olddoc:" + JSON.stringify( [ olddoc, doc ] ) )  
 										
 										goCreateAccount( [ doc ] )
 									} )
 								} else {
 									var current = [ change.doc._id, { "rev": change.doc._rev, "revs": true } ] ;
 									config.db.get( current , function(error, doc) {
-										if (error) { alert( JSON.stringify( error ) ) } else 
+										if (error) { alert( JSON.stringify( [ current, error ] ) ) } else 
 										log("doc:" + JSON.stringify( doc ) )  
 										
 										var olddoc = [ doc._id, { "rev": (doc._revisions.start - 1) + "-" + doc._revisions.ids[1] } ] ;
 										config.db.get( olddoc , function(error, doc) {
-											if (error) { alert( JSON.stringify( error ) ) } else 
+											if (error) { alert( JSON.stringify( [ olddoc, error ] ) ) } else 
 											log("olddoc:" + JSON.stringify( doc ) )  
 											
 											goCreateAccount( [ doc ] )
@@ -1850,7 +1852,7 @@ function goCreateAccount(parameters) {
 	        	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	        	                            if (error)
 	        	                                return alert( JSON.stringify( error ) )
-	        	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
+	        	                        	//$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
 	        	                            
 	        	                            History.back() 
 	        	                        } )
@@ -1880,7 +1882,7 @@ function goCreateAccount(parameters) {
     	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
     	                            if (error)
     	                                return alert( JSON.stringify( error ) )
-    	                        	$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
+    	                        	//$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
     	                            
     	                            History.back() 
     	                        } )
@@ -2020,7 +2022,7 @@ function goCreateAccount(parameters) {
     	}
         
         var response = {
-			"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ JSON.parse( JSON.stringify( doc ) ) ]
+			"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc ]
 	    }
 	
 	    updateAjaxData( response , "create.html")
