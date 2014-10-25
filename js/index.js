@@ -516,7 +516,7 @@ function connectToChanges() {
 	    // window.checkConflicts( change )
 	};
 	
-	if (typeof config.user.name != 'undefined')
+	if (typeof config.info != 'undefined')
     config.db.changes( {
     	since : config.info.update_seq,
         conflicts : true,
@@ -545,6 +545,8 @@ function clone(obj) {
 function loginErr(error) {
     if (error.msg) {
     	navigator.notification.alert( error.msg , function() {  }, "Login Error", "OK")
+    } else if(error.reason) {
+    	navigator.notification.alert( error.reason , function() {  }, "Login Error", "OK")
     } else {
     	navigator.notification.alert( "Login error: " + JSON.stringify( error ) , function() {  }, "Login Error", "OK")
     }
@@ -553,6 +555,8 @@ function loginErr(error) {
 function regErr(error) {
     if (error.msg) {
     	navigator.notification.alert( error.msg , function() {  }, "Register Error", "OK")
+    } else if (error.reason) {
+    	navigator.notification.alert( error.reason , function() {  }, "Register Error", "OK")
     } else {
     	navigator.notification.alert( "Register error: " + JSON.stringify( error ) , function() {  }, "Register Error", "OK")
     }
