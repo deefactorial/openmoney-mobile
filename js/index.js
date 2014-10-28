@@ -23,6 +23,8 @@ var SERVER_LOGIN = true
 var FACEBOOK_LOGIN = false
 
 var currentpage = null;
+
+var DEFAULT_DARK_THEME = false;
 /*
  * Initialize the app, connect to the database, draw the initial UI
  */
@@ -2434,7 +2436,7 @@ function goProfile(parameters) {
 	config.db.get("profile," + profileID, function(error, profile){
     	if(error) {
     		if(error.status == 404){
-    			var profile = { "type": "profile", "username" : profileID , "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
+    			var profile = { "type": "profile", "username" : profileID , "notification": true, "mode": false, "theme": DEFAULT_DARK_THEME, "created": new Date().getTime() }
     			if (typeof config.user.name != 'undefined') {
 	    			if (config.user.name.indexOf("@") != -1){
 	                	profile.email = config.user.name;
@@ -4624,7 +4626,7 @@ function getProfile(){
 	config.db.get("profile," + profileID, function(error, profile) {
     	if (error) {
     		if (error.status == 404) {
-    			var profile = { "type": "profile", "username" : profileID, "notification": true, "mode": false, "theme": true, "created": new Date().getTime() }
+    			var profile = { "type": "profile", "username" : profileID, "notification": true, "mode": false, "theme": DEFAULT_DARK_THEME, "created": new Date().getTime() }
     			if (typeof config.user.name != 'undefined') {
 	                if (config.user.name.indexOf("@") != -1){
 	                	profile.email = config.user.name;
