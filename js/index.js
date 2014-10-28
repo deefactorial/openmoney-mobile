@@ -254,7 +254,7 @@ function connectToChanges() {
 	    if (change)
 	        lastSeq = change.seq;
 	    
-	    log( "connectToChanges:" + JSON.stringify( [ err, change ] ) )
+	    log( "connectToChanges:" + JSON.stringify( change ) )
 	    
 	    if (typeof change != 'undefined' && change.doc._conflicts) {
 	    	//window.plugins.toast.showShortTop("Conflicting Document:" + JSON.stringify( change.doc ) , function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
@@ -498,9 +498,23 @@ function connectToChanges() {
 	    		} else {
 	    			//get the document to see if there was a conflict.
 	    			if( typeof change.doc._rev != 'undefined' )
-	    			config.db.get([change.doc._id, { "rev":change.doc._rev, "conflicts": true } ], function(error, doc) {
+	    			config.db.get([change.doc._id, { "rev":change.doc._rev, "conflicts": true, "deleted_conflicts" : true } ], function(error, doc) {
 	    				if(error) { return log ("Error getting space revision:" + JSON.stringify( error ) ) }
 	    				log( "Changed Space Document" + JSON.stringify( doc ) )
+	    				if (typeof doc._conflicts != 'undefined') {
+	    					doc._conflicts.forEach( function(rev) {
+	    						config.db.get([change.doc._id, { "rev": rev } ], function( error, conflict) {
+	    							//if someone else posted a document for a space that is mine delete the document.
+	    							if (conflict.steward.indexOf(config.user.name) == -1) {
+	    								conflict._deleted = true;
+	    								config.db.put(change.doc._id, conflict, function(error, ok) {
+	    									if (error) { return log ("Error deleting conflicting document" + JSON.stringify( error ) ) }
+	    									log ("Successfully deleted confilicting document" + JSON.stringify( ok ) )
+	    								} )
+	    							}
+	    						} )
+	    					} )
+	    				}
 	    			} )
 	    		}
 	    	}
