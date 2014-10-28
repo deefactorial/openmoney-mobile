@@ -504,8 +504,8 @@ function connectToChanges() {
 	    				if (typeof doc._conflicts != 'undefined') {
 	    					doc._conflicts.forEach( function(rev) {
 	    						config.db.get([change.doc._id, { "rev": rev } ], function( error, conflict) {
-	    							//if someone else posted a document for a space that is mine delete the document.
-	    							if (conflict.steward.indexOf(config.user.name) == -1) {
+	    							//if this is my document then delete the document.
+	    							if (conflict.steward.indexOf(config.user.name) != -1) {
 	    								conflict._deleted = true;
 	    								config.db.put(change.doc._id, conflict, function(error, ok) {
 	    									if (error) { return log ("Error deleting conflicting document" + JSON.stringify( error ) ) }
