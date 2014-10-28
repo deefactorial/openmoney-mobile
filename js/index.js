@@ -486,6 +486,16 @@ function connectToChanges() {
 								goCreateAccount( [ { "type" : "currency" } ] )
 		    				}, "Taken", "OK")
 	    		}
+	    	} else if (change.doc._id.substring(0,change.doc._id.indexOf(",")) == 'space') {
+	    		if (change.doc._deleted && typeof change.doc._conflicts == 'undefined') {
+	    			var space = change.doc._id.substring(change.doc._id.indexOf(",") + 1,change.doc._id.length)
+	    			//the space this user created got deleted because someone else has a trading name or currency of that name.
+	    			navigator.notification.alert( "The space " + space + " you created has already been taken!",
+		    				function() { 
+								log(JSON.stringify(change))
+								goCreateAccount( [ { "type" : "space" } ] )
+		    				}, "Taken", "OK")
+	    		}
 	    	}
 	    }
 	    
@@ -1828,9 +1838,8 @@ function goCreateAccount(parameters) {
 	        		if (error.status == 404) {
 	        			// insert document
 	        			config.db.put( currency_view.type + "," + config.user.name + "," + currency_view.currency, JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
-	        	   		 	if (error)
-	        	                return alert( JSON.stringify( error ) )
-	        	                config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
+	        	   		 	if (error) { return alert( JSON.stringify( error ) ) }
+        	                config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
 	        	                if (error) {
 	        	                    log( "Error: " + JSON.stringify( error ) )
 	        	                    if (error.status == 404) {
@@ -1838,14 +1847,9 @@ function goCreateAccount(parameters) {
 	        	                        log( "insert new currency" + JSON.stringify( doc ) )
 	        	                        
 	        	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-	        	                            if (error)
-	        	                                return alert( JSON.stringify( error ) )
-	        	                        	//$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
-	        	                            
+	        	                            if (error) { return alert( JSON.stringify( error ) ) }
 	        	                            History.back() 
 	        	                        } )
-	        	
-	        	                        
 	        	                    } else {
 	        	                        alert( "Error: ".JSON.stringify( error ) )
 	        	                    }
@@ -1868,10 +1872,7 @@ function goCreateAccount(parameters) {
     	
     	                        
     	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-    	                            if (error)
-    	                                return alert( JSON.stringify( error ) )
-    	                        	//$( "#content form input[name='currency']" ).val( "" ) // Clear	                        	
-    	                            
+    	                            if (error) { return alert( JSON.stringify( error ) ) }
     	                            History.back() 
     	                        } )
     	
@@ -1892,7 +1893,7 @@ function goCreateAccount(parameters) {
         	
         } else if (doc.type == "space") {
         	
-            if (doc.space.match( /[^A-Za-z0-9\-_]/ )) { 
+            if (doc.space.match( /[^A-Za-z0-9]/ )) { 
             	navigator.notification.alert( 'The Space Name you entered is not valid!' , function() {}, "Invalid Space Name", "OK")
             	return null;
             }
