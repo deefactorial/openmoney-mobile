@@ -3551,7 +3551,7 @@ function goTagPayment(parameters) {
 
         tradingNames.forEach( function(tradingname) {
             toAccounts.push( {
-                "to" : "trading_anme," + tradingname.trading_name + "," + tradingname.currency , "name" : tradingname.trading_name + " " + tradingname.currency
+                "to" : "trading_name," + tradingname.trading_name + "," + tradingname.currency , "name" : tradingname.trading_name + " " + tradingname.currency
             } )
         } )
         
