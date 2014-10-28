@@ -495,6 +495,13 @@ function connectToChanges() {
 								log(JSON.stringify(change))
 								goCreateAccount( [ { "type" : "space" } ] )
 		    				}, "Taken", "OK")
+	    		} else {
+	    			//get the document to see if there was a conflict.
+	    			if( typeof change.doc._rev != 'undefined' )
+	    			config.db.get([change.doc._id, { "rev":change.doc._rev, "conflicts": true } ], function(error, doc) {
+	    				if(error) { return log ("Error getting space revision:" + JSON.stringify( error ) ) }
+	    				log( "Changed Space Document" + JSON.stringify( doc ) )
+	    			} )
 	    		}
 	    	}
 	    }

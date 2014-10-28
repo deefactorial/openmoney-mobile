@@ -204,8 +204,7 @@
                         }
                     }
                 } else if ( (olddoc != null && olddoc.type == "space" ) || (olddoc == null && doc.type == "space") ) {
-                    var space = doc.space;              
-                    
+                    var space = doc.space;
                     if (olddoc == null) {
                         if (!doc.steward || typeof doc.space == 'undefined' || !doc.created) {
                             throw({forbidden: "Missing required properties"});
@@ -214,7 +213,7 @@
                         access(doc.steward, doc.type + channelDelimiter + space);
                     } else {
                         if (doc._deleted) {
-                            requireUser(olddoc.steward);
+                            requireUser(cat.steward);
                         } else {
                             if (!doc.steward || typeof doc.space == 'undefined' || !doc.created) {
                                 throw({forbidden: "Missing required properties"});
