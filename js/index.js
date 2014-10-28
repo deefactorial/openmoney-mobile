@@ -2498,7 +2498,7 @@ function goProfile(parameters) {
             if (typeof doc.mode == 'undefined') {
             	doc.mode = false;
             } 
-            if (typeof doc.theme == 'undefined') {
+            if (typeof doc.theme == 'undefined' || doc.theme === false) {
             	doc.theme = false;
             	//dark to light
             	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
@@ -4419,7 +4419,7 @@ function doServerLogout(callBack) {
                 }
                 log( "Sync Replication Canceled" )
                 config.destroyDatabase( config.db, function(error, ok) {
-                    log( "Database Destroyed :", error, ok )
+                    log( "Database Destroyed :" + JSON.stringify( [ error, ok ] ) )
                     config.db = null;
                     config.views = null;
                     setupConfig( function(error, ok) {
@@ -4644,7 +4644,7 @@ function getProfile(){
     		}
     	} else {
     		config.user.profile = profile;
-            if (typeof profile.theme == 'undefined' || profile.theme === true) {
+            if (typeof profile.theme == 'undefined' || profile.theme === false) {
             	//dark to light
             	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
             } else {
