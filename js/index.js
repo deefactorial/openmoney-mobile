@@ -24,7 +24,8 @@ var FACEBOOK_LOGIN = false
 
 var currentpage = null;
 
-var DEFAULT_DARK_THEME = false;
+//check index css as well as registration profile on server side
+var DEFAULT_DARK_THEME = false; 
 /*
  * Initialize the app, connect to the database, draw the initial UI
  */
