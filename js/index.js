@@ -740,8 +740,8 @@ function setLoginLogoutButton() {
                         // Logout Success
                         $( ".openmoney-logout" ).hide().off( "click" )
                         window.plugins.spinnerDialog.hide();
-                        //light to dark
-                    	//replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
+                        //dark to light
+                    	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-llght.min.css", "css")
                         navigator.notification.alert( "You are now logged out!" , function () { goIndex([])  }, "Logged out", "OK")
                     } )
             	} )
