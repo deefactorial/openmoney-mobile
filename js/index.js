@@ -4644,7 +4644,7 @@ function getProfile(){
     		}
     	} else {
     		config.user.profile = profile;
-            if (typeof profile.theme == 'undefined' || profile.theme === false) {
+            if (typeof profile.theme == 'undefined' || profile.theme === true) {
             	//dark to light
             	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
             } else {
