@@ -741,7 +741,7 @@ function setLoginLogoutButton() {
                         $( ".openmoney-logout" ).hide().off( "click" )
                         window.plugins.spinnerDialog.hide();
                         //light to dark
-                    	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
+                    	//replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
                         navigator.notification.alert( "You are now logged out!" , function () { goIndex([])  }, "Logged out", "OK")
                     } )
             	} )
@@ -4627,7 +4627,7 @@ function getProfile(){
 	config.db.get("profile," + profileID, function(error, profile) {
     	if (error) {
     		if (error.status == 404) {
-    			var profile = { "type": "profile", "username" : profileID, "notification": true, "mode": false, "theme": DEFAULT_DARK_THEME, "created": new Date().getTime() }
+    			profile = { "type": "profile", "username" : profileID, "notification": true, "mode": false, "theme": DEFAULT_DARK_THEME, "created": new Date().getTime() }
     			if (typeof config.user.name != 'undefined') {
 	                if (config.user.name.indexOf("@") != -1){
 	                	profile.email = config.user.name;
