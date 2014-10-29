@@ -1518,6 +1518,9 @@ function goManageAccounts(parameters) {
     } )
 	
     window.dbChanged = function() {
+    	var pageTitle = "Manage Accounts";
+    	
+    	if (currentpage == pageTitle) {
     	window.plugins.spinnerDialog.show();
 		var accounts = false, currencies = false, spaces = false;
 		
@@ -1542,7 +1545,7 @@ function goManageAccounts(parameters) {
             drawContainer( "div#accounts_list" , config.t.accounts_list( usersAccounts ) )
 
             var response = {
-        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goManageAccounts.toString(), "pageParameters" : [ ]
+        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : pageTitle, "pageFunction" : goManageAccounts.toString(), "pageParameters" : [ ]
             }
         
             updateAjaxData( response , "manage_accounts.html")
@@ -1599,6 +1602,7 @@ function goManageAccounts(parameters) {
         
     	pollComplete()
         
+    	}
     }
 	
 	window.dbChanged();
@@ -1749,11 +1753,11 @@ function updateTradingName(row, doc, callback) {
 
 function goCreateAccount(parameters) {
 	
+	window.dbChanged = function() { };
+	
 	log ("goCreateAccount(" + JSON.stringify(parameters) + ")")
 	
 	var doc = parameters.pop();
-	
-	window.dbChanged = function() { };
 	
 	view = { "trading_name": true };
 	
@@ -1972,33 +1976,36 @@ function goCreateAccount(parameters) {
     	if (type == 'trading_name') {
     		
     		window.dbChanged = function() {	
+    			
+    			if (currentpage == pageTitle) {
     		    		
-	    		window.plugins.spinnerDialog.show();
-	        	config.views( [ "currencies", {
-	                include_docs : true
-	            } ], function(error, currencies) {
-	                if (error) { return alert( JSON.stringify( error ) ) }
-	
-	            	config.views( [ "spaces", {
-	                    include_docs : true
-	                } ], function(error, spaces) {
-	            		window.plugins.spinnerDialog.hide();
-	                    if (error) { return alert( JSON.stringify( error ) ) }
-	                    
-	                    var tradingNameDoc = { "doc": doc, "currencies" : currencies, "spaces" : spaces }
-	                    
-	                    log ("trading_name_doc : " + JSON.stringify( tradingNameDoc ) )
-	
-		                drawContainer( "div#form", config.t.trading_name_form( tradingNameDoc ) )
-		                
-	                    spaces = true;
-	                    
-	                    $( "#content input[name='add']" ).off("click").click( function() {
-	                        goAddCurrency([])
-	                    } )
-	                    
-	                } )
-	            } )
+    				window.plugins.spinnerDialog.show();
+		        	config.views( [ "currencies", {
+		                include_docs : true
+		            } ], function(error, currencies) {
+		                if (error) { return alert( JSON.stringify( error ) ) }
+		
+		            	config.views( [ "spaces", {
+		                    include_docs : true
+		                } ], function(error, spaces) {
+		            		window.plugins.spinnerDialog.hide();
+		                    if (error) { return alert( JSON.stringify( error ) ) }
+		                    
+		                    var tradingNameDoc = { "doc": doc, "currencies" : currencies, "spaces" : spaces }
+		                    
+		                    log ("trading_name_doc : " + JSON.stringify( tradingNameDoc ) )
+		
+			                drawContainer( "div#form", config.t.trading_name_form( tradingNameDoc ) )
+			                
+		                    spaces = true;
+		                    
+		                    $( "#content input[name='add']" ).off("click").click( function() {
+		                        goAddCurrency([])
+		                    } )
+		                    
+		                } )
+		            } )
+    			}
     		}
     		window.dbChanged()
     		
@@ -2043,7 +2050,7 @@ function goCreateAccount(parameters) {
     	}
         
         var response = {
-			"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc ]
+			"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : pageTitle, "pageFunction" : goCreateAccount.toString(), "pageParameters" : [ doc ]
 	    }
 	
 	    updateAjaxData( response , "create.html")
