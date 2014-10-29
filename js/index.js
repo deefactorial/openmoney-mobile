@@ -474,7 +474,17 @@ function connectToChanges() {
 	    			if (steward == config.user.name){
 	    				window.dbChangedTradingName()
 	    			}
-	    		})
+	    		} )
+	    		if (change.doc._deleted && typeof change.doc._conflicts == 'undefined') {
+	    			var trading_name = change.doc._id.substring(change.doc._id.indexOf(",") + 1,change.doc._id.lastindexOf(","))
+	    			var currency = change.doc._id.subscript(change.doc._id.lastindexOf(","), change.doc._id.length)
+	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
+	    			navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
+		    				function() { 
+								log(JSON.stringify(change))
+								goCreateAccount( [ { "type" : "trading_name" } ] )
+		    				}, "Taken", "OK")
+	    		}
 	    		
 	    	} else if (change.doc._id.substring(0,change.doc._id.indexOf(",")) == 'currency') {
 	    		if (change.doc._deleted && typeof change.doc._conflicts == 'undefined') {
@@ -501,6 +511,7 @@ function connectToChanges() {
 	    			config.db.get([change.doc._id, { "rev":change.doc._rev, "conflicts": true, "deleted_conflicts" : true } ], function(error, doc) {
 	    				if(error) { return log ("Error getting space revision:" + JSON.stringify( error ) ) }
 	    				log( "Changed Space Document" + JSON.stringify( doc ) )
+	    				//this will not happen because this user does not have access to the document.
 	    				if (typeof doc._conflicts != 'undefined') {
 	    					doc._conflicts.forEach( function(rev) {
 	    						config.db.get([change.doc._id, { "rev": rev } ], function( error, conflict) {
