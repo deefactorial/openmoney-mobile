@@ -468,7 +468,7 @@ function connectToChanges() {
 		    	    } )
 		    	    
 	    		}
-	    	} else if (change.doc.type == 'trading_name') {
+	    	} else if (change.doc._id.substring(0,change.doc._id.indexOf(",")) == 'trading_name') {
 	    		//onlyCallChange if it's the users trading name that changed.
 	    		change.doc.steward.forEach(function (steward) {
 	    			if (steward == config.user.name){
