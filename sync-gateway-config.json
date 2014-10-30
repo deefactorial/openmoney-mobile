@@ -159,6 +159,8 @@
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.username);
+                            channel(olddoc.type + channelDelimiter + olddoc.username);
+                            access(olddoc.username, olddoc.type + channelDelimiter + olddoc.username);
                         } else {
                         	if (!doc.username || !doc.password || !doc.password_encryption_algorithm || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
@@ -216,6 +218,8 @@
                     } else {
                         if (doc._deleted) {
                             requireUser(cat.steward);
+                            channel(olddoc.type + channelDelimiter + olddoc.space);
+                            access(olddoc.steward, olddoc.type + channelDelimiter + olddoc.space);
                         } else {
                             if (!doc.steward || typeof doc.space == 'undefined' || !doc.created) {
                                 throw({forbidden: "Missing required properties"});
@@ -241,6 +245,8 @@
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
+                            channel(olddoc.type + channelDelimiter + olddoc.currency);
+                            access(olddoc.steward, olddoc.type + channelDelimiter + olddoc.currency);
                         } else {
                             if (!doc.steward || !doc.currency || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
@@ -268,6 +274,8 @@
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
+                            channel(olddoc.type + channelDelimiter + olddoc.currency);
+                            access(olddoc.steward, olddoc.type + channelDelimiter + olddoc.currency);
                         } else {
                             if (!doc.steward || !doc.currency || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
@@ -316,15 +324,18 @@
                     //var username = index.substring(0,index.indexOf(",")) ;
                     //var beamTag = index.substring( index.indexOf( "," ) + 1 );
                     
-                    channel(doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
+                    
                     if (olddoc == null) {
                     	if (!doc.username || !doc.hashTag || !doc.created) {
                             throw({forbidden: "Missing required properties"});
                         }
+                    	channel(doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
                         access(doc.username, doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
                     } else {
                         if (doc._deleted) {
                             requireUser(olddoc.username);
+                            channel(olddoc.type + channelDelimiter + olddoc.username + channelDelimiter + olddoc.hashTag);
+                            access(olddoc.username, olddoc.type + channelDelimiter + olddoc.username + channelDelimiter + olddoc.hashTag);
                         } else {
                             if (!doc.username || !doc.hashTag || !doc.created) {
                                 throw( { forbidden: "Missing required properties" } );
@@ -341,6 +352,7 @@
                             	}
                             }
                             requireUser(olddoc.username);
+                            channel(doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
                             access(doc.username, doc.type + channelDelimiter + doc.username + channelDelimiter + doc.hashTag);
                         }
                     }
@@ -351,8 +363,12 @@
                 	channel(doc.type + channelDelimiter + doc.username)
                 	access(doc.username, doc.type + channelDelimiter + doc.username);
                 	if (olddoc != null) {
-                		if(olddoc.username != 'anonymous')
+                		if(olddoc.username != 'anonymous') {
                 			requireUser(olddoc.username);
+                			channel(olddoc.type + channelDelimiter + olddoc.username)
+                        	access(olddoc.username, olddoc.type + channelDelimiter + olddoc.username);
+                		}
+                			
                 	}
                 }
             }
