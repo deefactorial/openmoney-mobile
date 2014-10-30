@@ -217,7 +217,7 @@
                         access(doc.steward, doc.type + channelDelimiter + space);
                     } else {
                         if (doc._deleted) {
-                            requireUser(cat.steward);
+                            requireUser(olddoc.steward);
                             channel(olddoc.type + channelDelimiter + olddoc.space);
                             access(olddoc.steward, olddoc.type + channelDelimiter + olddoc.space);
                         } else {

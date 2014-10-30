@@ -897,6 +897,7 @@ function setLoginLogoutButton() {
     } else {
         if (SERVER_LOGIN) {
             $( "#content .openmoney-logout" ).show().off( "click" ).click( function() {
+            	//don't index views on logout
             	window.dbChangedTags = function() {}
             	window.dbChangedBeams = function() {}
             	window.plugins.spinnerDialog.show();
