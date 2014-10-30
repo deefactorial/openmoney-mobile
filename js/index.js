@@ -470,11 +470,13 @@ function connectToChanges() {
 	    		}
 	    	} else if (change.doc._id.substring(0,change.doc._id.indexOf(",")) == 'trading_name') {
 	    		//onlyCallChange if it's the users trading name that changed.
-	    		change.doc.steward.forEach(function (steward) {
-	    			if (steward == config.user.name){
-	    				window.dbChangedTradingName()
-	    			}
-	    		} )
+	    		if( typeof change.doc.steward != 'undefined' ) {
+		    		change.doc.steward.forEach(function (steward) {
+		    			if (steward == config.user.name){
+		    				window.dbChangedTradingName()
+		    			}
+		    		} )
+	    		}
 	    		if (change.doc._deleted && typeof change.doc._conflicts == 'undefined') {
 	    			var trading_name = change.doc._id.substring(change.doc._id.indexOf(",") + 1,change.doc._id.lastindexOf(","))
 	    			var currency = change.doc._id.subscript(change.doc._id.lastindexOf(","), change.doc._id.length)
