@@ -262,7 +262,7 @@ function resetChangeTrackers() {
 					//index view
 					log( "indexed currencies:" + JSON.stringify( [ error, currencies ] ) )
 				} );
-			}, 100)
+			}, 500)
 		}
 	}
 	window.dbChangedSpaces = function() {
@@ -275,7 +275,7 @@ function resetChangeTrackers() {
 					//index view
 					log( "indexed spaces:" + JSON.stringify( [ error, spaces ] ) )
 				} );
-			}, 100)
+			}, 500)
 		}
 	}
 	window.dbChangedJournal = function() {
@@ -288,7 +288,7 @@ function resetChangeTrackers() {
 					//index view
 					log( "indexed account details:" + JSON.stringify( [ error, details ] ) )
 				} );
-			}, 125);
+			}, 1000);
 		}
 		if (!balanceViewLock) {
 			balanceViewLock = true;
@@ -299,7 +299,7 @@ function resetChangeTrackers() {
 					//index view
 					log( "indexed account balances:" + JSON.stringify( [ error, balances ] ) )
 				} );
-			}, 125);
+			}, 1000);
 		}
 	}
 	window.dbChangedProfile = function() {}
@@ -313,7 +313,7 @@ function resetChangeTrackers() {
     				//index view
     				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
     			} );
-    	    }, 250);
+    	    }, 5000);
 		}
 
 	}
@@ -327,7 +327,7 @@ function resetChangeTrackers() {
 					//index view
 					log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
 				} );
-			}, 250);
+			}, 7000);
 		}
 	}
 }
