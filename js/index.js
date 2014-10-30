@@ -5223,7 +5223,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney" + new Date().getTime();
+        var design = "_design/openmoney" ;//+ new Date().getTime();
         db.put( design, {
             views : {
                 accounts : {
