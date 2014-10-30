@@ -237,41 +237,48 @@ function resetChangeTrackers() {
 		config.views( [ "accounts", {
         } ], function(error, accounts) {
 			//index view
+			log( "indexed accounts:" + JSON.stringify( [ error, accounts ] ) )
 		} );
 	}
 	window.dbChangedCurrencies = function() {
 		config.views( [ "currencies", {
         } ], function(error, currencies) {
 			//index view
+			log( "indexed currencies:" + JSON.stringify( [ error, currencies ] ) )
 		} );
 	}
 	window.dbChangedSpaces = function() {
 		config.views( [ "spaces", {
         } ], function(error, spaces) {
 			//index view
+			log( "indexed spaces:" + JSON.stringify( [ error, spaces ] ) )
 		} );
 	}
 	window.dbChangedJournal = function() {
 		config.views( [ "account_details", {
         } ], function(error, details) {
 			//index view
+			log( "indexed account details:" + JSON.stringify( [ error, details ] ) )
 		} );
 		config.views( [ "account_balance", {
         } ], function(error, balances) {
 			//index view
+			log( "indexed account balances:" + JSON.stringify( [ error, balances ] ) )
 		} );
 	}
 	window.dbChangedProfile = function() {}
 	window.dbChangedTags = function() {
 		config.views( [ "nfc_tags", {
-        } ], function(error, balances) {
+        } ], function(error, tags) {
 			//index view
+			log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
 		} );
 	}
 	window.dbChangedBeams = function() {
 		config.views( [ "user_tags", {
-        } ], function(error, balances) {
+        } ], function(error, beam) {
 			//index view
+			log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
 		} );
 	}
 }
