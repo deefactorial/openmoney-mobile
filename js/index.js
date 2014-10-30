@@ -255,79 +255,140 @@ function resetChangeTrackers() {
 	window.dbChangedCurrencies = function() {
 		if (!currenciesViewLock) {
 			currenciesViewLock = true;
-			setTimeout(function () { 
-				config.views( [ "currencies", {
-		        } ], function(error, currencies) {
-					currenciesViewLock = false;
-					//index view
-					log( "indexed currencies:" + JSON.stringify( [ error, currencies ] ) )
-				} );
-			}, 500)
+			var waitForOthersCurrencies = function () {
+				if(tradingNamesViewLock) {
+					setTimeout( function () { waitForOthersCurrencies(); }, 250 )
+				} else {
+					setTimeout(function () { 
+						if(tradingNamesViewLock) {
+							setTimeout( function () { waitForOthersCurrencies(); }, 250 )
+						} else {
+							config.views( [ "currencies", {
+					        } ], function(error, currencies) {
+								currenciesViewLock = false;
+								//index view
+								log( "indexed currencies:" + JSON.stringify( [ error, currencies ] ) )
+							} );
+						}
+					}, 250);
+				}
+			}
 		}
 	}
 	window.dbChangedSpaces = function() {
 		if (!spacesViewLock) {
 			spacesViewLock = true;
-			setTimeout(function () { 
-				config.views( [ "spaces", {
-		        } ], function(error, spaces) {
-					spacesViewLock = false;
-					//index view
-					log( "indexed spaces:" + JSON.stringify( [ error, spaces ] ) )
-				} );
-			}, 500)
+			var waitForOthersSpaces = function () {
+				if(tradingNamesViewLock) {
+					setTimeout( function () { waitForOthersSpaces(); }, 250 )
+				} else {
+					setTimeout(function () { 
+						if(tradingNamesViewLock) {
+							setTimeout( function () { waitForOthersSpaces(); }, 250 )
+						} else {
+							config.views( [ "spaces", {
+					        } ], function(error, spaces) {
+								spacesViewLock = false;
+								//index view
+								log( "indexed spaces:" + JSON.stringify( [ error, spaces ] ) )
+							} );
+						}
+					}, 250);
+				}
+			}
 		}
 	}
 	window.dbChangedJournal = function() {
 		if (!detailsViewLock) {
 			detailsViewLock = true;
-			setTimeout(function () { 
-				config.views( [ "account_details", {
-		        } ], function(error, details) {
-					detailsViewLock = false;
-					//index view
-					log( "indexed account details:" + JSON.stringify( [ error, details ] ) )
-				} );
-			}, 1000);
+			var waitForOthersDetails = function () {
+				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock ) {
+					setTimeout( function () { waitForOthersDetails(); }, 500 )
+				} else {
+					setTimeout(function () { 
+						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock) {
+							setTimeout( function () { waitForOthersDetails(); }, 500 )
+						} else {
+							config.views( [ "account_details", {
+					        } ], function(error, details) {
+								detailsViewLock = false;
+								//index view
+								log( "indexed account details:" + JSON.stringify( [ error, details ] ) )
+							} );
+						}
+					}, 500);
+				}
+			}
 		}
 		if (!balanceViewLock) {
 			balanceViewLock = true;
-			setTimeout(function () { 
-				config.views( [ "account_balance", {
-		        } ], function(error, balances) {
-					balanceViewLock = false;
-					//index view
-					log( "indexed account balances:" + JSON.stringify( [ error, balances ] ) )
-				} );
-			}, 1000);
+			var waitForOthersBalance = function () {
+				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock ) {
+					setTimeout( function () { waitForOthersBalance(); }, 500 )
+				} else {
+					setTimeout(function () { 
+						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock) {
+							setTimeout( function () { waitForOthersBalance(); }, 500 )
+						} else {
+							config.views( [ "account_balance", {
+					        } ], function(error, balances) {
+								balanceViewLock = false;
+								//index view
+								log( "indexed account balances:" + JSON.stringify( [ error, balances ] ) )
+							} );
+						}
+					}, 500);
+				}
+			}
 		}
 	}
 	window.dbChangedProfile = function() {}
 	window.dbChangedTags = function() {
 		if (!tagsViewLock) {
 			tagsViewLock = true;
-    	    setTimeout(function () { 
-    			config.views( [ "nfc_tags", {
-    	        } ], function(error, tags) {
-    				tagsViewLock = false;
-    				//index view
-    				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
-    			} );
-    	    }, 5000);
+			var waitForOthersTags = function () {
+				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+					setTimeout( function () { waitForOthersTags(); }, 1000 )
+				} else {
+					setTimeout(function () { 
+						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+							setTimeout( function () { waitForOthersTags(); }, 1000 )
+						} else {
+							config.views( [ "nfc_tags", {
+			    	        } ], function(error, tags) {
+			    				tagsViewLock = false;
+			    				//index view
+			    				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
+			    			} );
+						}
+					}, 1000);
+				}
+			}
 		}
 
 	}
 	window.dbChangedBeams = function() {
 		if (!beamsViewLock) {
 			beamsViewLock = true;
-			setTimeout(function () { 
-				config.views( [ "user_tags", {
-		        } ], function(error, beam) {
-					beamsViewLock = false;
-					//index view
-					log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
-				} );
-			}, 7000);
+			var waitForOthersBeams = function () {
+				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+					setTimeout( function () { waitForOthersBeams(); }, 1000 )
+				} else {
+					setTimeout(function () { 
+						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+							setTimeout( function () { waitForOthersBeams(); }, 1000 )
+						} else {
+							config.views( [ "user_tags", {
+					        } ], function(error, beam) {
+								beamsViewLock = false;
+								//index view
+								log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
+							} );
+						}
+					}, 1000);
+				}
+			}
+
 		}
 	}
 }
