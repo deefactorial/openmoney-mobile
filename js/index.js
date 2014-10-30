@@ -313,7 +313,7 @@ function resetChangeTrackers() {
     				//index view
     				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
     			} );
-    	    }, 160);
+    	    }, 250);
 		}
 
 	}
@@ -327,7 +327,7 @@ function resetChangeTrackers() {
 					//index view
 					log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
 				} );
-			}, 160);
+			}, 250);
 		}
 	}
 }
