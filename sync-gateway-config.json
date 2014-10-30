@@ -186,7 +186,9 @@
                         //role( doc.steward, "role:" + doc.name + "_" + doc.currency)
                     } else {
                         if (doc._deleted) {
-                            requireUser(olddoc.steward);
+                        	requireUser(olddoc.steward);
+                        	channel(olddoc.type + channelDelimiter + olddoc.trading_name + channelDelimiter + olddoc.currency);
+                        	access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.trading_name + channelDelimiter + olddoc.currency )
                         } else {
                             if (!doc.steward || !doc.name || !doc.currency || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
