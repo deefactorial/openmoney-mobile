@@ -233,13 +233,47 @@ window.dbChangedBeams = function() {}
 
 function resetChangeTrackers() {
 	window.dbChanged = function() {}
-	window.dbChangedTradingNames = function() {}
-	window.dbChangedCurrencies = function() {}
-	window.dbChangedSpaces = function() {}
-	window.dbChangedJournal = function() {}
+	window.dbChangedTradingNames = function() {
+		config.views( [ "accounts", {
+        } ], function(error, accounts) {
+			//index view
+		} );
+	}
+	window.dbChangedCurrencies = function() {
+		config.views( [ "currencies", {
+        } ], function(error, currencies) {
+			//index view
+		} );
+	}
+	window.dbChangedSpaces = function() {
+		config.views( [ "spaces", {
+        } ], function(error, spaces) {
+			//index view
+		} );
+	}
+	window.dbChangedJournal = function() {
+		config.views( [ "account_details", {
+        } ], function(error, details) {
+			//index view
+		} );
+		config.views( [ "account_balance", {
+        } ], function(error, balances) {
+			//index view
+		} );
+	}
 	window.dbChangedProfile = function() {}
-	window.dbChangedTags = function() {}
-	window.dbChangedBeams = function() {}
+	window.dbChangedTags = function() {
+		config.views( [ "nfc_tags", {
+        } ], function(error, balances) {
+			//index view
+		} );
+	}
+	window.dbChangedBeams = function() {
+		config.views( [ "user_tags", {
+        } ], function(error, balances) {
+			//index view
+		} );
+	}
 }
 
 window.checkConflicts = function(change) {
