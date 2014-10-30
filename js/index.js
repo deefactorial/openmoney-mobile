@@ -232,54 +232,91 @@ window.dbChangedTags = function() {}
 window.dbChangedBeams = function() {}
 
 function resetChangeTrackers() {
+	var tradingNamesViewLock = false;
+	var currenciesViewLock = false;
+	var spacesViewLock = false;
+	var detailsViewLock = false;
+	var balanceViewLock = false;
+	var tagsViewLock = false;
+	var beamsViewLock = false;
+	
 	window.dbChanged = function() {}
 	window.dbChangedTradingNames = function() {
-		config.views( [ "accounts", {
-        } ], function(error, accounts) {
-			//index view
-			log( "indexed accounts:" + JSON.stringify( [ error, accounts ] ) )
-		} );
+		if (!tradingNamesViewLock) {
+			tradingNamesViewLock = true;
+			config.views( [ "accounts", {
+	        } ], function(error, accounts) {
+				tradingNamesViewLock = false;
+				//index view
+				log( "indexed accounts:" + JSON.stringify( [ error, accounts ] ) )
+			} );
+		}
 	}
 	window.dbChangedCurrencies = function() {
-		config.views( [ "currencies", {
-        } ], function(error, currencies) {
-			//index view
-			log( "indexed currencies:" + JSON.stringify( [ error, currencies ] ) )
-		} );
+		if (!currenciesViewLock) {
+			currenciesViewLock = true;
+			config.views( [ "currencies", {
+	        } ], function(error, currencies) {
+				currenciesViewLock = false;
+				//index view
+				log( "indexed currencies:" + JSON.stringify( [ error, currencies ] ) )
+			} );
+		}
 	}
 	window.dbChangedSpaces = function() {
-		config.views( [ "spaces", {
-        } ], function(error, spaces) {
-			//index view
-			log( "indexed spaces:" + JSON.stringify( [ error, spaces ] ) )
-		} );
+		if (!spacesViewLock) {
+			spacesViewLock = true;
+			config.views( [ "spaces", {
+	        } ], function(error, spaces) {
+				spacesViewLock = false;
+				//index view
+				log( "indexed spaces:" + JSON.stringify( [ error, spaces ] ) )
+			} );
+		}
 	}
 	window.dbChangedJournal = function() {
-		config.views( [ "account_details", {
-        } ], function(error, details) {
-			//index view
-			log( "indexed account details:" + JSON.stringify( [ error, details ] ) )
-		} );
-		config.views( [ "account_balance", {
-        } ], function(error, balances) {
-			//index view
-			log( "indexed account balances:" + JSON.stringify( [ error, balances ] ) )
-		} );
+		if (!detailsViewLock) {
+			detailsViewLock = true;
+			config.views( [ "account_details", {
+	        } ], function(error, details) {
+				detailsViewLock = false;
+				//index view
+				log( "indexed account details:" + JSON.stringify( [ error, details ] ) )
+			} );
+		}
+		if (!balanceViewLock) {
+			balanceViewLock = true;
+			config.views( [ "account_balance", {
+	        } ], function(error, balances) {
+				balanceViewLock = false;
+				//index view
+				log( "indexed account balances:" + JSON.stringify( [ error, balances ] ) )
+			} );
+		}
 	}
 	window.dbChangedProfile = function() {}
 	window.dbChangedTags = function() {
-		config.views( [ "nfc_tags", {
-        } ], function(error, tags) {
-			//index view
-			log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
-		} );
+		if (!tagsViewLock) {
+			tagsViewLock = true;
+			config.views( [ "nfc_tags", {
+	        } ], function(error, tags) {
+				tagsViewLock = false;
+				//index view
+				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
+			} );
+		}
+
 	}
 	window.dbChangedBeams = function() {
-		config.views( [ "user_tags", {
-        } ], function(error, beam) {
-			//index view
-			log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
-		} );
+		if (!beamsViewLock) {
+			beamsViewLock = true;
+			config.views( [ "user_tags", {
+	        } ], function(error, beam) {
+				beamsViewLock = false;
+				//index view
+				log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
+			} );
+		}
 	}
 }
 
