@@ -529,6 +529,7 @@ function connectToChanges() {
 	    		    async.eachSeries(["trading_name," + change.doc.from + "," + change.doc.currency, "trading_name," + change.doc.to + "," + change.doc.currency], function(row, callback) {
     					config.db.get(row, function(error, trading_name) {
     						if (error) {
+    							callback(error)
     							//do nothing if I don't have this users trading name
     						} else {
     							//check if from is this user, if it is
@@ -546,6 +547,7 @@ function connectToChanges() {
     									}
     								} )
     							}
+    							callback(false);
     						}
     					} )
 	    		    }, function(error) {
@@ -687,8 +689,8 @@ function connectToChanges() {
 	    		//onlyCallChange if it's the users trading name that changed.
 	    		
 	    		if (change.doc._deleted && typeof change.doc._conflicts == 'undefined') {
-	    			var trading_name = change.doc._id.substring(change.doc._id.indexOf(",") + 1,change.doc._id.lastindexOf(","))
-	    			var currency = change.doc._id.subscript(change.doc._id.lastindexOf(","), change.doc._id.length)
+	    			var trading_name = change.doc._id.substring(change.doc._id.indexOf(",") + 1,change.doc._id.lastIndexOf(","))
+	    			var currency = change.doc._id.subscript(change.doc._id.lastIndexOf(","), change.doc._id.length)
 	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
 	    			navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
 		    				function() { 
