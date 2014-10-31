@@ -231,14 +231,15 @@ window.dbChangedProfile = function() {}
 window.dbChangedTags = function() {}
 window.dbChangedBeams = function() {}
 
+var tradingNamesViewLock = false;
+var currenciesViewLock = false;
+var spacesViewLock = false;
+var detailsViewLock = false;
+var balanceViewLock = false;
+var tagsViewLock = false;
+var beamsViewLock = false;
+
 function resetChangeTrackers() {
-	var tradingNamesViewLock = false;
-	var currenciesViewLock = false;
-	var spacesViewLock = false;
-	var detailsViewLock = false;
-	var balanceViewLock = false;
-	var tagsViewLock = false;
-	var beamsViewLock = false;
 	
 	window.dbChanged = function() {}
 	window.dbChangedTradingNames = function() {
@@ -882,13 +883,14 @@ function goIndex(parameters) {
     
     // when the database changes, update the UI to reflect new lists
     window.dbChangedTradingNames = function() {
-    	
+    	tradingNamesViewLock = true;
     	if(currentpage == 'Openmoney') {
     		window.plugins.spinnerDialog.show();
 	        config.views( [ "accounts", {
 	            descending : true, include_docs : true
 	        } ], function(err, view) {
 	        	window.plugins.spinnerDialog.hide();
+	        	tradingNamesViewLock = false;
 	            var thisUsersAccounts = {
 	                rows : []
 	            }
