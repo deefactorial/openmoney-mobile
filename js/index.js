@@ -2039,7 +2039,7 @@ function goCreateAccount(parameters) {
                             $( "#content form input[name='trading_name']" ).val( "" ) // Clear
                             $( "#content form input[name='currency']" ).val( "" ) // Clear                            
                         
-                            navigator.notification.alert( "You successfully created a new trading name!" , function() { History.back() }, "New Trading Name", "OK")
+                            navigator.notification.alert( "You successfully created a new trading name!" , function() { goManageAccounts([]) }, "New Trading Name", "OK")
                             
                         } )                        	
                     	
@@ -2096,7 +2096,7 @@ function goCreateAccount(parameters) {
 	        	                        
 	        	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	        	                            if (error) { return alert( JSON.stringify( error ) ) }
-	        	                            History.back() 
+	        	                            goManageAccounts([]) 
 	        	                        } )
 	        	                    } else {
 	        	                        alert( "Error: ".JSON.stringify( error ) )
@@ -2121,7 +2121,7 @@ function goCreateAccount(parameters) {
     	                        
     	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
     	                            if (error) { return alert( JSON.stringify( error ) ) }
-    	                            History.back() 
+    	                            goManageAccounts([])
     	                        } )
     	
     	                        
@@ -2161,7 +2161,7 @@ function goCreateAccount(parameters) {
                             if (error)
                                 return alert( JSON.stringify( error ) )
                             $( "#content form input[name='space']" ).val( "" ) // Clear
-                            navigator.notification.alert( "You successfully created a new space !" , function() { History.back() }, "New Space", "OK")
+                            navigator.notification.alert( "You successfully created a new space !" , function() { goManageAccounts([]) }, "New Space", "OK")
                         } )
                    
                         
@@ -2776,7 +2776,7 @@ function goProfile(parameters) {
             
             putProfile(doc, function(error, ok) {
             	if(error) { log ( "Profile Put Error:" + JSON.stringify( error ) ) } 
-            	History.back();
+            	goSettings([])
             } )
             
 	    } )
@@ -3245,7 +3245,7 @@ function goNewNFC(parameters) {
                                         // failure callback
                                     } );
                                 }, function() {} );
-                                navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { History.back(); }, "Success", "OK")
+                                navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { goManageNFC([]) }, "Success", "OK")
                             }, function() {
                                 //alert( "Failed to write to NFC Tag!" )
                                 mutableLock = false;
@@ -3478,7 +3478,7 @@ function goEditNFC(parameters) {
 				
 				                insertTagInDB( userTag )
 				                
-				                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { History.back() }, "Success", "OK")
+				                navigator.notification.alert( "Successfully updated NFC Tag!"  , function() { goManageNFC([]) }, "Success", "OK")
 		                	}
 		                })
 		                
