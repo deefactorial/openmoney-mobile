@@ -533,14 +533,14 @@ function connectToChanges() {
     						} else {
     							//check if from is this user, if it is
     							if (trading_name.trading_name == change.doc.from) {
-        							from.steward.forEach( function( steward ) {
+        							trading_name.steward.forEach( function( steward ) {
         								if (steward == config.user.name) {
         									notify_from = true;
         								}
         							} )
     							}
     							if (trading_name.trading_name == change.doc.to) {
-    								to.steward.forEach( function( steward ) {
+    								trading_name.steward.forEach( function( steward ) {
     									if (steward == config.user.name) {
     										notify_to = true;
     									}
