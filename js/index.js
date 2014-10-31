@@ -273,6 +273,7 @@ function resetChangeTrackers() {
 					}, 250);
 				}
 			}
+			waitForOthersCurrencies();
 		}
 	}
 	window.dbChangedSpaces = function() {
@@ -296,6 +297,7 @@ function resetChangeTrackers() {
 					}, 250);
 				}
 			}
+			waitForOthersSpaces();
 		}
 	}
 	window.dbChangedJournal = function() {
@@ -319,6 +321,7 @@ function resetChangeTrackers() {
 					}, 500);
 				}
 			}
+			waitForOthersDetails();
 		}
 		if (!balanceViewLock) {
 			balanceViewLock = true;
@@ -340,6 +343,7 @@ function resetChangeTrackers() {
 					}, 500);
 				}
 			}
+			waitForOthersBalance();
 		}
 	}
 	window.dbChangedProfile = function() {}
@@ -364,6 +368,7 @@ function resetChangeTrackers() {
 					}, 1000);
 				}
 			}
+			waitForOthersTags();
 		}
 
 	}
@@ -388,6 +393,7 @@ function resetChangeTrackers() {
 					}, 1000);
 				}
 			}
+			waitForOthersBeams();
 
 		}
 	}
