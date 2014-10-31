@@ -523,6 +523,8 @@ function connectToChanges() {
 	    	if (change.doc.type == 'trading_name_journal') {
 	    		
 	    		if( typeof change.doc.verified != 'undefined' ) {
+	    			var notify_to = false;
+	    			var notify_from = false;
 					if (typeof change.doc.from_verification_viewed == 'undefined') {
     					config.db.get("trading_name," + change.doc.from + "," + change.doc.currency, function(error, from) {
     						if (error) {
@@ -530,22 +532,13 @@ function connectToChanges() {
     						} else {
     							from.steward.forEach( function( steward ) {
     								if (steward == config.user.name) {
-    									config.db.get(change.doc._id, function(error, journal) {
-    			    						journal.from_verification_viewed = true;
-    			    						config.db.put(change.doc._id, journal, function(error, ok) { } )
-    			    					} )
-    									if (change.doc.verified === true) {
-	    									navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " successfully verified by cloud.",	function() { }, "Verified", "OK")
-    									} else if (change.doc.verified === false){
-    					    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " failed verification by cloud because " + change.doc.verified_reason  , 
-    					    				function() { },
-    					    				"Failed Verification", "OK")
-    					    			}
+    									notify_from = true;
+
     								}
     							} )
     						}
     					} )
-					} else
+					}
 					if (typeof change.doc.to_verification_viewed == 'undefined') {
 						config.db.get("trading_name," + change.doc.to + "," + change.doc.currency, function(error, to) {
 							if (error) {
@@ -553,21 +546,31 @@ function connectToChanges() {
 							} else {
 								to.steward.forEach( function( steward ) {
 									if (steward == config.user.name) {
-										config.db.get(change.doc._id, function(error, journal) {
-    			    						journal.to_verification_viewed = true;
-    			    						config.db.put(change.doc._id, journal, function(error, ok) { } )
-    			    					} )
-										if (change.doc.verified === true) {
-	    									navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " successfully verified by cloud.",
-						    				function() { }, "Verified", "OK")
-										} else if (change.doc.verified === false){
-						    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " failed verification by cloud because " + change.doc.verified_reason  , 
-						    				function() { }, "Failed Verification", "OK")
-						    			}
+										notify_to = true;
+										
 									}
 								} )
 							}
 						} )
+					}
+					if (notify_to || notify_from) {
+						config.db.get(change.doc._id, function(error, journal) {
+							if (notify_from) {
+								journal.from_verification_viewed = true;
+							}
+							if (notify_to) {
+								journal.to_verification_viewed = true;
+							}
+    						
+    						config.db.put(change.doc._id, journal, function(error, ok) { } )
+    					} )
+						if (change.doc.verified === true) {
+							navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " successfully verified by cloud.",	function() { }, "Verified", "OK")
+						} else if (change.doc.verified === false){
+		    				navigator.notification.alert( "Payment from " + change.doc.from + " to " + change.doc.to + " in " + change.doc.amount + " " + change.doc.currency + " failed verification by cloud because " + change.doc.verified_reason  , 
+		    				function() { },
+		    				"Failed Verification", "OK")
+		    			}
 					}
 	    		}
 	    		window.dbChangedJournal();
