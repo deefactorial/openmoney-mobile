@@ -522,7 +522,7 @@ function connectToChanges() {
 	    	log ("Change Document:" + JSON.stringify( change.doc ) )
 	    	if (change.doc.type == 'trading_name_journal') {
 	    		
-	    		if( typeof change.doc.verified != 'undefined' ) {
+	    		if( typeof change.doc.verified != 'undefined' && (typeof change.doc.from_verification_viewed == 'undefined' || typeof change.doc.to_verification_viewed == 'undefined') ) {
 	    			var notify_to = false;
 	    			var notify_from = false;
 	    			
@@ -533,19 +533,23 @@ function connectToChanges() {
     							//do nothing if I don't have this users trading name
     						} else {
     							//check if from is this user, if it is
-    							if (trading_name.trading_name == change.doc.from) {
-        							trading_name.steward.forEach( function( steward ) {
-        								if (steward == config.user.name) {
-        									notify_from = true;
-        								}
-        							} )
+    							if (typeof change.doc.from_verification_viewed == 'undefined') {
+	    							if (trading_name.trading_name == change.doc.from) {
+	        							trading_name.steward.forEach( function( steward ) {
+	        								if (steward == config.user.name) {
+	        									notify_from = true;
+	        								}
+	        							} )
+	    							}
     							}
-    							if (trading_name.trading_name == change.doc.to) {
-    								trading_name.steward.forEach( function( steward ) {
-    									if (steward == config.user.name) {
-    										notify_to = true;
-    									}
-    								} )
+    							if (typeof change.doc.to_verification_viewed == 'undefined') {
+	    							if (trading_name.trading_name == change.doc.to) {
+	    								trading_name.steward.forEach( function( steward ) {
+	    									if (steward == config.user.name) {
+	    										notify_to = true;
+	    									}
+	    								} )
+	    							}
     							}
     							callback(false);
     						}
