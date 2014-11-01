@@ -551,7 +551,7 @@ function connectToChanges() {
 	    								} )
 	    							}
     							}
-    							callback(false);
+    							callback()
     						}
     					} )
 	    		    }, function(error) {
@@ -567,7 +567,6 @@ function connectToChanges() {
 	    							if (notify_to) {
 	    								journal.to_verification_viewed = true;
 	    							}
-	        						
 	        						config.db.put(change.doc._id, journal, function(error, ok) { } )
 	        					} )
 	    						if (change.doc.verified === true) {
@@ -1682,15 +1681,11 @@ function goManageAccounts(parameters) {
                 // log ( "received result:" + result)
                 if (result) {
                     //$( listItem ).find( ".om-activate" ).show().click( function() {
-                        activateTradingName( id , function(error, ok) {
-
-                        })
+                        activateTradingName( id , function(error, ok) { })
                     //} )
                 } else {
                     //$( listItem ).find( ".om-archive" ).show().click( function() {
-                        archiveTradingName( id , function (error, ok) {
-
-                        })
+                        archiveTradingName( id , function (error, ok) { })
                     //} )
                 }
             } )
@@ -1764,13 +1759,14 @@ function goManageAccounts(parameters) {
     var accounts = false, currencies = false, spaces = false;
     
     window.dbChangedTradingNames = function() {
+    	
     	var pageTitle = "Manage Accounts";
     	
     	window.plugins.spinnerDialog.show();
-		
     	config.views( [ "accounts", {
             include_docs : true
         } ], function(error, view) {
+    		window.plugins.spinnerDialog.hide();
             if (error) { return alert( JSON.stringify( error ) ) }
             
             var usersAccounts = { "rows" : [] };
