@@ -78,7 +78,7 @@ function onDeviceReady() {
     
     History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
         var State = History.getState(); // Note: We are using History.getState() instead of event.state
-        //log ( "State Change " + JSON.stringify(State) ) 
+        log ( "State Change " + JSON.stringify(State) ) 
         if (currentpage != State.data.pageTitle) {
         	log ( "updated DOM doc:" + currentpage + "state:" + State.data.pageTitle)
         	document.getElementById( "content" ).innerHTML = State.data.html;
@@ -109,11 +109,9 @@ function onDeviceReady() {
     				//call the function with the arguments
     				jsFunc(args);
     			}
-    			
     		}
-    			
         }
-    });
+    } );
     
 	} catch(e) {
 		// var e = new Error("This is a new Error I would like a error report about");
