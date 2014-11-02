@@ -925,7 +925,7 @@ function goIndex(parameters) {
 	
 	log ("current page index:" + History.getCurrentIndex())
 	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
-	log ("current page history:" + JSON.stringify(History.savedStates))
+	log ("current page history:" + JSON.stringify(History.savedStates.length))
 
 	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : "goIndex", "pageParameters" : [] }
 	
