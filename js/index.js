@@ -89,7 +89,13 @@ function onDeviceReady() {
     			log("typeof pageFunction:" + typeof State.data.pageFunction ) 
     			log("pageFunction:" + State.data.pageFunction)
     			if (State.data.pageFunction && typeof State.data.pageFunction === 'string') {
-    				eval(State.data.pageFunction);
+    				//eval(State.data.pageFunction);
+    				
+    				// find object
+    				var fn = window[State.data.pageFunction];
+    				 
+    				// is object a function?
+    				if (typeof fn === "function") fn(State.data.pageParameters);
     			}
     			
     			//if (State.data.pageFunction && (typeof State.data.pageFunction === 'string') && State.data.pageFunction.indexOf("function") === 0) {
@@ -912,7 +918,7 @@ function goIndex(parameters) {
 	if (currentIndex > 0)
 		window.History.go( -currentIndex ); // Return at the beginning
 
-	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : "goIndex([])", "pageParameters" : [] }
+	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : "goIndex", "pageParameters" : [] }
 	
 	processAjaxData( response, "index.html" )
 	
@@ -958,7 +964,7 @@ function goIndex(parameters) {
 	            //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
 	            
 	            var response = {
-	            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goIndex([])", "pageParameters" : []
+	            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goIndex", "pageParameters" : []
 	        	}
 	            
 	            updateAjaxData( response, "index.html" )
