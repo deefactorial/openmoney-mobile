@@ -918,23 +918,23 @@ function goIndex(parameters) {
 	
 	resetChangeTrackers();
 		
-	var currentIndex = parseInt( History.getCurrentIndex() );
+//	var currentIndex = parseInt( History.getCurrentIndex() );
 	
-	if (currentIndex > 0) {
-		log ("History page go -" + currentIndex.toString() )
+//	if (currentIndex > 0) {
+//		log ("History page go -" + currentIndex.toString() )
 //		History.go( -currentIndex ); // Return at the beginning
 //		for(var i = currentIndex; i > 0; i --) {
 //			History.back()
 //		}
-	}
+//	}
 		
 	
-	log ("current page index:" + History.getCurrentIndex())
-	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
-	log ("current page history:" + JSON.stringify(History.savedStates.length))
-	History.savedStates.forEach(function(state) {
-		log ("State page hash:" + state.hash)
-	})
+//	log ("current page index:" + History.getCurrentIndex())
+//	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
+//	log ("current page history:" + JSON.stringify(History.savedStates.length))
+//	History.savedStates.forEach(function(state) {
+//		log ("State page hash:" + state.hash)
+//	})
 
 	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : "goIndex", "pageParameters" : [] }
 	
@@ -1122,7 +1122,7 @@ function goList(parameters) {
 	
 	if (currentpage != pageTitle) {
 		log ("post page goList")
-		var currentIndex = parseInt(window.History.getCurrentIndex());
+//		var currentIndex = parseInt(window.History.getCurrentIndex());
 		
 		//if (currentIndex > 1)
 			//window.History.go( 1 - currentIndex ); // Return at the beginning
@@ -1133,7 +1133,7 @@ function goList(parameters) {
 	
 	} else {
 		log ("update page goList")
-		var currentIndex = parseInt(window.History.getCurrentIndex());
+//		var currentIndex = parseInt(window.History.getCurrentIndex());
 		
 		//if (currentIndex > 1)
 			//window.History.go( 1 - currentIndex ); // Return at the beginning
@@ -1145,11 +1145,11 @@ function goList(parameters) {
 		updateAjaxData( response, "account_details.html" )
 	}
 	
-	log ("current page index:" + History.getCurrentIndex())
-	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
-    History.savedStates.forEach(function(state) {
-		log ("State page hash:" + state.hash)
-	})
+//	log ("current page index:" + History.getCurrentIndex())
+//	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
+//    History.savedStates.forEach(function(state) {
+//		log ("State page hash:" + state.hash)
+//	})
 	
 	
     $( "#content .todo-index" ).off("click").click( function() {
