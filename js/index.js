@@ -1109,13 +1109,13 @@ function goList(parameters) {
 		if (currentIndex > 1)
 			window.History.go( 1 - currentIndex ); // Return at the beginning
 	
-		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
+		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : "goList", "pageParameters" : [ id ] }
 		
 		processAjaxData( response, "account_details.html" )
 	
 	} else {
 		
-		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : goList.toString(), "pageParameters" : [ id ] }
+		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : "goList", "pageParameters" : [ id ] }
 		
 		drawContent( response.html );
 		
@@ -1151,7 +1151,7 @@ function goList(parameters) {
                 drawContainer( "#list-title",  config.t.listTitle( doc )  )
                                 
                 var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goList", "pageParameters" : [ id ]
                 }
             
                 updateAjaxData( response , "account_details.html")
@@ -1189,7 +1189,7 @@ function goList(parameters) {
                 drawContainer( "#scrollable", config.t.listItems( view ) )
                 
                 var response = {
-            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goList.toString(), "pageParameters" : [ id ]
+            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goList", "pageParameters" : [ id ]
                 }
             	
             	updateAjaxData( response , "account_details.html")
@@ -1370,13 +1370,13 @@ function goServerLogin(parameters) {
 	
 	if (currentpage != pageTitle) {
     
-		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : "goServerLogin([" + callBack.toString() + "])", "pageParameters" : [ callBack.toString() ]  };
+		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : "goServerLogin", "pageParameters" : [ callBack.toString() ]  };
 		
 		processAjaxData( response, "login.html" )
 		
 	} else {
 		
-		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : "goServerLogin([" + callBack.toString() + "])", "pageParameters" : [ callBack.toString() ]  };
+		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : "goServerLogin", "pageParameters" : [ callBack.toString() ]  };
 		
 		drawContent( response.html );
 		
@@ -1434,13 +1434,13 @@ function goServerRegistration(parameters) {
 	
 	if (currentpage != pageTitle) {
     
-		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : "goServerRegistration([" + callBack.toString() + "])", "pageParameters" : [ callBack.toString() ]  }
+		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : "goServerRegistration", "pageParameters" : [ callBack.toString() ]  }
 		
 		processAjaxData( response, "registration.html" )
 		
 	} else {
 		
-		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" :"goServerRegistration([" + callBack.toString() + "])", "pageParameters" : [ callBack.toString() ]  }
+		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" :"goServerRegistration", "pageParameters" : [ callBack.toString() ]  }
 		
 		drawContent( response.html );
 		
@@ -1522,13 +1522,13 @@ function goLostPassword(parameters) {
 	
 	if (History.getState().data.pageTite != pageTitle) {
 	
-		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : "goLostPassword([" + callBack.toString() + "])", "pageParameters" : [ callBack.toString() ]  }
+		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : "goLostPassword", "pageParameters" : [ callBack.toString() ]  }
 		
 		processAjaxData( response, "lost.html" )
 		
 	} else {
 		
-		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : "goLostPassword([" + callBack.toString() + "])", "pageParameters" : [ callBack.toString() ]  }
+		var response = { "html" : config.t.lost(), "pageTitle" : pageTitle, "pageFunction" : "goLostPassword", "pageParameters" : [ callBack.toString() ]  }
 		
 		drawContent( response.html );
 		
@@ -1603,14 +1603,14 @@ function goSettings(parameters) {
 	
 	if (currentpage != pageTitle) {
 		
-		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : "goSettings([])", "pageParameters" : [] }
+		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : "goSettings", "pageParameters" : [] }
 		
 		processAjaxData( response, "settings.html" )
 		
 		
 	} else {
 		
-		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : "goSettings([])", "pageParameters" : [] }
+		var response = { "html" : config.t.settings(), "pageTitle" : pageTitle, "pageFunction" : "goSettings", "pageParameters" : [] }
 		
 		drawContent( response.html );
 		
@@ -1742,13 +1742,13 @@ function goManageAccounts(parameters) {
 	
 	if (currentpage != pageTitle) {
     
-		var response = { "html" : config.t.manage_accounts(), "pageTitle" : pageTitle, "pageFunction" : "goManageAccounts([])", "pageParameters" : [ ]  };
+		var response = { "html" : config.t.manage_accounts(), "pageTitle" : pageTitle, "pageFunction" : "goManageAccounts", "pageParameters" : [ ]  };
 		
 		processAjaxData( response, "manage_accounts.html" )
 		
 	} else {
 		
-		var response = { "html" : config.t.manage_accounts(), "pageTitle" : pageTitle, "pageFunction" : "goManageAccounts([])", "pageParameters" : [ ]  };
+		var response = { "html" : config.t.manage_accounts(), "pageTitle" : pageTitle, "pageFunction" : "goManageAccounts", "pageParameters" : [ ]  };
 		
 		drawContent( response.html );
 		
@@ -1794,7 +1794,7 @@ function goManageAccounts(parameters) {
             drawContainer( "div#accounts_list" , config.t.accounts_list( usersAccounts ) )
 
             var response = {
-        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : pageTitle, "pageFunction" :  "goManageAccounts([])", "pageParameters" : [ ]
+        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : pageTitle, "pageFunction" :  "goManageAccounts", "pageParameters" : [ ]
             }
         
             updateAjaxData( response , "manage_accounts.html")
@@ -1820,7 +1820,7 @@ function goManageAccounts(parameters) {
             drawContainer( "div#currencies_list" , config.t.currencies_list( view ) )
             
             var response = {
-        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" :  "goManageAccounts([])", "pageParameters" : [ ]
+        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" :  "goManageAccounts", "pageParameters" : [ ]
             }
         
             updateAjaxData( response , "manage_accounts.html")
@@ -1843,7 +1843,7 @@ function goManageAccounts(parameters) {
             drawContainer( "div#spaces_list", config.t.spaces_list( view ) )
             
             var response = {
-        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goManageAccounts([])", "pageParameters" : [ ]
+        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goManageAccounts", "pageParameters" : [ ]
             }
         
             updateAjaxData( response , "manage_accounts.html")
@@ -2039,13 +2039,13 @@ function goCreateAccount(parameters) {
 	
 	if (currentpage != pageTitle) {
     
-		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : "goCreateAccount([" + JSON.stringify( doc ) + "])", "pageParameters" : [ JSON.parse( JSON.stringify( doc ) ) ]  } ;
+		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : "goCreateAccount", "pageParameters" : [ JSON.parse( JSON.stringify( doc ) ) ]  } ;
 		
 		processAjaxData( response, "create.html" )
 		
 	} else {
 		
-		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : "goCreateAccount([" + JSON.stringify( doc ) + "])", "pageParameters" : [ JSON.parse( JSON.stringify( doc ) ) ]  } ;
+		var response = { "html" : config.t.create_account( view ), "pageTitle" : pageTitle, "pageFunction" : "goCreateAccount", "pageParameters" : [ JSON.parse( JSON.stringify( doc ) ) ]  } ;
 		
 		drawContent( response.html );
 		
@@ -2321,7 +2321,7 @@ function goCreateAccount(parameters) {
     	}
         
         var response = {
-			"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : pageTitle, "pageFunction" : "goCreateAccount([" + JSON.stringify( doc ) + "])", "pageParameters" : [ doc ]
+			"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : pageTitle, "pageFunction" : "goCreateAccount", "pageParameters" : [ doc ]
 	    }
 	
 	    updateAjaxData( response , "create.html")
@@ -2340,13 +2340,13 @@ function goAddCurrency(parameters) {
 	
 	if (currentpage != pageTitle) {
     
-		var response = { "html" : config.t.add_currency( ), "pageTitle" : pageTitle, "pageFunction" : "goAddCurrency([])", "pageParameters" : [ ]  };
+		var response = { "html" : config.t.add_currency( ), "pageTitle" : pageTitle, "pageFunction" : "goAddCurrency", "pageParameters" : [ ]  };
 		
 		processAjaxData( response, "add_currency.html" )
 		
 	} else {
 		
-		var response = { "html" : config.t.add_currency( ), "pageTitle" : pageTitle, "pageFunction" : "goAddCurrency([])", "pageParameters" : [ ]  };
+		var response = { "html" : config.t.add_currency( ), "pageTitle" : pageTitle, "pageFunction" : "goAddCurrency", "pageParameters" : [ ]  };
 		
 		drawContent( response.html );
 		
@@ -2776,13 +2776,13 @@ function goProfile(parameters) {
 		
 		if (currentpage != pageTitle) {
 	    
-			var response = { "html" : config.t.profile( profile ), "pageTitle" : pageTitle, "pageFunction" : "goProfile([])", "pageParameters" : [ ]  };
+			var response = { "html" : config.t.profile( profile ), "pageTitle" : pageTitle, "pageFunction" : "goProfile", "pageParameters" : [ ]  };
 			
 			processAjaxData( response, "profile.html" )
 			
 		} else {
 			
-			var response = { "html" : config.t.profile( profile ), "pageTitle" : pageTitle, "pageFunction" : "goProfile([])", "pageParameters" : [ ]  };
+			var response = { "html" : config.t.profile( profile ), "pageTitle" : pageTitle, "pageFunction" : "goProfile", "pageParameters" : [ ]  };
 			
 			drawContent( response.html );
 			
@@ -2887,13 +2887,13 @@ function goManageNFC(parameters) {
 			
 			if (currentpage != pageTitle) {
 		    
-				var response = { "html" : config.t.manage_nfc( view )  , "pageTitle" : pageTitle, "pageFunction" : "goManageNFC([])", "pageParameters" : [ ]  };
+				var response = { "html" : config.t.manage_nfc( view )  , "pageTitle" : pageTitle, "pageFunction" : "goManageNFC", "pageParameters" : [ ]  };
 				
 				processAjaxData( response, "manage_nfc.html" )
 				
 			} else {
 				
-				var response = { "html" : config.t.manage_nfc( view )  , "pageTitle" : pageTitle, "pageFunction" : "goManageNFC([])", "pageParameters" : [ ]  };
+				var response = { "html" : config.t.manage_nfc( view )  , "pageTitle" : pageTitle, "pageFunction" : "goManageNFC", "pageParameters" : [ ]  };
 				
 				drawContent( response.html );
 				
@@ -3180,13 +3180,13 @@ function goNewNFC(parameters) {
 			
 			if (currentpage != pageTitle) {
 		    
-				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : "goNewNFC([])", "pageParameters" : [ ]  };
+				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : "goNewNFC", "pageParameters" : [ ]  };
 				
 				processAjaxData( response, "new_nfc.html" )
 				
 			} else {
 				
-				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : "goNewNFC([])", "pageParameters" : [ ]  };
+				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : "goNewNFC", "pageParameters" : [ ]  };
 				
 				drawContent( response.html );
 				
@@ -3461,13 +3461,13 @@ function goEditNFC(parameters) {
 				
 				if (currentpage != pageTitle) {
 			    
-					var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : "goEditNFC([" + id.toString() + "])", "pageParameters" : [ id ]  };
+					var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : "goEditNFC", "pageParameters" : [ id ]  };
 					
 					processAjaxData( response, "edit_nfc.html" )
 					
 				} else {
 					
-					var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : "goEditNFC([" + id.toString() + "])", "pageParameters" : [ id ]  };
+					var response = { "html" : config.t.edit_nfc( thisTag )  , "pageTitle" : pageTitle, "pageFunction" : "goEditNFC", "pageParameters" : [ id ]  };
 					
 					drawContent( response.html );
 					
@@ -3689,13 +3689,13 @@ function goPayment(parameters) {
 			
 			if (currentpage != pageTitle) {
 		    
-				var response = { "html" : config.t.payment( thisUsersAccounts )  , "pageTitle" : pageTitle, "pageFunction" : "goPayment([])", "pageParameters" : [ ]  };
+				var response = { "html" : config.t.payment( thisUsersAccounts )  , "pageTitle" : pageTitle, "pageFunction" : "goPayment", "pageParameters" : [ ]  };
 				
 				processAjaxData( response, "payment.html" )
 				
 			} else {
 				
-				var response = { "html" : config.t.payment( thisUsersAccounts )  , "pageTitle" : pageTitle, "pageFunction" : "goPayment([])", "pageParameters" : [ ]  };
+				var response = { "html" : config.t.payment( thisUsersAccounts )  , "pageTitle" : pageTitle, "pageFunction" : "goPayment", "pageParameters" : [ ]  };
 				
 				drawContent( response.html );
 				
@@ -3900,7 +3900,7 @@ function goTagPayment(parameters) {
 		    
 				var response = { "html" : config.t.tagpayment( {
 		            "fromAccounts" : fromAccounts, "toAccounts" : toAccounts
-		        } )   , "pageTitle" : pageTitle, "pageFunction" : "goTagPayment([" + JSON.stringify( tradingNames ) + "])", "pageParameters" : [ tradingNames ]  };
+		        } )   , "pageTitle" : pageTitle, "pageFunction" : "goTagPayment", "pageParameters" : [ tradingNames ]  };
 				
 				processAjaxData( response, "tag_payment.html" )
 				
@@ -3908,7 +3908,7 @@ function goTagPayment(parameters) {
 				
 				var response = { "html" : config.t.tagpayment( {
 		            "fromAccounts" : fromAccounts, "toAccounts" : toAccounts
-		        } )   , "pageTitle" : pageTitle, "pageFunction" : "goTagPayment([" + JSON.stringify( tradingNames ) + "])", "pageParameters" : [ tradingNames ]  };
+		        } )   , "pageTitle" : pageTitle, "pageFunction" : "goTagPayment", "pageParameters" : [ tradingNames ]  };
 				
 				drawContent( response.html );
 				
@@ -4140,13 +4140,13 @@ function goMerchantPayment(parameters) {
 			
 			if (currentpage != pageTitle) {
 		    
-				var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : "goMerchantPayment([" + JSON.stringify( fromAccounts ) + "])", "pageParameters" : [ fromAccounts ]  };
+				var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : "goMerchantPayment", "pageParameters" : [ fromAccounts ]  };
 				
 				processAjaxData( response, "merchant_payment.html" )
 				
 			} else {
 				
-				var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : "goMerchantPayment([" + JSON.stringify( fromAccounts ) + "])", "pageParameters" : [ fromAccounts ]  };
+				var response = { "html" :  config.t.merchant_payment( accounts )  , "pageTitle" : pageTitle, "pageFunction" : "goMerchantPayment", "pageParameters" : [ fromAccounts ]  };
 				
 				drawContent( response.html );
 				
@@ -4419,7 +4419,7 @@ function goCustomerPayment(parameters) {
     
     var response = { "html" :  config.t.customer_payment( {
         "amount" : doc.amount, "currency" : doc.currency
-    } ) , "pageTitle" : pageTitle, "pageFunction" : "goCustomerPayment([" + JSON.stringify( doc ) + "])", "pageParameters" : [ doc ]  };
+    } ) , "pageTitle" : pageTitle, "pageFunction" : "goCustomerPayment", "pageParameters" : [ doc ]  };
 	
 	processAjaxData( response, "customer_payment.html" )
     
