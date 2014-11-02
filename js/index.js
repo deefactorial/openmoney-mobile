@@ -98,6 +98,8 @@ function onDeviceReady() {
     				if (typeof fn === "function") {
     					log ("pageParameters:" + JSON.stringify( State.data.pageParameters ))
     					fn(State.data.pageParameters);
+    				} else {
+    					log ("error page Fuction is not a function " + typeof fn)
     				}
     			}
     			
