@@ -1129,7 +1129,7 @@ function goList(parameters) {
 	
     
     $( "#content .todo-index" ).off("click").click( function() {
-    	log ("Back Clicked")
+    	log ("Back Clicked" + window.History.getCurrentIndex())
         History.back()
     } )
 
