@@ -1119,6 +1119,10 @@ function goList(parameters) {
 		processAjaxData( response, "account_details.html" )
 	
 	} else {
+		var currentIndex = window.History.getCurrentIndex();
+		
+		if (currentIndex > 1)
+			window.History.go( 1 - currentIndex ); // Return at the beginning
 		
 		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : "goList", "pageParameters" : [ id ] }
 		
