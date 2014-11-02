@@ -87,28 +87,32 @@ function onDeviceReady() {
     		if(typeof State.data.pageFunction != 'undefined') {
     			//eval(State.data.pageFunction);
     			
-    			if (State.data.pageFunction && (typeof State.data.pageFunction === 'string') && State.data.pageFunction.indexOf("function") === 0) {
-    				//this makes the function back into a function from a string.
-    				var jsFunc = new Function("parameters",'return ' + State.data.pageFunction)();
-    				var args = new Array();
-    				
-    				if (State.data.pageParameters && Object.prototype.toString.call( State.data.pageParameters ) === Object.prototype.toString.call( [] ) ) {
-    					log (" State Parameters:" + JSON.stringify( State.data.pageParameters ) )
-    					State.data.pageParameters.forEach( function( parameter ) {
-    						log("Parameter:" + JSON.stringify( parameter ) )
-    						if(typeof parameter === 'string' && parameter.indexOf("function") === 0){
-    							//if the parameter is a function make it back into one.
-    							args.push( new Function('return ' + parameter)() );
-    						} else {
-    							if (parameter != null)
-    								args.push( parameter );
-    						}
-    					} )
-    					log (" Arguments:" + JSON.stringify( args ) )
-    				}
-    				//call the function with the arguments
-    				jsFunc(args);
+    			if (State.data.pageFunction && typeof State.data.pageFunction === 'string') {
+    				eval(State.data.pageFunction);
     			}
+    			
+    			//if (State.data.pageFunction && (typeof State.data.pageFunction === 'string') && State.data.pageFunction.indexOf("function") === 0) {
+    				//this makes the function back into a function from a string.
+//    				var jsFunc = new Function("parameters",'return ' + State.data.pageFunction)();
+//    				var args = new Array();
+//    				
+//    				if (State.data.pageParameters && Object.prototype.toString.call( State.data.pageParameters ) === Object.prototype.toString.call( [] ) ) {
+//    					log (" State Parameters:" + JSON.stringify( State.data.pageParameters ) )
+//    					State.data.pageParameters.forEach( function( parameter ) {
+//    						log("Parameter:" + JSON.stringify( parameter ) )
+//    						if(typeof parameter === 'string' && parameter.indexOf("function") === 0){
+//    							//if the parameter is a function make it back into one.
+//    							args.push( new Function('return ' + parameter)() );
+//    						} else {
+//    							if (parameter != null)
+//    								args.push( parameter );
+//    						}
+//    					} )
+//    					log (" Arguments:" + JSON.stringify( args ) )
+//    				}
+//    				//call the function with the arguments
+//    				jsFunc(args);
+    			//}
     		}
         }
     } );
@@ -907,7 +911,7 @@ function goIndex(parameters) {
 	if (currentIndex > 0)
 		window.History.go( -currentIndex ); // Return at the beginning
 
-	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : goIndex.toString(), "pageParameters" : [] }
+	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : "goIndex([])", "pageParameters" : [] }
 	
 	processAjaxData( response, "index.html" )
 	
