@@ -921,10 +921,11 @@ function goIndex(parameters) {
 	var currentIndex = parseInt( History.getCurrentIndex() );
 	
 	if (currentIndex > 0)
-		History.go( -currentIndex + 1 ); // Return at the beginning
+		History.go( 1 - currentIndex ); // Return at the beginning
 	
 	log ("current page index:" + History.getCurrentIndex())
 	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
+	log ("current page history:" + JSON.stringify(History.savedStates))
 
 	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : "goIndex", "pageParameters" : [] }
 	
