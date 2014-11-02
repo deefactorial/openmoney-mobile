@@ -86,7 +86,8 @@ function onDeviceReady() {
     		//call the function of the page it's supposed to be on with the parameters of the page
     		if(typeof State.data.pageFunction != 'undefined') {
     			//eval(State.data.pageFunction);
-    			
+    			log("typeof pageFunction:" + typeof State.data.pageFunction ) 
+    			log("pageFunction:" + State.data.pageFunction)
     			if (State.data.pageFunction && typeof State.data.pageFunction === 'string') {
     				eval(State.data.pageFunction);
     			}
