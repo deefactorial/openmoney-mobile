@@ -921,11 +921,11 @@ function goIndex(parameters) {
 	var currentIndex = parseInt( History.getCurrentIndex() );
 	
 	if (currentIndex > 0) {
-		log ("History page go =" + currentIndex.toString() )
-		//History.go( - currentIndex ); // Return at the beginning
-		for(var i = currentIndex; i > 0; i --) {
-			History.back()
-		}
+		log ("History page go -" + currentIndex.toString() )
+		History.go( - currentIndex ); // Return at the beginning
+//		for(var i = currentIndex; i > 0; i --) {
+//			History.back()
+//		}
 	}
 		
 	
