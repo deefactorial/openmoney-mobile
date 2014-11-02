@@ -1129,6 +1129,7 @@ function goList(parameters) {
 	
     
     $( "#content .todo-index" ).off("click").click( function() {
+    	log ("Back Clicked")
         History.back()
     } )
 
