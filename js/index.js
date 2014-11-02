@@ -918,10 +918,10 @@ function goIndex(parameters) {
 	
 	resetChangeTrackers();
 		
-	var currentIndex = parseInt( window.History.getCurrentIndex() );
+	var currentIndex = parseInt( History.getCurrentIndex() );
 	
 	if (currentIndex > 0)
-		window.History.go( -currentIndex ); // Return at the beginning
+		History.go( 0 ); // Return at the beginning
 	
 	log ("current page index:" + History.getCurrentIndex())
 	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
