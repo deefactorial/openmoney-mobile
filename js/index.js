@@ -920,8 +920,11 @@ function goIndex(parameters) {
 		
 	var currentIndex = parseInt( History.getCurrentIndex() );
 	
-	if (currentIndex > 0)
-		History.go( 1 - currentIndex ); // Return at the beginning
+	if (currentIndex > 0) {
+		History.go( - currentIndex ); // Return at the beginning
+		return false;
+	}
+		
 	
 	log ("current page index:" + History.getCurrentIndex())
 	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
