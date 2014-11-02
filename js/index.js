@@ -95,7 +95,10 @@ function onDeviceReady() {
     				var fn = window[State.data.pageFunction];
     				 
     				// is object a function?
-    				if (typeof fn === "function") fn(State.data.pageParameters);
+    				if (typeof fn === "function") {
+    					log ("pageParameters:" + JSON.stringify( State.data.pageParameters ))
+    					fn(State.data.pageParameters);
+    				}
     			}
     			
     			//if (State.data.pageFunction && (typeof State.data.pageFunction === 'string') && State.data.pageFunction.indexOf("function") === 0) {
