@@ -922,7 +922,7 @@ function goIndex(parameters) {
 	
 	if (currentIndex > 0) {
 		log ("History page go -" + currentIndex.toString() )
-		History.go( -currentIndex ); // Return at the beginning
+//		History.go( -currentIndex ); // Return at the beginning
 //		for(var i = currentIndex; i > 0; i --) {
 //			History.back()
 //		}
@@ -1124,8 +1124,8 @@ function goList(parameters) {
 		log ("post page goList")
 		var currentIndex = parseInt(window.History.getCurrentIndex());
 		
-		if (currentIndex > 1)
-			window.History.go( 1 - currentIndex ); // Return at the beginning
+		//if (currentIndex > 1)
+			//window.History.go( 1 - currentIndex ); // Return at the beginning
 	
 		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : "goList", "pageParameters" : [ id ] }
 		
@@ -1135,8 +1135,8 @@ function goList(parameters) {
 		log ("update page goList")
 		var currentIndex = parseInt(window.History.getCurrentIndex());
 		
-		if (currentIndex > 1)
-			window.History.go( 1 - currentIndex ); // Return at the beginning
+		//if (currentIndex > 1)
+			//window.History.go( 1 - currentIndex ); // Return at the beginning
 		
 		var response = { "html" : config.t.list( ) , "pageTitle" : pageTitle, "pageFunction" : "goList", "pageParameters" : [ id ] }
 		
