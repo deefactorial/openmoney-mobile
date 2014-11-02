@@ -922,7 +922,7 @@ function goIndex(parameters) {
 	
 	if (currentIndex > 0) {
 		log ("History page go -" + currentIndex.toString() )
-		History.go( - currentIndex ); // Return at the beginning
+		History.go( -currentIndex ); // Return at the beginning
 //		for(var i = currentIndex; i > 0; i --) {
 //			History.back()
 //		}
@@ -932,6 +932,9 @@ function goIndex(parameters) {
 	log ("current page index:" + History.getCurrentIndex())
 	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
 	log ("current page history:" + JSON.stringify(History.savedStates.length))
+	History.savedStates.forEach(function(state) {
+		log ("State page hash:" + state.hash)
+	})
 
 	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : "goIndex", "pageParameters" : [] }
 	
