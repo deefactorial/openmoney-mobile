@@ -1147,7 +1147,11 @@ function goList(parameters) {
 	
 	log ("current page index:" + History.getCurrentIndex())
 	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
-    
+    History.savedStates.forEach(function(state) {
+		log ("State page hash:" + state.hash)
+	})
+	
+	
     $( "#content .todo-index" ).off("click").click( function() {
     	log ("Back Clicked" + window.History.getCurrentIndex())
         History.back()
