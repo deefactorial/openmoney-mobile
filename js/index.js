@@ -921,8 +921,9 @@ function goIndex(parameters) {
 	var currentIndex = parseInt( History.getCurrentIndex() );
 	
 	if (currentIndex > 0) {
+		log ("History go =" + currentIndex.toString() )
 		History.go( - currentIndex ); // Return at the beginning
-		return false;
+		
 	}
 		
 	
