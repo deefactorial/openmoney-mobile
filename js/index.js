@@ -958,7 +958,7 @@ function goIndex(parameters) {
 	            //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
 	            
 	            var response = {
-	            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : goIndex.toString(), "pageParameters" : []
+	            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goIndex([])", "pageParameters" : []
 	        	}
 	            
 	            updateAjaxData( response, "index.html" )
