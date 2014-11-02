@@ -918,13 +918,13 @@ function goIndex(parameters) {
 	
 	resetChangeTrackers();
 		
-	var currentIndex = window.History.getCurrentIndex();
+	var currentIndex = parseInt( window.History.getCurrentIndex() );
 	
 	if (currentIndex > 0)
 		window.History.go( -currentIndex ); // Return at the beginning
 	
 	log ("current page index:" + History.getCurrentIndex())
-	log ("current page state:" + History.getStateByIndex())
+	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
 
 	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : "goIndex", "pageParameters" : [] }
 	
@@ -1112,7 +1112,7 @@ function goList(parameters) {
 	
 	if (currentpage != pageTitle) {
 		
-		var currentIndex = window.History.getCurrentIndex();
+		var currentIndex = parseInt(window.History.getCurrentIndex());
 		
 		if (currentIndex > 1)
 			window.History.go( 1 - currentIndex ); // Return at the beginning
@@ -1122,7 +1122,7 @@ function goList(parameters) {
 		processAjaxData( response, "account_details.html" )
 	
 	} else {
-		var currentIndex = window.History.getCurrentIndex();
+		var currentIndex = parseInt(window.History.getCurrentIndex());
 		
 		if (currentIndex > 1)
 			window.History.go( 1 - currentIndex ); // Return at the beginning
@@ -1134,6 +1134,8 @@ function goList(parameters) {
 		updateAjaxData( response, "account_details.html" )
 	}
 	
+	log ("current page index:" + History.getCurrentIndex())
+	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
     
     $( "#content .todo-index" ).off("click").click( function() {
     	log ("Back Clicked" + window.History.getCurrentIndex())
