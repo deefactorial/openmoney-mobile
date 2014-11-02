@@ -1111,7 +1111,7 @@ function goList(parameters) {
 	var pageTitle = "Account Details";
 	
 	if (currentpage != pageTitle) {
-		
+		log ("post page goList")
 		var currentIndex = parseInt(window.History.getCurrentIndex());
 		
 		if (currentIndex > 1)
@@ -1122,6 +1122,7 @@ function goList(parameters) {
 		processAjaxData( response, "account_details.html" )
 	
 	} else {
+		log ("update page goList")
 		var currentIndex = parseInt(window.History.getCurrentIndex());
 		
 		if (currentIndex > 1)
