@@ -439,8 +439,14 @@ function connectToChanges() {
 	        connectToChanges();
 	        return false;
 	    }
-	    if (change)
-	        lastSeq = change.seq;
+	    if (change) {
+	    	lastSeq = change.seq;
+	    	log("Change sequence: " + lastSeq);
+	    	config.db.get("", function (error,doc) {
+	    		log( "Change sequence db:" + JSON.stringify( [error, doc] ) )
+	    	} )
+	    }
+	        
 	    
 	    log( "connectToChanges:" + JSON.stringify( change ) )
 	    
