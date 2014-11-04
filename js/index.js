@@ -363,54 +363,54 @@ function resetChangeTrackers() {
 	}
 	window.dbChangedProfile = function() {}
 	window.dbChangedTags = function() {
-		if (!tagsViewLock) {
-			tagsViewLock = true;
-			var waitForOthersTags = function () {
-				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-					setTimeout( function () { waitForOthersTags(); }, 1000 )
-				} else {
-					setTimeout(function () { 
-						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-							setTimeout( function () { waitForOthersTags(); }, 1000 )
-						} else {
-							config.views( [ "nfc_tags", {
-			    	        } ], function(error, tags) {
-			    				tagsViewLock = false;
-			    				//index view
-			    				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
-			    			} );
-						}
-					}, 1000);
-				}
-			}
-			waitForOthersTags();
-		}
+//		if (!tagsViewLock) {
+//			tagsViewLock = true;
+//			var waitForOthersTags = function () {
+//				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+//					setTimeout( function () { waitForOthersTags(); }, 1000 )
+//				} else {
+//					setTimeout(function () { 
+//						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+//							setTimeout( function () { waitForOthersTags(); }, 1000 )
+//						} else {
+//							config.views( [ "nfc_tags", {
+//			    	        } ], function(error, tags) {
+//			    				tagsViewLock = false;
+//			    				//index view
+//			    				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
+//			    			} );
+//						}
+//					}, 1000);
+//				}
+//			}
+//			waitForOthersTags();
+//		}
 
 	}
 	window.dbChangedBeams = function() {
-		if (!beamsViewLock) {
-			beamsViewLock = true;
-			var waitForOthersBeams = function () {
-				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-					setTimeout( function () { waitForOthersBeams(); }, 1000 )
-				} else {
-					setTimeout(function () { 
-						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-							setTimeout( function () { waitForOthersBeams(); }, 1000 )
-						} else {
-							config.views( [ "user_tags", {
-					        } ], function(error, beam) {
-								beamsViewLock = false;
-								//index view
-								log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
-							} );
-						}
-					}, 1000);
-				}
-			}
-			waitForOthersBeams();
-
-		}
+//		if (!beamsViewLock) {
+//			beamsViewLock = true;
+//			var waitForOthersBeams = function () {
+//				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+//					setTimeout( function () { waitForOthersBeams(); }, 1000 )
+//				} else {
+//					setTimeout(function () { 
+//						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+//							setTimeout( function () { waitForOthersBeams(); }, 1000 )
+//						} else {
+//							config.views( [ "user_tags", {
+//					        } ], function(error, beam) {
+//								beamsViewLock = false;
+//								//index view
+//								log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
+//							} );
+//						}
+//					}, 1000);
+//				}
+//			}
+//			waitForOthersBeams();
+//
+//		}
 	}
 }
 
@@ -707,8 +707,9 @@ function connectToChanges() {
 	    		
 	    		if (change.doc._deleted && typeof change.doc._conflicts == 'undefined') {
 	    			var trading_name = change.doc._id.substring(change.doc._id.indexOf(",") + 1,change.doc._id.lastIndexOf(","))
-	    			var currency = change.doc._id.subscript(change.doc._id.lastIndexOf(","), change.doc._id.length)
+	    			var currency = change.doc._id.substring(change.doc._id.lastIndexOf(",") + 1, change.doc._id.length)
 	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
+	    			//this will need a lookup on the previous doc to make sure that this is not this users doc.
 	    			navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
 		    				function() { 
 								log(JSON.stringify(change))
