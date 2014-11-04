@@ -5581,8 +5581,8 @@ function triggerSync(cb, retryCount) {
     	log("push sync connected handler called")
         pullSync.start()
     } )
-    pushSync.on( "started", function() {
-    	
+    pushSync.on( "started", function( info ) {
+    	log("pushSync started handler called" + JSON.stringify( info ) )
     } )
     pullSync.on( "error", function(err) {
     	log("Pull Sync Error:" + err)
@@ -5593,8 +5593,8 @@ function triggerSync(cb, retryCount) {
     	log("pull sync connected handler called")
         cb()
     } )
-    pullSync.on( "started", function() {
-    	
+    pullSync.on( "started", function( info ) {
+    	log("pullSync started handler called" + JSON.stringify( info ) )
     } )
 
     pushSync.start()
