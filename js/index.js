@@ -718,7 +718,7 @@ function connectToChanges() {
 		    	    
 	    		}
 	    		window.dbChangedProfile();
-	    	} else if (change.doc._id.substring(0,change.doc._id.indexOf(",")) == 'trading_name') {
+	    	} else if (typeof change.doc._id != 'undefined' && change.doc._id.substring(0,change.doc._id.indexOf(",")) == 'trading_name') {
 	    		//onlyCallChange if it's the users trading name that changed.
 	    		
 	    		if (change.doc._deleted && typeof change.doc._conflicts == 'undefined') {
