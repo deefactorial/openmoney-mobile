@@ -731,25 +731,23 @@ function connectToChanges() {
 	    				log( "Changed Trading Name Document" + JSON.stringify( doc ) )
 	    				//this will not happen because this user does not have access to the document.
 	    				if (typeof doc._revisions != 'undefined') {
-	    					var alert = false;
-	    					var start = doc._revisions.start;
-	    					doc._revisions.ids.forEach( function(rev) {
-	    						config.db.get([change.doc._id, { "rev": start + "-" + rev } ], function( error, previous) {
-	    							log("Changed Trading Name Document Previous:" + JSON.stringify( [error,previous] ) )
-	    							//if this is my document then log and report it.
-	    							if (previous.steward.indexOf(config.user.name) != -1) {
-	    		    					if (alert == false) {
-	    		    						alert = true;
-	    		    						navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
-	    		    			    				function() { 
-	    		    									log(JSON.stringify(change))
-	    		    									goCreateAccount( [ { "type" : "trading_name" } ] )
-	    		    			    				}, "Taken", "OK")
-	    		    					}
-	    							}
-	    						} )
-	    						start--;
-	    					} )
+	    					
+	    					var start = doc._revisions.start - 1;
+	    					//get the last revision
+    						config.db.get([change.doc._id, { "rev": start + "-" + change.doc._revisions[1] } ], function( error, previous) {
+    							log("Changed Trading Name Document Previous:" + JSON.stringify( [error,previous] ) )
+    							//if this is my document then log and report it.
+    							if (previous.steward.indexOf(config.user.name) != -1) {
+		    						navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
+		    			    				function() { 
+		    									log(JSON.stringify(change))
+		    									goCreateAccount( [ { "type" : "trading_name" } ] )
+		    			    				}, "Taken", "OK")
+    		    					
+    							}
+    						} )
+	    						
+	    					
 	    				}
 	    			} )
 	    			
