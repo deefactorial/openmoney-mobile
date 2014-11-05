@@ -726,30 +726,26 @@ function connectToChanges() {
 	    			var currency = change.doc._id.substring(change.doc._id.lastIndexOf(",") + 1, change.doc._id.length)
 	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
 	    			//this will need a lookup on the previous doc to make sure that this is not this users doc.
-	    			config.db.get([change.doc._id, { "rev":change.doc._rev, "revs" : true } ], function(error, doc) {
-	    				if(error) { return log ("Error getting space revision:" + JSON.stringify( error ) ) }
-	    				log( "Changed Trading Name Document" + JSON.stringify( doc ) )
-	    				//this will not happen because this user does not have access to the document.
-	    				if (typeof doc._revisions != 'undefined') {
-	    					
-	    					var start = doc._revisions.start - 1;
-	    					//get the last revision
-    						config.db.get([change.doc._id, { "rev": start + "-" + change.doc._revisions[1] } ], function( error, previous) {
-    							log("Changed Trading Name Document Previous:" + JSON.stringify( [error,previous] ) )
-    							//if this is my document then log and report it.
-    							if (previous.steward.indexOf(config.user.name) != -1) {
-		    						navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
-		    			    				function() { 
-		    									log(JSON.stringify(change))
-		    									goCreateAccount( [ { "type" : "trading_name" } ] )
-		    			    				}, "Taken", "OK")
-    		    					
-    							}
-    						} )
-	    						
-	    					
-	    				}
-	    			} )
+	    			
+    				log( "Changed Trading Name Document" + JSON.stringify( change.doc ) )
+    				//this will not happen because this user does not have access to the document.
+    				if (typeof change.doc._revisions != 'undefined') {
+    					
+    					var start = change.doc._revisions.start - 1;
+    					//get the last revision
+						config.db.get([change.doc._id, { "rev": start + "-" + change.doc._revisions[1] } ], function( error, previous) {
+							log("Changed Trading Name Document Previous:" + JSON.stringify( [error,previous] ) )
+							//if this is my document then log and report it.
+							if (previous.steward.indexOf(config.user.name) != -1) {
+	    						navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
+	    			    				function() { 
+	    									log(JSON.stringify(change))
+	    									goCreateAccount( [ { "type" : "trading_name" } ] )
+	    			    				}, "Taken", "OK")
+							}
+						} )
+    				}
+	    			
 	    			
 	    		}
 	    		if( typeof change.doc.steward != 'undefined' ) {
