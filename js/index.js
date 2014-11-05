@@ -721,7 +721,7 @@ function connectToChanges() {
 	    	} else if (typeof change.doc._id != 'undefined' && change.doc._id.substring(0,change.doc._id.indexOf(",")) == 'trading_name') {
 	    		//onlyCallChange if it's the users trading name that changed.
 	    		
-	    		if (change.doc._deleted && typeof change.doc._conflicts == 'undefined') {
+	    		if (change.doc._deleted) {
 	    			var trading_name = change.doc._id.substring(change.doc._id.indexOf(",") + 1,change.doc._id.lastIndexOf(","))
 	    			var currency = change.doc._id.substring(change.doc._id.lastIndexOf(",") + 1, change.doc._id.length)
 	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
@@ -735,21 +735,21 @@ function connectToChanges() {
 	    					var start = doc._revisions.start;
 	    					doc._revisions.ids.forEach( function(rev) {
 	    						config.db.get([change.doc._id, { "rev": start + "-" + rev } ], function( error, previous) {
+	    							log("Changed Trading Name Document Previous:" + JSON.stringify( [error,previous] ) )
 	    							//if this is my document then log and report it.
 	    							if (previous.steward.indexOf(config.user.name) != -1) {
-	    								alert = true;
-	    								log("Changed Trading Name Document Previous:" + JSON.stringify( previous ) )
+	    		    					if (alert == false) {
+	    		    						alert = true;
+	    		    						navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
+	    		    			    				function() { 
+	    		    									log(JSON.stringify(change))
+	    		    									goCreateAccount( [ { "type" : "trading_name" } ] )
+	    		    			    				}, "Taken", "OK")
+	    		    					}
 	    							}
 	    						} )
 	    						start--;
 	    					} )
-	    					if (alert) {
-	    						navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
-	    			    				function() { 
-	    									log(JSON.stringify(change))
-	    									goCreateAccount( [ { "type" : "trading_name" } ] )
-	    			    				}, "Taken", "OK")
-	    					}
 	    				}
 	    			} )
 	    			
