@@ -823,7 +823,8 @@ function connectToChanges() {
     config.db.changes( {
     	since : config.info.update_seq,
         conflicts : true,
-        include_docs : true
+        include_docs : true,
+        style: "all_docs"
         
     }, changes)
 }
