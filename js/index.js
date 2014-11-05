@@ -720,26 +720,29 @@ function connectToChanges() {
 	    				if(error) { return log ("Error getting space revision:" + JSON.stringify( error ) ) }
 	    				log( "Changed Trading Name Document" + JSON.stringify( doc ) )
 	    				//this will not happen because this user does not have access to the document.
-	    				if (typeof doc._conflicts != 'undefined') {
-	    					doc._conflicts.forEach( function(rev) {
-	    						config.db.get([change.doc._id, { "rev": rev } ], function( error, conflict) {
-	    							//if this is my document then delete the document.
-	    							if (conflict.steward.indexOf(config.user.name) != -1) {
-	    								conflict._deleted = true;
-	    								config.db.put(change.doc._id, conflict, function(error, ok) {
-	    									if (error) { return log ("Error deleting conflicting document" + JSON.stringify( error ) ) }
-	    									log ("Successfully deleted confilicting document" + JSON.stringify( ok ) )
-	    								} )
+	    				if (typeof doc._revisions != 'undefined') {
+	    					var alert = false;
+	    					var start = doc._revisions.start;
+	    					doc._revisions.ids.forEach( function(rev) {
+	    						config.db.get([change.doc._id, { "rev": start + "-" + rev } ], function( error, previous) {
+	    							//if this is my document then log and report it.
+	    							if (previous.steward.indexOf(config.user.name) != -1) {
+	    								alert = true;
+	    								log("Changed Trading Name Document Previous:" + JSON.stringify( previous ) )
 	    							}
 	    						} )
+	    						start--;
 	    					} )
+	    					if (alert) {
+	    						navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
+	    			    				function() { 
+	    									log(JSON.stringify(change))
+	    									goCreateAccount( [ { "type" : "trading_name" } ] )
+	    			    				}, "Taken", "OK")
+	    					}
 	    				}
 	    			} )
-	    			navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
-		    				function() { 
-								log(JSON.stringify(change))
-								goCreateAccount( [ { "type" : "trading_name" } ] )
-		    				}, "Taken", "OK")
+	    			
 	    		}
 	    		if( typeof change.doc.steward != 'undefined' ) {
 		    		change.doc.steward.forEach(function (steward) {
