@@ -733,17 +733,19 @@ function connectToChanges() {
     					
     					var start = change.doc._revisions.start - 1;
     					//get the last revision
-						config.db.get([change.doc._id, { "rev": start + "-" + change.doc._revisions[1] } ], function( error, previous) {
-							log("Changed Trading Name Document Previous:" + JSON.stringify( [error,previous] ) )
-							//if this is my document then log and report it.
-							if (previous.steward.indexOf(config.user.name) != -1) {
-	    						navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
-	    			    				function() { 
-	    									log(JSON.stringify(change))
-	    									goCreateAccount( [ { "type" : "trading_name" } ] )
-	    			    				}, "Taken", "OK")
-							}
-						} )
+    					if (start > 0) {
+							config.db.get([change.doc._id, { "rev": start + "-" + change.doc._revisions.ids[1] } ], function( error, previous) {
+								log("Changed Trading Name Document Previous:" + JSON.stringify( [error,previous] ) )
+								//if this is my document then log and report it.
+								if (previous.steward.indexOf(config.user.name) != -1) {
+		    						navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
+		    			    				function() { 
+		    									log(JSON.stringify(change))
+		    									goCreateAccount( [ { "type" : "trading_name" } ] )
+		    			    				}, "Taken", "OK")
+								}
+							} )
+    					}
     				}
 	    			
 	    			
