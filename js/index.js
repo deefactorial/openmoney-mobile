@@ -469,12 +469,12 @@ function connectToChanges() {
 	    	
 	    	if (isThisUsersDoc) {
 		    	config.db.get( thisrev, function(error, thisdoc) {
-		    		if(error) { return log( "This Rev Conflict Error:" + JSON.stringify( thisrev ) + ":" + JSON.stringify(error) ) }
+		    		if(error) { return log( "This Rev Conflicting Error:" + JSON.stringify( thisrev ) + ":" + JSON.stringify(error) ) }
 		    		
 		    		thatConflicts.forEach( function( thatrev ) {
 		    			
 		    			config.db.get( thatrev, function(error, thatdoc) {
-			        		if(error) { return log( "That Rev Conflict Error:" + JSON.stringify( thatrev ) + ":" +JSON.stringify(error) ) }
+			        		if(error) { return log( "That Rev Conflicting Error:" + JSON.stringify( thatrev ) + ":" +JSON.stringify(error) ) }
 			        		
 			        		log("Conflicting Documents: This:" + JSON.stringify( thisdoc ) + ",That:" + JSON.stringify( thatdoc ) );
 			        		
@@ -490,7 +490,7 @@ function connectToChanges() {
 		            		}
 		        		
 			        		//find the me in steward.
-		        			log ("Delete Conflicting Document Document:" + JSON.stringify( deletedDocument ) )
+		        			log ("Delete Conflicting Document:" + JSON.stringify( deletedDocument ) )
 //		        			if( deletedDocument != null && typeof deletedDocument.steward != 'undefined' && Object.prototype.toString.call( deletedDocument.steward ) === Object.prototype.toString.call( [] ) ) 
 //			        		deletedDocument.steward.forEach(function(steward) {
 //			    				if(steward == config.user.name) {
