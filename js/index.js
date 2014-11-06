@@ -363,54 +363,54 @@ function resetChangeTrackers() {
 	}
 	window.dbChangedProfile = function() {}
 	window.dbChangedTags = function() {
-//		if (!tagsViewLock) {
-//			tagsViewLock = true;
-//			var waitForOthersTags = function () {
-//				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-//					setTimeout( function () { waitForOthersTags(); }, 1000 )
-//				} else {
-//					setTimeout(function () { 
-//						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-//							setTimeout( function () { waitForOthersTags(); }, 1000 )
-//						} else {
-//							config.views( [ "nfc_tags", {
-//			    	        } ], function(error, tags) {
-//			    				tagsViewLock = false;
-//			    				//index view
-//			    				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
-//			    			} );
-//						}
-//					}, 1000);
-//				}
-//			}
-//			waitForOthersTags();
-//		}
+		if (!tagsViewLock) {
+			tagsViewLock = true;
+			var waitForOthersTags = function () {
+				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+					setTimeout( function () { waitForOthersTags(); }, 1000 )
+				} else {
+					setTimeout(function () { 
+						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+							setTimeout( function () { waitForOthersTags(); }, 1000 )
+						} else {
+							config.views( [ "nfc_tags", {
+			    	        } ], function(error, tags) {
+			    				tagsViewLock = false;
+			    				//index view
+			    				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
+			    			} );
+						}
+					}, 1000);
+				}
+			}
+			waitForOthersTags();
+		}
 
 	}
 	window.dbChangedBeams = function() {
-//		if (!beamsViewLock) {
-//			beamsViewLock = true;
-//			var waitForOthersBeams = function () {
-//				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-//					setTimeout( function () { waitForOthersBeams(); }, 1000 )
-//				} else {
-//					setTimeout(function () { 
-//						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-//							setTimeout( function () { waitForOthersBeams(); }, 1000 )
-//						} else {
-//							config.views( [ "user_tags", {
-//					        } ], function(error, beam) {
-//								beamsViewLock = false;
-//								//index view
-//								log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
-//							} );
-//						}
-//					}, 1000);
-//				}
-//			}
-//			waitForOthersBeams();
-//
-//		}
+		if (!beamsViewLock) {
+			beamsViewLock = true;
+			var waitForOthersBeams = function () {
+				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+					setTimeout( function () { waitForOthersBeams(); }, 1000 )
+				} else {
+					setTimeout(function () { 
+						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+							setTimeout( function () { waitForOthersBeams(); }, 1000 )
+						} else {
+							config.views( [ "user_tags", {
+					        } ], function(error, beam) {
+								beamsViewLock = false;
+								//index view
+								log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
+							} );
+						}
+					}, 1000);
+				}
+			}
+			waitForOthersBeams();
+
+		}
 	}
 }
 
@@ -442,9 +442,9 @@ function connectToChanges() {
 	    if (change) {
 	    	lastSeq = change.seq;
 	    	log("Change sequence: " + lastSeq);
-	    	config.db.get("", function (error,doc) {
-	    		log( "Change sequence db:" + JSON.stringify( [error, doc] ) )
-	    	} )
+//	    	config.db.get("", function (error,doc) {
+//	    		log( "Change sequence db:" + JSON.stringify( [error, doc] ) )
+//	    	} )
 	    }
 	        
 	    
@@ -931,7 +931,14 @@ function getFunctionName() {
 
 function goIndex(parameters) {
 	
-	resetChangeTrackers();
+	window.dbChanged = function() {}
+	window.dbChangedTradingNames = function() {}
+	window.dbChangedCurrencies = function() {}
+	window.dbChangedSpaces = function() {}
+	window.dbChangedJournal = function() {}
+	window.dbChangedProfile = function() {}
+	window.dbChangedTags = function() {}
+	window.dbChangedBeams = function() {}
 		
 //	var currentIndex = parseInt( History.getCurrentIndex() );
 	
