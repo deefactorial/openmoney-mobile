@@ -191,6 +191,8 @@
                         if (doc._deleted) {
                         	requireUser(olddoc.steward);
                         	channel(olddoc.type + channelDelimiter + olddoc.name + channelDelimiter + currency);
+                        	channel( "currency" + channelDelimiter + currency )
+                        	access( olddoc.steward , "currency" + channelDelimiter + currency)
                         	access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name + channelDelimiter + currency )
                         } else {
                             if (!doc.steward || !doc.name || !doc.trading_name || !doc.currency || !doc.created ) {
