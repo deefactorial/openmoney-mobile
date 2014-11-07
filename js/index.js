@@ -466,9 +466,7 @@ function connectToChanges() {
 	    	if (!window.OpenActivity) {
 	    		log ("OpenActivity Plugin not installed!")
 	    	} else {
-	    		window.OpenActivity.getReplicationStatus(function(error, status) {
-		    		log ("Get Replication Status:" + JSON.stringify( [ error, status ] ) )
-		    	} )
+	    		
 	    	}
 	    	
 //	    	config.db.get("", function (error,doc) {
@@ -825,14 +823,19 @@ function connectToChanges() {
 	    // window.checkConflicts( change )
 	};
 	
-	if (typeof config.info != 'undefined')
-    config.db.changes( {
-    	since : config.info.update_seq,
-        conflicts : true,
-        include_docs : true,
-        style: "all_docs"
-        
-    }, changes)
+	if (typeof config.info != 'undefined') {
+		 config.db.changes( {
+		    	since : config.info.update_seq,
+		        conflicts : true,
+		        include_docs : true,
+		        style: "all_docs"
+		        
+		    }, changes)
+		window.OpenActivity.getReplicationStatus(function(error, status) {
+    		log ("Get Replication Status:" + JSON.stringify( [ error, status ] ) )
+    	} )
+	}
+   
 }
 
 /*
