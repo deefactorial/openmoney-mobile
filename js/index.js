@@ -459,6 +459,9 @@ function connectToChanges() {
 	    if (change) {
 	    	lastSeq = change.seq;
 	    	log("Change sequence: " + lastSeq);
+	    	cblite.getReplcationStatus(function(error, status) {
+	    		log ("Get Replication Status:" + JSON.stringify( [ error, status ] ) )
+	    	} )
 //	    	config.db.get("", function (error,doc) {
 //	    		log( "Change sequence db:" + JSON.stringify( [error, doc] ) )
 //	    	} )
