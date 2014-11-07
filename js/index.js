@@ -466,7 +466,7 @@ function connectToChanges() {
 	    	if (!window.OpenActivity) {
 	    		log ("OpenActivity Plugin not installed!")
 	    	} else {
-	    		window.OpenActivity.getReplcationStatus(function(error, status) {
+	    		window.OpenActivity.getReplicationStatus(function(error, status) {
 		    		log ("Get Replication Status:" + JSON.stringify( [ error, status ] ) )
 		    	} )
 	    	}
