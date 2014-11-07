@@ -82,7 +82,9 @@ function onDeviceReady() {
 		    	
 		    	if (error == "NFC_DISABLED") {
 		    		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
-		    			window.OpenActivity("NFCSettings",[]);
+		    			window.OpenActivity.NFCSettings(function(error, result){
+		    				log("Open Activity NFCSettings:" + JSON.stringify( [ error, result ] ) )
+		    			});
 		    		}, "Turn on NFC", "OK")
 		    	} else if(error == "NO_NFC") {
 		    		navigator.notification.alert( "You do not have the capability to read and write NFC tags." , function() { 
@@ -148,7 +150,9 @@ function onDeviceReady() {
     
 	} catch(e) {
 		// var e = new Error("This is a new Error I would like a error report about");
-	     window.OpenActivity("SendErrorReport",[ { "error": e.stack } ]);
+	     window.OpenActivity.sendErrorReport([ { "error": e.stack } ], function(error, result){
+	    	 log("OpenActivity sendErrorReport:" + JSON.stringify( [error, result ] ) )
+	     });
 	}
 
 };
@@ -459,7 +463,7 @@ function connectToChanges() {
 	    if (change) {
 	    	lastSeq = change.seq;
 	    	log("Change sequence: " + lastSeq);
-	    	cblite.getReplcationStatus(function(error, status) {
+	    	window.OpenActivity.getReplcationStatus(function(error, status) {
 	    		log ("Get Replication Status:" + JSON.stringify( [ error, status ] ) )
 	    	} )
 //	    	config.db.get("", function (error,doc) {
@@ -3040,7 +3044,9 @@ function goManageNFC(parameters) {
                     //alert( "Error adding NDEF listener " + JSON.stringify( error ) );
                 	if (error == "NFC_DISABLED") {
                 		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
-                			window.OpenActivity("NFCSettings",[]);
+                			window.OpenActivity.NFCSettings(function(error, result){
+    		    				log("Open Activity NFCSettings:" + JSON.stringify( [ error, result ] ) )
+    		    			});
                 		}, "Turn on NFC", "OK")
                 	} else {
                 		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
@@ -3394,7 +3400,9 @@ function goNewNFC(parameters) {
                     //alert( "Error adding NDEF listener " + JSON.stringify( error ) );
                 	if (error == "NFC_DISABLED") {
                 		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
-                			window.OpenActivity("NFCSettings",[]);
+                			window.OpenActivity.NFCSettings(function(error, result){
+    		    				log("Open Activity NFCSettings:" + JSON.stringify( [ error, result ] ) )
+    		    			});
                 		}, "Turn on NFC", "OK")
                 	} else if(error == "NO_NFC") {
                 		navigator.notification.alert( "You do not have the capability to read and write NFC tags." , function() { 
