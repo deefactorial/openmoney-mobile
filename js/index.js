@@ -1007,6 +1007,7 @@ function goIndex(parameters) {
     
     // when the database changes, update the UI to reflect new lists
     window.dbChangedTradingNames = function() {
+    	
     	tradingNamesViewLock = true;
     	if(currentpage == 'Openmoney') {
     		window.plugins.spinnerDialog.show();
@@ -1448,19 +1449,19 @@ function goServerLogin(parameters) {
 	
 	resetChangeTrackers();
 	
-	callBack = parameters[0];
+	callBack = parameters.pop();
     
 	var pageTitle = "Login";
 	
 	if (currentpage != pageTitle) {
     
-		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : "goServerLogin", "pageParameters" : [ callBack.toString() ]  };
+		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : "goServerLogin", "pageParameters" : [ callBack ]  };
 		
 		processAjaxData( response, "login.html" )
 		
 	} else {
 		
-		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : "goServerLogin", "pageParameters" : [ callBack.toString() ]  };
+		var response = { "html" : config.t.login(), "pageTitle" : pageTitle, "pageFunction" : "goServerLogin", "pageParameters" : [ callBack ]  };
 		
 		drawContent( response.html );
 		
@@ -1518,13 +1519,13 @@ function goServerRegistration(parameters) {
 	
 	if (currentpage != pageTitle) {
     
-		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : "goServerRegistration", "pageParameters" : [ callBack.toString() ]  }
+		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" : "goServerRegistration", "pageParameters" : [ callBack ]  }
 		
 		processAjaxData( response, "registration.html" )
 		
 	} else {
 		
-		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" :"goServerRegistration", "pageParameters" : [ callBack.toString() ]  }
+		var response = { "html" : config.t.register(), "pageTitle" : pageTitle, "pageFunction" :"goServerRegistration", "pageParameters" : [ callBack ]  }
 		
 		drawContent( response.html );
 		
