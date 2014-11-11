@@ -5640,9 +5640,9 @@ function triggerSync(cb, retryCount) {
     } )
     pushSync.on( "connected", function() {
     	log("push sync connected handler called")
-    	window.OpenActivity.setReplicationChangeListener(function(error,result) {
-    		log("Push Replication Change Listener:" + JSON.stringify( [ error, result ] ) )
-    	} )
+//    	window.OpenActivity.setReplicationChangeListener(function(error,result) {
+//    		log("Push Replication Change Listener:" + JSON.stringify( [ error, result ] ) )
+//    	} )
         pullSync.start()
     } )
     pushSync.on( "started", function( info ) {
@@ -5656,9 +5656,9 @@ function triggerSync(cb, retryCount) {
     } )
     pullSync.on( "connected", function() {
     	log("pull sync connected handler called")
-    	window.OpenActivity.setReplicationChangeListener(function(error,result) {
-    		log("Pull Replication Change Listener:" + JSON.stringify( [ error, result ] ) )
-    	} )
+//    	window.OpenActivity.setReplicationChangeListener(function(error,result) {
+//    		log("Pull Replication Change Listener:" + JSON.stringify( [ error, result ] ) )
+//    	} )
         cb()
     } )
     pullSync.on( "started", function( info ) {
@@ -5817,7 +5817,7 @@ function syncManager(serverUrl, syncDefinition) {
     }
 
     function taskInfo(id, cb) {
-        coax( [ serverUrl, "_active_tasks" ], function(err, tasks) {
+        coax( [ serverUrl, "_active_tasks", { "feed": "continuous" } ], function(err, tasks) {
             var me;
             for ( var i = tasks.length - 1; i >= 0; i--) {
                 if (tasks[i].task == id) {
