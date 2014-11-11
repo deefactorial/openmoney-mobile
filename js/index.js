@@ -5803,12 +5803,12 @@ function syncManager(serverUrl, syncDefinition) {
                     status : 502, error : task.error[1]
                 } )
             } else if (task.status == "Idle" || task.status == "Stopped" || (/Processed/.test( task.status ) && !/Processed 0/.test( task.status ))) {
-                cb( true )
+                cb( false )
                 callHandlers( "connected", task )
             } else if (/Processed 0 \/ 0 changes/.test( task.status )) {
                 // cb(false) // keep polling? (or does this mean we are
                 // connected?)
-                cb( true )
+                cb( false )
                 callHandlers( "connected", task )
             } else {
                 cb( false ) // not done
