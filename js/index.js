@@ -5630,6 +5630,8 @@ function triggerSync(cb, retryCount) {
     
     var push_session_id = null;
     var pull_session_id = null;
+    var push_connected = false;
+    var pull_connected = false;
 
     pushSync.on( "auth-challenge", authChallenge )
     pullSync.on( "auth-challenge", authChallenge )
@@ -5644,7 +5646,7 @@ function triggerSync(cb, retryCount) {
 //    	window.OpenActivity.setReplicationChangeListener(function(error,result) {
 //    		log("Push Replication Change Listener:" + JSON.stringify( [ error, result ] ) )
 //    	} )
-        
+        push_connected = true;
     } )
     pushSync.on( "started", function( info ) {
     	log("pushSync started handler called" + JSON.stringify( info ) )
@@ -5661,7 +5663,8 @@ function triggerSync(cb, retryCount) {
 //    	window.OpenActivity.setReplicationChangeListener(function(error,result) {
 //    		log("Pull Replication Change Listener:" + JSON.stringify( [ error, result ] ) )
 //    	} )
-        cb()
+    	pull_connected = true;
+        //cb()
     } )
     pullSync.on( "started", function( info ) {
     	log("pullSync started handler called" + JSON.stringify( info ) )
@@ -5669,6 +5672,15 @@ function triggerSync(cb, retryCount) {
     } )
 
     pushSync.start()
+    
+    pollConnected = function () {
+    	if(pull_connected && push_connected) {
+    		cb();
+    	} else {
+    		set_timeout(pollConnected(), 200);
+    	}
+    }
+    pollConnected();
 
     var publicAPI = {
         cancelSync : cancelSync
