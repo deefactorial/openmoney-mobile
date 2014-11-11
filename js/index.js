@@ -5760,7 +5760,7 @@ function syncManager(serverUrl, syncDefinition) {
                 if (err) {
                     callHandlers( "error", err )
                 } else {
-                    pollForStatus( info, 10000 )
+                    pollForStatus( info, false )
                     callHandlers( "started", info ) //there is no started handler
                     //callHandlers( "connected", info )
                 }
