@@ -5644,11 +5644,12 @@ function triggerSync(cb, retryCount) {
 //    	window.OpenActivity.setReplicationChangeListener(function(error,result) {
 //    		log("Push Replication Change Listener:" + JSON.stringify( [ error, result ] ) )
 //    	} )
-        pullSync.start()
+        
     } )
     pushSync.on( "started", function( info ) {
     	log("pushSync started handler called" + JSON.stringify( info ) )
     	push_session_id = info.session_id;
+    	pullSync.start()
     } )
     pullSync.on( "error", function(err) {
     	log("Pull Sync Error:" + err)
