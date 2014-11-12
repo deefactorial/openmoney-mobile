@@ -5115,46 +5115,51 @@ function putProfile(profile, cb) {
 function destroyBeamTag(cb) {
 	log( "destroyBeamTag user" + JSON.stringify( config.user ) )
 	
-	//do a view lookup on all user tags. check if they have been used. if not destroy.
-    config.views( [ "user_tags", {
-        startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true, include_docs : true
-    } ], function(error, userTags) {
-        if (error) { return cb( error ) }
-        log( "User Tags :" + JSON.stringify( userTags ) )
-        config.views( [ "account_details", {
-           descending : true, include_docs : true
-        } ], function(error, transactions) {
-        	if (error) { return cb( error ) }
-        	log( "transactions :" + JSON.stringify( transactions ) )
-	        var docs = [];
-	        userTags.rows.forEach( function(tag) {
-	        	//check if tag has been used in a transaction.
-	        	deleteDoc = true;
-	        	transactions.rows.forEach( function(transaction) {
-	        		if(typeof transaction.doc.usertag != 'undefined' && transaction.doc.usertag == tag.doc.hashTag) {
-	        			//found it in a transaction
-	        			deleteDoc = false;
-	        		}
-	        	})
-	        	if (deleteDoc && tag.doc._deleted != true) {
-	        		tag.doc._deleted = true;
-	        		docs.push(tag.doc)
-	        	}
-	        } )
-
-		    if(docs.length > 0) {
-		    	log (" destroy beam docs: " + JSON.stringify(docs) )
-		        config.db.post( "_bulk_docs", {
-		            docs : docs
-		        }, function(err, ok) {
-		            log( "updated all tags" + JSON.stringify( err ) + JSON.stringify( ok ) )
-		            cb( err , ok)
+	if (typeof config.user.name == 'undefined') {
+		cb(false)
+	} else {
+		
+		//do a view lookup on all user tags. check if they have been used. if not destroy.
+	    config.views( [ "user_tags", {
+	        startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true, include_docs : true
+	    } ], function(error, userTags) {
+	        if (error) { return cb( error ) }
+	        log( "User Tags :" + JSON.stringify( userTags ) )
+	        config.views( [ "account_details", {
+	           descending : true, include_docs : true
+	        } ], function(error, transactions) {
+	        	if (error) { return cb( error ) }
+	        	log( "transactions :" + JSON.stringify( transactions ) )
+		        var docs = [];
+		        userTags.rows.forEach( function(tag) {
+		        	//check if tag has been used in a transaction.
+		        	deleteDoc = true;
+		        	transactions.rows.forEach( function(transaction) {
+		        		if(typeof transaction.doc.usertag != 'undefined' && transaction.doc.usertag == tag.doc.hashTag) {
+		        			//found it in a transaction
+		        			deleteDoc = false;
+		        		}
+		        	})
+		        	if (deleteDoc && tag.doc._deleted != true) {
+		        		tag.doc._deleted = true;
+		        		docs.push(tag.doc)
+		        	}
 		        } )
-		    } else {
-		    	cb(false)
-		    }
-        })
-    } )
+	
+			    if(docs.length > 0) {
+			    	log (" destroy beam docs: " + JSON.stringify(docs) )
+			        config.db.post( "_bulk_docs", {
+			            docs : docs
+			        }, function(err, ok) {
+			            log( "updated all tags" + JSON.stringify( err ) + JSON.stringify( ok ) )
+			            cb( err , ok)
+			        } )
+			    } else {
+			    	cb(false)
+			    }
+	        })
+	    } )
+	}
 }
 
 
