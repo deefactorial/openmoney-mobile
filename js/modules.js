@@ -39,6 +39,12 @@ Coax.extend( "active_tasks", function(opts, cb) {
 				return self.active_tasks( opts, cb ); // TODO retry
 														// limit?
 			} else if (err) { return cb( err ); }
+			console.log( "modules active_tasks" + JSON.stringify( ok ) )
+			ok.results.forEach( function(row) {
+				cb( null, row );
+			} );
+			// opts.since = ok.last_seq;
+			self.active_tasks( opts, cb );
 		} );
 
 		var handlers = {}
