@@ -36,7 +36,7 @@ Coax.extend("active_tasks", function (opts, cb) {
  
   
   if (opts.feed == "continuous") {
-    var listener = self([ [ window.server ,"_active_tasks"], opts], function(err, ok) {
+    var listener = self([{ "url": window.server + "_active_tasks"}, opts], function(err, ok) {
       if (err && err.code == "ETIMEDOUT") {
         return self.active_tasks(opts, cb); // TODO retry limit?
       } else if (err) {
@@ -77,7 +77,7 @@ Coax.extend("active_tasks", function (opts, cb) {
     opts.feed = "longpoll";
     // opts.since = opts.since || 0;
     // console.log("change opts "+JSON.stringify(opts));
-    return self([[ window.server ,"_active_tasks"], opts], function(err, ok) {
+    return self([{ "url": window.server + "_active_tasks"}, opts], function(err, ok) {
       if (err && err.code == "ETIMEDOUT") {
         return self.active_tasks(opts, cb); // TODO retry limit?
       } else if (err) {
