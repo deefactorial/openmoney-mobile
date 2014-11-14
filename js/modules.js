@@ -25,7 +25,7 @@ coaxPax.extend("getQuery", function(params) {
 
 var Coax = module.exports = hoax.makeHoax(coaxPax());
 
-Coax.extend("_active_tasks", function (opts, cb) {
+Coax.extend("active_tasks", function (opts, cb) {
 	if (typeof opts === "function") {
     cb = opts;
     opts = {};

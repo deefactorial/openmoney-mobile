@@ -5824,28 +5824,30 @@ function syncManager(serverUrl, syncDefinition) {
     function processTaskInfo(id, cb) {
         taskInfo( id, function(err, task) {
             if (err) { return cb( err ) }
-            log( "task" + JSON.stringify( task ), task )
-            publicAPI.task = task
-            if (task.error && task.error[0] == 401) {
-                cb( true )
-                callHandlers( "auth-challenge", {
-                    status : 401, error : task.error[1]
-                } )
-            } else if (task.error && task.error[0] == 502) {
-                cb( true )
-                callHandlers( "auth-challenge", {
-                    status : 502, error : task.error[1]
-                } )
-            } else if (task.status == "Idle" || task.status == "Stopped" || (/Processed/.test( task.status ) && !/Processed 0/.test( task.status ))) {
-                cb( false )
-                callHandlers( "connected", task )
-            } else if (/Processed 0 \/ 0 changes/.test( task.status )) {
-                // cb(false) // keep polling? (or does this mean we are
-                // connected?)
-                cb( false )
-                callHandlers( "connected", task )
-            } else {
-                cb( false ) // not done
+            if (typeof task != 'undefined') {
+	            log( "task" + JSON.stringify( task ), task )
+	            publicAPI.task = task
+	            if (task.error && task.error[0] == 401) {
+	                cb( true )
+	                callHandlers( "auth-challenge", {
+	                    status : 401, error : task.error[1]
+	                } )
+	            } else if (task.error && task.error[0] == 502) {
+	                cb( true )
+	                callHandlers( "auth-challenge", {
+	                    status : 502, error : task.error[1]
+	                } )
+	            } else if (task.status == "Idle" || task.status == "Stopped" || (/Processed/.test( task.status ) && !/Processed 0/.test( task.status ))) {
+	                cb( false )
+	                callHandlers( "connected", task )
+	            } else if (/Processed 0 \/ 0 changes/.test( task.status )) {
+	                // cb(false) // keep polling? (or does this mean we are
+	                // connected?)
+	                cb( false )
+	                callHandlers( "connected", task )
+	            } else {
+	                cb( false ) // not done
+	            }
             }
         } )
     }
