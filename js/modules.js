@@ -25,73 +25,69 @@ coaxPax.extend("getQuery", function(params) {
 
 var Coax = module.exports = hoax.makeHoax(coaxPax());
 
-Coax.extend("active_tasks", function (opts, cb) {
-  if (typeof opts === "function") {
-    cb = opts;
-    opts = {};
-  }
-  var self = this;
-  opts = opts || {};
+Coax.extend( "active_tasks", function(opts, cb) {
+	if (typeof opts === "function") {
+		cb = opts;
+		opts = {};
+	}
+	var self = this;
+	opts = opts || {};
 
- 
-  
-  if (opts.feed == "continuous") {
-    var listener = self([{ "url": window.server + "_active_tasks"}, opts], function(err, ok) {
-      if (err && err.code == "ETIMEDOUT") {
-        return self.active_tasks(opts, cb); // TODO retry limit?
-      } else if (err) {
-        return cb(err);
-      }
-    });
-    
-    var handlers = {}
-    
-    listener.on = function(name, cb) {
-        handlers[name] = handlers[name] || []
-        handlers[name].push( cb )
-    }
+	if (opts.feed == "continuous") {
+		var listener = self( [ "_active_tasks", opts ], function(err, ok) {
+			if (err && err.code == "ETIMEDOUT") {
+				return self.active_tasks( opts, cb ); // TODO retry
+														// limit?
+			} else if (err) { return cb( err ); }
+		} );
 
-    listener.emit = function (name, data) {
-        (handlers[name] || []).forEach( function(h) {
-            h( data )
-        } )
-    }
-    
-    listener.on("data", function(data){
-      var sep = "\n";
+		var handlers = {}
 
-      // re-emit chunked json data
-      eom = data.toString().indexOf(sep)
-      msg = data.toString().substring(0, eom)
-      remaining = data.toString().substring(eom + 1, data.length)
-      if (remaining.length > 0){
-        // console.log(data.toString())
-        listener.emit("data", remaining)
-      }
+		listener.on = function(name, cb) {
+			handlers[name] = handlers[name] || []
+			handlers[name].push( cb )
+		}
 
-      var json = JSON.parse(msg);
-      cb(false, json)
-    })
-    return listener;
-  } else {
-    opts.feed = "longpoll";
-    // opts.since = opts.since || 0;
-    // console.log("change opts "+JSON.stringify(opts));
-    return self([{ "url": window.server + "_active_tasks"}, opts], function(err, ok) {
-      if (err && err.code == "ETIMEDOUT") {
-        return self.active_tasks(opts, cb); // TODO retry limit?
-      } else if (err) {
-        return cb(err);
-      }
-      console.log("modules active_tasks" + JSON.stringify( ok ) )
-      ok.results.forEach(function(row){
-        cb(null, row);
-      });
-      //opts.since = ok.last_seq;
-      self.active_tasks(opts, cb);
-    });
-  }
-})
+		listener.emit = function(name, data) {
+			(handlers[name] || []).forEach( function(h) {
+				h( data )
+			} )
+		}
+
+		listener.on( "data", function(data) {
+			var sep = "\n";
+
+			// re-emit chunked json data
+			eom = data.toString().indexOf( sep )
+			msg = data.toString().substring( 0, eom )
+			remaining = data.toString().substring( eom + 1, data.length )
+			if (remaining.length > 0) {
+				// console.log(data.toString())
+				listener.emit( "data", remaining )
+			}
+
+			var json = JSON.parse( msg );
+			cb( false, json )
+		} )
+		return listener;
+	} else {
+		opts.feed = "longpoll";
+		// opts.since = opts.since || 0;
+		// console.log("change opts "+JSON.stringify(opts));
+		return self( [ "_active_tasks", opts ], function(err, ok) {
+			if (err && err.code == "ETIMEDOUT") {
+				return self.active_tasks( opts, cb ); // TODO retry
+														// limit?
+			} else if (err) { return cb( err ); }
+			console.log( "modules active_tasks" + JSON.stringify( ok ) )
+			ok.results.forEach( function(row) {
+				cb( null, row );
+			} );
+			// opts.since = ok.last_seq;
+			self.active_tasks( opts, cb );
+		} );
+	}
+} )
 
 Coax.extend("changes", function(opts, cb) {
   if (typeof opts === "function") {
