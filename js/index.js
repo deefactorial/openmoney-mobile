@@ -5792,7 +5792,10 @@ function syncManager(serverUrl, syncDefinition) {
                     callHandlers( "error", err )
                 } else {
                     //pollForStatus( info, false )
-                    callHandlers( "started", info ) //there is no started handler
+                	processTaskInfo( info.session_id, function(done) {
+                		callHandlers( "started", info ) //there is no started handler
+                	} );
+                    
                     //callHandlers( "connected", info )
                 }
             }
