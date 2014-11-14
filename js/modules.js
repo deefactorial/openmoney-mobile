@@ -25,6 +25,74 @@ coaxPax.extend("getQuery", function(params) {
 
 var Coax = module.exports = hoax.makeHoax(coaxPax());
 
+Coax.extend("_active_tasks", function (opts, cb) {
+	if (typeof opts === "function") {
+    cb = opts;
+    opts = {};
+  }
+  var self = this;
+  opts = opts || {};
+
+ 
+  
+  if (opts.feed == "continuous") {
+    var listener = self(["_active_tasks", opts], function(err, ok) {
+      if (err && err.code == "ETIMEDOUT") {
+        return self.changes(opts, cb); // TODO retry limit?
+      } else if (err) {
+        return cb(err);
+      }
+    });
+    
+    var handlers = {}
+    
+    listener.on = function(name, cb) {
+        handlers[name] = handlers[name] || []
+        handlers[name].push( cb )
+    }
+
+    listener.emit = function (name, data) {
+        (handlers[name] || []).forEach( function(h) {
+            h( data )
+        } )
+    }
+    
+    listener.on("data", function(data){
+      var sep = "\n";
+
+      // re-emit chunked json data
+      eom = data.toString().indexOf(sep)
+      msg = data.toString().substring(0, eom)
+      remaining = data.toString().substring(eom + 1, data.length)
+      if (remaining.length > 0){
+        // console.log(data.toString())
+        listener.emit("data", remaining)
+      }
+
+      var json = JSON.parse(msg);
+      cb(false, json)
+    })
+    return listener;
+  } else {
+    opts.feed = "longpoll";
+    // opts.since = opts.since || 0;
+    // console.log("change opts "+JSON.stringify(opts));
+    return self(["_changes", opts], function(err, ok) {
+      if (err && err.code == "ETIMEDOUT") {
+        return self.changes(opts, cb); // TODO retry limit?
+      } else if (err) {
+        return cb(err);
+      }
+      console.log("modules changes" + JSON.stringify( ok ) )
+      ok.results.forEach(function(row){
+        cb(null, row);
+      });
+      opts.since = ok.last_seq;
+      self.changes(opts, cb);
+    });
+  }
+})
+
 Coax.extend("changes", function(opts, cb) {
   if (typeof opts === "function") {
     cb = opts;
