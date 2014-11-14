@@ -5694,7 +5694,7 @@ function triggerSync(cb, retryCount) {
     	if(pull_connected && push_connected) {
     		cb();
     	} else {
-    		set_timeout(pollConnected(), 200);
+    		set_timeout(pollConnected, 200);
     	}
     }
     pollConnected();
