@@ -38,7 +38,7 @@ Coax.extend("active_tasks", function (opts, cb) {
   if (opts.feed == "continuous") {
     var listener = self(["_active_tasks", opts], function(err, ok) {
       if (err && err.code == "ETIMEDOUT") {
-        return self.changes(opts, cb); // TODO retry limit?
+        return self.active_tasks(opts, cb); // TODO retry limit?
       } else if (err) {
         return cb(err);
       }
@@ -77,18 +77,18 @@ Coax.extend("active_tasks", function (opts, cb) {
     opts.feed = "longpoll";
     // opts.since = opts.since || 0;
     // console.log("change opts "+JSON.stringify(opts));
-    return self(["_changes", opts], function(err, ok) {
+    return self(["_active_tasks", opts], function(err, ok) {
       if (err && err.code == "ETIMEDOUT") {
-        return self.changes(opts, cb); // TODO retry limit?
+        return self.active_tasks(opts, cb); // TODO retry limit?
       } else if (err) {
         return cb(err);
       }
-      console.log("modules changes" + JSON.stringify( ok ) )
+      console.log("modules active_tasks" + JSON.stringify( ok ) )
       ok.results.forEach(function(row){
         cb(null, row);
       });
-      opts.since = ok.last_seq;
-      self.changes(opts, cb);
+      //opts.since = ok.last_seq;
+      self.active_tasks(opts, cb);
     });
   }
 })

@@ -5853,7 +5853,8 @@ function syncManager(serverUrl, syncDefinition) {
     }
 
     function taskInfo(id, cb) {
-        coax( [ serverUrl, "_active_tasks"], { "feed": "continuous" }, function(err, tasks) {
+    	config.db.active_tasks({ "feed": "continuous" }, function(err, tasks) {
+        //coax( [ serverUrl, "_active_tasks"], { "feed": "continuous" }, function(err, tasks) {
             var me;
             for ( var i = tasks.length - 1; i >= 0; i--) {
                 if (tasks[i].task == id) {
