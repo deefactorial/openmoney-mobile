@@ -79,19 +79,16 @@ Coax.extend( "active_tasks", function(opts, cb) {
 		return listener;
 	} else {
 		opts.feed = "longpoll";
-		// opts.since = opts.since || 0;
-		// console.log("change opts "+JSON.stringify(opts));
+
 		return self( [ "_active_tasks", opts ], function(err, ok) {
+			console.log( "modules active_tasks" + JSON.stringify( [ err, ok ] ) )
 			if (err && err.code == "ETIMEDOUT") {
 				return self.active_tasks( opts, cb ); // TODO retry
 														// limit?
 			} else if (err) { return cb( err ); }
-			console.log( "modules active_tasks" + JSON.stringify( ok ) )
-//			ok.results.forEach( function(row) {
-//				cb( null, row );
-//			} );
+			//return result
 			cb( false, [ ok ] );
-			// opts.since = ok.last_seq;
+			//initiate new request
 			self.active_tasks( opts, cb );
 		} );
 	}
