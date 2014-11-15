@@ -5692,6 +5692,7 @@ function triggerSync(cb, retryCount) {
     
     pollConnected = function () {
     	if(pull_connected && push_connected) {
+    		log ("push and pull sync replicators started and connected")
     		cb();
     	} else {
     		setTimeout(pollConnected, 200);
