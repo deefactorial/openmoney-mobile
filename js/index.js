@@ -5858,13 +5858,16 @@ function syncManager(serverUrl, syncDefinition) {
     	config.db.active_tasks({ "feed": "longpoll" }, function(err, tasks) {
         //coax( [ serverUrl, "_active_tasks"], { "feed": "continuous" }, function(err, tasks) {
     		log ("taskInfo [" + id + "]:" + JSON.stringify( [ err, tasks ] ) )
-            var me = {};
+            var me;
             for ( var i = tasks.length - 1; i >= 0; i--) {
                 if (tasks[i].task == id) {
                     me = tasks[i]
                 }
             }
-            cb( false, me );
+            if (typeof me != 'undefined') {
+            	cb( false, me );
+            }
+            
         } )
     }
 
