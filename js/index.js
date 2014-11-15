@@ -463,13 +463,13 @@ function connectToChanges() {
 	    if (change) {
 	    	lastSeq = change.seq;
 	    	log("Change sequence: " + lastSeq);
-	    	if (!window.OpenActivity) {
-	    		log ("OpenActivity Plugin not installed!")
-	    	} else {
-	    		window.OpenActivity.getReplicationStatus(function(error, status) {
-	        		log ("Get Replication Status:" + JSON.stringify( [ error, status ] ) )
-	        	} )
-	    	}
+//	    	if (!window.OpenActivity) {
+//	    		log ("OpenActivity Plugin not installed!")
+//	    	} else {
+//	    		window.OpenActivity.getReplicationStatus(function(error, status) {
+//	        		log ("Get Replication Status:" + JSON.stringify( [ error, status ] ) )
+//	        	} )
+//	    	}
 	    	
 //	    	config.db.get("", function (error,doc) {
 //	    		log( "Change sequence db:" + JSON.stringify( [error, doc] ) )
@@ -5855,9 +5855,9 @@ function syncManager(serverUrl, syncDefinition) {
     }
 
     function taskInfo(id, cb) {
-    	config.db.active_tasks({ "feed": "longpoll" }, function(err, tasks) {
+    	config.db.active_tasks( {"session_id": id, "feed": "longpoll" } , function(err, tasks) {
         //coax( [ serverUrl, "_active_tasks"], { "feed": "continuous" }, function(err, tasks) {
-    		//log ("taskInfo [" + id + "]:" + JSON.stringify( [ err, tasks ] ) )
+    		log ("taskInfo [" + id + "]:" + JSON.stringify( [ err, tasks ] ) )
             var me = {};
             for ( var i = tasks.length - 1; i >= 0; i--) {
                 if (tasks[i].task == id) {
