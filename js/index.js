@@ -5847,6 +5847,7 @@ function syncManager(serverUrl, syncDefinition) {
 	                callHandlers( "connected", task )
 	            } else {
 	                cb( false ) // not done
+	                callHandlers( "connected", task )
 	            }
             }
         } )
