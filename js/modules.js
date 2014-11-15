@@ -84,7 +84,10 @@ Coax.extend( "active_tasks", function(opts, cb) {
 			//console.log( "modules active_tasks:" + JSON.stringify( [ err, ok ] ) )
 			if (err && err.code == "ETIMEDOUT") {
 				return self.active_tasks( opts, cb ); 
-			} else if (err) { return cb( err ); }
+			} else if (err) { 
+				log ("active_tasks error:" + JSON.stringify(err))
+				return self.active_tasks( opts, cb );
+			}
 			//return result
 			cb( false, [ ok ] );
 			//initiate new request

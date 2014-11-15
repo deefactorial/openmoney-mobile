@@ -5649,6 +5649,8 @@ function triggerSync(cb, retryCount) {
     var pull_session_id = null;
     var push_connected = false;
     var pull_connected = false;
+    var push_status = null;
+    var pull_status = null;
 
     pushSync.on( "auth-challenge", authChallenge )
     pullSync.on( "auth-challenge", authChallenge )
@@ -5658,12 +5660,12 @@ function triggerSync(cb, retryCount) {
         if (challenged) { return }
         cb( err )
     } )
-    pushSync.on( "connected", function() {
+    pushSync.on( "connected", function( task ) {
     	log("push sync connected handler called")
-//    	window.OpenActivity.setReplicationChangeListener(function(error,result) {
-//    		log("Push Replication Change Listener:" + JSON.stringify( [ error, result ] ) )
-//    	} )
         push_connected = true;
+    	if (typeof task.status != 'undefined') {
+    		push_status = task.status;
+    	}
     } )
     pushSync.on( "started", function( info ) {
     	log("pushSync started handler called" + JSON.stringify( info ) )
@@ -5675,13 +5677,12 @@ function triggerSync(cb, retryCount) {
         if (challenged) { return }
         cb( err )
     } )
-    pullSync.on( "connected", function() {
+    pullSync.on( "connected", function( task ) {
     	log("pull sync connected handler called")
-//    	window.OpenActivity.setReplicationChangeListener(function(error,result) {
-//    		log("Pull Replication Change Listener:" + JSON.stringify( [ error, result ] ) )
-//    	} )
     	pull_connected = true;
-        //cb()
+    	if (typeof task.status != 'undefined') {
+    		pull_status = task.status;
+    	}
     } )
     pullSync.on( "started", function( info ) {
     	log("pullSync started handler called" + JSON.stringify( info ) )
@@ -5866,8 +5867,6 @@ function syncManager(serverUrl, syncDefinition) {
             }
             
             cb( false, me );
-            
-            
         } )
     }
 
