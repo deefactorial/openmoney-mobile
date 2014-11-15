@@ -81,7 +81,7 @@ Coax.extend( "active_tasks", function(opts, cb) {
 		opts.feed = "longpoll";
 
 		return self( [ "_active_tasks", opts ], function(err, ok) {
-			console.log( "modules active_tasks" + JSON.stringify( [ err, ok ] ) )
+			console.log( "modules active_tasks:" + JSON.stringify( [ err, ok ] ) )
 			if (err && err.code == "ETIMEDOUT") {
 				return self.active_tasks( opts, cb ); 
 			} else if (err) { return cb( err ); }
