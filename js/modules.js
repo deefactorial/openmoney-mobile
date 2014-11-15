@@ -90,7 +90,7 @@ Coax.extend( "active_tasks", function(opts, cb) {
 //			ok.results.forEach( function(row) {
 //				cb( null, row );
 //			} );
-			cb( null, ok );
+			cb( false, [ ok ] );
 			// opts.since = ok.last_seq;
 			self.active_tasks( opts, cb );
 		} );
