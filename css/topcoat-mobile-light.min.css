@@ -39,6 +39,8 @@
 .cloud-status {
 	width:24px;
 	height:24px;
+	display: block;
+    float: left;
 }
 
 .cloud-status-off {
