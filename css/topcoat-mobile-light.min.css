@@ -39,13 +39,11 @@
 .cloud-status {
 	width:24px;
 	height:24px;
-	display: block;
-	float: left;
     vertical-align: middle;
 }
 
 .cloud-status-off {
-	background: transparent url(../img/ic_cloud_off_black_24dp.png);
+	content:url(../img/ic_cloud_off_black_24dp.png);
 }
 
 .cloud-status-on {
