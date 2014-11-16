@@ -5664,7 +5664,26 @@ function triggerSync(cb, retryCount) {
     	log("push sync connected handler called")
         push_connected = true;
     	if (typeof task.status != 'undefined') {
+    		if (push_status == 'REPLICATION_OFFLINE'){
+    			$(".cloud-status").toggleClass(".cloud-status-queue")
+    		}
+    		if (push_status == 'REPLICATION_STOPPED'){
+    			$(".cloud-status").toggleClass(".cloud-status-off")
+    		}
+    		if(push_status == 'REPLICATION_IDLE') {
+    			$(".cloud-status").toggleClass(".cloud-status-done")
+    		}
     		push_status = task.status;
+    		if (push_status == 'REPLICATION_OFFLINE'){
+    			$(".cloud-status").toggleClass(".cloud-status-queue")
+    		}
+    		if (push_status == 'REPLICATION_STOPPED'){
+    			$(".cloud-status").toggleClass(".cloud-status-off")
+    		}
+    		if(push_status == 'REPLICATION_IDLE') {
+    			$(".cloud-status").toggleClass(".cloud-status-done")
+    		}
+    		
     	}
     } )
     pushSync.on( "started", function( info ) {
