@@ -5649,8 +5649,8 @@ function triggerSync(cb, retryCount) {
     var pull_session_id = null;
     var push_connected = false;
     var pull_connected = false;
-    var push_status = "REPLICATION_STOPPED";
-    var pull_status = "REPLICATION_STOPPED";
+    var push_status = "REPLICATION_OFFLINE";
+    var pull_status = "REPLICATION_OFFLINE";
 
     pushSync.on( "auth-challenge", authChallenge )
     pullSync.on( "auth-challenge", authChallenge )
@@ -5681,6 +5681,9 @@ function triggerSync(cb, retryCount) {
     	log("pull sync connected handler called")
     	pull_connected = true;
     	if (typeof task.status != 'undefined') {
+    		if (pull_status == 'REPLICATION_OFFLINE'){
+    			$(".cloud-status").toggleClass(".cloud-status-queue")
+    		}
     		if (pull_status == 'REPLICATION_STOPPED'){
     			$(".cloud-status").toggleClass(".cloud-status-off")
     		}
@@ -5688,12 +5691,16 @@ function triggerSync(cb, retryCount) {
     			$(".cloud-status").toggleClass(".cloud-status-done")
     		}
     		pull_status = task.status;
+    		if (pull_status == 'REPLICATION_OFFLINE'){
+    			$(".cloud-status").toggleClass(".cloud-status-queue")
+    		}
     		if (pull_status == 'REPLICATION_STOPPED'){
     			$(".cloud-status").toggleClass(".cloud-status-off")
     		}
     		if(pull_status == 'REPLICATION_IDLE') {
     			$(".cloud-status").toggleClass(".cloud-status-done")
     		}
+    		
     	}
     } )
     pullSync.on( "started", function( info ) {
