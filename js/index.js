@@ -503,7 +503,7 @@ function connectToChanges() {
 		    		thatConflicts.forEach( function( thatrev ) {
 		    			
 		    			config.db.get( thatrev, function(error, thatdoc) {
-			        		if(error) { return log( "That Rev Conflicting Error:" + JSON.stringify( thatrev ) + ":" +JSON.stringify(error) ) }
+			        		if(error) {  log( "That Rev Conflicting Error:" + JSON.stringify( thatrev ) + ":" +JSON.stringify(error) ); return false;}
 			        		
 			        		log("Conflicting Documents: This:" + JSON.stringify( thisdoc ) + ",That:" + JSON.stringify( thatdoc ) );
 			        		
@@ -994,6 +994,8 @@ function goIndex(parameters) {
 	
 	processAjaxData( response, "index.html" )
 	
+	updateStatusIcon(combined_status);
+	
 	
     //drawContent( config.t.index() )
     if (typeof navigator.splashscreen != 'undefined')
@@ -1199,6 +1201,8 @@ function goList(parameters) {
 		
 		updateAjaxData( response, "account_details.html" )
 	}
+	
+	updateStatusIcon(combined_status);
 	
 //	log ("current page index:" + History.getCurrentIndex())
 //	log ("current page state:" + JSON.stringify(History.getStateByIndex()))
@@ -1703,10 +1707,7 @@ function goSettings(parameters) {
 		
 	}
 	
-
-    $( "#content .om-index" ).off("click").click( function() {
-        History.back()
-    } )
+	updateStatusIcon(combined_status);
 
     setLoginLogoutButton();
 
@@ -3791,10 +3792,8 @@ function goPayment(parameters) {
 				updateAjaxData( response, "payment.html" )
 				
 			}
-	
-	        $( "#content .om-index" ).off("click").click( function() {
-	            History.back()
-	        } )
+			
+			updateStatusIcon(combined_status);
 	
 	        setLoginLogoutButton();
 	
@@ -4005,9 +4004,7 @@ function goTagPayment(parameters) {
 			}
 	        
 	
-	        $( "#content .om-index" ).off("click").click( function() {
-	            History.back()
-	        } )
+			updateStatusIcon(combined_status);
 	
 	        setLoginLogoutButton();
 	
@@ -4242,9 +4239,7 @@ function goMerchantPayment(parameters) {
 				updateAjaxData( response, "merchant_payment.html" )
 			}
 	
-	        $( "#content .om-index" ).off("click").click( function() {
-	            History.back();
-	        } )
+			updateStatusIcon(combined_status);
 	
 	        setLoginLogoutButton();
 	
@@ -5574,6 +5569,8 @@ function setupConfig(done) {
  * 
  */
 
+var combined_status = "REPLICATION_OFFLINE";
+
 function triggerSync(cb, retryCount) {
 
     if (typeof config.user.name == 'undefined') { return log( "no user defined!" ) }
@@ -5651,6 +5648,7 @@ function triggerSync(cb, retryCount) {
     var pull_connected = false;
     var push_status = "REPLICATION_OFFLINE";
     var pull_status = "REPLICATION_OFFLINE";
+    
 
     pushSync.on( "auth-challenge", authChallenge )
     pullSync.on( "auth-challenge", authChallenge )
@@ -5666,32 +5664,22 @@ function triggerSync(cb, retryCount) {
     	if (typeof task.status != 'undefined') {
     		log ("push sync status change: " + push_status + " to " + task.status)
     		
-			$(".cloud-status").removeClass("cloud-status-queue")
-			$(".cloud-status").removeClass("cloud-status-off")
-			$(".cloud-status").removeClass("cloud-status-done")
-			$(".cloud-status").removeClass("cloud-status-upload")
-			$(".cloud-status").removeClass("cloud-status-download")
-    		
     		push_status = task.status;
-    		if (push_status == 'REPLICATION_OFFLINE'){
-    			$(".cloud-status").addClass("cloud-status-queue")
-    		}
-    		if (push_status == 'REPLICATION_STOPPED'){
-    			$(".cloud-status").addClass("cloud-status-off")
-    		}
+    		combined_status = task.status;
     		if(push_status == 'REPLICATION_IDLE') {
-    			$(".cloud-status").addClass("cloud-status-done")
+    			//update status icon if it hasn't changed
     			setTimeout(function(){
     				if (push_status == 'REPLICATION_IDLE'){
-    					$(".cloud-status").removeClass("cloud-status-done")
-    					$(".cloud-status").addClass("cloud-status-on")
+    					combined_status = 'REPLICATION_ON';
+    					updateStatusIcon(combined_status);
     				}
     			},10000)
     		}
     		if(/Processed/.test( push_status )){
-    			$(".cloud-status").addClass("cloud-status-upload")
+    			combined_status = 'REPLICATION_UPLOAD';
     		}
     		
+    		updateStatusIcon(combined_status);
     	}
     } )
     pushSync.on( "started", function( info ) {
@@ -5709,31 +5697,21 @@ function triggerSync(cb, retryCount) {
     	pull_connected = true;
     	if (typeof task.status != 'undefined') {
     		log ("pull sync status change: " + push_status + " to " + task.status)
-    		$(".cloud-status").removeClass("cloud-status-queue")
-			$(".cloud-status").removeClass("cloud-status-off")
-			$(".cloud-status").removeClass("cloud-status-done")
-			$(".cloud-status").removeClass("cloud-status-upload")
-			$(".cloud-status").removeClass("cloud-status-download")
     		pull_status = task.status;
-    		if (pull_status == 'REPLICATION_OFFLINE'){
-    			$(".cloud-status").addClass("cloud-status-queue")
-    		}
-    		if (pull_status == 'REPLICATION_STOPPED'){
-    			$(".cloud-status").addClass("cloud-status-off")
-    		}
+    		combined_status = task.status;
     		if(pull_status == 'REPLICATION_IDLE') {
-    			$(".cloud-status").addClass("cloud-status-done")
+    			//update icon to on after 10 seconds if it hasn't changed
     			setTimeout(function(){
     				if (pull_status == 'REPLICATION_IDLE'){
-    					$(".cloud-status").removeClass("cloud-status-done")
-    					$(".cloud-status").addClass("cloud-status-on")
+    					combined_status = 'REPLICATION_ON';
+    					updateStatusIcon(combined_status);
     				}
     			},10000)
     		}
     		if(/Processed/.test( pull_status )){
-    			$(".cloud-status").addClass("cloud-status-download")
+    			combined_status = 'REPLICATION_DOWNLOAD';
     		}
-    		
+    		updateStatusIcon(combined_status);
     	}
     } )
     pullSync.on( "started", function( info ) {
@@ -5758,6 +5736,34 @@ function triggerSync(cb, retryCount) {
     }
     return publicAPI;
 }
+
+function updateStatusIcon(status) {
+	$(".cloud-status").removeClass("cloud-status-queue")
+	$(".cloud-status").removeClass("cloud-status-on")
+	$(".cloud-status").removeClass("cloud-status-off")
+	$(".cloud-status").removeClass("cloud-status-done")
+	$(".cloud-status").removeClass("cloud-status-upload")
+	$(".cloud-status").removeClass("cloud-status-download")
+	if (status == 'REPLICATION_OFFLINE'){
+		$(".cloud-status").addClass("cloud-status-queue")
+	}
+	if (status == 'REPLICATION_STOPPED'){
+		$(".cloud-status").addClass("cloud-status-off")
+	}
+	if (status == 'REPLICATION_IDLE') {
+		$(".cloud-status").addClass("cloud-status-done")
+	}
+	if (status == 'REPLICATION_ACTIVE') {
+		$(".cloud-status").addClass("cloud-status-on")
+	}
+	if (status == 'REPLICATION_DOWNLOAD'){
+		$(".cloud-status").addClass("cloud-status-download")
+	}
+	if (status == 'REPLICATION_UPLOAD'){
+		$(".cloud-status").addClass("cloud-status-upload")
+	}
+}
+
 /* END APP */
 
 /*
