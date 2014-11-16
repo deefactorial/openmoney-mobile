@@ -5666,23 +5666,23 @@ function triggerSync(cb, retryCount) {
     	if (typeof task.status != 'undefined') {
     		log ("push sync status change: " + push_status + " to " + task.status)
     		if (push_status == 'REPLICATION_OFFLINE'){
-    			$("img.cloud-status").removeClass(".cloud-status-queue")
+    			$("#cloud-status").removeClass(".cloud-status-queue")
     		}
     		if (push_status == 'REPLICATION_STOPPED'){
-    			$("img.cloud-status").removeClass(".cloud-status-off")
+    			$("#cloud-status").removeClass(".cloud-status-off")
     		}
     		if(push_status == 'REPLICATION_IDLE') {
-    			$("img.cloud-status").removeClass(".cloud-status-done")
+    			$("#cloud-status").removeClass(".cloud-status-done")
     		}
     		push_status = task.status;
     		if (push_status == 'REPLICATION_OFFLINE'){
-    			$("img.cloud-status").addClass(".cloud-status-queue")
+    			$("#cloud-status").addClass(".cloud-status-queue")
     		}
     		if (push_status == 'REPLICATION_STOPPED'){
-    			$("img.cloud-status").addClass(".cloud-status-off")
+    			$("#cloud-status").addClass(".cloud-status-off")
     		}
     		if(push_status == 'REPLICATION_IDLE') {
-    			$("img.cloud-status").addClass(".cloud-status-done")
+    			$("#cloud-status").addClass(".cloud-status-done")
     		}
     		
     	}
@@ -5703,23 +5703,23 @@ function triggerSync(cb, retryCount) {
     	if (typeof task.status != 'undefined') {
     		log ("pull sync status change: " + push_status + " to " + task.status)
     		if (pull_status == 'REPLICATION_OFFLINE'){
-    			$("img.cloud-status").removeClass(".cloud-status-queue")
+    			$("#cloud-status").removeClass(".cloud-status-queue")
     		}
     		if (pull_status == 'REPLICATION_STOPPED'){
-    			$("img.cloud-status").removeClass(".cloud-status-off")
+    			$("#cloud-status").removeClass(".cloud-status-off")
     		}
     		if(pull_status == 'REPLICATION_IDLE') {
-    			$("img.cloud-status").removeClass(".cloud-status-done")
+    			$("#cloud-status").removeClass(".cloud-status-done")
     		}
     		pull_status = task.status;
     		if (pull_status == 'REPLICATION_OFFLINE'){
-    			$("img.cloud-status").toggleClass(".cloud-status-queue")
+    			$("#cloud-status").addClass(".cloud-status-queue")
     		}
     		if (pull_status == 'REPLICATION_STOPPED'){
-    			$("img.cloud-status").toggleClass(".cloud-status-off")
+    			$("#cloud-status").addClass(".cloud-status-off")
     		}
     		if(pull_status == 'REPLICATION_IDLE') {
-    			$("img.cloud-status").toggleClass(".cloud-status-done")
+    			$("#cloud-status").addClass(".cloud-status-done")
     		}
     		
     	}
