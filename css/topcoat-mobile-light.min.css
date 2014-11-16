@@ -40,6 +40,7 @@
 	width:24px;
 	height:24px;
 	display: block;
+	float: left;
     vertical-align: middle;
 }
 
