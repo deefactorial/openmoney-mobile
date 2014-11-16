@@ -350,7 +350,7 @@ br.clear {
 	display:none;
 }
 
-.topcoat-icon-button.openmoney-login {
+.topcoat-icon-button--quiet.openmoney-login {
 	display:none;
 }
 
@@ -361,7 +361,7 @@ br.clear {
 	margin-right: -0.3rem;
 }
 
-.topcoat-icon-button.openmoney-logout {
+.topcoat-icon-button--quiet.openmoney-logout {
 	display:none;
 }
 
