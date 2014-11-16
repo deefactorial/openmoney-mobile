@@ -5670,7 +5670,7 @@ function triggerSync(cb, retryCount) {
     			//update status icon if it hasn't changed
     			setTimeout(function(){
     				if (push_status == 'REPLICATION_IDLE'){
-    					combined_status = 'REPLICATION_ON';
+    					combined_status = 'REPLICATION_ACTIVE';
     					updateStatusIcon(combined_status);
     				}
     			},10000)
@@ -5703,7 +5703,7 @@ function triggerSync(cb, retryCount) {
     			//update icon to on after 10 seconds if it hasn't changed
     			setTimeout(function(){
     				if (pull_status == 'REPLICATION_IDLE'){
-    					combined_status = 'REPLICATION_ON';
+    					combined_status = 'REPLICATION_ACTIVE';
     					updateStatusIcon(combined_status);
     				}
     			},10000)
