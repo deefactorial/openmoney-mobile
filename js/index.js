@@ -5661,7 +5661,7 @@ function triggerSync(cb, retryCount) {
         cb( err )
     } )
     pushSync.on( "connected", function( task ) {
-    	log("push sync connected handler called")
+    	log("push sync connected handler called" + JSON.stringify( task ))
         push_connected = true;
     	if (typeof task.status != 'undefined') {
     		if (push_status == 'REPLICATION_OFFLINE'){
@@ -5697,7 +5697,7 @@ function triggerSync(cb, retryCount) {
         cb( err )
     } )
     pullSync.on( "connected", function( task ) {
-    	log("pull sync connected handler called")
+    	log("pull sync connected handler called" + JSON.stringify( task ))
     	pull_connected = true;
     	if (typeof task.status != 'undefined') {
     		if (pull_status == 'REPLICATION_OFFLINE'){
