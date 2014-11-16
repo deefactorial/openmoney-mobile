@@ -36,12 +36,7 @@
     content:url("../img/light-down.png");
 }
 
-.cloud-status {
-	width:36px;
-	height:36px;
-    align: middle;
-    padding-left:6px;
-}
+
 
 .cloud-status-off {
 	content:url(../img/ic_cloud_off_black_36dp.png);

@@ -385,4 +385,9 @@ br.clear {
 }
 
 
+.cloud-status {
+    width:36px;
+    height:36px;
+    align: middle;
+    padding-left:6px;
 }
