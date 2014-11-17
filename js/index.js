@@ -5569,7 +5569,7 @@ function setupConfig(done) {
  * 
  */
 
-var combined_status = "REPLICATION_OFFLINE";
+var combined_status = "Offline";
 
 function triggerSync(cb, retryCount) {
 
@@ -5646,8 +5646,8 @@ function triggerSync(cb, retryCount) {
     var pull_session_id = null;
     var push_connected = false;
     var pull_connected = false;
-    var push_status = "REPLICATION_OFFLINE";
-    var pull_status = "REPLICATION_OFFLINE";
+    var push_status = "Offline";
+    var pull_status = "Offline";
     
 
     pushSync.on( "auth-challenge", authChallenge )
@@ -5666,17 +5666,17 @@ function triggerSync(cb, retryCount) {
     		
     		push_status = task.status;
     		combined_status = task.status;
-    		if(push_status == 'REPLICATION_IDLE') {
+    		if(push_status == 'Idle') {
     			//update status icon if it hasn't changed
     			setTimeout(function(){
-    				if (push_status == 'REPLICATION_IDLE'){
-    					combined_status = 'REPLICATION_ACTIVE';
+    				if (push_status == 'Idle'){
+    					combined_status = 'Active';
     					updateStatusIcon(combined_status);
     				}
     			},10000)
     		}
     		if(/Processed/.test( push_status )){
-    			combined_status = 'REPLICATION_UPLOAD';
+    			combined_status = 'Upload';
     		}
     		
     		updateStatusIcon(combined_status);
@@ -5699,17 +5699,17 @@ function triggerSync(cb, retryCount) {
     		log ("pull sync status change: " + push_status + " to " + task.status)
     		pull_status = task.status;
     		combined_status = task.status;
-    		if(pull_status == 'REPLICATION_IDLE') {
+    		if(pull_status == 'Idle') {
     			//update icon to on after 10 seconds if it hasn't changed
     			setTimeout(function(){
-    				if (pull_status == 'REPLICATION_IDLE'){
-    					combined_status = 'REPLICATION_ACTIVE';
+    				if (pull_status == 'Idle'){
+    					combined_status = 'Active';
     					updateStatusIcon(combined_status);
     				}
     			},10000)
     		}
     		if(/Processed/.test( pull_status )){
-    			combined_status = 'REPLICATION_DOWNLOAD';
+    			combined_status = 'Download';
     		}
     		updateStatusIcon(combined_status);
     	}
@@ -5744,22 +5744,22 @@ function updateStatusIcon(status) {
 	$(".cloud-status").removeClass("cloud-status-done")
 	$(".cloud-status").removeClass("cloud-status-upload")
 	$(".cloud-status").removeClass("cloud-status-download")
-	if (status == 'REPLICATION_OFFLINE'){
+	if (status == 'Offline'){
 		$(".cloud-status").addClass("cloud-status-queue")
 	}
-	if (status == 'REPLICATION_STOPPED'){
+	if (status == 'Stopped'){
 		$(".cloud-status").addClass("cloud-status-off")
 	}
-	if (status == 'REPLICATION_IDLE') {
+	if (status == 'Idle') {
 		$(".cloud-status").addClass("cloud-status-done")
 	}
-	if (status == 'REPLICATION_ACTIVE') {
+	if (status == 'Active') {
 		$(".cloud-status").addClass("cloud-status-on")
 	}
-	if (status == 'REPLICATION_DOWNLOAD'){
+	if (status == 'Download'){
 		$(".cloud-status").addClass("cloud-status-download")
 	}
-	if (status == 'REPLICATION_UPLOAD'){
+	if (status == 'Upload'){
 		$(".cloud-status").addClass("cloud-status-upload")
 	}
 }
