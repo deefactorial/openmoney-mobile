@@ -505,12 +505,18 @@ function connectToChanges() {
 	    	
 	    	if (isThisUsersDoc) {
 		    	config.db.get( thisrev, function(error, thisdoc) {
-		    		if(error) { return log( "This Rev Conflicting Error:" + JSON.stringify( thisrev ) + ":" + JSON.stringify(error) ) }
+		    		if(error) { 
+		    			log( "This Rev Conflicting Error:" + JSON.stringify( thisrev ) + ":" + JSON.stringify(error) ) 
+		    			return false;
+		    		}
 		    		
 		    		thatConflicts.forEach( function( thatrev ) {
 		    			
 		    			config.db.get( thatrev, function(error, thatdoc) {
-			        		if(error) {  log( "That Rev Conflicting Error:" + JSON.stringify( thatrev ) + ":" +JSON.stringify(error) ); return false;}
+			        		if(error) {  
+			        			log( "That Rev Conflicting Error:" + JSON.stringify( thatrev ) + ":" +JSON.stringify(error) ); 
+			        			return false;
+			        		}
 			        		
 			        		log("Conflicting Documents: This:" + JSON.stringify( thisdoc ) + ",That:" + JSON.stringify( thatdoc ) );
 			        		
@@ -801,7 +807,7 @@ function connectToChanges() {
 	    			//get the document to see if there was a conflict.
 	    			if( typeof change.doc._rev != 'undefined' )
 	    			config.db.get([change.doc._id, { "rev":change.doc._rev, "conflicts": true, "deleted_conflicts" : true } ], function(error, doc) {
-	    				if(error) { return log ("Error getting space revision:" + JSON.stringify( error ) ) }
+	    				if(error) { log ("Error getting space revision:" + JSON.stringify( error ) ); return false; }
 	    				log( "Changed Space Document" + JSON.stringify( doc ) )
 	    				//this will not happen because this user does not have access to the document.
 	    				if (typeof doc._conflicts != 'undefined') {
@@ -811,7 +817,7 @@ function connectToChanges() {
 	    							if (conflict.steward.indexOf(config.user.name) != -1) {
 	    								conflict._deleted = true;
 	    								config.db.put(change.doc._id, conflict, function(error, ok) {
-	    									if (error) { return log ("Error deleting conflicting document" + JSON.stringify( error ) ) }
+	    									if (error) { log ("Error deleting conflicting document" + JSON.stringify( error ) ); return false; }
 	    									log ("Successfully deleted confilicting document" + JSON.stringify( ok ) )
 	    								} )
 	    							}
@@ -1231,14 +1237,22 @@ function goList(parameters) {
     	
     	window.plugins.spinnerDialog.show();
 	    config.db.get( id, function(err, doc) {
-	    	if(err) { return log( JSON.stringify( err ) ) }
+	    	if(err) { 
+	    		log( JSON.stringify( err ) ); 
+	    		dbChangedJournal(); 
+	    		return false;
+	    	}
 	        log( "Display Account Details:" + JSON.stringify( doc ) )
        
             config.views( [ "account_balance", {
                 startkey : [ id, {} ], endkey : [ id ], descending : true
             } ], function(err, view) {
             	
-            	if(err) { return log( JSON.stringify( err ) ) }
+            	if(err) { 
+    	    		log( JSON.stringify( err ) ); 
+    	    		dbChangedJournal(); 
+    	    		return false;
+    	    	}
             	
                 log( "account_balance" + JSON.stringify( view ))
                 if (view.total_rows > 0)
@@ -1260,7 +1274,11 @@ function goList(parameters) {
             config.views( [ "account_details", {
                 startkey : [ id, {} ], endkey : [ id ], descending : true
             } ], function(err, view) {
-            	if(err) { return log( JSON.stringify( err ) ) }
+            	if(err) { 
+    	    		log( JSON.stringify( err ) ); 
+    	    		dbChangedJournal(); 
+    	    		return false;
+    	    	}
             	
             	window.plugins.spinnerDialog.hide();
             	
@@ -2054,7 +2072,11 @@ function updateTradingName(row, doc, callback) {
 //	trading_name.trading_name = row.key.trading_name;
 //	trading_name.currency = row.key.currency;
 	config.db.get("trading_name," + row.key.trading_name + "," + row.key.currency, function(error, trading_name){
-		if(error) { return log("Could not get trading name" + JSON.stringify(error) ) } else {
+		if(error) { 
+			log("Could not get trading name" + JSON.stringify(error) );
+			updateTradingName(row, doc, callback);
+			return false;
+		} else {
 			var capacityName = "capacity" + trading_name.name + trading_name.currency;
 			var transactionName = "transaction" + trading_name.name + trading_name.currency;
 			
@@ -5580,7 +5602,7 @@ var combined_status = "Offline";
 
 function triggerSync(cb, retryCount) {
 
-    if (typeof config.user.name == 'undefined') { return log( "no user defined!" ) }
+    if (typeof config.user.name == 'undefined') { log( "no user defined!" ); return false; }
 
     if (SERVER_LOGIN) {
         var remote = {
