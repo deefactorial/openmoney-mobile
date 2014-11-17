@@ -65,7 +65,7 @@ function onDeviceReady() {
         
         config.syncReference = triggerSync( function(err) {
             if (err) {
-                console.log( "error on sync" + JSON.stringify( err ) )
+                log( "error on sync" + JSON.stringify( err ) )
             }
         } )
     } )
@@ -5746,6 +5746,10 @@ function triggerSync(cb, retryCount) {
     		}
     		if(/Processed/.test( pull_status )){
     			combined_status = 'Download';
+    		}
+    		if(typeof task.transition_destination != 'undefined' && task.transition_destination == 'STOPPING'){
+    			pull_status = 'Stopped';
+    			combined_status = 'Stopped';
     		}
     		updateStatusIcon(combined_status);
     	}
