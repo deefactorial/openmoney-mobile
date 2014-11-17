@@ -55,8 +55,9 @@ function onDeviceReady() {
 		
     setupConfig( function(err) {
         if (err) {
-            alert( err )
-            return console.log( "err " + JSON.stringify( err ) )
+            log( "setupConfig Error:" + JSON.stringify( err ) )
+            
+            //return false;
         }
         connectToChanges()
         
