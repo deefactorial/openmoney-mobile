@@ -5664,8 +5664,11 @@ function triggerSync(cb, retryCount) {
 
     function cancelSync(callBack) {
         pushSync.cancel( function(err, ok) {
+        	push_status = "Offline";
+        	combined_status = "Offline";
             if (err) { return callBack( log( "pushSync Cancel Error: " + JSON.stringify( err ) ) ) }
             pullSync.cancel( function(err, ok) {
+            	pull_status = "Offline";
                 callBack( err, ok )
             } )
         } )
