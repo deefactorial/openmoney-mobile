@@ -277,162 +277,169 @@ var beamsViewLock = false;
 function resetChangeTrackers() {
 	
 	window.dbChanged = function() {}
-	window.dbChangedTradingNames = function() {
-		if (!tradingNamesViewLock) {
-			tradingNamesViewLock = true;
-			config.views( [ "accounts", {
-	        } ], function(error, accounts) {
-				tradingNamesViewLock = false;
-				//index view
-				log( "indexed accounts:" + JSON.stringify( [ error, accounts ] ) )
-			} );
-		}
-	}
-	window.dbChangedCurrencies = function() {
-		if (!currenciesViewLock) {
-			currenciesViewLock = true;
-			var waitForOthersCurrencies = function () {
-				if(tradingNamesViewLock) {
-					setTimeout( function () { waitForOthersCurrencies(); }, 250 )
-				} else {
-					setTimeout(function () { 
-						if(tradingNamesViewLock) {
-							setTimeout( function () { waitForOthersCurrencies(); }, 250 )
-						} else {
-							config.views( [ "currencies", {
-					        } ], function(error, currencies) {
-								currenciesViewLock = false;
-								//index view
-								log( "indexed currencies:" + JSON.stringify( [ error, currencies ] ) )
-							} );
-						}
-					}, 250);
-				}
-			}
-			waitForOthersCurrencies();
-		}
-	}
-	window.dbChangedSpaces = function() {
-		if (!spacesViewLock) {
-			spacesViewLock = true;
-			var waitForOthersSpaces = function () {
-				if(tradingNamesViewLock) {
-					setTimeout( function () { waitForOthersSpaces(); }, 250 )
-				} else {
-					setTimeout(function () { 
-						if(tradingNamesViewLock) {
-							setTimeout( function () { waitForOthersSpaces(); }, 250 )
-						} else {
-							config.views( [ "spaces", {
-					        } ], function(error, spaces) {
-								spacesViewLock = false;
-								//index view
-								log( "indexed spaces:" + JSON.stringify( [ error, spaces ] ) )
-							} );
-						}
-					}, 250);
-				}
-			}
-			waitForOthersSpaces();
-		}
-	}
-	window.dbChangedJournal = function() {
-		if (!detailsViewLock) {
-			detailsViewLock = true;
-			var waitForOthersDetails = function () {
-				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock ) {
-					setTimeout( function () { waitForOthersDetails(); }, 500 )
-				} else {
-					setTimeout(function () { 
-						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock) {
-							setTimeout( function () { waitForOthersDetails(); }, 500 )
-						} else {
-							config.views( [ "account_details", {
-					        } ], function(error, details) {
-								detailsViewLock = false;
-								//index view
-								log( "indexed account details:" + JSON.stringify( [ error, details ] ) )
-							} );
-						}
-					}, 500);
-				}
-			}
-			waitForOthersDetails();
-		}
-		if (!balanceViewLock) {
-			balanceViewLock = true;
-			var waitForOthersBalance = function () {
-				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock ) {
-					setTimeout( function () { waitForOthersBalance(); }, 500 )
-				} else {
-					setTimeout(function () { 
-						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock) {
-							setTimeout( function () { waitForOthersBalance(); }, 500 )
-						} else {
-							config.views( [ "account_balance", {
-					        } ], function(error, balances) {
-								balanceViewLock = false;
-								//index view
-								log( "indexed account balances:" + JSON.stringify( [ error, balances ] ) )
-							} );
-						}
-					}, 500);
-				}
-			}
-			waitForOthersBalance();
-		}
-	}
+	window.dbChangedTradingNames = function() {}
+	window.dbChangedCurrencies = function() {}
+	window.dbChangedSpaces = function() {}
+	window.dbChangedJournal = function() {}
 	window.dbChangedProfile = function() {}
-	window.dbChangedTags = function() {
-		if (!tagsViewLock) {
-			tagsViewLock = true;
-			var waitForOthersTags = function () {
-				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-					setTimeout( function () { waitForOthersTags(); }, 1000 )
-				} else {
-					setTimeout(function () { 
-						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-							setTimeout( function () { waitForOthersTags(); }, 1000 )
-						} else {
-							config.views( [ "nfc_tags", {
-			    	        } ], function(error, tags) {
-			    				tagsViewLock = false;
-			    				//index view
-			    				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
-			    			} );
-						}
-					}, 1000);
-				}
-			}
-			waitForOthersTags();
-		}
-
-	}
-	window.dbChangedBeams = function() {
-		if (!beamsViewLock) {
-			beamsViewLock = true;
-			var waitForOthersBeams = function () {
-				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-					setTimeout( function () { waitForOthersBeams(); }, 1000 )
-				} else {
-					setTimeout(function () { 
-						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
-							setTimeout( function () { waitForOthersBeams(); }, 1000 )
-						} else {
-							config.views( [ "user_tags", {
-					        } ], function(error, beam) {
-								beamsViewLock = false;
-								//index view
-								log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
-							} );
-						}
-					}, 1000);
-				}
-			}
-			waitForOthersBeams();
-
-		}
-	}
+	window.dbChangedTags = function() {}
+	window.dbChangedBeams = function() {}
+//	window.dbChangedTradingNames = function() {
+//		if (!tradingNamesViewLock) {
+//			tradingNamesViewLock = true;
+//			config.views( [ "accounts", {
+//	        } ], function(error, accounts) {
+//				tradingNamesViewLock = false;
+//				//index view
+//				log( "indexed accounts:" + JSON.stringify( [ error, accounts ] ) )
+//			} );
+//		}
+//	}
+//	window.dbChangedCurrencies = function() {
+//		if (!currenciesViewLock) {
+//			currenciesViewLock = true;
+//			var waitForOthersCurrencies = function () {
+//				if(tradingNamesViewLock) {
+//					setTimeout( function () { waitForOthersCurrencies(); }, 250 )
+//				} else {
+//					setTimeout(function () { 
+//						if(tradingNamesViewLock) {
+//							setTimeout( function () { waitForOthersCurrencies(); }, 250 )
+//						} else {
+//							config.views( [ "currencies", {
+//					        } ], function(error, currencies) {
+//								currenciesViewLock = false;
+//								//index view
+//								log( "indexed currencies:" + JSON.stringify( [ error, currencies ] ) )
+//							} );
+//						}
+//					}, 250);
+//				}
+//			}
+//			waitForOthersCurrencies();
+//		}
+//	}
+//	window.dbChangedSpaces = function() {
+//		if (!spacesViewLock) {
+//			spacesViewLock = true;
+//			var waitForOthersSpaces = function () {
+//				if(tradingNamesViewLock) {
+//					setTimeout( function () { waitForOthersSpaces(); }, 250 )
+//				} else {
+//					setTimeout(function () { 
+//						if(tradingNamesViewLock) {
+//							setTimeout( function () { waitForOthersSpaces(); }, 250 )
+//						} else {
+//							config.views( [ "spaces", {
+//					        } ], function(error, spaces) {
+//								spacesViewLock = false;
+//								//index view
+//								log( "indexed spaces:" + JSON.stringify( [ error, spaces ] ) )
+//							} );
+//						}
+//					}, 250);
+//				}
+//			}
+//			waitForOthersSpaces();
+//		}
+//	}
+//	window.dbChangedJournal = function() {
+//		if (!detailsViewLock) {
+//			detailsViewLock = true;
+//			var waitForOthersDetails = function () {
+//				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock ) {
+//					setTimeout( function () { waitForOthersDetails(); }, 500 )
+//				} else {
+//					setTimeout(function () { 
+//						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock) {
+//							setTimeout( function () { waitForOthersDetails(); }, 500 )
+//						} else {
+//							config.views( [ "account_details", {
+//					        } ], function(error, details) {
+//								detailsViewLock = false;
+//								//index view
+//								log( "indexed account details:" + JSON.stringify( [ error, details ] ) )
+//							} );
+//						}
+//					}, 500);
+//				}
+//			}
+//			waitForOthersDetails();
+//		}
+//		if (!balanceViewLock) {
+//			balanceViewLock = true;
+//			var waitForOthersBalance = function () {
+//				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock ) {
+//					setTimeout( function () { waitForOthersBalance(); }, 500 )
+//				} else {
+//					setTimeout(function () { 
+//						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock) {
+//							setTimeout( function () { waitForOthersBalance(); }, 500 )
+//						} else {
+//							config.views( [ "account_balance", {
+//					        } ], function(error, balances) {
+//								balanceViewLock = false;
+//								//index view
+//								log( "indexed account balances:" + JSON.stringify( [ error, balances ] ) )
+//							} );
+//						}
+//					}, 500);
+//				}
+//			}
+//			waitForOthersBalance();
+//		}
+//	}
+//	window.dbChangedProfile = function() {}
+//	window.dbChangedTags = function() {
+//		if (!tagsViewLock) {
+//			tagsViewLock = true;
+//			var waitForOthersTags = function () {
+//				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+//					setTimeout( function () { waitForOthersTags(); }, 1000 )
+//				} else {
+//					setTimeout(function () { 
+//						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+//							setTimeout( function () { waitForOthersTags(); }, 1000 )
+//						} else {
+//							config.views( [ "nfc_tags", {
+//			    	        } ], function(error, tags) {
+//			    				tagsViewLock = false;
+//			    				//index view
+//			    				log( "indexed nfc tags:" + JSON.stringify( [ error, tags ] ) )
+//			    			} );
+//						}
+//					}, 1000);
+//				}
+//			}
+//			waitForOthersTags();
+//		}
+//
+//	}
+//	window.dbChangedBeams = function() {
+//		if (!beamsViewLock) {
+//			beamsViewLock = true;
+//			var waitForOthersBeams = function () {
+//				if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+//					setTimeout( function () { waitForOthersBeams(); }, 1000 )
+//				} else {
+//					setTimeout(function () { 
+//						if(tradingNamesViewLock || currenciesViewLock || spacesViewLock || detailsViewLock || balanceViewLock) {
+//							setTimeout( function () { waitForOthersBeams(); }, 1000 )
+//						} else {
+//							config.views( [ "user_tags", {
+//					        } ], function(error, beam) {
+//								beamsViewLock = false;
+//								//index view
+//								log( "indexed beam tags:" + JSON.stringify( [ error, beam ] ) )
+//							} );
+//						}
+//					}, 1000);
+//				}
+//			}
+//			waitForOthersBeams();
+//
+//		}
+//	}
 }
 
 window.checkConflicts = function(change) {
