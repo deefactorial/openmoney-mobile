@@ -1110,8 +1110,8 @@ function setLoginLogoutButton() {
             	window.dbChangedTags = function() {}
             	window.dbChangedBeams = function() {}
             	window.plugins.spinnerDialog.show();
-            	destroyBeamTag( function(err, ok) {
-            		if(err) { log( JSON.stringify( err ) ) }
+            	//destroyBeamTag( function(err, ok) {
+            		//if(err) { log( JSON.stringify( err ) ) }
                     doServerLogout( function(error, data) {
                         if (error) { return logoutError( error ) }
                         // Logout Success
@@ -1126,7 +1126,7 @@ function setLoginLogoutButton() {
                         }
                         navigator.notification.alert( "You are now logged out!" , function () { goIndex([])  }, "Logged out", "OK")
                     } )
-            	} )
+            	//} )
             } )
         } else if (FACEBOOK_LOGIN) {
             $( "#content .openmoney-logout" ).show().click( function() {
@@ -5666,9 +5666,12 @@ function triggerSync(cb, retryCount) {
         pushSync.cancel( function(err, ok) {
         	push_status = "Offline";
         	combined_status = "Offline";
+        	updateStatusIcon(combined_status);
             if (err) { return callBack( log( "pushSync Cancel Error: " + JSON.stringify( err ) ) ) }
             pullSync.cancel( function(err, ok) {
             	pull_status = "Offline";
+            	combined_status = "Offline";
+            	updateStatusIcon(combined_status);
                 callBack( err, ok )
             } )
         } )
