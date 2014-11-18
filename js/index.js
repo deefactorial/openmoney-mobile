@@ -2928,16 +2928,18 @@ function goProfile(parameters) {
 			  $("#content #digesttime").val(date.getHours() + ":" + date.getMinutes());
 			});
 			
-			navigator.globalization.getLocaleName(
-					  function (locale) {alert('locale: ' + locale.value + '\n');},
-					  function () {alert('Error getting locale\n');}
-					);
+
 
 	    })
 	
 	    setTabs()
 	    
 	    $( "#content form" ).off("submit").submit( function(e) {
+	    	
+			navigator.globalization.getLocaleName(
+					function (locale) {alert('locale: ' + locale.value + '\n');},
+					function () {alert('Error getting locale\n');}
+			);
 	    	
 	    	var profileID = 'anonymous';
 	    	if(typeof config.user.name != 'undefined') {
