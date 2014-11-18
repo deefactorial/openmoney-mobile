@@ -2912,7 +2912,11 @@ function goProfile(parameters) {
 	    } )
 	    
 	    $( "#content #digesttime").off("click").click( function() {
-	    	Date date = new Date(Date.parse($( "#content #digesttime").val()));
+	    	Date now = new Date();
+	    	var time = $( "#content #digesttime").val();
+	    	time = time.split(":");
+	    	now.setHours(time[0]);
+	    	now.setMinutes(time[1]);
 	    	var options = {
 			  date: date,
 			  mode: 'time'
