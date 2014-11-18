@@ -1108,26 +1108,28 @@ function setLoginLogoutButton() {
         if (SERVER_LOGIN) {
             $( "#content .openmoney-logout" ).show().off( "click" ).click( function() {
             	//don't index views on logout
-            	window.dbChangedTags = function() {}
-            	window.dbChangedBeams = function() {}
-            	window.plugins.spinnerDialog.show();
-            	//destroyBeamTag( function(err, ok) {
-            		//if(err) { log( JSON.stringify( err ) ) }
-                    doServerLogout( function(error, data) {
-                        if (error) { return logoutError( error ) }
-                        // Logout Success
-                        $( ".openmoney-logout" ).hide().off( "click" )
-                        window.plugins.spinnerDialog.hide();
-                        if (DEFAULT_DARK_THEME) {
-                        	//light to dark
-                        	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
-                        } else {
-                        	//dark to light
-                        	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css")
-                        }
-                        navigator.notification.alert( "You are now logged out!" , function () { goIndex([])  }, "Logged out", "OK")
-                    } )
-            	//} )
+            	if (replication_error) {
+            		navigator.notification.alert( "Your changes have not been saved to cloud, please reconnect to the internet before logging out." , function () { goIndex([])  }, "Logged out error", "OK")
+            	} else {
+	            	window.plugins.spinnerDialog.show();
+	            	//destroyBeamTag( function(err, ok) {
+	            		//if(err) { log( JSON.stringify( err ) ) }
+	                    doServerLogout( function(error, data) {
+	                        if (error) { return logoutError( error ) }
+	                        // Logout Success
+	                        $( ".openmoney-logout" ).hide().off( "click" )
+	                        window.plugins.spinnerDialog.hide();
+	                        if (DEFAULT_DARK_THEME) {
+	                        	//light to dark
+	                        	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
+	                        } else {
+	                        	//dark to light
+	                        	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css")
+	                        }
+	                        navigator.notification.alert( "You are now logged out!" , function () { goIndex([])  }, "Logged out", "OK")
+	                    } )
+	            	//} )
+            	}
             } )
         } else if (FACEBOOK_LOGIN) {
             $( "#content .openmoney-logout" ).show().click( function() {
@@ -5600,6 +5602,7 @@ function setupConfig(done) {
  */
 
 var combined_status = "Offline";
+var replication_error = false;
 
 function triggerSync(cb, retryCount) {
 
@@ -5684,6 +5687,8 @@ function triggerSync(cb, retryCount) {
     var pull_connected = false;
     var push_status = "Offline";
     var pull_status = "Offline";
+    var push_error = false;
+    var pull_error = false;
     
 
     pushSync.on( "auth-challenge", authChallenge )
@@ -5699,6 +5704,18 @@ function triggerSync(cb, retryCount) {
         push_connected = true;
     	if (typeof task.status != 'undefined') {
     		log ("push sync status change: " + push_status + " to " + task.status)
+    		
+    		if (typeof task.error != 'undefined') {
+    			push_error = true;
+    		} else {
+    			push_error = false;
+    		}
+    		
+    		if (push_error || pull_error) {
+    			replication_error = true;
+    		} else {
+    			replication_error = false;
+    		}
     		
     		push_status = task.status;
     		combined_status = task.status;
@@ -5733,6 +5750,19 @@ function triggerSync(cb, retryCount) {
     	pull_connected = true;
     	if (typeof task.status != 'undefined') {
     		log ("pull sync status change: " + push_status + " to " + task.status)
+    		
+    		if (typeof task.error != 'undefined') {
+    			pull_error = true;
+    		} else {
+    			pull_error = false;
+    		}
+    		
+    		if (push_error || pull_error) {
+    			replication_error = true;
+    		} else {
+    			replication_error = false;
+    		}
+    		
     		pull_status = task.status;
     		combined_status = task.status;
     		if(pull_status == 'Idle') {
