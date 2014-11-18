@@ -2927,7 +2927,12 @@ function goProfile(parameters) {
 			datePicker.show(options, function(date){
 			  //alert("date result " + date);  
 			  //Date date = new Date(Date.parse(date));
-			  $("#content #digesttime").val(date.getHours() + ":" + date.getMinutes());
+			  if (date.getMinutes() < 10) {
+				  $("#content #digesttime").val(date.getHours() + ":0" + date.getMinutes());
+			  } else {
+				  $("#content #digesttime").val(date.getHours() + ":" + date.getMinutes());
+			  }
+			  
 			});
 			
 	    })
