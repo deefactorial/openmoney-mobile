@@ -29,6 +29,7 @@ phonegap local plugin add https://github.com/Paldom/SpinnerDialog.git
 phonegap local plugin add org.apache.cordova.splashscreen
 phonegap local plugin add https://github.com/deefactorial/cordova-activity-plugin.git
 phonegap local plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
+phonegap local plugin add https://github.com/VitaliiBlagodir/cordova-plugin-datepicker
 ```
 
 Now replace the generated application with the openmoney-mobile source code.

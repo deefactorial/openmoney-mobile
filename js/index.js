@@ -2910,6 +2910,17 @@ function goProfile(parameters) {
 	    $( "#content .om-index" ).off("click").click( function() {
 	    	History.back()
 	    } )
+	    
+	    $( "#content #digesttime").off("click").click( function() {
+	    	var options = {
+			  date: new Date(),
+			  mode: 'time'
+			};
+			
+			datePicker.show(options, function(date){
+			  alert("date result " + date);  
+			});
+	    })
 	
 	    setTabs()
 	    
