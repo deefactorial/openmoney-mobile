@@ -2930,18 +2930,11 @@ function goProfile(parameters) {
 			  $("#content #digesttime").val(date.getHours() + ":" + date.getMinutes());
 			});
 			
-
-
 	    })
 	
 	    setTabs()
 	    
 	    $( "#content form" ).off("submit").submit( function(e) {
-	    	
-			navigator.globalization.getLocaleName(
-					function (locale) {alert('locale: ' + locale.value + '\n');},
-					function () {alert('Error getting locale\n');}
-			);
 	    	
 	    	var profileID = 'anonymous';
 	    	if(typeof config.user.name != 'undefined') {
@@ -2953,6 +2946,7 @@ function goProfile(parameters) {
             doc.username = profileID;
             doc.modified = new Date().getTime();
             doc.type = "profile";
+            doc.offset = new Date().getTimezoneOffset();
             
             if (typeof doc.notification == 'undefined') {
             	doc.notification = false;
