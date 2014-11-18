@@ -2912,7 +2912,7 @@ function goProfile(parameters) {
 	    } )
 	    
 	    $( "#content #digesttime").off("click").click( function() {
-	    	Date date = new Date(Date.parse($( "#content #digesttime")));
+	    	Date date = Date.parse($( "#content #digesttime").val());
 	    	var options = {
 			  date: date,
 			  mode: 'time'
@@ -2923,6 +2923,12 @@ function goProfile(parameters) {
 			  //Date date = new Date(Date.parse(date));
 			  $("#content #digesttime").val(date.getHours() + ":" + date.getMinutes());
 			});
+			
+			navigator.globalization.getLocaleName(
+					  function (locale) {alert('locale: ' + locale.value + '\n');},
+					  function () {alert('Error getting locale\n');}
+					);
+
 	    })
 	
 	    setTabs()
