@@ -2912,7 +2912,7 @@ function goProfile(parameters) {
 	    } )
 	    
 	    $( "#content #digesttime").off("click").click( function() {
-	    	Date date = Date.parse($( "#content #digesttime").val());
+	    	Date date = new Date(Date.parse($( "#content #digesttime").val()));
 	    	var options = {
 			  date: date,
 			  mode: 'time'
