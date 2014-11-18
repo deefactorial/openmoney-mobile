@@ -2956,6 +2956,9 @@ function goProfile(parameters) {
             if (typeof doc.notification == 'undefined') {
             	doc.notification = false;
             }
+            if (typeof doc.digest == 'undefined') {
+            	doc.digest = false;
+            }
             if (typeof doc.mode == 'undefined') {
             	doc.mode = false;
             } 
