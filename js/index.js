@@ -2918,7 +2918,9 @@ function goProfile(parameters) {
 			};
 			
 			datePicker.show(options, function(date){
-			  alert("date result " + date);  
+			  //alert("date result " + date);  
+			  Date date = new Date(Date.parse(date));
+			  $("#content #digesttime").val(date.getTime());
 			});
 	    })
 	
