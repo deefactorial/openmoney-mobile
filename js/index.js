@@ -3310,14 +3310,17 @@ function goNewNFC(parameters) {
 				log("Profile Error:" + JSON.stringify(error))
 			}
 			
+			thisTag.addtradingnames = [];
+			thisTag.trading_names = [];
+			
 			thisUsersAccounts.rows.forEach( function (trading_name) { 
 				log( "Users Trading Names" + JSON.stringify( trading_name ) );
 
-				thisTag.addtradingnames = [];
-				
 				//check profile mode if merchant add all trading names.
 				if (typeof profile.mode == 'undefined' || profile.mode === false) {
 					thisTag.addtradingnames.push( { "trading_name":trading_name.key.trading_name, "currency":trading_name.key.currency } )
+				} else {
+					thisTag.trading_names.push( { "trading_name":trading_name.key.trading_name, "currency":trading_name.key.currency } )
 				}
 				
 			} )
