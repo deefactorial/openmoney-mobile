@@ -3300,39 +3300,29 @@ function goNewNFC(parameters) {
 	        new_ul.appendChild(lis[i]);
 	    ul.parentNode.replaceChild(new_ul, ul);
 	}
-
 	
-    window.dbChangedTradingNames = function () {
+    thisTag = { "name" : "" };
 	
-	window.plugins.spinnerDialog.show();
-        config.views( [ "accounts", {
-            descending : true
-        } ], function(err, view) {
-        	window.plugins.spinnerDialog.hide();
-        	if(err) { log(JSON.stringify(err))}
-        	
-            var thisUsersAccounts = {
-                rows : []
-            }
+	getThisUsersAccounts( function (thisUsersAccounts) {
+		
+		config.db.get("profile," + config.user.name , function (error, profile){
+			if(error) {
+				log("Profile Error:" + JSON.stringify(error))
+			}
+			
+			thisUsersAccounts.rows.forEach( function (trading_name) { 
+				log( "Users Trading Names" + JSON.stringify( trading_name ) );
 
-            
-            if (typeof view.rows != 'undefined' && config.user != null) {
-            	view.rows.forEach(function(row) {
-            		row.key.steward.forEach(function(steward) {
-            			if(steward == config.user.name)
-            				thisUsersAccounts.rows.push( row );
-            		} )
-            	} )
-            }
-            var trading_names = [];
-            thisUsersAccounts.rows.forEach( function( row ) {
-            	trading_names.push( { "trading_name" : row.key.trading_name, "currency" : row.key.currency }  )
-            } ) 
-
-            var tag = {
-                "name" : "", "trading_names" : trading_names
-            };
-            
+				thisTag.addtradingnames = [];
+				
+				//check profile mode if merchant add all trading names.
+				if (typeof profile.mode == 'undefined' || profile.mode === false) {
+					thisTag.addtradingnames.push( { "trading_name":trading_name.key.trading_name, "currency":trading_name.key.currency } )
+				}
+				
+			} )
+			
+			
 			var pageTitle = "New NFC";
 			
 			if (currentpage != pageTitle) {
@@ -3350,18 +3340,18 @@ function goNewNFC(parameters) {
 				updateAjaxData( response, "new_nfc.html" )
 			}
 
-            $( "#content .om-index" ).off("click").click( function() {
-            	if( typeof newTagListner != 'undefined') {
-            		 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
-            	}
-            	
-                History.back();
-            } )
-            
-            
-            UIhandlers();
-
-            $( "#content form" ).off("submit").submit( function(e) {
+	        $( "#content .om-index" ).off("click").click( function() {
+	        	if( typeof newTagListner != 'undefined') {
+	        		 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
+	        	}
+	        	
+	            History.back();
+	        } )
+	        
+	        
+	        UIhandlers();
+			
+	        $( "#content form" ).off("submit").submit( function(e) {
                 e.preventDefault()
                 var doc = jsonform( this )
                
@@ -3413,59 +3403,66 @@ function goNewNFC(parameters) {
                             if (doc.name)
                                 name = doc.name;
                             
-                            var trading_names = [];
+//                            var trading_names = [];
+//                            
+//                            thisUsersAccounts.rows.forEach( function( row ) {
+//                            	var trading_name = {};
+//                            	trading_name.trading_name = row.key.trading_name;
+//                            	trading_name.currency = row.key.currency;
+//
+//                            	trading_names.push( trading_name  );
+//                            	
+//                            } )
                             
-                            thisUsersAccounts.rows.forEach( function( row ) {
-                            	var trading_name = {};
-                            	trading_name.trading_name = row.key.trading_name;
-                            	trading_name.currency = row.key.currency;
+                            getThisUsersAccounts( function (thisUsersAccounts) {
+		                
+				                getTradingNames(thisUsersAccounts, doc, function(error, trading_names) {
+				                	if( error ) {
+				                		
+				                	} else {
+				                		
+				                		 var userTag = {
+			                                 "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names": trading_names, "created": doc.created
+			                             };
 
-                            	trading_names.push( trading_name  );
-                            	
-                            } ) 
-                            
+			                             log( " userTag:" + JSON.stringify( userTag ) )
 
-                            var userTag = {
-                                "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names": trading_names, "created": doc.created
-                            };
+			                             log( "tag:" + JSON.stringify( tag ) );
 
-                            log( " userTag:" + JSON.stringify( userTag ) )
+			                             var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
+			                                 key : hashTag
+			                             } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
 
-                            log( "tag:" + JSON.stringify( tag ) );
+			                             var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
 
-                            var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
-                                key : hashTag
-                            } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+			                             var message = [ mime, aar ];
 
-                            var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
-
-                            var message = [ mime, aar ];
-
-                            nfc.write( message, function() {
-                                insertTagInDB( userTag )
-                                mutableLock = false;
-                                nfc.removeNdefListener( newTagListner, function() {
-                                	nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-                                        // success callback
-                                    }, function() {
-                                        // failure callback
-                                    } );
-                                }, function() {} );
-                                navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { goManageNFC([]) }, "Success", "OK")
-                            }, function() {
-                                //alert( "Failed to write to NFC Tag!" )
-                                mutableLock = false;
-                                nfc.removeNdefListener( newTagListner, function() {}, function() {} );
-                                
-                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-                                    // success callback
-                                }, function() {
-                                    // failure callback
-                                } );
-                                navigator.notification.alert( "Failed to write to NFC Tag!"  , function() {  }, "Failed", "OK")
+			                             nfc.write( message, function() {
+			                                 insertTagInDB( userTag )
+			                                 mutableLock = false;
+			                                 nfc.removeNdefListener( newTagListner, function() {
+			                                 	nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+			                                         // success callback
+			                                     }, function() {
+			                                         // failure callback
+			                                     } );
+			                                 }, function() {} );
+			                                 navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { goManageNFC([]) }, "Success", "OK")
+			                             }, function() {
+			                                 //alert( "Failed to write to NFC Tag!" )
+			                                 mutableLock = false;
+			                                 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
+			                                 
+			                                 nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+			                                     // success callback
+			                                 }, function() {
+			                                     // failure callback
+			                                 } );
+			                                 navigator.notification.alert( "Failed to write to NFC Tag!"  , function() {  }, "Failed", "OK")
+			                             } );
+				                	}
+				                } );
                             } );
-                           
-                            
                         } else {
                         	navigator.notification.alert( "Tag is not writeable!"  , function() {  }, "Not Writeable", "OK")
                         }
@@ -3499,10 +3496,216 @@ function goNewNFC(parameters) {
 
             setTabs()
 
-        } )
-        
-    }
-    window.dbChangedTradingNames();
+		} )
+		
+		
+	} );
+	
+//	
+//	window.plugins.spinnerDialog.show();
+//        config.views( [ "accounts", {
+//            descending : true
+//        } ], function(err, view) {
+//        	window.plugins.spinnerDialog.hide();
+//        	if(err) { log(JSON.stringify(err))}
+//        	
+//            var thisUsersAccounts = {
+//                rows : []
+//            }
+//
+//            
+//            if (typeof view.rows != 'undefined' && config.user != null) {
+//            	view.rows.forEach(function(row) {
+//            		row.key.steward.forEach(function(steward) {
+//            			if(steward == config.user.name)
+//            				thisUsersAccounts.rows.push( row );
+//            		} )
+//            	} )
+//            }
+//            var trading_names = [];
+//            thisUsersAccounts.rows.forEach( function( row ) {
+//            	trading_names.push( { "trading_name" : row.key.trading_name, "currency" : row.key.currency }  )
+//            } ) 
+//
+//            var tag = {
+//                "name" : "", "trading_names" : trading_names
+//            };
+//            
+//			var pageTitle = "New NFC";
+//			
+//			if (currentpage != pageTitle) {
+//		    
+//				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : "goNewNFC", "pageParameters" : [ ]  };
+//				
+//				processAjaxData( response, "new_nfc.html" )
+//				
+//			} else {
+//				
+//				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : "goNewNFC", "pageParameters" : [ ]  };
+//				
+//				drawContent( response.html );
+//				
+//				updateAjaxData( response, "new_nfc.html" )
+//			}
+//
+//            $( "#content .om-index" ).off("click").click( function() {
+//            	if( typeof newTagListner != 'undefined') {
+//            		 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
+//            	}
+//            	
+//                History.back();
+//            } )
+//            
+//            
+//            UIhandlers();
+//
+//            $( "#content form" ).off("submit").submit( function(e) {
+//                e.preventDefault()
+//                var doc = jsonform( this )
+//               
+//                doc.created = new Date().getTime();
+//
+//                if (!doc.name) {
+//                	navigator.notification.alert( "You must specify a name for your Tag."  , function() {  }, "No Name", "OK")
+//                	//return alert( "You must specify a name for your Tag." );
+//                	return false;
+//                }
+//                    
+//                nfc.removeMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+//                    // success callback
+//                }, function() {
+//                    // failure callback
+//                } );
+//
+//                var mutableLock = false;
+//                
+//                var newTagListner = function(nfcEvent) {
+//
+//                    if (!mutableLock) {
+//                        mutableLock = true;
+//
+//                        var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+//                        
+//                        if (tag.isWritable) {
+//                        
+//                        	
+//                        	var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+//                            var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+//
+//                            var pincode = randomString( 64, '0123456789' );
+//                            if (typeof doc.pinCode != 'undefined' && doc.pinCode != '') {
+//                            	pinCode = doc.pinCode;
+//                            }
+//
+//                            // for more information on mcrypt
+//                            // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
+//                            // note the key that should be used instead of the
+//                            // hashID
+//                            // should be
+//                            // the users private RSA key.
+//                            var encodedString = mcrypt.Encrypt( pinCode, initializationVector, hashTag, 'rijndael-256', 'cbc' );
+//
+//                            var base64_encodedString = base64_encode( encodedString )
+//
+//                            var name = config.user.name;
+//                            if (doc.name)
+//                                name = doc.name;
+//                            
+////                            var trading_names = [];
+////                            
+////                            thisUsersAccounts.rows.forEach( function( row ) {
+////                            	var trading_name = {};
+////                            	trading_name.trading_name = row.key.trading_name;
+////                            	trading_name.currency = row.key.currency;
+////
+////                            	trading_names.push( trading_name  );
+////                            	
+////                            } )
+//                            
+//                            getThisUsersAccounts( function (thisUsersAccounts) {
+//		                
+//				                getTradingNames(thisUsersAccounts, doc, function(error, trading_names) {
+//				                	if( error ) {
+//				                		
+//				                	} else {
+//				                		
+//				                		 var userTag = {
+//			                                 "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names": trading_names, "created": doc.created
+//			                             };
+//
+//			                             log( " userTag:" + JSON.stringify( userTag ) )
+//
+//			                             log( "tag:" + JSON.stringify( tag ) );
+//
+//			                             var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
+//			                                 key : hashTag
+//			                             } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+//
+//			                             var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
+//
+//			                             var message = [ mime, aar ];
+//
+//			                             nfc.write( message, function() {
+//			                                 insertTagInDB( userTag )
+//			                                 mutableLock = false;
+//			                                 nfc.removeNdefListener( newTagListner, function() {
+//			                                 	nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+//			                                         // success callback
+//			                                     }, function() {
+//			                                         // failure callback
+//			                                     } );
+//			                                 }, function() {} );
+//			                                 navigator.notification.alert( "Successfully written to NFC Tag!"  , function() { goManageNFC([]) }, "Success", "OK")
+//			                             }, function() {
+//			                                 //alert( "Failed to write to NFC Tag!" )
+//			                                 mutableLock = false;
+//			                                 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
+//			                                 
+//			                                 nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+//			                                     // success callback
+//			                                 }, function() {
+//			                                     // failure callback
+//			                                 } );
+//			                                 navigator.notification.alert( "Failed to write to NFC Tag!"  , function() {  }, "Failed", "OK")
+//			                             } );
+//				                	}
+//				                } );
+//                            } );
+//                        } else {
+//                        	navigator.notification.alert( "Tag is not writeable!"  , function() {  }, "Not Writeable", "OK")
+//                        }
+//                    }
+//                }
+//                
+//                nfc.addNdefListener( newTagListner , function() { // success callback
+//                    //alert( "Waiting for NFC tag" );
+//                	navigator.notification.alert( "Waiting for NFC tag"  , function() {  }, "Waiting", "OK")
+//                }, function(error) { // error callback
+//                    //alert( "Error adding NDEF listener " + JSON.stringify( error ) );
+//                	if (error == "NFC_DISABLED") {
+//                		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
+//                			window.OpenActivity.NFCSettings(function(error, result){
+//    		    				log("Open Activity NFCSettings:" + JSON.stringify( [ error, result ] ) )
+//    		    			});
+//                		}, "Turn on NFC", "OK")
+//                	} else if(error == "NO_NFC") {
+//                		navigator.notification.alert( "You do not have the capability to read and write NFC tags." , function() { 
+//                			 nfc.removeNdefListener( newTagListner, function() {}, function() {} );
+//                             
+//                			History.back();
+//                		}, "No NFC", "OK")
+//                	} else {
+//                		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
+//                	}
+//                	
+//                } );
+//
+//            } )
+//
+//            setTabs()
+//
+//        } )
+
 
 }
 
