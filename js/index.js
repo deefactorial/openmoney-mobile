@@ -3327,13 +3327,13 @@ function goNewNFC(parameters) {
 			
 			if (currentpage != pageTitle) {
 		    
-				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : "goNewNFC", "pageParameters" : [ ]  };
+				var response = { "html" : config.t.edit_nfc( thisTag )   , "pageTitle" : pageTitle, "pageFunction" : "goNewNFC", "pageParameters" : [ ]  };
 				
 				processAjaxData( response, "new_nfc.html" )
 				
 			} else {
 				
-				var response = { "html" : config.t.edit_nfc( tag )   , "pageTitle" : pageTitle, "pageFunction" : "goNewNFC", "pageParameters" : [ ]  };
+				var response = { "html" : config.t.edit_nfc( thisTag )   , "pageTitle" : pageTitle, "pageFunction" : "goNewNFC", "pageParameters" : [ ]  };
 				
 				drawContent( response.html );
 				
