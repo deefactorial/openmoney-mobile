@@ -2955,18 +2955,25 @@ function goProfile(parameters) {
             
             if (typeof doc.notification == 'undefined') {
             	doc.notification = false;
+            } else {
+            	doc.notification = true;
             }
             if (typeof doc.digest == 'undefined') {
             	doc.digest = false;
+            } else {
+            	doc.digest = true;
             }
             if (typeof doc.mode == 'undefined') {
             	doc.mode = false;
-            } 
+            } else {
+            	doc.mode = true;
+            }
             if (typeof doc.theme == 'undefined' || doc.theme === false) {
             	doc.theme = false;
             	//dark to light
             	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
             } else {
+            	doc.theme = true;
             	//light to dark
             	replacejscssfile("css/topcoat-mobile-light.min.css", "css/topcoat-mobile-dark.min.css", "css")
             }
