@@ -3317,7 +3317,7 @@ function goNewNFC(parameters) {
 				log( "Users Trading Names" + JSON.stringify( trading_name ) );
 
 				//check profile mode if merchant add all trading names.
-				if (typeof profile.mode == 'undefined' || profile.mode === false) {
+				if (typeof profile.mode != 'undefined' && profile.mode === true) {
 					thisTag.addtradingnames.push( { "trading_name":trading_name.key.trading_name, "currency":trading_name.key.currency } )
 				} else {
 					thisTag.trading_names.push( { "trading_name":trading_name.key.trading_name, "currency":trading_name.key.currency } )
