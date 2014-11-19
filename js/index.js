@@ -3387,7 +3387,7 @@ function goNewNFC(parameters) {
                         	var hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
                             var initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 
-                            var pincode = randomString( 64, '0123456789' );
+                            var pinCode =  randomString( 32, '0123456789' ) ;
                             if (typeof doc.pinCode != 'undefined' && doc.pinCode != '') {
                             	pinCode = doc.pinCode;
                             }
