@@ -4306,6 +4306,8 @@ function goMerchantPayment(parameters) {
 	        setTabs()
 	
 	        setModes()
+	        
+	        updateFrom()
 	
 	        $( "#content form" ).off("submit").submit( function(e) {
 	            e.preventDefault()
