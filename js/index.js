@@ -1524,6 +1524,7 @@ function goServerLogin(parameters) {
 
     $( "#content form" ).off("submit").submit( function(e) {
         e.preventDefault()
+        $( "#submit" ).attr("disabled","disabled");
         
         window.plugins.spinnerDialog.show();
         
@@ -1532,7 +1533,7 @@ function goServerLogin(parameters) {
         config.user.name = doc.email;
         config.user.password = doc.password;
         doFirstLogin( function(error, result) {
-        	
+        	$( "#submit" ).removeAttr("disabled","disabled");
         	window.plugins.spinnerDialog.hide();
         	
         	if(error) { callBack(error); return false;}
@@ -1580,6 +1581,7 @@ function goServerRegistration(parameters) {
 
     $( "#content form" ).off("submit").submit( function(e) {
         e.preventDefault()
+        $( "#submit" ).attr("disabled","disabled");
         
         window.plugins.spinnerDialog.show();
         
@@ -1594,12 +1596,13 @@ function goServerRegistration(parameters) {
         log ( "user:" + JSON.stringify( config.user ) )
         
         doRegistration( function(error, result) {
+        	$( "#submit" ).removeAttr("disabled","disabled");
         	
         	window.plugins.spinnerDialog.hide();
         	
             if (error) { return regErr( error ) }
-            $( "#content form input[name='email']" ).val( "" ) // Clear email
-            $( "#content form input[name='password']" ).val( "" ) // Clear
+//            $( "#content form input[name='email']" ).val( "" ) // Clear email
+//            $( "#content form input[name='password']" ).val( "" ) // Clear
             // password
             // Login Success
             callBack(false);
@@ -1670,7 +1673,7 @@ function goLostPassword(parameters) {
 
     $( "#content form" ).off("submit").submit( function(e) {
         e.preventDefault()
-        
+        $( "#submit" ).attr("disabled","disabled");
         window.plugins.spinnerDialog.show();
         
         var doc = jsonform( this );
@@ -1678,6 +1681,7 @@ function goLostPassword(parameters) {
         config.user = {};
         config.user.name = doc.email;
         doLostPassword( function(error, result) {
+        	$( "#submit" ).removeAttr("disabled","disabled");
         	window.plugins.spinnerDialog.hide();
             if (error) { return alert( error.msg ) }
             $( "#content form input[name='email']" ).val( "" ) // Clear email
