@@ -507,6 +507,25 @@ function connectToChanges() {
 	    	if (isThisUsersDoc) {
 		    	config.db.get( thisrev, function(error, thisdoc) {
 		    		if(error) { 
+		    			if (error.code == "ETIMEDOUT") {
+		    				//there was a timedout error try to resetup config.
+		    			    setupConfig( function(err) {
+		    			        if (err) {
+		    			            log( "setupConfig Error:" + JSON.stringify( err ) )
+		    			            
+		    			            //return false;
+		    			        }
+		    			        connectToChanges()
+		    			        
+		    			        goIndex()
+		    			        
+		    			        config.syncReference = triggerSync( function(err) {
+		    			            if (err) {
+		    			                log( "error on sync" + JSON.stringify( err ) )
+		    			            }
+		    			        } )
+		    			    } )
+		    			}
 		    			log( "This Rev Conflicting Error:" + JSON.stringify( thisrev ) + ":" + JSON.stringify(error) ) 
 		    			return false;
 		    		}
