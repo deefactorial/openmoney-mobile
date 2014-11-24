@@ -3897,15 +3897,19 @@ function goPayment(parameters) {
 	        
 	        $( "#content form" ).off("submit").submit( function(e) {
 	            e.preventDefault()
+	            $( "#submit" ).attr("disabled","disabled");
+	            
 	            var doc = jsonform( this )
 	            
 	            if (typeof doc.to == 'undefined' || doc.to == '') {
 	            	navigator.notification.alert( "Recipient Trading Name Required!"  , function() {  }, "Error", "OK")
+	            	$( "#submit" ).removeAttr("disabled","disabled");
 	            	return false;
 	            }
 	            
 	            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseFloat( doc.amount ) < 0) {
 	            	navigator.notification.alert( "Amount zero or greater Required!"  , function() {  }, "Error", "OK")
+	            	$( "#submit" ).removeAttr("disabled","disabled");
 	            	return false;
 	            }
 	            
@@ -3917,8 +3921,10 @@ function goPayment(parameters) {
 	                if (error) {
 	                    if (error.status == 404) {
 	                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Error", "OK")
+	                    	$( "#submit" ).removeAttr("disabled","disabled");
 	                        return false
 	                    } else {
+	                    	$( "#submit" ).removeAttr("disabled","disabled");
 	                        return alert( JSON.stringify( error ) )
 	                    }
 	                }
@@ -3926,33 +3932,40 @@ function goPayment(parameters) {
 	                doc.currency = from.currency
 	                if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null && from.capacity < doc.amount) {
 	                	navigator.notification.alert( "Your trading account doesn't have the capacity for this transaction!"  , function() { goManageAccounts([]) }, "Error", "OK")
+	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                	return false
 	                }
 	                
 	                if (typeof from.archived != 'undefined' && from.archived === true ) {
 	                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
+	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                	return false
 	                } 
 	                
 	                
 	                if (typeof from.enabled != 'undefined' && from.enabled === false ) {
 	                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                	return false
 	                } 
 	                config.db.get( "currency," + doc.currency, function(error, currency) {
 	                	if (error) {
 	                		if (error.status == 404) {
 	                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
+	                        	$( "#submit" ).removeAttr("disabled","disabled");
 	                            return false
 	                        } else {
+	                        	$( "#submit" ).removeAttr("disabled","disabled");
 	                            return alert( JSON.stringify( error ) )
 	                        }
 	                	} else {
 	                		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
 	                			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+	                			$( "#submit" ).removeAttr("disabled","disabled");
 	                		} else {
 	                			config.db.get( "trading_name," + doc.to + "," + doc.currency, function(error, to) {
 	                                if (error) {
+	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    if (error.status == 404) {
 	                                    	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
 	                                        return false
@@ -3964,20 +3977,24 @@ function goPayment(parameters) {
 	                               
 	                                if (typeof to.archived != 'undefined' && to.archived === true ) {
 	                                	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
+	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                	return false
 	                                } 
 	                                
 	                                if (typeof to.enabled != 'undefined' && to.enabled === false ) {
 	                                	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                	return false
 	                                }  
 	                                config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
 	                                    if (error) {
+	                                    	
 	                                        log( "Error: " + JSON.stringify( error ) )
 	                                        if (error.status == 404) {
 	                                            // doc does not exists
 	                                            log( "insert new trading name journal" + JSON.stringify( doc ) )
 	                                            config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	                                            	
 	                                                if (error)
 	                                                    return alert( JSON.stringify( error ) )
 	                                                $( "#content form input[name='to']" ).val( "" ) // Clear
@@ -3988,6 +4005,7 @@ function goPayment(parameters) {
 	                                                
 	                                            } )
 	                                        } else {
+	                                        	$( "#submit" ).removeAttr("disabled","disabled");
 	                                            alert( "Error: ".JSON.stringify( error ) )
 	                                        }
 	                                    } else {
@@ -4108,11 +4126,13 @@ function goTagPayment(parameters) {
 	        
 	        $( "#content form" ).off("submit").submit( function(e) {
 	            e.preventDefault()
+	            $( "#submit" ).attr("disabled","disabled");
 	            var doc = jsonform( this )
 	            doc.type = "trading_name_journal"
 	            	
 	            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseFloat( doc.amount ) < 0 ){
 	            	navigator.notification.alert( "Amount zero or greater required!"  , function() {  }, "Error", "OK")
+	            	$( "#submit" ).removeAttr("disabled","disabled");
 	            	return false;
 	            }
 	            
@@ -4126,6 +4146,7 @@ function goTagPayment(parameters) {
 	            log( " form doc: " + JSON.stringify( doc ) )
 	            config.db.get( doc.from, function(error, from) {
 	                if (error) {
+	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                    if (error.status == 404) {
 	                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Exists", "OK")
 	                        return false;
@@ -4148,11 +4169,13 @@ function goTagPayment(parameters) {
 	                
 	                if (typeof from.enabled != 'undefined' && from.enabled === false ) {
 	                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                	return false
 	                } 
 	
 	            	config.db.get( "currency," + doc.currency, function(error, currency) {
 	                	if (error) {
+	                		$( "#submit" ).removeAttr("disabled","disabled");
 	                		if (error.status == 404) {
 	                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
 	                            return false
@@ -4162,9 +4185,11 @@ function goTagPayment(parameters) {
 	                	} else {
 	                		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
 	                			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+	                			$( "#submit" ).removeAttr("disabled","disabled");
 	                		} else {
 	                			config.db.get( doc.to, function(error, to) {
 	                                if (error) {
+	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    if (error.status == 404) {
 	                                    	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Exists", "OK")
 	                                        return false
@@ -4181,6 +4206,7 @@ function goTagPayment(parameters) {
 	                                
 	                                if (typeof to.enabled != 'undefined' && to.enabled === false ) {
 	                                	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                	return false
 	                                } 
 	                                config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
@@ -4200,6 +4226,7 @@ function goTagPayment(parameters) {
 	                                                goList( [ "trading_name," + doc.from + "," + doc.currency ] )
 	                                            } )
 	                                        } else {
+	                                        	$( "#submit" ).removeAttr("disabled","disabled");
 	                                            alert( "Error: ".JSON.stringify( error ) )
 	                                        }
 	                                    } else {
@@ -4345,10 +4372,12 @@ function goMerchantPayment(parameters) {
 	
 	        $( "#content form" ).off("submit").submit( function(e) {
 	            e.preventDefault()
+	            $( "#submit" ).attr("disabled","disabled");
 	            var doc = jsonform( this )
 	            
 	            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseFloat( doc.amount ) < 0 ){
 	            	navigator.notification.alert( "Amount zero or greater required!"  , function() {  }, "Error", "OK")
+	            	$( "#submit" ).removeAttr("disabled","disabled");
 	            	return false;
 	            }
 	            
@@ -4358,6 +4387,7 @@ function goMerchantPayment(parameters) {
 	            //doc.timestamp = doc.timestamp.toJSON()
 	            config.db.get( doc.to, function(error, to) {
 	                if (error) {
+	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                    if (error.status == 404) {
 	                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Exists", "OK")
 	                        return false
@@ -4381,10 +4411,12 @@ function goMerchantPayment(parameters) {
 	                
 	                if (typeof to.enabled != 'undefined' && to.enabled === false ) {
 	                	navigator.notification.alert( "Merchants trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                	return false
 	                } 
 	            	config.db.get( "currency," + doc.currency, function(error, currency) {
 	                	if (error) {
+	                		$( "#submit" ).removeAttr("disabled","disabled");
 	                		if (error.status == 404) {
 	                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
 	                            return false
@@ -4394,10 +4426,12 @@ function goMerchantPayment(parameters) {
 	                	} else {
 	                		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
 	                			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+	                			$( "#submit" ).removeAttr("disabled","disabled");
 	                		} else {
 	                			if (typeof doc.from != 'undefined') {
 	                            	config.db.get( doc.from, function(error, from) {
 	                                    if (error) {
+	                                    	$( "#submit" ).removeAttr("disabled","disabled");
 	                                        if (error.status == 404) {
 	                                        	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Not Found", "OK")
 	                                            return false
@@ -4411,16 +4445,19 @@ function goMerchantPayment(parameters) {
 	                                    
 	                                    if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null&& from.capacity < doc.amount) {
 	                                    	navigator.notification.alert( "Customers trading account doesn't have the capacity for this transaction!"  , function() {  }, "Error", "OK")
+	                                    	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    	return false
 	                                    }
 	                                    
 	                                    if (typeof from.archived != 'undefined' && from.archived === true ) {
 	                                    	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() {  }, "Error", "OK")
+	                                    	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    	return false
 	                                    } 
 	                                    
 	                                    if (typeof from.enabled != 'undefined' && from.enabled === false ) {
 	                                    	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+	                                    	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    	return false
 	                                    } 
 	                                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
@@ -4430,8 +4467,10 @@ function goMerchantPayment(parameters) {
 	                                                // doc does not exists
 	                                                log( "insert new trading name journal" + JSON.stringify( doc ) )
 	                                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-	                                                    if (error)
+	                                                    if (error) {
+	                                                    	$( "#submit" ).removeAttr("disabled","disabled");
 	                                                        return alert( JSON.stringify( error ) )
+	                                                    }
 	                                                    $( "#content form input[name='to']" ).val( "" ) // Clear
 	                                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
 	                                                    $( "#content form textarea" ).val( "" ) // Clear
@@ -4443,6 +4482,7 @@ function goMerchantPayment(parameters) {
 	                                                    goList( [ "trading_name," + doc.to + "," + doc.currency ] )
 	                                                } )
 	                                            } else {
+	                                            	$( "#submit" ).removeAttr("disabled","disabled");
 	                                                alert( "Error: ".JSON.stringify( error ) )
 	                                            }
 	                                        } else {
@@ -4617,14 +4657,17 @@ function goCustomerPayment(parameters) {
     
     $( "#content form" ).off("submit").submit( function(e) {
         e.preventDefault()
+        $( "#submit" ).attr("disabled","disabled");
         var customer = jsonform( this )
 
         doc.description = customer.description;
 
         var credentials = '{ "username" : "' + customer.email + '", "password" : "' + customer.password + '" }';
         doCustomerTradingNameLookup( credentials, function(error, tradingnames) {
-            if (error)
+            if (error) {
+            	$( "#submit" ).removeAttr("disabled","disabled");
                 return alert( JSON.stringify( error ) )
+            }
 
             log( "Trading names: " + JSON.stringify( tradingnames ) )
             // select a trading name in the same currency.
@@ -4639,12 +4682,14 @@ function goCustomerPayment(parameters) {
 
             if (!customer.from) { 
             	navigator.notification.alert( "No trading name found for that currency."  , function() {  }, "Not Found", "OK")
+            	$( "#submit" ).removeAttr("disabled","disabled");
             	return false
             }
 
             
             config.db.get( customer.from, function(error, from) {
                 if (error) {
+                	$( "#submit" ).removeAttr("disabled","disabled");
                     if (error.status == 404) {
                     	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!" , function() {  }, "Not Found", "OK")
                         return false
@@ -4657,16 +4702,19 @@ function goCustomerPayment(parameters) {
                 
                 if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null && from.capacity < doc.amount) {
                 	navigator.notification.alert( "Customers trading account doesn't have the capacity for this transaction!"  , function() {  }, "Error", "OK")
+                	$( "#submit" ).removeAttr("disabled","disabled");
                 	return false
                 }
                 
                 if (typeof from.archived != 'undefined' && from.archived === true ) {
                 	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() {  }, "Error", "OK")
+                	$( "#submit" ).removeAttr("disabled","disabled");
                 	return false
                 } 
                 
                 if (typeof from.enabled != 'undefined' && from.enabled === false ) {
                 	navigator.notification.alert( "Customers trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                	$( "#submit" ).removeAttr("disabled","disabled");
                 	return false
                 } 
                 config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
@@ -4676,8 +4724,10 @@ function goCustomerPayment(parameters) {
                             // doc does not exists
                             log( "insert new trading name journal" + JSON.stringify( doc ) )
                             config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-                                if (error)
+                                if (error) {
+                                	$( "#submit" ).removeAttr("disabled","disabled");
                                     return alert( JSON.stringify( error ) )
+                                }
                                 $( "#content form input[name='to']" ).val( "" ) // Clear
                                 $( "#content form input[name='amount']" ).val( "" ) // Clear
                                 $( "#content form textarea" ).val( "" ) // Clear
@@ -4698,6 +4748,7 @@ function goCustomerPayment(parameters) {
                                 
                             } )
                         } else {
+                        	$( "#submit" ).removeAttr("disabled","disabled");
                             alert( "Error: ".JSON.stringify( error ) )
                         }
                     } else {
