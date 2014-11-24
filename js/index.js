@@ -509,22 +509,7 @@ function connectToChanges() {
 		    		if(error) { 
 		    			if (error.code == "ETIMEDOUT") {
 		    				//there was a timedout error try to resetup config.
-		    			    setupConfig( function(err) {
-		    			        if (err) {
-		    			            log( "setupConfig Error:" + JSON.stringify( err ) )
-		    			            
-		    			            //return false;
-		    			        }
-		    			        connectToChanges()
-		    			        
-		    			        goIndex()
-		    			        
-		    			        config.syncReference = triggerSync( function(err) {
-		    			            if (err) {
-		    			                log( "error on sync" + JSON.stringify( err ) )
-		    			            }
-		    			        } )
-		    			    } )
+		    				refreshConfig();
 		    			}
 		    			log( "This Rev Conflicting Error:" + JSON.stringify( thisrev ) + ":" + JSON.stringify(error) ) 
 		    			return false;
@@ -884,6 +869,24 @@ function clone(obj) {
     return copy;
 }
 
+function refreshConfig(){
+	 setupConfig( function(err) {
+        if (err) {
+            log( "setupConfig Error:" + JSON.stringify( err ) )
+            //return false;
+        }
+        connectToChanges()
+        
+        goIndex()
+        
+        config.syncReference = triggerSync( function(err) {
+            if (err) {
+                log( "error on sync" + JSON.stringify( err ) )
+            }
+        } )
+    } )
+}
+
 /*
  * Error handling UI
  */
@@ -893,6 +896,8 @@ function loginErr(error) {
     	navigator.notification.alert( error.msg , function() {  }, "Login Error", "OK")
     } else if(error.reason) {
     	navigator.notification.alert( error.reason , function() {  }, "Login Error", "OK")
+    } else if(error.code == 'ETIMEDOUT'){
+    	refreshConfig();
     } else {
     	navigator.notification.alert( "Login error: " + JSON.stringify( error ) , function() {  }, "Login Error", "OK")
     }
@@ -911,6 +916,8 @@ function regErr(error) {
 function logoutError(error) {
     if (error.msg) {
     	navigator.notification.alert( error.msg , function() {  }, "Logout Error", "OK")
+    } else if(error.code == 'ETIMEDOUT'){
+    	refreshConfig();
     } else {
     	navigator.notification.alert( "Can Not Logout: " + JSON.stringify( error ), function() {  }, "Logout Error", "OK")
     }
