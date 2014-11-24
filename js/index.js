@@ -1044,7 +1044,8 @@ function goIndex(parameters) {
 	            				config.views( [ "account_balance", {
 	            			    	startkey : [ row.id, {} ], endkey : [ row.id ], descending : true
 	            			     	} ], function(err, view) {
-	            			    	drawContainer( "#" + row.key.trading_name + "-" + row.key.currency, config.t.indexBalance( view ) );
+	            					
+	            			    	drawContainer( "#" + row.key.trading_name.replace(/./g,"/.") + "-" + row.key.currency.replace(/./g,"/."), config.t.indexBalance( view ) );
 	            			    } );
 	            			}
 	            		})
