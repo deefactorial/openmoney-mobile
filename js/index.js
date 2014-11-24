@@ -1039,8 +1039,14 @@ function goIndex(parameters) {
 	            if (typeof view.rows != 'undefined' && config.user != null) {
 	            	view.rows.forEach(function(row) {
 	            		row.key.steward.forEach(function(steward) {
-	            			if(steward == config.user.name)
+	            			if(steward == config.user.name){
 	            				thisUsersAccounts.rows.push( row );
+	            				config.views( [ "account_balance", {
+	            			    	startkey : [ row.id, {} ], endkey : [ row.id ], descending : true
+	            			     	} ], function(err, view) {
+	            			    	drawContainer( "#" + row.id, config.t.indexBalance( view ) );
+	            			    } );
+	            			}
 	            		})
 	            	})
 	            }
@@ -1064,6 +1070,8 @@ function goIndex(parameters) {
 			        var id = $( this ).attr( "data-id" );
 			        goList( [ id ] )
 			    } )
+			    
+			    
 	        } )
 	        
     	}
@@ -3412,7 +3420,9 @@ function goNewNFC(parameters) {
 				                getTradingNames(thisUsersAccounts, doc, function(error, trading_names) {
 				                	if( error ) {
 				                		
-				                	} else {
+				                	} else {			                		
+				                		
+				                		 
 				                		
 				                		 var userTag = {
 			                                 "tagID" : tag.id, "hashTag" : hashTag, "initializationVector" : initializationVector, "name" : name, "pinCode" : base64_encodedString, "trading_names": trading_names, "created": doc.created

@@ -37,6 +37,7 @@ limitations under the License.
         <script type="text/javascript" src="js/base64.js"></script>
         <script type="text/javascript" src="js/model.js"></script>
         <script type="text/javascript" src="js/async.js"></script>
+        <script type="text/javascript" src="js/sjcl.js"></script>
         
 <!-- mustache templates -->
 <script type="text/mustache" id="index-mu">
@@ -82,12 +83,17 @@ limitations under the License.
         <li class="om-list-name topcoat-list__item" data-id="{{id}}">
 			{{#key}}
             	{{trading_name}} {{currency}}
-            	
 			{{/key}}
+            <div id="{{id}}" style="float:right;"></div>
         </li>
     {{/rows}}
     </ul>
 </div>
+</script>
+<script type="text/mustache" id="indexBalance-mu">
+    {{#rows}}
+        {{value}}
+    {{/rows}}
 </script>
 <script type="text/mustache" id="list-mu">
 <header>
