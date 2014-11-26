@@ -1,4 +1,7 @@
 
+
+
+
 // source: https://stackoverflow.com/questions/7837456/comparing-two-arrays-in-javascript
 // attach the .equals method to Array's prototype to call it on any array
 Array.prototype.equals = function (array) {
