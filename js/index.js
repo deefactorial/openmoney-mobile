@@ -113,6 +113,8 @@ function onDeviceReady() {
 
 };
 
+document.addEventListener( "deviceready", onDeviceReady, false )
+
 
 /*
  * The config functions don't have any visibile UI, they are used for

@@ -20,7 +20,7 @@ var coax = require( "coax" ), fastclick = require( "fastclick" ), appDbName = "o
 
 new fastclick.FastClick( document.body )
 
-document.addEventListener( "deviceready", onDeviceReady, false )
+
 
 var REMOTE_SYNC_URL = "https://cloud.openmoney.cc:4984/openmoney_shadow"
 
