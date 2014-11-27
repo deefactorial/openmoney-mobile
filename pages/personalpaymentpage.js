@@ -65,18 +65,20 @@ function goPayment(parameters) {
 	
 	        thisUsersAccounts.offset = view.offset
 	        thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+	        
+	        var payment = { "from" : thisUsersAccounts, "to" : view }; 
 	
 	    	var pageTitle = "Payment";
 			
 			if (currentpage != pageTitle) {
 		    
-				var response = { "html" : config.t.payment( thisUsersAccounts )  , "pageTitle" : pageTitle, "pageFunction" : "goPayment", "pageParameters" : [ ]  };
+				var response = { "html" : config.t.payment( payment )  , "pageTitle" : pageTitle, "pageFunction" : "goPayment", "pageParameters" : [ ]  };
 				
 				processAjaxData( response, "payment.html" )
 				
 			} else {
 				
-				var response = { "html" : config.t.payment( thisUsersAccounts )  , "pageTitle" : pageTitle, "pageFunction" : "goPayment", "pageParameters" : [ ]  };
+				var response = { "html" : config.t.payment( payment )  , "pageTitle" : pageTitle, "pageFunction" : "goPayment", "pageParameters" : [ ]  };
 				
 				drawContent( response.html );
 				
@@ -91,6 +93,10 @@ function goPayment(parameters) {
 	        setTabs()
 	
 	        setModes()
+	        
+	        $( "#content input[name='add']" ).off("click").click( function() {
+		        goAddTradingName([])
+		    } )
 	        
 	        $( "#content form" ).off("submit").submit( function(e) {
 	            e.preventDefault()
@@ -322,8 +328,6 @@ function goTagPayment(parameters) {
 	            }
 	            
 	            doc.amount = parseFloat( doc.amount )
-	            
-	            
 	
 	            doc.timestamp = new Date().getTime();
 	            //doc.timestamp = doc.timestamp.toJSON()

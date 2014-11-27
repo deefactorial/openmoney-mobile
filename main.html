@@ -1206,15 +1206,27 @@ limitations under the License.
 				<li class="topcoat-list__item" data-id="from" style="text-align:center;">
                     <label for="from">FROM</label>
 					<select name="from" class="om-select-dark" data-native-menu="false"  >
-						{{#rows}}
+						{{#from}}{{#rows}}
 							<option value="{{id}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
-        				{{/rows}}
+        				{{/rows}}{{/from}}
 					</select>
 				</li>
-				<li class="topcoat-list__item" data-id="to" style="text-align:center;">
+                <li class="topcoat-list__item" data-id="to" >
                     <label for="to">TO</label>
-            		<input type="text" class="topcoat-text-input" name="to" value="" placeholder="Recipient Trading Name" /> 
-				</li>
+                    <div style="display:table; padding:0; margin: 0; width:100%">
+                        <div style="width: 50%;display:table-cell;vertical-align: middle;">
+                            <select name="to" class="om-select-dark" >
+                                <option value="cc" selected="selected">Receipient</option>
+                                {{#to}}{{#rows}}
+                                    <option value="{{id}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
+                                {{/rows}}{{/to}}
+                            </select>
+                        </div>
+                        <div style="width: 49%;display:table-cell;">
+                            <input type="button" class="topcoat-button" name="add" value=" add recipient " />
+                        </div>
+                    </div>
+                </li>
         		<li class="topcoat-list__item" data-id="amount">
             		<input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
 				</li>
