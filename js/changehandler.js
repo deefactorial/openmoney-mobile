@@ -425,9 +425,11 @@ function connectToChanges() {
 						    	    				config.db.put("profile," + config.user.name, profileCopy, function(error) {
 						    	    					getProfile();
 						    	    				})
+						    	    			} else if (error.code == 'ETIMEDOUT'){
+						    	    				
 						    	    			} else {
 						    	    				getProfile();
-						    	    				log (JSON.stringify( error ) )
+						    	    				log ( "Error getting Profile" + JSON.stringify( error ) )
 						    	    			}
 						    	    		} else {
 							    	    		//update the profile with the local settings.

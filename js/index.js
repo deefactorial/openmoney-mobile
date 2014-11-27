@@ -231,6 +231,20 @@ function setupConfig(done) {
                         }, db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
                     };
                     
+                    if (typeof config.db != 'undefined') {
+                    	config.db.extened("get", function(options, callback) {
+                    		var self = this;
+                    		return self(options, function(error, result) {
+                    			if(error && error.code == 'ETIMEDOUT') {
+                    				//try again
+                    				self(options,callback);
+                    			} else {
+                    				callback(error,result);
+                    			}
+                    		} )
+                    	} )
+                    }
+                    
                     if (config.user && config.user.name) {
                     	getProfile();
                         if (SERVER_LOGIN) {
@@ -365,6 +379,8 @@ function setupConfig(done) {
         } )
     };
 }
+
+
 
 /*
  * Sync Manager: this is run on first login, and on every app boot after that.
