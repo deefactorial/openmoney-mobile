@@ -182,8 +182,8 @@
                             throw( { forbidden: "Missing required properties" } );
                         }
                         channel(doc.type + channelDelimiter + doc.name + channelDelimiter + currency);
-                        channel( "currency" + channelDelimiter + currency )
-                        access( doc.steward , "currency" + channelDelimiter + currency)
+                        //channel( "currency" + channelDelimiter + currency )
+                        //access( doc.steward , "currency" + channelDelimiter + currency)
                         access( doc.steward , doc.type + channelDelimiter + doc.name + channelDelimiter + currency )
                         //role( doc.steward, "role:" + doc.name + "_" + doc.currency)
                     } else {
@@ -191,8 +191,8 @@
                         if (doc._deleted) {
                         	requireUser(olddoc.steward);
                         	channel(olddoc.type + channelDelimiter + olddoc.name + channelDelimiter + currency);
-                        	channel( "currency" + channelDelimiter + currency )
-                        	access( olddoc.steward , "currency" + channelDelimiter + currency)
+                        	//channel( "currency" + channelDelimiter + currency )
+                        	//access( olddoc.steward , "currency" + channelDelimiter + currency)
                         	access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name + channelDelimiter + currency )
                         } else {
                             if (!doc.steward || !doc.name || !doc.trading_name || !doc.currency || !doc.created ) {
@@ -205,8 +205,8 @@
                             	requireUser(olddoc.steward);
                             }
                             channel(doc.type + channelDelimiter + doc.name + channelDelimiter + currency);
-                            channel( "currency" + channelDelimiter + currency )
-                            access( doc.steward , "currency" + channelDelimiter + currency)
+                            //channel( "currency" + channelDelimiter + currency )
+                            //access( doc.steward , "currency" + channelDelimiter + currency)
                             access( doc.steward , doc.type + channelDelimiter + doc.name + channelDelimiter + currency )
                         }
                     }
