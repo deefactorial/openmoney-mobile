@@ -76,7 +76,7 @@ function goList(parameters) {
     	window.plugins.spinnerDialog.show();
 	    config.db.get( id, function(err, doc) {
 	    	if(err) { 
-	    		log( JSON.stringify( err ) ); 
+	    		log( "Error getting " + id + " :" +JSON.stringify( err ) ); 
 	    		dbChangedJournal(); 
 	    		return false;
 	    	}
@@ -87,7 +87,7 @@ function goList(parameters) {
             } ], function(err, view) {
             	
             	if(err) { 
-    	    		log( JSON.stringify( err ) ); 
+            		log( "Error getting " + id + " :" +JSON.stringify( err ) ); 
     	    		dbChangedJournal(); 
     	    		return false;
     	    	}
@@ -113,7 +113,7 @@ function goList(parameters) {
                 startkey : [ id, {} ], endkey : [ id ], descending : true
             } ], function(err, view) {
             	if(err) { 
-    	    		log( JSON.stringify( err ) ); 
+            		log( "Error getting " + id + " :" +JSON.stringify( err ) ); 
     	    		dbChangedJournal(); 
     	    		return false;
     	    	}

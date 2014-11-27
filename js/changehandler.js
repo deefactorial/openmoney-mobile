@@ -258,7 +258,7 @@ function connectToChanges() {
 		    		if(error) { 
 		    			if (error.code == "ETIMEDOUT") {
 		    				//there was a timedout error try to resetup config.
-		    				refreshConfig();
+		    				//refreshConfig();
 		    			}
 		    			log( "This Rev Conflicting Error:" + JSON.stringify( thisrev ) + ":" + JSON.stringify(error) ) 
 		    			return false;
@@ -270,7 +270,7 @@ function connectToChanges() {
 			        		if(error) {  
 			        			if (error.code == "ETIMEDOUT") {
 				    				//there was a timedout error try to resetup config.
-				    				refreshConfig();
+				    				//refreshConfig();
 				    			}
 			        			log( "That Rev Conflicting Error:" + JSON.stringify( thatrev ) + ":" +JSON.stringify(error) ); 
 			        			return false;
