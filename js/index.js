@@ -544,7 +544,9 @@ function triggerSync(cb, retryCount) {
     pushSync.on( "started", function( info ) {
     	log("pushSync started handler called" + JSON.stringify( info ) )
     	push_session_id = info.session_id;
-    	pullSync.start()
+    	if (pull_status == "Offline" && pull_session_id == null){
+    		pullSync.start()
+    	}
     } )
     pullSync.on( "error", function(err) {
     	log("Pull Sync Error:" + err)
@@ -703,7 +705,7 @@ function syncManager(serverUrl, syncDefinition) {
                 } else {
                     //pollForStatus( info, false )
                 	processTaskInfo( info.session_id, function(done) {
-                		callHandlers( "started", info ) //there is no started handler
+                		callHandlers( "started", info ) 
                 	} );
                     
                     //callHandlers( "connected", info )
