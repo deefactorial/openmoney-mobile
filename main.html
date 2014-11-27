@@ -1211,14 +1211,14 @@ limitations under the License.
         				{{/rows}}{{/from}}
 					</select>
 				</li>
-                <li class="topcoat-list__item" data-id="to" >
-                    <label for="to">TO</label>
+                <li class="topcoat-list__item" data-id="to" style="text-align:center;">
+                    <label for="to" >TO</label>
                     <div style="display:table; padding:0; margin: 0; width:100%">
                         <div style="width: 50%;display:table-cell;vertical-align: middle;">
                             <select name="to" class="om-select-dark" >
                                 <option value="cc" selected="selected">Receipient</option>
                                 {{#to}}{{#rows}}
-                                    <option value="{{id}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
+                                    <option value="{{trading_name}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
                                 {{/rows}}{{/to}}
                             </select>
                         </div>
