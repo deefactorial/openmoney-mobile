@@ -1218,7 +1218,7 @@ limitations under the License.
                             <select name="to" class="om-select-dark" >
                                 <option value="cc" selected="selected">Receipient</option>
                                 {{#to}}{{#rows}}
-                                    <option value="{{trading_name}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
+                                    <option value="{{#key}}{{trading_name}}{{/key}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
                                 {{/rows}}{{/to}}
                             </select>
                         </div>
