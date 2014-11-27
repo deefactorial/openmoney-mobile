@@ -572,7 +572,9 @@ function triggerSync(cb, retryCount) {
     		}
     		
     		pull_status = task.status;
-    		combined_status = task.status;
+    		if (combined_status == 'Active' && task.status != 'Idle') {
+    			combined_status = task.status;
+    		}
     		if(pull_status == 'Idle') {
     			//update icon to on after 10 seconds if it hasn't changed
     			setTimeout(function(){
