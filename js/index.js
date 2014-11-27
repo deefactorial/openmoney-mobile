@@ -232,11 +232,12 @@ function setupConfig(done) {
                     };
                     
                     if (typeof config.db != 'undefined') {
-                    	config.db.extened("get", function(options, callback) {
+                    	config.db.extend("get", function(options, callback) {
                     		var self = this;
                     		return self(options, function(error, result) {
                     			if(error && error.code == 'ETIMEDOUT') {
                     				//try again
+                    				log("ETIMEDOUT retry get");
                     				self(options,callback);
                     			} else {
                     				callback(error,result);
