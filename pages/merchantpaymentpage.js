@@ -438,7 +438,7 @@ function goCustomerPayment(parameters) {
 	                        return alert( JSON.stringify( error ) )
 	                    }
 	                }
-	                doc.from = customer.from
+	                doc.from = customer.trading_name
 	                
 	                
 	                if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null && from.capacity < doc.amount) {
