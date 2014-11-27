@@ -524,11 +524,13 @@ function triggerSync(cb, retryCount) {
     		}
     		
     		push_status = task.status;
-    		combined_status = task.status;
+    		if (combined_status == 'Active' && task.status != 'Idle') {
+    			combined_status = task.status;
+    		}
     		if(push_status == 'Idle') {
     			//update status icon if it hasn't changed
     			setTimeout(function(){
-    				if (push_status == 'Idle'){
+    				if (push_status == 'Idle' && combined_status != 'Active'){
     					combined_status = 'Active';
     					updateStatusIcon(combined_status);
     				}
