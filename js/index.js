@@ -758,5 +758,9 @@ function syncManager(serverUrl, syncDefinition) {
 
 // pluggable logger
 function log() {
-    console.log.apply( console, arguments )
+    var args = Array.prototype.slice.call(arguments, 0),
+    suffix = this.lineNumber ? 'line: '  + this.lineNumber : 'stack: ' + this.stack;
+
+    console.log.apply(console, args.concat([suffix]));
+    //console.log.apply( console, arguments )
 }

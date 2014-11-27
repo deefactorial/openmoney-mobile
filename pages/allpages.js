@@ -331,7 +331,7 @@ window.nfcListner = function(nfcEvent) {
         // do a lookup of the key
         doTagLookup( payload.key, function(error, result) {
             if (error)
-                alert( "Error: " + JSON.stringify( error ) )
+                alert( "Tag Lookup Error: " + JSON.stringify( error ) )
             else {
                 log( JSON.stringify( "Tag Lookup Result:" + JSON.stringify( result ) ) )
                 
