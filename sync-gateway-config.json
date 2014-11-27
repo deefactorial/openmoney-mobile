@@ -182,15 +182,18 @@
                             throw( { forbidden: "Missing required properties" } );
                         }
                         channel(doc.type + channelDelimiter + doc.name + channelDelimiter + currency);
+                        channel("trading_name_steward" + channelDelimiter + doc.name + channelDelimiter + currency);
                         //channel( "currency" + channelDelimiter + currency )
                         //access( doc.steward , "currency" + channelDelimiter + currency)
                         access( doc.steward , doc.type + channelDelimiter + doc.name + channelDelimiter + currency )
+                        access( doc.steward , "trading_name_steward" + channelDelimiter + doc.name + channelDelimiter + currency)
                         //role( doc.steward, "role:" + doc.name + "_" + doc.currency)
                     } else {
                     	currency = base64_encode( olddoc.currency );
                         if (doc._deleted) {
                         	requireUser(olddoc.steward);
                         	channel(olddoc.type + channelDelimiter + olddoc.name + channelDelimiter + currency);
+                        	channel("trading_name_steward" + channelDelimiter + olddoc.name + channelDelimiter + currency);
                         	//channel( "currency" + channelDelimiter + currency )
                         	//access( olddoc.steward , "currency" + channelDelimiter + currency)
                         	access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name + channelDelimiter + currency )
@@ -204,10 +207,12 @@
                             if (! doc.steward.equals( olddoc.steward ) ) {
                             	requireUser(olddoc.steward);
                             }
-                            channel(doc.type + channelDelimiter + doc.name + channelDelimiter + currency);
+                            channel(olddoc.type + channelDelimiter + olddoc.name + channelDelimiter + currency);
+                            channel("trading_name_steward" + channelDelimiter + olddoc.name + channelDelimiter + currency);
                             //channel( "currency" + channelDelimiter + currency )
                             //access( doc.steward , "currency" + channelDelimiter + currency)
-                            access( doc.steward , doc.type + channelDelimiter + doc.name + channelDelimiter + currency )
+                            access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name + channelDelimiter + currency )
+                            access( olddoc.steward , "trading_name_steward" + channelDelimiter + olddoc.name + channelDelimiter + currency)
                         }
                     }
                 } else if ( (olddoc != null && olddoc.type == "trading_name_view" ) || (olddoc == null && doc.type == "trading_name_view") ) {
@@ -336,8 +341,8 @@
                         if (!doc.from || !doc.to || typeof doc.amount == 'undefined' || parseFloat( doc.amount ) < 0 || !doc.currency || !doc.timestamp ) {
                             throw({forbidden: "Missing required properties"});
                         }
-                        channel("trading_name" + channelDelimiter + from + channelDelimiter + currency)
-                        channel("trading_name" + channelDelimiter + to + channelDelimiter + currency)
+                        channel("trading_name_steward" + channelDelimiter + from + channelDelimiter + currency)
+                        channel("trading_name_steward" + channelDelimiter + to + channelDelimiter + currency)
                         //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                     } else {
                         if (doc._deleted) {
@@ -350,8 +355,8 @@
                             	throw({forbidden: "unmutable properties"});
                             }
                             //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
-                            channel("trading_name" + channelDelimiter + from + channelDelimiter + currency)
-                            channel("trading_name" + channelDelimiter + to + channelDelimiter + currency)
+                            channel("trading_name_steward" + channelDelimiter + from + channelDelimiter + currency)
+                            channel("trading_name_steward" + channelDelimiter + to + channelDelimiter + currency)
                             //requireUser([olddoc.from , olddoc.to]);
                         }
                     }
