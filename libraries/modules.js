@@ -91,7 +91,9 @@ Coax.extend( "active_tasks", function(opts, cb) {
 			//return result
 			cb( false, [ ok ] );
 			//initiate new request
-			self.active_tasks( opts, cb );
+			setTimeout(function(){
+				self.active_tasks( opts, cb );
+			}, 250);
 		} );
 	}
 } )
