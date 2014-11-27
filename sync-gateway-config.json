@@ -218,7 +218,7 @@
                             throw({forbidden: "Missing required properties"});
                         }
                         channel(doc.type + channelDelimiter + doc.trading_name + channelDelimiter + currency);
-                        access(doc.steward, doc.type + channelDelimiter + currency);
+                        access(doc.steward, doc.type + channelDelimiter + doc.trading_name + channelDelimiter + currency);
                         access(doc.steward, "trading_name" + channelDelimiter + doc.trading_name + channelDelimiter + currency);
                     } else {
                     	currency = base64_encode( olddoc.currency );
