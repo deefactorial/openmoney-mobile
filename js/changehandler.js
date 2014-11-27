@@ -268,6 +268,10 @@ function connectToChanges() {
 		    			
 		    			config.db.get( thatrev, function(error, thatdoc) {
 			        		if(error) {  
+			        			if (error.code == "ETIMEDOUT") {
+				    				//there was a timedout error try to resetup config.
+				    				refreshConfig();
+				    			}
 			        			log( "That Rev Conflicting Error:" + JSON.stringify( thatrev ) + ":" +JSON.stringify(error) ); 
 			        			return false;
 			        		}
