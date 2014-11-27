@@ -93,7 +93,7 @@ Coax.extend( "active_tasks", function(opts, cb) {
 			//initiate new request
 			setTimeout(function(){
 				self.active_tasks( opts, cb );
-			}, 250);
+			}, 500);
 		} );
 	}
 } )
