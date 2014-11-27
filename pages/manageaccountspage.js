@@ -122,7 +122,11 @@ function goManageAccounts(parameters) {
             include_docs : true
         } ], function(error, view) {
     		window.plugins.spinnerDialog.hide();
-            if (error) { return alert( JSON.stringify( error ) ) }
+            if (error) { 
+            	log( "Error getting accounts view :" + JSON.stringify( error ) ) 
+            	window.dbChangedTradingNames();
+            	return false;
+            }
             
             var usersAccounts = { "rows" : [] };
             view.rows.forEach( function(row) {
@@ -161,7 +165,11 @@ function goManageAccounts(parameters) {
             include_docs : true
         } ], function(error, view) {
     		window.plugins.spinnerDialog.hide();
-            if (error) { return alert( JSON.stringify( error ) ) }
+            if (error) { 
+            	log( "ERROR getting currency view " + alert( JSON.stringify( error ) ))
+            	window.dbChangedCurrencies();
+            	return false;
+            }
 
             drawContainer( "div#currencies_list" , config.t.currencies_list( view ) )
             
@@ -184,7 +192,11 @@ function goManageAccounts(parameters) {
             include_docs : true
         } ], function(error, view) {
     		window.plugins.spinnerDialog.hide();
-            if (error) { return alert( JSON.stringify( error ) ) }
+            if (error) {
+            	log( "Error getting spaces view : " + JSON.stringify( error ) )
+            	window.dbChangedSpaces();
+            	return false;
+            }
 
             drawContainer( "div#spaces_list", config.t.spaces_list( view ) )
             
