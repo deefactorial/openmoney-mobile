@@ -531,6 +531,10 @@ function goAddTradingName(parameters) {
 		
 		    setTabs()
 		    
+		    $( "#content input[name='add']" ).off("click").click( function() {
+		        goAddCurrency([])
+		    } )
+		    
 		    $( "#content form" ).off("submit").submit( function(e) {
 			    e.preventDefault()
 			    var doc = jsonform( this );
