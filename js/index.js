@@ -430,9 +430,9 @@ function triggerSync(cb, retryCount) {
     }
     log( " Remote: " + JSON.stringify( remote ) )
     var push = {
-        source : appDbName, target : remote, continuous : true
+        source : appDbName, target : remote, continuous : false
     }, pull = {
-        target : appDbName, source : remote, continuous : true
+        target : appDbName, source : remote, continuous : false
     },
     
     pushSync = syncManager( config.server, push ), pullSync = syncManager( config.server, pull )
