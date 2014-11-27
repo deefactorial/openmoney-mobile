@@ -498,8 +498,8 @@ function goAddTradingName(parameters) {
 	window.dbChangedCurrencies = function () {
 		
 		window.plugins.spinnerDialog.show();
-		config.views( [ "currencies", {} ], function(error, currencies) {
-			window.plugins.spinnerDialog.show();
+		config.views("currencies", function(error, currencies) {
+			window.plugins.spinnerDialog.hide();
 		
 			if (error) {
 				log ("Error getting currencies view:" + JSON.stringify( error ) ) 
