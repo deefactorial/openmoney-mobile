@@ -222,15 +222,23 @@
                         if (!doc.steward || !doc.trading_name || !doc.currency || !doc.created ) {
                             throw({forbidden: "Missing required properties"});
                         }
-                        channel(doc.type + channelDelimiter + doc.trading_name + channelDelimiter + currency);
-                        access(doc.steward, doc.type + channelDelimiter + doc.trading_name + channelDelimiter + currency);
-                        access(doc.steward, "trading_name" + channelDelimiter + doc.trading_name + channelDelimiter + currency);
+                        doc.steward.forEach(function (steward) {
+                        	channel(doc.type + channelDelimiter + steward + channelDelimiter + doc.trading_name + channelDelimiter + currency);
+                            access(steward, doc.type + channelDelimiter + steward + channelDelimiter + doc.trading_name + channelDelimiter + currency);
+                            access(steward, "trading_name" + channelDelimiter + doc.trading_name + channelDelimiter + currency);
+                        })
+                        
                     } else {
                     	currency = base64_encode( olddoc.currency );
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
                             channel(olddoc.type + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
                             access(olddoc.steward, olddoc.type + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
+                            olddoc.steward.forEach(function (steward) {
+                            	channel(olddoc.type + channelDelimiter + steward + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
+                                access(steward, olddoc.type + channelDelimiter + steward + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
+                                access(steward, "trading_name" + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
+                            })
                         } else {
                             if (!doc.steward || !doc.trading_name || !doc.currency || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
@@ -241,9 +249,11 @@
                             if (! doc.steward.equals( olddoc.steward ) ) {
                             	requireUser(olddoc.steward)
                             }
-                            channel(olddoc.type + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
-                            access(doc.steward, olddoc.type + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
-                            access(doc.steward, "trading_name" + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
+                            olddoc.steward.forEach(function (steward) {
+                            	channel(olddoc.type + channelDelimiter + steward + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
+                                access(steward, olddoc.type + channelDelimiter + steward + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
+                                access(steward, "trading_name" + channelDelimiter + olddoc.trading_name + channelDelimiter + currency);
+                            })
                         }
                     }
                 } else if ( (olddoc != null && olddoc.type == "space" ) || (olddoc == null && doc.type == "space") ) {
