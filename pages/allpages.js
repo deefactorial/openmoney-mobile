@@ -334,6 +334,31 @@ window.nfcListner = function(nfcEvent) {
                 alert( "Tag Lookup Error: " + JSON.stringify( error ) )
             else {
                 log( JSON.stringify( "Tag Lookup Result:" + JSON.stringify( result ) ) )
+//                
+//                forEach( function(name) {
+//                	config.db.get("trading_name_view," + config.user.name + "," + name.trading_name + "," + name.currency, function(error, doc) {
+//                		if (error && error.status == 404) {
+//                			//document doesn't exist so add it.
+//                			var trading_name_view = {};
+//                			trading_name_view['type'] = "trading_name_view";
+//                			trading_name_view['steward'] = [ config.user.name ];
+//                			trading_name_view['trading_name'] = name.trading_name;
+//                			trading_name_view['currency'] = name.currency;
+//                			trading_name_view['created'] = new Date().getTime();
+//                			config.db.put(trading_name_view['type'] + "," + trading_name_view['steward'] + "," + trading_name_view['trading_name'] + "," + trading_name_view['currency'],, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+//					   		 	if (error) {
+//					   		 		if (error.status == 409) {
+//					   		 			log( 'You have already added the trading name ' + doc.trading_name + " in currency " + doc.currency)
+//					   		 		} else {
+//					   		 			log( "Insert trading name view error: " + JSON.stringify( error ) )
+//					   		 		}
+//					   		 	} else {
+//					   		 		//success
+//					   		 	}
+//                			}  )
+//                		}
+//                	} )
+//                } )
                 
                 if (typeof config.user != 'undefined' && typeof config.user.profile != 'undefined') {
 		    		if (config.user.profile.mode && currentpage != 'Payment') {

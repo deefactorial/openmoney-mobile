@@ -228,8 +228,6 @@ function goPayment(parameters) {
 	window.dbChangedTradingNames();
 }
 
-
-
 /*
  * Payment Page
  */
