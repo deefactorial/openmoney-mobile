@@ -14,21 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-
+/*
+ * Global Configuration parameters
+ */
 
 var coax = require( "coax" ), fastclick = require( "fastclick" ), appDbName = "openmoney"
 
 new fastclick.FastClick( document.body )
 
-
-
 var REMOTE_SYNC_URL = "https://cloud.openmoney.cc:4984/openmoney_shadow"
-
 var REMOTE_SYNC_PROTOCOL = "https://"
 var REMOTE_SYNC_SERVER = "cloud.openmoney.cc"
-// var REMOTE_SYNC_SERVER = "sync.couchbasecloud.com"
 var REMOTE_SYNC_PORT = "4984"
-// var REMOTE_SYNC_DATABASE = "todolite-phonegap"
 var REMOTE_SYNC_DATABASE = "openmoney_shadow"
 var REMOTE_SERVER_LOGIN_URL = "https://cloud.openmoney.cc/login"
 var REMOTE_SERVER_LOGOUT_URL = "https://cloud.openmoney.cc/logout"

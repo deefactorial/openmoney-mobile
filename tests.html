@@ -28,20 +28,46 @@ limitations under the License.
         <div id="content"></div>
         <div id="qunit"></div>
         <div id="qunit-fixture"></div>
+        
+        <!-- Libraries -->
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/zepto.min.js"></script>
-        <script type="text/javascript" src="js/zepto.touch.js"></script>
-        <script type="text/javascript" src="js/zepto.history.js"></script>
-        <script type="text/javascript" src="js/modules.js"></script>
-        <!-- script type="text/javascript" src="js/phonegap.facebook.inappbrowser.js"></script> -->
+        <script type="text/javascript" src="libraries/zepto.min.js"></script>
+        <script type="text/javascript" src="libraries/zepto.touch.js"></script>
+        <script type="text/javascript" src="libraries/zepto.history.js"></script>
+        <script type="text/javascript" src="libraries/async.js"></script>
+        <script type="text/javascript" src="libraries/rijndael.js"></script>
+        <script type="text/javascript" src="libraries/mcrypt.js"></script>
+        <script type="text/javascript" src="libraries/base64.js"></script>
+        <!-- script type="text/javascript" src="libraries/sjcl.js"></script-->
+        <!-- script type="text/javascript" src="libraries/phonegap.facebook.inappbrowser.js"></script> -->
+        
+        <!-- In between library and App -->
+        <script type="text/javascript" src="libraries/modules.js"></script>
+        
+        <!-- Global App Setup -->
+        <script type="text/javascript" src="js/config.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="js/indexpage.js"></script>
-        <script type="text/javascript" src="js/rijndael.js"></script>
-        <script type="text/javascript" src="js/mcrypt.js"></script>
-        <script type="text/javascript" src="js/base64.js"></script>
-        <script type="text/javascript" src="js/model.js"></script>
-        <script type="text/javascript" src="js/async.js"></script>
-        <!-- script type="text/javascript" src="js/sjcl.js"></script-->
+        <script type="text/javascript" src="js/changehandler.js"></script>
+        <script type="text/javascript" src="js/beamtag.js"></script>
+        
+        <!-- Pages -->
+        <script type="text/javascript" src="pages/allpages.js"></script>
+        <script type="text/javascript" src="pages/indexpage.js"></script>
+        <script type="text/javascript" src="pages/accountdetailspage.js"></script>
+        <script type="text/javascript" src="pages/loginpage.js"></script>
+        <script type="text/javascript" src="pages/registrationpage.js"></script>
+        <script type="text/javascript" src="pages/lostpasswordpage.js"></script>
+        <script type="text/javascript" src="pages/settingspage.js"></script>
+        <script type="text/javascript" src="pages/manageaccountspage.js"></script>
+        <script type="text/javascript" src="pages/createaccountpage.js"></script>
+        <script type="text/javascript" src="pages/profilepage.js"></script>
+        <script type="text/javascript" src="pages/managenfcpage.js"></script>
+        <script type="text/javascript" src="pages/newnfctagpage.js"></script>
+        <script type="text/javascript" src="pages/editnfctagpage.js"></script>
+        <script type="text/javascript" src="pages/personalpaymentpage.js"></script>
+        <script type="text/javascript" src="pages/merchantpaymentpage.js"></script>
+        
+        <!-- Tests -->
         <script type="text/javascript" src="js/qunit.js"></script>
         <script type="text/javascript" src="tests/main.js"></script>
         
@@ -56,28 +82,28 @@ limitations under the License.
             <h1 class="topcoat-navigation-bar__title">openmoney</h1>
         </div>
         <div class="topcoat-navigation-bar__item right quarter">
-			<button class="openmoney-login topcoat-icon-button--quiet openmoney-small">
-  				<span class="openmoney-login-icon topcoat-icon"></span>
-			</button>
-			<button class="openmoney-logout topcoat-icon-button--quiet openmoney-small">
-  				<span class="openmoney-logout-icon topcoat-icon"></span>
-			</button>
+            <button class="openmoney-login topcoat-icon-button--quiet openmoney-small">
+                <span class="openmoney-login-icon topcoat-icon"></span>
+            </button>
+            <button class="openmoney-logout topcoat-icon-button--quiet openmoney-small">
+                <span class="openmoney-logout-icon topcoat-icon"></span>
+            </button>
         </div>
     </div>
     <div class="topcoat-tab-bar">
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar" checked="checked">
-     		<button class="om-accounts topcoat-tab-bar__button">accounts</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-payments topcoat-tab-bar__button">payment</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-settings topcoat-tab-bar__button">settings</button>
-   		</label>
-	</div>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar" checked="checked">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
 </header>
 <div id="scrollable">
 </div>
@@ -87,10 +113,10 @@ limitations under the License.
     <ul class="topcoat-list">
     {{#rows}}
         <li class="om-list-name topcoat-list__item" data-id="{{id}}">
-			{{#key}}
-            	{{trading_name}} {{currency}}
+            {{#key}}
+                {{trading_name}} {{currency}}
                 <div id="{{trading_name}}-{{currency}}" style="float:right;"></div>
-			{{/key}}
+            {{/key}}
             
         </li>
     {{/rows}}
@@ -113,28 +139,28 @@ limitations under the License.
             </div>
         </div>
         <div class="topcoat-navigation-bar__item right quarter">
-			<button class="openmoney-login topcoat-icon-button--quiet openmoney-small">
-  				<span class="openmoney-login-icon topcoat-icon"></span>
-			</button>
-			<button class="openmoney-logout topcoat-icon-button--quiet openmoney-small">
-  				<span class="openmoney-logout-icon topcoat-icon"></span>
-			</button>
+            <button class="openmoney-login topcoat-icon-button--quiet openmoney-small">
+                <span class="openmoney-login-icon topcoat-icon"></span>
+            </button>
+            <button class="openmoney-logout topcoat-icon-button--quiet openmoney-small">
+                <span class="openmoney-logout-icon topcoat-icon"></span>
+            </button>
         </div>
     </div>
     <div class="topcoat-tab-bar">
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-accounts topcoat-tab-bar__button">accounts</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-payments topcoat-tab-bar__button">payment</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-settings topcoat-tab-bar__button">settings</button>
-   		</label>
-	</div>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
 </header>
 <div id="scrollable">
 </div>
@@ -215,13 +241,13 @@ limitations under the License.
 <script type="text/mustache" id="login-mu">
 <header>
     <div class="topcoat-navigation-bar">
-		<div class="topcoat-navigation-bar__item left third todo-padded">
+        <div class="topcoat-navigation-bar__item left third todo-padded">
             <button class="todo-index topcoat-button todo-small">&larr;</button>
         </div>
         <div class="topcoat-navigation-bar__item center third todo-padded">
             <button class="topcoat-button todo-register">Register</button>
         </div>
-		<div class="topcoat-navigation-bar__item right third todo-padded">
+        <div class="topcoat-navigation-bar__item right third todo-padded">
             <button class="topcoat-button todo-lost">Lost PW</button>
         </div>
     </div>
@@ -232,27 +258,27 @@ limitations under the License.
     </div>
 </header>
 <div id="scrollable">
-	<div class="topcoat-list__container">
-		<form>
-			<ul class="topcoat-list">
-        		<li class="topcoat-list__item" data-id="email">
-            		<input type="text" class="topcoat-text-input" name="email" value="" placeholder="Username or Email" /> 
-				</li>
-				<li class="topcoat-list__item" data-id="password">
-					<input type="password" class="topcoat-text-input" name="password" value="" placeholder="Password" /> 
-				</li>
-				<li class="topcoat-list__item" data-id="login_submit">
-					<input type="submit" class="topcoat-button" id="submit" name="login" value=" Login " /> 
-				</li>
-    		</ul>
- 		</form>
-	</div>
+    <div class="topcoat-list__container">
+        <form>
+            <ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="email">
+                    <input type="text" class="topcoat-text-input" name="email" value="" placeholder="Username or Email" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="password">
+                    <input type="password" class="topcoat-text-input" name="password" value="" placeholder="Password" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="login_submit">
+                    <input type="submit" class="topcoat-button" id="submit" name="login" value=" Login " /> 
+                </li>
+            </ul>
+        </form>
+    </div>
 </div>
 </script>
 <script type="text/mustache" id="register-mu">
 <header>
     <div class="topcoat-navigation-bar">
-		<div class="topcoat-navigation-bar__item left quarter todo-padded">
+        <div class="topcoat-navigation-bar__item left quarter todo-padded">
             <button class="todo-index topcoat-button todo-small">&larr;</button>
         </div>
     </div>
@@ -263,30 +289,30 @@ limitations under the License.
     </div>
 </header>
 <div id="scrollable">
-	<div class="topcoat-list__container">
-		<form>
-			<ul class="topcoat-list">
+    <div class="topcoat-list__container">
+        <form>
+            <ul class="topcoat-list">
                 <li class="topcoat-list__item" data-id="username">
                     <input type="text" class="topcoat-text-input" name="username" value="" placeholder="Username" /> 
                 </li>
-        		<li class="topcoat-list__item" data-id="email">
-            		<input type="text" class="topcoat-text-input" name="email" value="" placeholder="Email" /> 
-				</li>
-				<li class="topcoat-list__item" data-id="password">
-					<input type="password" class="topcoat-text-input" name="password" value="" placeholder="Password" /> 
-				</li>
-				<li class="topcoat-list__item" data-id="login_submit">
-					<input type="submit" class="topcoat-button" id="submit" name="register" value=" Register " /> 
-				</li>
-    		</ul>
- 		</form>
-	</div>
+                <li class="topcoat-list__item" data-id="email">
+                    <input type="text" class="topcoat-text-input" name="email" value="" placeholder="Email" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="password">
+                    <input type="password" class="topcoat-text-input" name="password" value="" placeholder="Password" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="login_submit">
+                    <input type="submit" class="topcoat-button" id="submit" name="register" value=" Register " /> 
+                </li>
+            </ul>
+        </form>
+    </div>
 </div>
 </script>
 <script type="text/mustache" id="lost-mu">
 <header>
     <div class="topcoat-navigation-bar">
-		<div class="topcoat-navigation-bar__item left quarter todo-padded">
+        <div class="topcoat-navigation-bar__item left quarter todo-padded">
             <button class="todo-index topcoat-button todo-small">&larr;</button>
         </div>
     </div>
@@ -297,65 +323,65 @@ limitations under the License.
     </div>
 </header>
 <div id="scrollable">
-	<div class="topcoat-list__container">
-		<form>
-			<ul class="topcoat-list">
-        		<li class="topcoat-list__item" data-id="email">
-            		<input type="text" class="topcoat-text-input" name="email" value="" placeholder="Username or Email" /> 
-				</li>
-				<li class="topcoat-list__item" data-id="login_submit">
-					<input type="submit" class="topcoat-button" id="submit" name="login" value=" Reset Password " /> 
-				</li>
-    		</ul>
- 		</form>
-	</div>
+    <div class="topcoat-list__container">
+        <form>
+            <ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="email">
+                    <input type="text" class="topcoat-text-input" name="email" value="" placeholder="Username or Email" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="login_submit">
+                    <input type="submit" class="topcoat-button" id="submit" name="login" value=" Reset Password " /> 
+                </li>
+            </ul>
+        </form>
+    </div>
 </div>
 </script>
 <script type="text/mustache" id="settings-mu">
 <header>
     <div class="topcoat-navigation-bar">
-		<div class="topcoat-navigation-bar__item left third om-padded">
+        <div class="topcoat-navigation-bar__item left third om-padded">
             <img class="cloud-status cloud-status-queue" alt="cloud status"/>
         </div>
         <div class="topcoat-navigation-bar__item center third">
            <h1 class="topcoat-navigation-bar__title">Settings</h1>
         </div>
-		<div class="topcoat-navigation-bar__item right third">
-			<button class="openmoney-login topcoat-icon-button--quiet openmoney-small">
-  				<span class="openmoney-login-icon topcoat-icon"></span>
-			</button>
-			<button class="openmoney-logout topcoat-icon-button--quiet openmoney-small">
-  				<span class="openmoney-logout-icon topcoat-icon"></span>
-			</button>
+        <div class="topcoat-navigation-bar__item right third">
+            <button class="openmoney-login topcoat-icon-button--quiet openmoney-small">
+                <span class="openmoney-login-icon topcoat-icon"></span>
+            </button>
+            <button class="openmoney-logout topcoat-icon-button--quiet openmoney-small">
+                <span class="openmoney-logout-icon topcoat-icon"></span>
+            </button>
         </div>
     </div>
     <div class="topcoat-tab-bar">
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar" checked="checked">
-     		<button class="om-accounts topcoat-tab-bar__button">accounts</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-payments topcoat-tab-bar__button">payment</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar" checked="checked">
-     		<button class="om-settings topcoat-tab-bar__button">settings</button>
-   		</label>
-	</div>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar" checked="checked">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar" checked="checked">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
 </header>
 <div id="scrollable">
-	<div class="topcoat-list__container">
-			<ul class="topcoat-list">
+    <div class="topcoat-list__container">
+            <ul class="topcoat-list">
                 <li class="topcoat-list__item" data-id="trading_name">
                     <button class="om-manage_accounts topcoat-button">Manage Accounts</button>
                 </li>
-        		<!--li class="topcoat-list__item" data-id="trading_name">
-            		<button class="om-trading_name topcoat-button">Join Currency</button>
-				</li-->
-				<!--li class="topcoat-list__item" data-id="currency">
-					<button class="om-currency topcoat-button">Create Currency</button>
-				</li-->
+                <!--li class="topcoat-list__item" data-id="trading_name">
+                    <button class="om-trading_name topcoat-button">Join Currency</button>
+                </li-->
+                <!--li class="topcoat-list__item" data-id="currency">
+                    <button class="om-currency topcoat-button">Create Currency</button>
+                </li-->
                 <!--li class="topcoat-list__item" data-id="space">
                     <button class="om-space topcoat-button">Create Space</button>
                 </li-->
@@ -365,14 +391,14 @@ limitations under the License.
                 <!--li class="topcoat-list__item" data-id="server">
                     <button class="om-server topcoat-button">Syncronization Server</button>
                 </li-->
-				<li class="topcoat-list__item" data-id="profile">
-					<button class="om-profile topcoat-button">Profile Settings</button>
-				</li>
+                <li class="topcoat-list__item" data-id="profile">
+                    <button class="om-profile topcoat-button">Profile Settings</button>
+                </li>
                 <li class="topcoat-list__item" data-id="profile">
                     <button class="om-manage_nfc topcoat-button">Manage NFC Tags</button>
                 </li>
-    		</ul>
-	</div>
+            </ul>
+    </div>
 </div>
 </script>
 <script type="text/mustache" id="manage_accounts-mu">
@@ -655,7 +681,7 @@ limitations under the License.
 <script type="text/mustache" id="trading_name-mu">
 <header>
     <div class="topcoat-navigation-bar">
-		<div class="topcoat-navigation-bar__item left quarter om-padded">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
             <button class="om-index topcoat-button todo-small">&larr;</button>
         </div>
         <div class="topcoat-navigation-bar__item center half">
@@ -666,50 +692,50 @@ limitations under the License.
         </div>
     </div>
     <div class="topcoat-tab-bar">
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-accounts topcoat-tab-bar__button">accounts</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-payments topcoat-tab-bar__button">payment</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-settings topcoat-tab-bar__button">settings</button>
-   		</label>
-	</div>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
 </header>
 <div id="scrollable">
-	<div class="topcoat-list__container">
-		<form>
-			<ul class="topcoat-list">
-				<li class="topcoat-list__item" data-id="trading_name">
-            		<input type="text" class="topcoat-text-input" name="trading_name" value="" placeholder="Trading Name" /> 
-				</li>
-				<li class="topcoat-list__item" data-id="space">
-					<select name="space" class="om-select-dark" >
-						<option value="" selected="selected">Space</option>
-						{{#rows}}
-							<option value="{{key}}">{{key}}</option>
-        				{{/rows}}
-					</select>
-				</li>
-				<li class="topcoat-list__item" data-id="currency">
-            		<input type="text" class="topcoat-text-input" name="currency" value="" placeholder="Currency Symbol" /> 
-				</li>
-				<li class="topcoat-list__item" data-id="submit">
-					<input type="submit" class="topcoat-button" name="join" value=" Join Currency " /> 
-				</li>
-			</ul>
-		</form>
-	</div>
+    <div class="topcoat-list__container">
+        <form>
+            <ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="trading_name">
+                    <input type="text" class="topcoat-text-input" name="trading_name" value="" placeholder="Trading Name" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="space">
+                    <select name="space" class="om-select-dark" >
+                        <option value="" selected="selected">Space</option>
+                        {{#rows}}
+                            <option value="{{key}}">{{key}}</option>
+                        {{/rows}}
+                    </select>
+                </li>
+                <li class="topcoat-list__item" data-id="currency">
+                    <input type="text" class="topcoat-text-input" name="currency" value="" placeholder="Currency Symbol" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" name="join" value=" Join Currency " /> 
+                </li>
+            </ul>
+        </form>
+    </div>
 </div>
 </script>
 <script type="text/mustache" id="currency-mu">
 <header>
     <div class="topcoat-navigation-bar">
-		<div class="topcoat-navigation-bar__item left quarter om-padded">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
             <button class="om-index topcoat-button todo-small">&larr;</button>
         </div>
         <div class="topcoat-navigation-bar__item center half">
@@ -720,44 +746,44 @@ limitations under the License.
         </div>
     </div>
     <div class="topcoat-tab-bar">
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-accounts topcoat-tab-bar__button">accounts</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-payments topcoat-tab-bar__button">payment</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-settings topcoat-tab-bar__button">settings</button>
-   		</label>
-	</div>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
 </header>
 <div id="scrollable">
-	<div class="topcoat-list__container">
-		<form>
-			<ul class="topcoat-list">
-				<li class="topcoat-list__item" data-id="currency">
-            		<input type="text" class="topcoat-text-input" name="symbol" value="" placeholder="Currency Symbol" /> 
-				</li>
-        		<li class="topcoat-list__item" data-id="currency">
-            		<input type="text" class="topcoat-text-input" name="name" value="" placeholder="Currency Name" /> 
-				</li>
-				<li class="topcoat-list__item" data-id="space">
-					<select name="space" class="om-select-dark" >
-						<option value="" selected="selected">Space</option>
-						{{#spaces}}
-							<option value="{{id}}">{{key}}</option>
-        				{{/spaces}}
-					</select>
-				</li>
-				<li class="topcoat-list__item" data-id="submit">
-					<input type="submit" class="topcoat-button" name="create" value=" Create Currency " /> 
-				</li>
-    		</ul>
- 		</form>
-	</div>
+    <div class="topcoat-list__container">
+        <form>
+            <ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="currency">
+                    <input type="text" class="topcoat-text-input" name="symbol" value="" placeholder="Currency Symbol" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="currency">
+                    <input type="text" class="topcoat-text-input" name="name" value="" placeholder="Currency Name" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="space">
+                    <select name="space" class="om-select-dark" >
+                        <option value="" selected="selected">Space</option>
+                        {{#spaces}}
+                            <option value="{{id}}">{{key}}</option>
+                        {{/spaces}}
+                    </select>
+                </li>
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" name="create" value=" Create Currency " /> 
+                </li>
+            </ul>
+        </form>
+    </div>
     <div class="topcoat-list__container">
         <ul class="topcoat-list">
             <li class="topcoat-list__item" data-id="list">
@@ -773,7 +799,7 @@ limitations under the License.
 <script type="text/mustache" id="profile-mu">
 <header>
     <div class="topcoat-navigation-bar">
-		<div class="topcoat-navigation-bar__item left quarter om-padded">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
             <button class="om-index topcoat-button todo-small">&larr;</button>
         </div>
         <div class="topcoat-navigation-bar__item center half">
@@ -784,22 +810,22 @@ limitations under the License.
         </div>
     </div>
     <div class="topcoat-tab-bar">
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-accounts topcoat-tab-bar__button">accounts</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-payments topcoat-tab-bar__button">payment</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-settings topcoat-tab-bar__button">settings</button>
-   		</label>
-	</div>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
 </header>
 <div id="scrollable">
-	<div class="topcoat-list__container">
+    <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
                 <li class="topcoat-list__item" data-id="email">
@@ -875,7 +901,7 @@ limitations under the License.
                 </li>
             </ul>
         </form>
-	</div>
+    </div>
 </div>
 
 </script>
@@ -1140,35 +1166,35 @@ limitations under the License.
 <script type="text/mustache" id="payment-mu">
 <header>
     <div class="topcoat-navigation-bar">
-		<div class="topcoat-navigation-bar__item left quarter om-padded">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
             <img class="cloud-status cloud-status-queue" alt="cloud status"/>
         </div>
         <div class="topcoat-navigation-bar__item center half">
            <h1 class="topcoat-navigation-bar__title">Make Payment</h1>
         </div>
-		<div class="topcoat-navigation-bar__item right quarter">
-			<button class="openmoney-login topcoat-icon-button--quiet openmoney-small">
-  				<span class="openmoney-login-icon topcoat-icon"></span>
-			</button>
-			<button class="openmoney-logout topcoat-icon-button--quiet openmoney-small">
-  				<span class="openmoney-logout-icon topcoat-icon"></span>
-			</button>
+        <div class="topcoat-navigation-bar__item right quarter">
+            <button class="openmoney-login topcoat-icon-button--quiet openmoney-small">
+                <span class="openmoney-login-icon topcoat-icon"></span>
+            </button>
+            <button class="openmoney-logout topcoat-icon-button--quiet openmoney-small">
+                <span class="openmoney-logout-icon topcoat-icon"></span>
+            </button>
         </div>
     </div>
     <div class="topcoat-tab-bar">
-   		<label class="topcoat-tab-bar__item third">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-accounts topcoat-tab-bar__button">accounts</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item third">
-     		<input type="radio" name="tab-bar" checked="checked">
-     		<button class="om-payments topcoat-tab-bar__button">payment</button>
-   		</label>
-   		<label class="topcoat-tab-bar__item third">
-     		<input type="radio" name="tab-bar">
-     		<button class="om-settings topcoat-tab-bar__button">settings</button>
-   		</label>
-	</div>
+        <label class="topcoat-tab-bar__item third">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item third">
+            <input type="radio" name="tab-bar" checked="checked">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item third">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
 </header>
 <div id="scrollable">
     <div class="topcoat-list">
@@ -1182,32 +1208,32 @@ limitations under the License.
             <button class="om-merchant topcoat-tab-bar__button">Merchant Mode</button>
         </label>
         </div>
-		<form>
-			<ul class="topcoat-list__container">
-				<li class="topcoat-list__item" data-id="from" style="text-align:center;">
+        <form>
+            <ul class="topcoat-list__container">
+                <li class="topcoat-list__item" data-id="from" style="text-align:center;">
                     <label for="from">FROM</label>
-					<select name="from" class="om-select-dark" data-native-menu="false"  >
-						{{#rows}}
-							<option value="{{id}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
-        				{{/rows}}
-					</select>
-				</li>
-				<li class="topcoat-list__item" data-id="to" style="text-align:center;">
+                    <select name="from" class="om-select-dark" data-native-menu="false"  >
+                        {{#rows}}
+                            <option value="{{id}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
+                        {{/rows}}
+                    </select>
+                </li>
+                <li class="topcoat-list__item" data-id="to" style="text-align:center;">
                     <label for="to">TO</label>
-            		<input type="text" class="topcoat-text-input" name="to" value="" placeholder="Recipient Trading Name" /> 
-				</li>
-        		<li class="topcoat-list__item" data-id="amount">
-            		<input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
-				</li>
-				<li class="topcoat-list__item" data-id="description">
-            		<input type="text" class="topcoat-text-input" name="description" placeholder="Description" />
-				</li>
-				<li class="topcoat-list__item" data-id="submit">
-					<input type="submit" class="topcoat-button" id="submit" name="create" value=" Make Payment " /> 
-				</li>
-    		</ul>
- 		</form>
-	</div>
+                    <input type="text" class="topcoat-text-input" name="to" value="" placeholder="Recipient Trading Name" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="amount">
+                    <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
+                </li>
+                <li class="topcoat-list__item" data-id="description">
+                    <input type="text" class="topcoat-text-input" name="description" placeholder="Description" />
+                </li>
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" id="submit" name="create" value=" Make Payment " /> 
+                </li>
+            </ul>
+        </form>
+    </div>
 </div>
 </script>
 <script type="text/mustache" id="tagpayment-mu">
@@ -1432,3 +1458,4 @@ limitations under the License.
 </script>
     </body>
 </html>
+
