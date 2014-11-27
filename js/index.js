@@ -578,7 +578,7 @@ function triggerSync(cb, retryCount) {
     		if(pull_status == 'Idle') {
     			//update icon to on after 10 seconds if it hasn't changed
     			setTimeout(function(){
-    				if (pull_status == 'Idle'){
+    				if (pull_status == 'Idle' && combined_status != 'Active'){
     					combined_status = 'Active';
     					updateStatusIcon(combined_status);
     				}
