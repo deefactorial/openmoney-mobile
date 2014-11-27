@@ -498,7 +498,7 @@ function goAddTradingName(parameters) {
 	window.dbChangedCurrencies = function () {
 		
 		window.plugins.spinnerDialog.show();
-		config.views( [ "currencies", { "inculde_docs": true } ], function(error, currencies) {
+		config.views( [ "currencies", { inculde_docs: true } ], function(error, currencies) {
 			window.plugins.spinnerDialog.hide();
 		
 			if (error) {
