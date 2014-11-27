@@ -247,12 +247,12 @@ function setupConfig(done) {
                     }
                     
                     if (typeof config.views != 'undefined') {
-                    	config.extend("views", function(options, callback) {
+                    	config.views.extend(config.views, function(options, callback) {
                     		var self = this;
                     		return self(options, function(error, result) {
                     			if(error && error.code == 'ETIMEDOUT') {
                     				//try again
-                    				log("ETIMEDOUT retry get");
+                    				log("ETIMEDOUT retry view");
                     				self(options,callback);
                     			} else {
                     				callback(error,result);
