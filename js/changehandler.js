@@ -20,6 +20,7 @@ limitations under the License.
 // change comes in. Used to trigger display updates.
 window.dbChanged = function() {}
 window.dbChangedTradingNames = function() {}
+window.dbChangedStewardTradingNames = function() {}
 window.dbChangedCurrencies = function() {}
 window.dbChangedSpaces = function() {}
 window.dbChangedJournal = function() {}
@@ -39,6 +40,7 @@ function resetChangeTrackers() {
 	
 	window.dbChanged = function() {}
 	window.dbChangedTradingNames = function() {}
+	window.dbChangedStewardTradingNames = function () {}
 	window.dbChangedCurrencies = function() {}
 	window.dbChangedSpaces = function() {}
 	window.dbChangedJournal = function() {}
@@ -488,10 +490,11 @@ function connectToChanges() {
 	    		if( typeof change.doc.steward != 'undefined' ) {
 		    		change.doc.steward.forEach(function (steward) {
 		    			if (steward == config.user.name){
-		    				window.dbChangedTradingNames()
+		    				window.dbChangedStewardTradingNames()
 		    			}
 		    		} )
 	    		}
+	    		window.dbChangedTradingNames()
 	    	} else if (change.doc._id.substring(0,change.doc._id.indexOf(",")) == 'currency') {
 
 		    	

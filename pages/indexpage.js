@@ -19,6 +19,7 @@ function goIndex(parameters) {
 	
 	window.dbChanged = function() {}
 	window.dbChangedTradingNames = function() {}
+	window.dbChangedStewardTradingNames = function() {}
 	window.dbChangedCurrencies = function() {}
 	window.dbChangedSpaces = function() {}
 	window.dbChangedJournal = function() {}
@@ -44,7 +45,7 @@ function goIndex(parameters) {
     window.plugins.spinnerDialog.hide();
     
     // when the database changes, update the UI to reflect new lists
-    window.dbChangedTradingNames = function() {
+    window.dbChangedStewardTradingNames = function() {
     	
     	tradingNamesViewLock = true;
     	if(currentpage == 'Openmoney') {
