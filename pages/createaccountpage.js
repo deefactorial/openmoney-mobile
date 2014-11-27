@@ -246,13 +246,21 @@ function goCreateAccount(parameters) {
 		        	config.views( [ "currencies", {
 		                include_docs : true
 		            } ], function(error, currencies) {
-		                if (error) { return alert( JSON.stringify( error ) ) }
+		                if (error) { 
+		                	log( "Error getting currencies view: " + JSON.stringify( error ) ) 
+		                	window.dbChangedCurrencies();
+		                	return false;
+		                }
 		
 		            	config.views( [ "spaces", {
 		                    include_docs : true
 		                } ], function(error, spaces) {
 		            		window.plugins.spinnerDialog.hide();
-		                    if (error) { return alert( JSON.stringify( error ) ) }
+		                    if (error) { 
+		                    	log( "Errro getting spaces view: " + JSON.stringify( error ) ) 
+		                    	window.dbChangedCurrencies();
+		                    	return false
+		                    }
 		                    
 		                    var tradingNameDoc = { "doc": doc, "currencies" : currencies, "spaces" : spaces }
 		                    
@@ -279,7 +287,11 @@ function goCreateAccount(parameters) {
 	                include_docs : true
 	            } ], function(error, spaces) {
 	        		window.plugins.spinnerDialog.hide();
-	                if (error) { return alert( JSON.stringify( error ) ) }
+	                if (error) { 
+	                	log( "Error getting spaces view: " + JSON.stringify( error ) ) 
+	                	window.dbChangedSpaces();
+	                	return false;
+	                }
 	                
 	                var found = false;
 	                if (typeof doc.space != 'undefined')
@@ -305,7 +317,12 @@ function goCreateAccount(parameters) {
 	                include_docs : true
 	            } ], function(error, spaces) {
 	        		window.plugins.spinnerDialog.hide();
-	                if (error) { return alert( JSON.stringify( error ) ) }
+	                if (error) { 
+	                	log( "Error getting spaces view: " + JSON.stringify( error ) );
+	                	window.dbChangedSpaces();
+	                	return false;
+	                	
+	                }
 	                
 	                if (typeof doc.space != 'undefined')
 	                spaces.rows.forEach(function (row) {
