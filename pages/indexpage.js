@@ -100,5 +100,5 @@ function goIndex(parameters) {
 	        
     	}
     }
-    window.dbChangedTradingNames()
+    window.dbChangedStewardTradingNames()
 }
