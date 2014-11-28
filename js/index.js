@@ -557,6 +557,15 @@ function triggerSync(cb, retryCount) {
     } )
     pullSync.on( "connected", function( task ) {
     	log("pull sync connected handler called" + JSON.stringify( task ))
+    	if (task.error) {
+    		//if there is an error try restarting the sync
+    		pullSync.cancel( function(err, ok) {
+            	pull_status = "Offline";
+            	combined_status = "Offline";
+            	updateStatusIcon(combined_status);
+                pullSync.start();
+            } )
+    	}
     	pull_connected = true;
     	if (typeof task.status != 'undefined') {
     		log ("pull sync status change: " + push_status + " to " + task.status)
