@@ -550,6 +550,10 @@ function triggerSync(cb, retryCount) {
     		pullSync.start()
     	}
     } )
+    pushSync.on( "canceled", function( info ) {
+    	log("pushSync canceled handler called" + JSON.stringify( info ) )
+    } )
+    
     pullSync.on( "error", function(err) {
     	log("Pull Sync Error:" + err)
         if (challenged) { return }
@@ -608,6 +612,9 @@ function triggerSync(cb, retryCount) {
     pullSync.on( "started", function( info ) {
     	log("pullSync started handler called" + JSON.stringify( info ) )
     	pull_session_id = info.session_id;
+    } )
+    pullSync.on( "canceled", function( info ) {
+    	log("pullSync canceled handler called" + JSON.stringify( info ) )
     } )
 
     pushSync.start()
@@ -668,10 +675,13 @@ function syncManager(serverUrl, syncDefinition) {
             h( data )
         } )
     }
+    
+    var canceled = false;
 
     function doCancelPost(cb) {
         var cancelDef = JSON.parse( JSON.stringify( syncDefinition ) )
         cancelDef.cancel = true
+        canceled = true
         coax.post( [ serverUrl, "_replicate" ], cancelDef, function(err, info) {
             if (err) {
                 callHandlers( "error", err )
@@ -688,6 +698,7 @@ function syncManager(serverUrl, syncDefinition) {
     }
 
     function doStartPost() {
+    	canceled = false;
         var tooLate;
         function pollForStatus(info, wait) {
             if (wait) {
@@ -788,8 +799,9 @@ function syncManager(serverUrl, syncDefinition) {
                     me = tasks[i]
                 }
             }
-            
-            cb( false, me );
+            if (!canceled) {
+            	cb( false, me );
+            }
         } )
     }
 
