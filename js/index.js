@@ -23,7 +23,7 @@ limitations under the License.
 // with appReady.
 function onDeviceReady() {
 	
-	alert( window.platform.layout );
+	alert( window.platform.parse() );
 	try {
 		
 	    setupConfig( function(err) {
