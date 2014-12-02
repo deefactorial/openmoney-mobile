@@ -22,7 +22,8 @@ limitations under the License.
 // run on device ready, call setupConfig kick off application logic
 // with appReady.
 function onDeviceReady() {
-	
+	alert("test");
+	alert( platform.layout );
 	try {
 		
 	    setupConfig( function(err) {
@@ -113,7 +114,15 @@ function onDeviceReady() {
 
 };
 
-document.addEventListener( "deviceready", onDeviceReady, false )
+//document.addEventListener( "deviceready", onDeviceReady, false )
+
+window.onload = function() {
+	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+	    document.addEventListener("deviceready", onDeviceReady, false);
+	} else {
+	    onDeviceReady();
+	}
+}
 
 
 /*
@@ -246,6 +255,7 @@ function setupConfig(done) {
                     	} )
                     }
                     
+                    //does not work yet
                     if (typeof config.views != 'undefined') {
                     	config.views.extend({}, function(options, callback) {
                     		var self = this;
@@ -396,6 +406,16 @@ function setupConfig(done) {
     };
 }
 
+
+function getUrl(params, callback) {
+	if (window.cblite) { 
+		cblite.getURL( callback );
+	} else {
+		//configure the url to be the sync gateway
+		var url = REMOTE_SYNC_PROTOCOL + encodeURIComponent( config.user.name ) + ":" + encodeURIComponent( config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/";
+		callback(false, url);
+	}
+}
 
 
 /*
