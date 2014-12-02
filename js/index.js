@@ -22,8 +22,8 @@ limitations under the License.
 // run on device ready, call setupConfig kick off application logic
 // with appReady.
 function onDeviceReady() {
-	alert("test");
-	alert( platform.layout );
+	
+	alert( window.platform.layout );
 	try {
 		
 	    setupConfig( function(err) {
