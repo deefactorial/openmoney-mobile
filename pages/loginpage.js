@@ -92,7 +92,7 @@ function doFirstLogin(cb) {
     if (SERVER_LOGIN) {
         doServerLogin( function(error, data) {
             if (error) { return cb( error ) }
-            config.setUser( data, function(error, ok) {
+            window.config.setUser( data, function(error, ok) {
                 if (error) { return cb( error ) }
                 
                 createBeamTag( function(err) {
