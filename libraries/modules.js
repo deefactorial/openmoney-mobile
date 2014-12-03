@@ -1184,7 +1184,8 @@ module.exports = function(request) {
     	if(urlOrOpts.auth) {
     		opts.auth = urlOrOpts.auth;
     	}
-        newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
+        //newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
+    	newPax = myPax(urlOrOpts);
       } else {
         if (typeof data === 'function') {
           // we have only 2 args
