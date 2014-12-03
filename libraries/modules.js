@@ -1634,7 +1634,7 @@ function is_crossDomain(url) {
     )
   )
 
-  //console.debug('is_crossDomain('+url+') -> ' + result)
+  console.debug('is_crossDomain('+url+') -> ' + result)
   return result
 }
 

@@ -246,11 +246,14 @@ function setupConfig(done) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
         if (err) { return done( err ) }
 
-        if (window.cblite) {
+        
         	var xmlHttp = new XMLHttpRequest()
         	xmlHttp.open( 'GET', url, false )
+        	if(!window.cblite) {
+        		xmlHttp.withCredentials = true;
+        	}
         	xmlHttp.send( null )
-        }
+        
 
         //window.server = coax( url );
         log( "coax:" + JSON.stringify( { "uri": url + appDbName, "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
