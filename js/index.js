@@ -253,6 +253,7 @@ function setupConfig(done) {
         }
 
         //window.server = coax( url );
+        log( "coax:" + JSON.stringify( [ url, appDbName ] ))
         
         var db = coax( [ url, appDbName ] );
         
