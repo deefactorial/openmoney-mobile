@@ -1210,6 +1210,7 @@ module.exports = function(request) {
     if (data) {
       opts.body = JSON.stringify(data);
     }
+    log("before return:" + JSON.stringify( opts ))
     return [opts, cb, newPax];
   }
 
