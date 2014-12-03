@@ -1202,7 +1202,8 @@ module.exports = function(request) {
     }
     opts.headers = {'content-type': 'application/json'};
     if (urlOrOpts && urlOrOpts.auth) {
-    	opts.auth = urlOrOpts.auth;
+    	// HTTP basic authentication
+    	opts.headers.authorization = 'Basic ' + b64_enc(urlOrOpts.auth.username + ':' + urlOrOpts.auth.password);
     }
     opts.json = true;
     opts.uri = newPax.toString();
