@@ -1232,6 +1232,7 @@ module.exports = function(request) {
         reqOpts = args[0], // includes uri, body
         cb = args[1],
         newPax = args[2];
+      log("reqOpts:" + JSON.stringify( reqOpts ) )
       if (cb) {
         // console.log(["hoax", verb||"get", reqOpts]);
         if (verb) {
