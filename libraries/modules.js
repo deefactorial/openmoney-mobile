@@ -1181,6 +1181,9 @@ module.exports = function(request) {
       urlOrOpts = null;
     } else {
       if (urlOrOpts.uri || urlOrOpts.url) {
+    	if(urlOrOpts.auth) {
+    		opts.auth = urlOrOpts.auth;
+    	}
         newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
       } else {
         if (typeof data === 'function') {
