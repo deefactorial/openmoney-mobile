@@ -252,7 +252,7 @@ function setupConfig(done) {
         	xmlHttp.send( null )
         }
 
-        window.server = coax( url );
+        //window.server = coax( url );
         
         var db = coax( [ url, appDbName ] );
         
