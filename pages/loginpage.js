@@ -66,6 +66,7 @@ function goServerLogin(parameters) {
         window.config.user = {};
         window.config.user.name = doc.email;
         window.config.user.password = doc.password;
+        log ( "User set :" + JSON.stringify( window.config.user ) )
         doFirstLogin( function(error, result) {
         	$( "#submit" ).removeAttr("disabled","disabled");
         	if(typeof window.plugins != 'undefined')
@@ -93,7 +94,7 @@ function doFirstLogin(cb) {
         doServerLogin( function(error, data) {
             if (error) { return cb( error ) }
             
-            setupConfig(function(error, ok){
+            setupConfig( function(error, ok){
             	if (error) {
             		log( "Error setting up config: " + JSON.stringify( error ) ) 
             	}
