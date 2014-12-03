@@ -1488,7 +1488,7 @@ function run_xhr(options) {
 
 } // request
 
-request.withCredentials = true;
+request.withCredentials = false;
 request.DEFAULT_TIMEOUT = DEFAULT_TIMEOUT;
 
 //

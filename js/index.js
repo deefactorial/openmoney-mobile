@@ -252,6 +252,7 @@ function setupConfig(done) {
         
     	var xmlHttp = new XMLHttpRequest()
     	xmlHttp.open( 'GET', url, true )
+    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.password));
     	xmlHttp.onload = callback;
     	xmlHttp.send()
         
