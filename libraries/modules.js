@@ -1408,7 +1408,7 @@ function run_xhr(options) {
   if(is_cors)
     xhr.withCredentials = !! options.withCredentials
     
-  log("options:" + JSON.stringiy(options))
+  log("options:" + JSON.stringify(options))
   xhr.send(options.body)
   return xhr
 
