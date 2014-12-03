@@ -1407,6 +1407,8 @@ function run_xhr(options) {
   xhr.open(options.method, options.uri, true) // asynchronous
   if(is_cors)
     xhr.withCredentials = !! options.withCredentials
+    
+  log("options:" + JSON.stringiy(options))
   xhr.send(options.body)
   return xhr
 
