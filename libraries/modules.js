@@ -1154,6 +1154,7 @@ module.exports = core(request);
  */
 
 module.exports = function(request) {
+	
   var pax = require("pax");
 
   function makeHoaxCallback(cb, verb) {
@@ -1180,7 +1181,7 @@ module.exports = function(request) {
       urlOrOpts = null;
     } else {
       if (urlOrOpts.uri || urlOrOpts.url) {
-        newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
+        //newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
       } else {
         if (typeof data === 'function') {
           // we have only 2 args
