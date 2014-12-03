@@ -1298,6 +1298,7 @@ var DEFAULT_TIMEOUT = 3 * 60 * 1000 // 3 minutes
 //
 
 function request(options, callback) {
+  log("request" + JSON.stringify( options ) )
   // The entry-point to the API: prep the options object and pass the real work to run_xhr.
   if(typeof callback !== 'function')
     throw new Error('Bad callback given: ' + callback)
