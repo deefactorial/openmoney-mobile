@@ -161,7 +161,7 @@ function setupConfig(done) {
     window.config = {}
     window.config.t = t;
     
-    window.config.setuser = function(newUser, cb) {
+    window.config.setUser = function(newUser, cb) {
         if (!window.config.user && !newUser) {
             db.get( "_local/user", function(err, doc) {
                 if (err) { return cb( err ) }
