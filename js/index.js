@@ -23,17 +23,21 @@ limitations under the License.
 // with appReady.
 function onDeviceReady() {
 	
-	alert( window.platform.parse() );
+	
 	try {
 		
 	    setupConfig( function(err) {
 	        if (err) {
 	            log( "setupConfig Error:" + JSON.stringify( err ) )
+	            goServerLogin([ function(error) {
+	            	if (error) { return loginErr( error ) }
+                    goIndex([])
+	            } ]);
 	            return false;
 	        }
 	        connectToChanges()
 	        
-	        goIndex()
+	        goIndex([])
 	        
 	        config.syncReference = triggerSync( function(err) {
 	            if (err) {
@@ -45,7 +49,7 @@ function onDeviceReady() {
 	    /*
 	     * this sets up the NFC listner 
 	     */
-	    
+	    if (typeof window.nfc != 'undefined')
 	    nfc.addMimeTypeListener( "application/com.openmoney.mobile", 
 	    		window.nfcListner, 
 	    		function() {
@@ -107,6 +111,7 @@ function onDeviceReady() {
 		//This is a catch all to report errors via email to the developer.
 		
 		// var e = new Error("This is a new Error I would like a error report about");
+		 if (typeof window.OpenActivity != 'undefined')
 	     window.OpenActivity.sendErrorReport([ { "error": e.stack } ], function(error, result){
 	    	 log("OpenActivity sendErrorReport:" + JSON.stringify( [error, result ] ) )
 	     });
@@ -124,6 +129,16 @@ window.onload = function() {
 	}
 }
 
+window.getSyncUrl = function(callback) {
+	//alert( window.platform.parse().layout );
+	if (typeof config != 'undefined' && typeof config.user != 'undefined' && typeof config.user.name != 'undefined' && typeof config.user.password != 'undefined') {
+		//configure the url to be the sync gateway
+		var url = REMOTE_SYNC_PROTOCOL + encodeURIComponent( config.user.name ) + ":" + encodeURIComponent( config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/";
+		callback(false, url);
+	} else {
+		callback(true, "");
+	}
+}
 
 /*
  * The config functions don't have any visibile UI, they are used for
@@ -133,8 +148,8 @@ window.onload = function() {
 
 function setupConfig(done) {
     // get CBL url
-    if (!window.cblite) { return done( 'Couchbase Lite not installed' ) }
     
+    //alert( window.platform.parse().name );
     var mustache = require( "mustache" ), t = {}
 
     $( 'script[type="text/mustache"]' ).each( function() {
@@ -143,7 +158,12 @@ function setupConfig(done) {
         t[id.join( '-' )] = mustache.compile( this.innerHTML.replace( /^\s+|\s+$/g, '' ) )
     } );
     
-    cblite.getURL( function(err, url) {
+    window.config = {}
+    window.config.t = t;
+    
+    //if (!window.cblite || !getUrl) { return done( 'Couchbase Lite not installed' ) }
+    //console.log ("getSyncUrl" + window.getSyncUrl.toString() );
+    window.getSyncUrl( function(err, url) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
         if (err) { return done( err ) }
 
@@ -407,15 +427,7 @@ function setupConfig(done) {
 }
 
 
-function getUrl(params, callback) {
-	if (window.cblite) { 
-		cblite.getURL( callback );
-	} else {
-		//configure the url to be the sync gateway
-		var url = REMOTE_SYNC_PROTOCOL + encodeURIComponent( config.user.name ) + ":" + encodeURIComponent( config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/";
-		callback(false, url);
-	}
-}
+
 
 
 /*

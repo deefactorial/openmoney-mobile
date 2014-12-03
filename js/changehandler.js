@@ -555,7 +555,7 @@ function connectToChanges() {
 	    // window.checkConflicts( change )
 	};
 	
-	if (typeof config.info != 'undefined') {
+	if (typeof config != 'undefined' && typeof config.info != 'undefined') {
 		 config.db.changes( {
 		    	since : config.info.update_seq,
 		        conflicts : true,

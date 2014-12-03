@@ -90,7 +90,7 @@ function logoutError(error) {
  */
 
 function drawContent(html) {
-	log( "drawContent" )
+	//log( "drawContent" + html.toString())
 	
 	scroll( 0, 0 )
     
@@ -121,8 +121,12 @@ function processAjaxData(response, urlPath) {
 	drawContent( response.html );
 
 	currentpage = response.pageTitle;
+	
+	log ("History pushState function:" + JSON.stringify(response) + urlPath)
 
-	History.pushState(  response  , null, urlPath );
+	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+		History.pushState(  response  , "" , urlPath );
+	}
 	
 	log ("post set page");
 }
@@ -149,7 +153,9 @@ function updateAjaxData( response , urlPath) {
 	
 	log ("update page " + urlPath)
 
-	History.replaceState( response , null, urlPath );
+	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+		History.replaceState( response , null, urlPath );
+	}
 
 	log ("post update page");
 }

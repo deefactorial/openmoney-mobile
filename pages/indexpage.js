@@ -16,6 +16,7 @@ limitations under the License.
 
 
 function goIndex(parameters) {
+	log ("goIndex" + JSON.stringify(parameters));
 	
 	window.dbChanged = function() {}
 	window.dbChangedTradingNames = function() {}

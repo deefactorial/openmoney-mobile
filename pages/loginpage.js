@@ -59,14 +59,16 @@ function goServerLogin(parameters) {
         e.preventDefault()
         $( "#submit" ).attr("disabled","disabled");
         
+        if(typeof window.plugins != 'undefined')
         window.plugins.spinnerDialog.show();
         
         var doc = jsonform( this );
-        config.user = {};
-        config.user.name = doc.email;
-        config.user.password = doc.password;
+        window.config.user = {};
+        window.config.user.name = doc.email;
+        window.config.user.password = doc.password;
         doFirstLogin( function(error, result) {
         	$( "#submit" ).removeAttr("disabled","disabled");
+        	if(typeof window.plugins != 'undefined')
         	window.plugins.spinnerDialog.hide();
         	
         	if(error) { callBack(error); return false;}
@@ -76,6 +78,7 @@ function goServerLogin(parameters) {
         } )
     } )
 
+    if(typeof window.plugins != 'undefined')
     window.plugins.spinnerDialog.hide();
     
 }
