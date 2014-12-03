@@ -246,13 +246,14 @@ function setupConfig(done) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
         if (err) { return done( err ) }
 
+        var callback = function (error, ok) {
+        	log ("Results:" + JSON.stringify( [ error, ok ] ) )
+        }
         
-        	var xmlHttp = new XMLHttpRequest()
-        	xmlHttp.open( 'GET', url, false )
-        	if(!window.cblite) {
-        		xmlHttp.withCredentials = true;
-        	}
-        	xmlHttp.send( null )
+    	var xmlHttp = new XMLHttpRequest()
+    	xmlHttp.open( 'GET', url, true )
+    	xmlHttp.onreadystatechange = callback;
+    	xmlHttp.send( null )
         
 
         //window.server = coax( url );
