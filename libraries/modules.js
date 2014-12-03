@@ -1407,6 +1407,9 @@ function run_xhr(options) {
   xhr.open(options.method, options.uri, true) // asynchronous
   if(is_cors)
     xhr.withCredentials = !! options.withCredentials
+  if(typeof options.headers != 'undefined' && typeof options.headers.authorization != 'undefined') {
+	  xhr.setRequestHeader("authorization", options.headers.authorization);
+  }
   xhr.send(options.body)
   return xhr
 
