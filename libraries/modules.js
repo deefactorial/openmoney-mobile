@@ -1183,6 +1183,7 @@ module.exports = function(request) {
       if (urlOrOpts.uri || urlOrOpts.url) {
     	if(urlOrOpts.auth) {
     		opts.auth = urlOrOpts.auth;
+    		verb = "get";
     	}
         newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
     	//newPax = myPax(urlOrOpts);
@@ -1252,8 +1253,8 @@ module.exports = function(request) {
         }
       } else {
         console.log("new hoax", newPax);
-        //return makeHoax(newPax, verb, newHoax);
-        return makeHoax(reqOpts, verb, newHoax);
+        return makeHoax(newPax, verb, newHoax);
+        //return makeHoax(reqOpts, verb, newHoax);
       }
     };
     if (!verb) {
