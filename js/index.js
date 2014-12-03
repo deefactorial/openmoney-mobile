@@ -131,12 +131,16 @@ window.onload = function() {
 
 window.getSyncUrl = function(callback) {
 	//alert( window.platform.parse().layout );
-	if (typeof config != 'undefined' && typeof config.user != 'undefined' && typeof config.user.name != 'undefined' && typeof config.user.password != 'undefined') {
-		//configure the url to be the sync gateway
-		var url = REMOTE_SYNC_PROTOCOL + encodeURIComponent( config.user.name ) + ":" + encodeURIComponent( config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/";
-		callback(false, url);
+	if (!window.cblite) {
+		if (typeof config != 'undefined' && typeof config.user != 'undefined' && typeof config.user.name != 'undefined' && typeof config.user.password != 'undefined') {
+			//configure the url to be the sync gateway
+			var url = REMOTE_SYNC_PROTOCOL + encodeURIComponent( config.user.name ) + ":" + encodeURIComponent( config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/";
+			callback(false, url);
+		} else {
+			callback(true, "");
+		}
 	} else {
-		callback(true, "");
+		window.cblite(callback);
 	}
 }
 

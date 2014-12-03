@@ -92,22 +92,28 @@ function doFirstLogin(cb) {
     if (SERVER_LOGIN) {
         doServerLogin( function(error, data) {
             if (error) { return cb( error ) }
-            window.config.setUser( data, function(error, ok) {
-                if (error) { return cb( error ) }
-                
-                createBeamTag( function(err) {
-                    log( "createBeamTag done " + JSON.stringify( err ) )
+            
+            setupConfig(function(error, ok){
+            	if (error) {
+            		log( "Error setting up config: " + JSON.stringify( error ) ) 
+            	}
+            	window.config.setUser( data, function(error, ok) {
+                    if (error) { return cb( error ) }
+                    
+                    createBeamTag( function(err) {
+                        log( "createBeamTag done " + JSON.stringify( err ) )
 
-                } )
-                
-                addMyUsernameToAllLists( function(err) {
-                    log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
+                    } )
+                    
+                    addMyUsernameToAllLists( function(err) {
+                        log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
 
-                } )
-                
-                config.syncReference = triggerSync( function(error, ok) {
-                    log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
-                    cb( error, ok )
+                    } )
+                    
+                    config.syncReference = triggerSync( function(error, ok) {
+                        log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
+                        cb( error, ok )
+                    } )
                 } )
             } )
         } )
@@ -154,14 +160,14 @@ function doServerLogin(callBack) {
             reason : "No network connection"
         } ) }
     }
-    if (config && config.user) {
+    if (window.config && window.config.user) {
         var url = REMOTE_SERVER_LOGIN_URL;
         var login = coax( url );
         var credentials = {};
-        credentials.username = config.user.name;
-        credentials.password = config.user.password;
+        credentials.username = window.config.user.name;
+        credentials.password = window.config.user.password;
         if(config.user.name.indexOf("@") != -1) {
-        	credentials.email = config.user.name;
+        	credentials.email = window.config.user.name;
         }
         log( "http " + url + " " + JSON.stringify( credentials ) )
         login.post( credentials , function(error, result) {
