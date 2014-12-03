@@ -1180,9 +1180,6 @@ module.exports = function(request) {
       urlOrOpts = null;
     } else {
       if (urlOrOpts.uri || urlOrOpts.url) {
-	    if (urlOrOpts.auth) {
-	    	opts.auth = urlOrOpts.auth;
-	    }
         newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
       } else {
         if (typeof data === 'function') {
@@ -1206,7 +1203,6 @@ module.exports = function(request) {
     opts.headers = {'content-type': 'application/json'};
     opts.json = true;
     opts.uri = newPax.toString();
-
     if (data) {
       opts.body = JSON.stringify(data);
     }
@@ -1302,6 +1298,7 @@ var DEFAULT_TIMEOUT = 3 * 60 * 1000 // 3 minutes
 //
 
 function request(options, callback) {
+  log( "request:" + JSON.stringify( options ))
   // The entry-point to the API: prep the options object and pass the real work to run_xhr.
   if(typeof callback !== 'function')
     throw new Error('Bad callback given: ' + callback)
