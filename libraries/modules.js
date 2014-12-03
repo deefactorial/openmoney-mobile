@@ -1252,7 +1252,8 @@ module.exports = function(request) {
         }
       } else {
         console.log("new hoax", newPax);
-        return makeHoax(newPax, verb, newHoax);
+        //return makeHoax(newPax, verb, newHoax);
+        return makeHoax(reqOpts, verb, newHoax);
       }
     };
     if (!verb) {
