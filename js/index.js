@@ -161,6 +161,79 @@ function setupConfig(done) {
     window.config = {}
     window.config.t = t;
     
+    window.config.setuser = function(newUser, cb) {
+        if (!window.config.user && !newUser) {
+            db.get( "_local/user", function(err, doc) {
+                if (err) { return cb( err ) }
+                doc._deleted = true;
+                db.put( "_local/user", doc, function(err, ok) {
+                    if (err) { return cb( err ) }
+                    log( "deleted local user" )
+                    cb()
+                } )
+            } )
+        } else {
+            if (SERVER_LOGIN) {
+                if (config.user.name) {
+                    if (newUser.sessionID == '') {
+                        return cb()
+                    } else {
+                        /* We Got a New Session */
+                        log( "New Session setUser " + JSON.stringify( newUser ) )
+                        config.user.sessionID = newUser.sessionID;
+                        config.user.expires = newUser.expires;
+                        config.user.user_id = newUser.username;
+                        config.user.name = newUser.username;
+                        config.user.email = newUser.email;
+                        db.put( "_local/user", config.user, function(err, ok) {
+                            if (err) { return cb( err ) }
+                            log( "updateUser ok: " + JSON.stringify( ok ) )
+                            config.user._rev = ok.rev
+                            cb()
+                        } )
+                    }
+                } else {
+                    log( "Initialize setUser " + JSON.stringify( newUser ) )
+                    config.user.sessionID = newUser.sessionID;
+                    config.user.expires = newUser.expires;
+                    config.user.user_id = newUser.username;
+                    config.user.name = newUser.username;
+                    config.user.email = newUser.email;
+                    db.put( "_local/user", config.user, function(err, ok) {
+                        if (err) { return cb( err ) }
+                        log( "setUser ok: " + JSON.stringify( ok ) )
+                        config.user._rev = ok.rev
+                        cb()
+                    } )
+                }
+            } else if (FACEBOOK_LOGIN) {
+                if (window.config.user) {
+                    if (config.user.user_id !== newUser.email) {
+                        return cb( "already logged in as " + config.user.user_id )
+                    } else {
+                        // we got a new facebook token
+                        config.user.access_token = newUser.access_token
+                        db.put( "_local/user", config.user, function(err, ok) {
+                            if (err) { return cb( err ) }
+                            log( "updateUser ok" )
+                            config.user._rev = ok.rev
+                            cb()
+                        } )
+                    }
+                } else {
+                    newUser.user_id = newUser.email
+                    log( "setUser " + JSON.stringify( newUser ) )
+                    db.put( "_local/user", newUser, function(err, ok) {
+                        if (err) { return cb( err ) }
+                        log( "setUser ok" )
+                        window.config.user = newUser
+                        cb()
+                    } )
+                }
+            }
+        }
+    };
+    
     //if (!window.cblite || !getUrl) { return done( 'Couchbase Lite not installed' ) }
     //console.log ("getSyncUrl" + window.getSyncUrl.toString() );
     window.getSyncUrl( function(err, url) {
@@ -186,78 +259,7 @@ function setupConfig(done) {
                     window.config = {
                         site : {
                             syncUrl : REMOTE_SYNC_URL
-                        }, user : user, setUser : function(newUser, cb) {
-                            if (!window.config.user && !newUser) {
-                                db.get( "_local/user", function(err, doc) {
-                                    if (err) { return cb( err ) }
-                                    doc._deleted = true;
-                                    db.put( "_local/user", doc, function(err, ok) {
-                                        if (err) { return cb( err ) }
-                                        log( "deleted local user" )
-                                        cb()
-                                    } )
-                                } )
-                            } else {
-                                if (SERVER_LOGIN) {
-                                    if (config.user.name) {
-                                        if (newUser.sessionID == '') {
-                                            return cb()
-                                        } else {
-                                            /* We Got a New Session */
-                                            log( "New Session setUser " + JSON.stringify( newUser ) )
-                                            config.user.sessionID = newUser.sessionID;
-                                            config.user.expires = newUser.expires;
-                                            config.user.user_id = newUser.username;
-                                            config.user.name = newUser.username;
-                                            config.user.email = newUser.email;
-                                            db.put( "_local/user", config.user, function(err, ok) {
-                                                if (err) { return cb( err ) }
-                                                log( "updateUser ok: " + JSON.stringify( ok ) )
-                                                config.user._rev = ok.rev
-                                                cb()
-                                            } )
-                                        }
-                                    } else {
-                                        log( "Initialize setUser " + JSON.stringify( newUser ) )
-                                        config.user.sessionID = newUser.sessionID;
-                                        config.user.expires = newUser.expires;
-                                        config.user.user_id = newUser.username;
-                                        config.user.name = newUser.username;
-                                        config.user.email = newUser.email;
-                                        db.put( "_local/user", config.user, function(err, ok) {
-                                            if (err) { return cb( err ) }
-                                            log( "setUser ok: " + JSON.stringify( ok ) )
-                                            config.user._rev = ok.rev
-                                            cb()
-                                        } )
-                                    }
-                                } else if (FACEBOOK_LOGIN) {
-                                    if (window.config.user) {
-                                        if (config.user.user_id !== newUser.email) {
-                                            return cb( "already logged in as " + config.user.user_id )
-                                        } else {
-                                            // we got a new facebook token
-                                            config.user.access_token = newUser.access_token
-                                            db.put( "_local/user", config.user, function(err, ok) {
-                                                if (err) { return cb( err ) }
-                                                log( "updateUser ok" )
-                                                config.user._rev = ok.rev
-                                                cb()
-                                            } )
-                                        }
-                                    } else {
-                                        newUser.user_id = newUser.email
-                                        log( "setUser " + JSON.stringify( newUser ) )
-                                        db.put( "_local/user", newUser, function(err, ok) {
-                                            if (err) { return cb( err ) }
-                                            log( "setUser ok" )
-                                            window.config.user = newUser
-                                            cb()
-                                        } )
-                                    }
-                                }
-                            }
-                        }, db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
+                        }, user : user, setUser : window.config.setUser , db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
                     };
                     
                     if (typeof config.db != 'undefined') {
