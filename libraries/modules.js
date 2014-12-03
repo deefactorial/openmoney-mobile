@@ -1182,7 +1182,7 @@ module.exports = function(request) {
     } else {
       if (urlOrOpts.uri || urlOrOpts.url) {
         //newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
-        newPax = myPax(urlOropts);
+        newPax = myPax(urlOrOpts);
       } else {
         if (typeof data === 'function') {
           // we have only 2 args
