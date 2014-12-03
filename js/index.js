@@ -163,7 +163,7 @@ function setupConfig(done) {
         t[id.join( '-' )] = mustache.compile( this.innerHTML.replace( /^\s+|\s+$/g, '' ) )
     } );
     
-    if (typeof window.config != 'undefined')
+    if (typeof window.config == 'undefined')
     window.config = {}
     window.config.t = t;
     
