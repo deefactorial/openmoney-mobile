@@ -1182,6 +1182,7 @@ module.exports = function(request) {
     } else {
       if (urlOrOpts.uri || urlOrOpts.url) {
         //newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
+        newPax = myPax(urlOropts);
       } else {
         if (typeof data === 'function') {
           // we have only 2 args
