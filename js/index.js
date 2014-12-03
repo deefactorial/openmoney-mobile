@@ -135,7 +135,9 @@ window.getSyncUrl = function(callback) {
 		log ("config:" + JSON.stringify( window.config ) ) 
 		if (typeof window.config != 'undefined' && typeof window.config.user != 'undefined' && typeof window.config.user.name != 'undefined' && typeof window.config.user.password != 'undefined') {
 			//configure the url to be the sync gateway
-			var url = REMOTE_SYNC_PROTOCOL + encodeURIComponent( window.config.user.name ) + ":" + encodeURIComponent( window.config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/";
+			//var url = REMOTE_SYNC_PROTOCOL + encodeURIComponent( window.config.user.name ) + ":" + encodeURIComponent( window.config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/";
+			var url = REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/";
+
 			callback(false, url);
 		} else {
 			callback(true, "");
