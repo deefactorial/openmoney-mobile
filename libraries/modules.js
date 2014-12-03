@@ -1184,8 +1184,8 @@ module.exports = function(request) {
     	if(urlOrOpts.auth) {
     		opts.auth = urlOrOpts.auth;
     	}
-        //newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
-    	newPax = myPax(urlOrOpts);
+        newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
+    	//newPax = myPax(urlOrOpts);
       } else {
         if (typeof data === 'function') {
           // we have only 2 args
@@ -1251,7 +1251,7 @@ module.exports = function(request) {
           return request(reqOpts, makeHoaxCallback(cb));
         }
       } else {
-        // console.log("new hoax", newPax);
+        console.log("new hoax", newPax);
         return makeHoax(newPax, verb, newHoax);
       }
     };
