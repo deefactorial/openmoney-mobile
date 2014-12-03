@@ -246,9 +246,11 @@ function setupConfig(done) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
         if (err) { return done( err ) }
 
-    	var xmlHttp = new XMLHttpRequest()
-    	xmlHttp.open( 'GET', url, false )
-    	xmlHttp.send( null )
+        if (window.cblite) {
+        	var xmlHttp = new XMLHttpRequest()
+        	xmlHttp.open( 'GET', url, false )
+        	xmlHttp.send( null )
+        }
 
         window.server = coax( url );
         

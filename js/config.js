@@ -18,7 +18,7 @@ limitations under the License.
  * Global Configuration parameters
  */
 
-var coax = require( "coax" ), fastclick = require( "fastclick" ), appDbName = "openmoney"
+var coax = require( "coax" ), fastclick = require( "fastclick" ), appDbName = "openmoney_shadow"
 
 new fastclick.FastClick( document.body )
 
