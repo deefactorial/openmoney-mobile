@@ -1203,6 +1203,9 @@ module.exports = function(request) {
     opts.headers = {'content-type': 'application/json'};
     opts.json = true;
     opts.uri = newPax.toString();
+    if (urlOrOpts.auth) {
+    	opts.auth = urlOrOpts.auth;
+    }
     if (data) {
       opts.body = JSON.stringify(data);
     }
