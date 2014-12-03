@@ -1173,7 +1173,6 @@ module.exports = function(request) {
   }
 
   function processArguments(myPax, urlOrOpts, data, cb, verb) {
-	log("processArguments:" + JSON.stringify( [myPax, urlOrOpts, data, cb, verb] ))
     var opts = {}, newPax = myPax;
     if (typeof urlOrOpts === 'function') {
       cb = urlOrOpts;
@@ -1181,12 +1180,7 @@ module.exports = function(request) {
       urlOrOpts = null;
     } else {
       if (urlOrOpts.uri || urlOrOpts.url) {
-    	if(urlOrOpts.auth) {
-    		opts.auth = urlOrOpts.auth;
-    		verb = "get";
-    	}
         newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
-    	//newPax = myPax(urlOrOpts);
       } else {
         if (typeof data === 'function') {
           // we have only 2 args
@@ -1212,7 +1206,6 @@ module.exports = function(request) {
     if (data) {
       opts.body = JSON.stringify(data);
     }
-    log("before return:" + JSON.stringify( opts ))
     return [opts, cb, newPax];
   }
 
@@ -1252,9 +1245,8 @@ module.exports = function(request) {
           return request(reqOpts, makeHoaxCallback(cb));
         }
       } else {
-        console.log("new hoax", newPax);
+        // console.log("new hoax", newPax);
         return makeHoax(newPax, verb, newHoax);
-        //return makeHoax(reqOpts, verb, newHoax);
       }
     };
     if (!verb) {
@@ -1306,7 +1298,6 @@ var DEFAULT_TIMEOUT = 3 * 60 * 1000 // 3 minutes
 //
 
 function request(options, callback) {
-  log( "request:" + JSON.stringify( options ))
   // The entry-point to the API: prep the options object and pass the real work to run_xhr.
   if(typeof callback !== 'function')
     throw new Error('Bad callback given: ' + callback)
@@ -1416,8 +1407,6 @@ function run_xhr(options) {
   xhr.open(options.method, options.uri, true) // asynchronous
   if(is_cors)
     xhr.withCredentials = !! options.withCredentials
-    
-  log("options:" + JSON.stringify(options))
   xhr.send(options.body)
   return xhr
 

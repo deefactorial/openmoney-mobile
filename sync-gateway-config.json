@@ -1,6 +1,11 @@
 {
    "SSLCert": "/etc/ssl/private/cloud.openmoney.cc.sync.crt",
    "SSLKey": "/etc/ssl/private/cloud.openmoney.cc.key.insecure",
+   "CORS": {
+	    "Origin": ["https://cloud.openmoney.cc:443", "https://localhost:443", "https://cloud.openmoney.cc:4984", "https://cloud.openmoney.cc:4985"],
+	    "Headers": ["DNT","X-Mx-ReqToken","Keep-Alive","User-Agent","X-Requested-With","If-Modified-Since","Cache-Control","Content-Type"],
+	    "MaxAge": 1728000
+	  },
    "interface":":4984",
    "adminInterface":":4985",
    "log":["CRUD", "CRUD+", "HTTP", "HTTP+", "Access", "Cache", "Shadow", "Shadow+", "Changes", "Changes+"],
