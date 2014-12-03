@@ -255,7 +255,7 @@ function setupConfig(done) {
         //window.server = coax( url );
         log( "coax:" + JSON.stringify( { "uri": url + appDbName, "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
         
-        var db = coax( { "uri": url + appDbName, "headers" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+        var db = coax( [ { "uri": url + appDbName, "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ] );
         
         setupDb( db, function(err, info) {
             if (err) { return done( err ) }
