@@ -1269,7 +1269,7 @@ module.exports = function(request) {
     		console.log("newPax" + newPax.toString())
         console.log("new hoax"+ JSON.stringify( [ newPax, verb, newHoax ]));
         //return makeHoax(newPax, verb, newHoax);
-        return makeHoax(newPax, verb, newHoax);
+        return makeHoax(reqOpts, verb, newHoax);
       }
     };
     if (!verb) {
