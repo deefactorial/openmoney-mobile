@@ -1197,11 +1197,12 @@ module.exports = function(request) {
               Object.prototype.toString.call(urlOrOpts) !== '[object Array]')) {
               data = urlOrOpts;
           } else {
-            //newPax = myPax(urlOrOpts);
-        	newPax = myPax.uri + urlOrOpts;
+            newPax = myPax(urlOrOpts);
+        	
           }
         } else {
-          newPax = myPax(urlOrOpts);
+          newPax = myPax.uri + urlOrOpts;
+          //newPax = myPax(urlOrOpts);
         }
       }
     }
