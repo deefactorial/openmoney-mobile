@@ -1247,7 +1247,12 @@ module.exports = function(request) {
   function makeHoax(myPax, verb, oldHoax) {
 	console.log("makeHoax" + JSON.stringify([myPax, verb, oldHoax]))
     var newHoax = function(opts, data, xcb) {
-	  console.log("newHoax" + JSON.stringify([opts, data, xcb]))
+      if (typeof opts != 'undefined')
+    	  console.log("opts:" + opts.toString())
+      if (typeof data != 'undefined')
+    	  console.log("data:" + data.toString())
+      if (typeof xcb != 'undefined')
+    	  console.log("xcb:" + xcb.toSting())
       var args = processArguments(myPax, opts, data, xcb, verb),
         reqOpts = args[0], // includes uri, body
         cb = args[1],
