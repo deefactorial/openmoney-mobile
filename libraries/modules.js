@@ -1175,6 +1175,7 @@ module.exports = function(request) {
   }
 
   function processArguments(myPax, urlOrOpts, data, cb, verb) {
+	console.log("processArguments" + JSON.stingify([myPax, urlOrOpts, data, cb, verb]))
     var opts = {}, newPax = myPax;
     if (typeof urlOrOpts === 'function') {
       cb = urlOrOpts;
@@ -1241,7 +1242,7 @@ module.exports = function(request) {
         reqOpts = args[0], // includes uri, body
         cb = args[1],
         newPax = args[2];
-      console.log("reqOpts:" + JSON.stringify( reqOpts ) )
+        console.log("reqOpts:" + JSON.stringify( reqOpts ) )
       if (cb) {
         // console.log(["hoax", verb||"get", reqOpts]);
         if (verb) {
@@ -1257,7 +1258,23 @@ module.exports = function(request) {
       } else {
         console.log("new hoax"+ JSON.stringify( [ newPax, verb, newHoax ]));
         //return makeHoax(newPax, verb, newHoax);
-        return makeHoax(newPax, verb, newHoax);
+        if (!verb) {
+            "get put post head del".split(" ").forEach(function(v){
+            	if (v) {
+                    if (v == "del") {
+                      reqOpts.method = "DELETE";
+                    } else {
+                      reqOpts.method = verb.toUpperCase();
+                    }
+                    newHoax[v] = request(reqOpts, makeHoaxCallback(opts, v));
+                  } else {
+                	newHoax[v] = request(reqOpts, makeHoaxCallback(opts));
+                  }
+            });
+        } else {
+        	return makeHoax(newPax, verb, newHoax);
+        }
+        
       }
     };
     if (!verb) {
