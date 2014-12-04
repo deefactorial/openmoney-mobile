@@ -1226,6 +1226,7 @@ module.exports = function(request) {
   }
 
   function addExtensions(newHoax, oldHoax) {
+	console.log("addExtensions" + JSON.stringify( [ newHoax, oldHoax ] ))
     if (oldHoax && oldHoax.methods) {
       var k;
       for (k in oldHoax.methods) {
@@ -1235,7 +1236,7 @@ module.exports = function(request) {
     if (oldHoax && oldHoax.headers) {
     	var k;
         for (k in oldHoax.headers) {
-          newHoax.headers[k] = oldHoax.headers[k];
+          newHoax[k].headers = oldHoax[k].headers;
         }
     }
   }
@@ -1270,6 +1271,7 @@ module.exports = function(request) {
     if (!verb) {
       "get put post head del".split(" ").forEach(function(v){
         newHoax[v] = makeHoax(myPax, v, newHoax);
+        newHoax[v].headers = reqOpts.headers;
       });
     }
     addExtensions(newHoax, oldHoax);
