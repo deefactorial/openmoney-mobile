@@ -24,70 +24,70 @@ function createBeamTag(cb) {
 	//check if nfc exists
 	if (typeof nfc == 'undefined') {
 		cb(false)
-	}
+	} else {
+		
+	    log( "createBeamTag user " + JSON.stringify( config.user ) )
+	    var userData = JSON.parse( JSON.stringify( config.user ) );
+	    var beamData = { };
+	    beamData.type = "beamtag";
+	    beamData.username = config.user.name;
+	    beamData.sessionID = userData.sessionID;
+	    beamData.expires = userData.expires;
+	    beamData.created = new Date().getTime();
 	
-    log( "createBeamTag user " + JSON.stringify( config.user ) )
-    var userData = JSON.parse( JSON.stringify( config.user ) );
-    var beamData = { };
-    beamData.type = "beamtag";
-    beamData.username = config.user.name;
-    beamData.sessionID = userData.sessionID;
-    beamData.expires = userData.expires;
-    beamData.created = new Date().getTime();
-
-    function randomString(length, chars) {
-        var result = '';
-        for ( var i = length; i > 0; --i)
-            result += chars[Math.round( Math.random() * (chars.length - 1) )];
-        return result;
-    }
-
-    beamData.hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-    beamData.initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-
-    var pinCode = config.user.sessionID
-
-    // for more information on mcrypt
-    // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
-    // note the key that should be used instead of the hashID should be the
-    // users private RSA key.
-    encodedString = mcrypt.Encrypt( pinCode, beamData.initializationVector, beamData.hashTag, 'rijndael-256', 'cbc' );
-
-    beamData.pinCode = base64_encode( String( encodedString ) )
-
-    log( " BeamTag: " + JSON.stringify( beamData ) )
-
-    var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
-        key : beamData.hashTag
-    } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
-
-    var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
-
-    var message = [ mime, aar ];
-
-    nfc.share( message, function() {
-    	navigator.notification.alert( "openmoney transmit identity complete!" , function() {  }, "Transmit Success", "OK")
-    }, function() {
-        log( "Failed to beam!" )
-    } );
-
-    log( "createBeamTag put " + JSON.stringify( beamData ) )
-    // Check if Profile Document Exists
-    config.db.get( "beamtag," + beamData.username + "," + beamData.hashTag, function(error, doc) {
-        if (error) {
-            log( "Error: " + JSON.stringify( error ) )
-            if (error.status == 404) {
-                // doc does not exists
-                config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, JSON.parse( JSON.stringify( beamData ) ), cb )
-            } else {
-                alert( " Error Posting Beam Tag:" + JSON.stringify( error ) )
-            }
-        } else {
-            beamData = doc;
-            config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
-        }
-    } )
-
+	    function randomString(length, chars) {
+	        var result = '';
+	        for ( var i = length; i > 0; --i)
+	            result += chars[Math.round( Math.random() * (chars.length - 1) )];
+	        return result;
+	    }
+	
+	    beamData.hashTag = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+	    beamData.initializationVector = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+	
+	    var pinCode = config.user.sessionID
+	
+	    // for more information on mcrypt
+	    // https://stackoverflow.com/questions/18786025/mcrypt-js-encryption-value-is-different-than-that-produced-by-php-mcrypt-mcryp
+	    // note the key that should be used instead of the hashID should be the
+	    // users private RSA key.
+	    encodedString = mcrypt.Encrypt( pinCode, beamData.initializationVector, beamData.hashTag, 'rijndael-256', 'cbc' );
+	
+	    beamData.pinCode = base64_encode( String( encodedString ) )
+	
+	    log( " BeamTag: " + JSON.stringify( beamData ) )
+	
+	    var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
+	        key : beamData.hashTag
+	    } ) ), mime = ndef.record( ndef.TNF_MIME_MEDIA, type, id, payload );
+	
+	    var type = "android.com:pkg", id = "", payload = nfc.stringToBytes( "com.openmoney.mobile" ), aar = ndef.record( ndef.TNF_EXTERNAL_TYPE, type, id, payload );
+	
+	    var message = [ mime, aar ];
+	
+	    nfc.share( message, function() {
+	    	navigator.notification.alert( "openmoney transmit identity complete!" , function() {  }, "Transmit Success", "OK")
+	    }, function() {
+	        log( "Failed to beam!" )
+	    } );
+	
+	    log( "createBeamTag put " + JSON.stringify( beamData ) )
+	    // Check if Profile Document Exists
+	    config.db.get( "beamtag," + beamData.username + "," + beamData.hashTag, function(error, doc) {
+	        if (error) {
+	            log( "Error: " + JSON.stringify( error ) )
+	            if (error.status == 404) {
+	                // doc does not exists
+	                config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, JSON.parse( JSON.stringify( beamData ) ), cb )
+	            } else {
+	                alert( " Error Posting Beam Tag:" + JSON.stringify( error ) )
+	            }
+	        } else {
+	            beamData = doc;
+	            config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
+	        }
+	    } )
+	}
 }
 
 
