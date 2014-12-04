@@ -1154,13 +1154,13 @@ module.exports = core(request);
  */
 
 module.exports = function(request) {
-  console.log("request" + JSON.stringify(request))
+  //console.log("request" + JSON.stringify(request))
 	
   var pax = require("pax");
 
   function makeHoaxCallback(cb, verb) {
     return function(err, res, body){
-      console.log("hoax cb " + JSON.stringify( verb || "GET" ) + JSON.stringify( [ err , res.statusCode , body ] ) );
+      //console.log("hoax cb " + JSON.stringify( verb || "GET" ) + JSON.stringify( [ err , res.statusCode , body ] ) );
 
       if (err && err !== "error") {
         cb(err, res, body);
@@ -1175,7 +1175,7 @@ module.exports = function(request) {
   }
 
   function processArguments(myPax, urlOrOpts, data, cb, verb) {
-	console.log("processArguments" + JSON.stringify([myPax, urlOrOpts, data, cb, verb]))
+	//console.log("processArguments" + JSON.stringify([myPax, urlOrOpts, data, cb, verb]))
     var opts = {}, newPax = myPax;
     if (typeof urlOrOpts === 'function') {
       cb = urlOrOpts;
@@ -1251,19 +1251,19 @@ module.exports = function(request) {
   }
 
   function makeHoax(myPax, verb, oldHoax) {
-	console.log("makeHoax" + JSON.stringify([myPax, verb, oldHoax]))
+	//console.log("makeHoax" + JSON.stringify([myPax, verb, oldHoax]))
     var newHoax = function(opts, data, xcb) {
-      if (typeof opts != 'undefined')
-    	  console.log("opts:" + opts.toString())
-      if (typeof data != 'undefined')
-    	  console.log("data:" + data.toString())
-      if (typeof xcb != 'undefined')
-    	  console.log("xcb:" + xcb.toSting())
+//      if (typeof opts != 'undefined')
+//    	  console.log("opts:" + opts.toString())
+//      if (typeof data != 'undefined')
+//    	  console.log("data:" + data.toString())
+//      if (typeof xcb != 'undefined')
+//    	  console.log("xcb:" + xcb.toSting())
       var args = processArguments(myPax, opts, data, xcb, verb),
         reqOpts = args[0], // includes uri, body
         cb = args[1],
         newPax = args[2];
-        console.log("reqOpts:" + JSON.stringify( reqOpts ) )
+        //console.log("reqOpts:" + JSON.stringify( reqOpts ) )
       if (cb) {
         // console.log(["hoax", verb||"get", reqOpts]);
         if (verb) {
@@ -1277,9 +1277,9 @@ module.exports = function(request) {
           return request(reqOpts, makeHoaxCallback(cb));
         }
       } else {
-    	if (typeof newPax != 'undefined')
-    		console.log("newPax" + newPax.toString())
-        console.log("new hoax"+ JSON.stringify( [ newPax, verb, newHoax ]));
+//    	if (typeof newPax != 'undefined')
+//    		console.log("newPax" + newPax.toString())
+//        console.log("new hoax"+ JSON.stringify( [ newPax, verb, newHoax ]));
         //return makeHoax(newPax, verb, newHoax);
         return makeHoax(reqOpts, verb, newHoax);
       }
@@ -1333,7 +1333,7 @@ var DEFAULT_TIMEOUT = 3 * 60 * 1000 // 3 minutes
 //
 
 function request(options, callback) {
-  log("request" + JSON.stringify( options ) )
+//  log("request" + JSON.stringify( options ) )
   // The entry-point to the API: prep the options object and pass the real work to run_xhr.
   if(typeof callback !== 'function')
     throw new Error('Bad callback given: ' + callback)
