@@ -1226,21 +1226,15 @@ module.exports = function(request) {
   }
 
   function addExtensions(newHoax, oldHoax) {
-	if (typeof newHoax != 'undefined')
-	console.log("addExtensions newHoax:" + newHoax.toString())
-	if (typeof oldHoax != 'undefined')
-	console.log("addExtensions oldHoax:" + oldHoax.toString())
+//	if (typeof newHoax != 'undefined')
+//	console.log("addExtensions newHoax:" + newHoax.toString())
+//	if (typeof oldHoax != 'undefined')
+//	console.log("addExtensions oldHoax:" + oldHoax.toString())
     if (oldHoax && oldHoax.methods) {
       var k;
       for (k in oldHoax.methods) {
         newHoax[k] = oldHoax.methods[k];
       }
-    }
-    if (oldHoax && oldHoax.methods) {
-    	var k;
-        for (k in oldHoax.methods) {
-          newHoax[k].headers = oldHoax.headers;
-        }
     }
   }
 
@@ -1271,6 +1265,8 @@ module.exports = function(request) {
           return request(reqOpts, makeHoaxCallback(cb));
         }
       } else {
+    	if (typeof newPax != 'undefined')
+    		console.log("newPax" + newPax.toString())
         console.log("new hoax"+ JSON.stringify( [ newPax, verb, newHoax ]));
         //return makeHoax(newPax, verb, newHoax);
         return makeHoax(newPax, verb, newHoax);
