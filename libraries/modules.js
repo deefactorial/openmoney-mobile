@@ -1253,7 +1253,7 @@ module.exports = function(request) {
           return request(reqOpts, makeHoaxCallback(cb));
         }
       } else {
-        // console.log("new hoax", newPax);
+        console.log("new hoax"+ JSON.stringify( [ newPax, verb, newHoax ]));
         return makeHoax(newPax, verb, newHoax);
       }
     };
