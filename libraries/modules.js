@@ -1205,6 +1205,12 @@ module.exports = function(request) {
       }
     }
     opts.headers = {'content-type': 'application/json'};
+    if (urlOrOpts && urlOrOpts.headers) {
+    	var k;
+    	for (k in urlOrOpts.headers) {
+    		opts.headers[k] = urlOrOpts.headers[k];
+    	}
+    }
     if (urlOrOpts && urlOrOpts.auth) {
     	// HTTP basic authentication
     	opts.headers.authorization = 'Basic ' + b64_enc(urlOrOpts.auth.username + ':' + urlOrOpts.auth.password);
