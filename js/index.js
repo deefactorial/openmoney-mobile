@@ -260,7 +260,7 @@ function setupConfig(done) {
         
 
         //window.server = coax( url );
-        log( "coax:" + JSON.stringify( { "uri": url + appDbName, "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
+        log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
         
         var db = coax( { "uri": url + appDbName, "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
         
