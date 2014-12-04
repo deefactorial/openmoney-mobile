@@ -1201,7 +1201,7 @@ module.exports = function(request) {
             	  if (Object.prototype.toString.call(urlOrOpts) === '[object Array]'){
             		  newPax = myPax.uri;
             		  urlOrOpts.forEach(function(value) {
-            			  if (Object.prototype.toString.call(urlOrOpts) === '[object Object]'){
+            			  if (Object.prototype.toString.call(value) === '[object Object]'){
             				  newPax += "?";
             				  var k;
             				  for(k in value) {
@@ -1224,7 +1224,7 @@ module.exports = function(request) {
         	  if (Object.prototype.toString.call(urlOrOpts) === '[object Array]'){
         		  newPax = myPax.uri;
         		  urlOrOpts.forEach(function(value) {
-        			  if (Object.prototype.toString.call(urlOrOpts) === '[object Object]'){
+        			  if (Object.prototype.toString.call(value) === '[object Object]'){
         				  newPax += "?";
         				  var k;
         				  for(k in value) {
