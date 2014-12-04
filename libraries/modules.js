@@ -1201,7 +1201,15 @@ module.exports = function(request) {
             	  if (Object.prototype.toString.call(urlOrOpts) === '[object Array]'){
             		  newPax = myPax.uri;
             		  urlOrOpts.forEach(function(value) {
-            			  newPax += value + "/";
+            			  if (Object.prototype.toString.call(urlOrOpts) === '[object Object]'){
+            				  newPax += "?";
+            				  var k;
+            				  for(k in value) {
+            					  newPax += encodeURIComponent( k ) + "=" + encodeURIComponent(value[k]) + "&";
+            				  }
+            			  } else {
+            				  newPax += value + "/";
+            			  }
             		  })
             		  
             	  } else {
@@ -1216,7 +1224,15 @@ module.exports = function(request) {
         	  if (Object.prototype.toString.call(urlOrOpts) === '[object Array]'){
         		  newPax = myPax.uri;
         		  urlOrOpts.forEach(function(value) {
-        			  newPax += value + "/";
+        			  if (Object.prototype.toString.call(urlOrOpts) === '[object Object]'){
+        				  newPax += "?";
+        				  var k;
+        				  for(k in value) {
+        					  newPax += encodeURIComponent( k ) + "=" + encodeURIComponent(value[k]) + "&";
+        				  }
+        			  } else {
+        				  newPax += value + "/";
+        			  }
         		  })
         		  
         	  } else {
