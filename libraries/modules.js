@@ -1197,8 +1197,11 @@ module.exports = function(request) {
               Object.prototype.toString.call(urlOrOpts) !== '[object Array]')) {
               data = urlOrOpts;
           } else {
-            newPax = myPax(urlOrOpts);
-        	
+              if (typeof myPax.uri != 'undefined') {
+            	  newPax = myPax.uri + urlOrOpts;
+              } else {
+            	newPax = myPax(urlOrOpts);
+              }
           }
         } else {
           if (typeof myPax.uri != 'undefined') {
