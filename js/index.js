@@ -341,96 +341,103 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-        var design = "_design/openmoney" ;//+ new Date().getTime();
-        db.put( design, {
-            views : {
-                accounts : {
-                    map : function(doc) {
-                        if (doc.type == "trading_name" && doc.name && doc.currency && doc.steward) {
-                            emit( {
-                                trading_name : doc.name, currency : doc.currency, steward : doc.steward
-                            } )
-                        }
-                    }.toString()
-                }, account_details : {
-                    map : function(doc) {
-                    	/*
-                    	 * Clone an Object https://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
-                    	 */
-
-                    	function clone(obj) {
-                    	    if (null == obj || "object" != typeof obj) return obj;
-                    	    var copy = obj.constructor();
-                    	    for (var attr in obj) {
-                    	        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-                    	    }
-                    	    return copy;
-                    	}
-                        if (doc.type == "trading_name_journal" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseFloat(doc.amount) >= 0 && doc.currency && doc.timestamp) {
-                        	doc.isPositive = true;
-                            doc.subject = doc.from + " " + doc.currency;
-                            emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc );
-                            from = clone(doc);
-                            from.isPositive = false;
-                            from.subject = from.to + " " + from.currency;
-                            from.amount = -from.amount;
-                            emit( [ "trading_name," + from.from + "," + from.currency, from.timestamp ], from );
-                        }
-                    }.toString()
-                }, account_balance : {
-                    map : function(doc) {
-                        if (doc.type == "trading_name_journal" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseFloat(doc.amount) >= 0 && doc.currency && doc.timestamp) {
-                        	if (typeof doc.verified != 'undefined' && doc.verified === false) {
-                        		
-                        	} else {
-                        		emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], -doc.amount )
-                            	emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc.amount )
-                        	}
-                        }
-                    }.toString(), reduce : function(keys, values, rereduce) {
-                        var result = 0;
-                        if (rereduce) {
-                            // do nothing
-                        } else {
-                            for ( var i = values.length - 1; i >= 0; i--) {
-                                result += values[i];
-                            }
-                        }
-                        return result;
-                    }.toString()
-                }, currencies : {
-                    map : function(doc) {
-                        if (doc.type == "currency" && doc.currency && doc.steward) {
-                            emit( doc.currency, { "currency": doc.currency, "name": doc.name} )
-                        }
-                    }.toString()
-                }, spaces : {
-                    map : function(doc) {
-                        if (doc.type == "space" && doc.space && doc.steward) {
-                            emit( doc.space )
-                        }
-                    }.toString()
-                }, nfc_tags : {
-                    map : function(doc) {
-                        if (doc.type == "beamtag" && doc.username) {
-                            if(typeof doc.sessionID == 'undefined') {
-                                emit( [ doc.username, doc.hashTag ], doc )
-                            }
-                        }
-                    }.toString()
-                }, user_tags : {
-                	map : function(doc) {
-                		if (doc.type == "beamtag" && doc.username) {
-                            if(typeof doc.sessionID != 'undefined') {
-                                emit( [ doc.username, doc.hashTag ], doc )
-                            }
-                        }
-                	}.toString()
-                }
-            }
-        }, function() {
-            cb( false, db( [ design, "_view" ] ) )
-        } )
+    	var design = "_design/dev_openmoney" ;//+ new Date().getTime();
+	    if (window.cblite) {
+	        
+	        db.put( design, {
+	            views : {
+	                accounts : {
+	                    map : function(doc) {
+	                        if (doc.type == "trading_name" && doc.name && doc.currency && doc.steward) {
+	                            emit( {
+	                                trading_name : doc.name, currency : doc.currency, steward : doc.steward
+	                            } )
+	                        }
+	                    }.toString()
+	                }, account_details : {
+	                    map : function(doc) {
+	                    	/*
+	                    	 * Clone an Object https://stackoverflow.com/questions/728360/most-elegant-way-to-clone-a-javascript-object
+	                    	 */
+	
+	                    	function clone(obj) {
+	                    	    if (null == obj || "object" != typeof obj) return obj;
+	                    	    var copy = obj.constructor();
+	                    	    for (var attr in obj) {
+	                    	        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+	                    	    }
+	                    	    return copy;
+	                    	}
+	                        if (doc.type == "trading_name_journal" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseFloat(doc.amount) >= 0 && doc.currency && doc.timestamp) {
+	                        	doc.isPositive = true;
+	                            doc.subject = doc.from + " " + doc.currency;
+	                            emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc );
+	                            from = clone(doc);
+	                            from.isPositive = false;
+	                            from.subject = from.to + " " + from.currency;
+	                            from.amount = -from.amount;
+	                            emit( [ "trading_name," + from.from + "," + from.currency, from.timestamp ], from );
+	                        }
+	                    }.toString()
+	                }, account_balance : {
+	                    map : function(doc) {
+	                        if (doc.type == "trading_name_journal" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseFloat(doc.amount) >= 0 && doc.currency && doc.timestamp) {
+	                        	if (typeof doc.verified != 'undefined' && doc.verified === false) {
+	                        		
+	                        	} else {
+	                        		emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], -doc.amount )
+	                            	emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc.amount )
+	                        	}
+	                        }
+	                    }.toString(), reduce : function(keys, values, rereduce) {
+	                        var result = 0;
+	                        if (rereduce) {
+	                            // do nothing
+	                        } else {
+	                            for ( var i = values.length - 1; i >= 0; i--) {
+	                                result += values[i];
+	                            }
+	                        }
+	                        return result;
+	                    }.toString()
+	                }, currencies : {
+	                    map : function(doc) {
+	                        if (doc.type == "currency" && doc.currency && doc.steward) {
+	                            emit( doc.currency, { "currency": doc.currency, "name": doc.name} )
+	                        }
+	                    }.toString()
+	                }, spaces : {
+	                    map : function(doc) {
+	                        if (doc.type == "space" && doc.space && doc.steward) {
+	                            emit( doc.space )
+	                        }
+	                    }.toString()
+	                }, nfc_tags : {
+	                    map : function(doc) {
+	                        if (doc.type == "beamtag" && doc.username) {
+	                            if(typeof doc.sessionID == 'undefined') {
+	                                emit( [ doc.username, doc.hashTag ], doc )
+	                            }
+	                        }
+	                    }.toString()
+	                }, user_tags : {
+	                	map : function(doc) {
+	                		if (doc.type == "beamtag" && doc.username) {
+	                            if(typeof doc.sessionID != 'undefined') {
+	                                emit( [ doc.username, doc.hashTag ], doc )
+	                            }
+	                        }
+	                	}.toString()
+	                }
+	            }
+	        }, function() {
+	            cb( false, db( [ design, "_view" ] ) )
+	        } )
+	    } else {
+	    	//query the local server for the views since the sync_gateway doesn't support _design docs.
+	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+	    	cb( false , views( [ design, "_view" ] ) )
+	    }
     }
 
     function getUser(db, cb) {
