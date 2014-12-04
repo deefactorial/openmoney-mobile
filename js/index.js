@@ -32,6 +32,8 @@ function onDeviceReady() {
 	}
 	
 	if(typeof window.plugins == 'undefined' || typeof window.plugins.spinnerDialog == 'undefined') {
+		window.plugins = {};
+		window.plugins.spinnerDialog = {};
 		window.plugins.spinnerDialog.hide = function(){};
 		window.plugins.spinnerDialog.show = function(){};
 	}
