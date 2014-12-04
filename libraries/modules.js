@@ -1197,7 +1197,8 @@ module.exports = function(request) {
               Object.prototype.toString.call(urlOrOpts) !== '[object Array]')) {
               data = urlOrOpts;
           } else {
-            newPax = myPax(urlOrOpts);
+            //newPax = myPax(urlOrOpts);
+        	newPax = myPax.uri + urlOrOpts;
           }
         } else {
           newPax = myPax(urlOrOpts);
