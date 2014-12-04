@@ -1210,10 +1210,10 @@ module.exports = function(request) {
       }
     }
     opts.headers = {'content-type': 'application/json'};
-    if (newPax && newPax.headers) {
+    if (myPax && myPax.headers) {
     	var k;
-    	for (k in newPax.headers) {
-    		opts.headers[k] = newPax.headers[k];
+    	for (k in myPax.headers) {
+    		opts.headers[k] = myPax.headers[k];
     	}
     }
     if (urlOrOpts && urlOrOpts.auth) {
