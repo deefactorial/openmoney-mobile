@@ -1175,7 +1175,7 @@ module.exports = function(request) {
   }
 
   function processArguments(myPax, urlOrOpts, data, cb, verb) {
-	//console.log("processArguments" + JSON.stringify([myPax, urlOrOpts, data, cb, verb]))
+	console.log("processArguments" + JSON.stringify([myPax, urlOrOpts, data, cb, verb]))
     var opts = {}, newPax = myPax;
     if (typeof urlOrOpts === 'function') {
       cb = urlOrOpts;
