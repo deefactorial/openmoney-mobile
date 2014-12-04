@@ -1160,7 +1160,7 @@ module.exports = function(request) {
 
   function makeHoaxCallback(cb, verb) {
     return function(err, res, body){
-      //console.log("hoax cb " + JSON.stringify( verb || "GET" ) + JSON.stringify( [ err , res.statusCode , body ] ) );
+      console.log("hoax cb " + JSON.stringify( verb || "GET" ) + JSON.stringify( [ err , res.statusCode , body ] ) );
 
       if (err && err !== "error") {
         cb(err, res, body);
@@ -1232,6 +1232,12 @@ module.exports = function(request) {
         newHoax[k] = oldHoax.methods[k];
       }
     }
+    if (oldHoax && oldHoax.headers) {
+    	var k;
+        for (k in oldHoax.headers) {
+          newHoax[k] = oldHoax.headers[k];
+        }
+    }
   }
 
   function makeHoax(myPax, verb, oldHoax) {
@@ -1258,23 +1264,7 @@ module.exports = function(request) {
       } else {
         console.log("new hoax"+ JSON.stringify( [ newPax, verb, newHoax ]));
         //return makeHoax(newPax, verb, newHoax);
-        if (!verb) {
-            "get put post head del".split(" ").forEach(function(v){
-              if (v) {
-                if (v == "del") {
-                  reqOpts.method = "DELETE";
-                } else {
-                  reqOpts.method = v.toUpperCase();
-                }
-                newHoax[v] = request(reqOpts, makeHoaxCallback(opts, v));
-              } else {
-            	newHoax[v] = request(reqOpts, makeHoaxCallback(opts));
-              }
-            });
-        } else {
-        	return makeHoax(newPax, verb, newHoax);
-        }
-        
+        return makeHoax(newPax, verb, newHoax);
       }
     };
     if (!verb) {
