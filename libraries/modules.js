@@ -1214,6 +1214,9 @@ module.exports = function(request) {
     if (urlOrOpts.uri || urlOrOpts.url){
     	opts.uri = urlOrOpts.uri || urlOrOpts.url;
     }
+    if (newPax.url) {
+    	opts.url = newPax.url;
+    }
     if (data) {
       opts.body = JSON.stringify(data);
     }
