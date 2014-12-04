@@ -1264,7 +1264,7 @@ module.exports = function(request) {
                 if (v == "del") {
                   reqOpts.method = "DELETE";
                 } else {
-                  reqOpts.method = verb.toUpperCase();
+                  reqOpts.method = v.toUpperCase();
                 }
                 newHoax[v] = request(reqOpts, makeHoaxCallback(opts, v));
               } else {
