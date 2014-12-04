@@ -22,7 +22,7 @@ limitations under the License.
 function createBeamTag(cb) {
 	
 	//check if nfc exists
-	if (!nfc) {
+	if (typeof nfc == 'undefined') {
 		cb(false)
 	}
 	
