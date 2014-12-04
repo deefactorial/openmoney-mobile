@@ -1198,14 +1198,31 @@ module.exports = function(request) {
               data = urlOrOpts;
           } else {
               if (typeof myPax.uri != 'undefined') {
-            	  newPax = myPax.uri + urlOrOpts;
+            	  if (Object.prototype.toString.call(urlOrOpts) === '[object Array]'){
+            		  newPax = myPax.uri;
+            		  urlOrOpts.forEach(function(value) {
+            			  newPax += value + "/";
+            		  })
+            		  
+            	  } else {
+            		  newPax = myPax.uri + urlOrOpts;
+            	  }
               } else {
             	newPax = myPax(urlOrOpts);
               }
           }
         } else {
           if (typeof myPax.uri != 'undefined') {
-        	  newPax = myPax.uri + urlOrOpts;
+        	  if (Object.prototype.toString.call(urlOrOpts) === '[object Array]'){
+        		  newPax = myPax.uri;
+        		  urlOrOpts.forEach(function(value) {
+        			  newPax += value + "/";
+        		  })
+        		  
+        	  } else {
+        		  newPax = myPax.uri + urlOrOpts;
+        	  }
+        	  
           } else {
         	newPax = myPax(urlOrOpts);
           }
