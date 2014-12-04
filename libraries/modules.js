@@ -1217,7 +1217,7 @@ module.exports = function(request) {
     }
     opts.json = true;
     opts.uri = newPax.toString();
-    if (uriOrOpts && (urlOrOpts.uri || urlOrOpts.url)){
+    if (urlOrOpts && (urlOrOpts.uri || urlOrOpts.url)){
     	opts.uri = urlOrOpts.uri || urlOrOpts.url;
     }
     if (newPax.uri) {
