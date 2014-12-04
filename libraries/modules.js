@@ -1201,8 +1201,11 @@ module.exports = function(request) {
         	
           }
         } else {
-          newPax = myPax.uri + urlOrOpts;
-          //newPax = myPax(urlOrOpts);
+          if (typeof myPax.uri != 'undefined') {
+        	  newPax = myPax.uri + urlOrOpts;
+          } else {
+        	newPax = myPax(urlOrOpts);
+          }
         }
       }
     }
