@@ -1205,10 +1205,10 @@ module.exports = function(request) {
       }
     }
     opts.headers = {'content-type': 'application/json'};
-    if (urlOrOpts && urlOrOpts.headers) {
+    if (newPax && newPax.headers) {
     	var k;
-    	for (k in urlOrOpts.headers) {
-    		opts.headers[k] = urlOrOpts.headers[k];
+    	for (k in newPax.headers) {
+    		opts.headers[k] = newPax.headers[k];
     	}
     }
     if (urlOrOpts && urlOrOpts.auth) {
