@@ -1154,6 +1154,7 @@ module.exports = core(request);
  */
 
 module.exports = function(request) {
+  log("request" + JSON.stringify(request))
 	
   var pax = require("pax");
 
@@ -1181,8 +1182,8 @@ module.exports = function(request) {
       urlOrOpts = null;
     } else {
       if (urlOrOpts.uri || urlOrOpts.url) {
-        //newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
-        newPax = myPax(urlOrOpts);
+        newPax = myPax(urlOrOpts.uri || urlOrOpts.url);
+        //newPax = myPax(urlOrOpts);
       } else {
         if (typeof data === 'function') {
           // we have only 2 args
