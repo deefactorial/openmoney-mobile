@@ -1234,14 +1234,14 @@ module.exports = function(request) {
   }
 
   function makeHoax(myPax, verb, oldHoax) {
-	log("makeHoax" + JSON.stringiy([myPax, verb, oldHoax]))
+	console.log("makeHoax" + JSON.stringiy([myPax, verb, oldHoax]))
     var newHoax = function(opts, data, xcb) {
-	  log("newHoax" + JSON.stringiy([opts, data, xcb]))
+	  console.log("newHoax" + JSON.stringiy([opts, data, xcb]))
       var args = processArguments(myPax, opts, data, xcb, verb),
         reqOpts = args[0], // includes uri, body
         cb = args[1],
         newPax = args[2];
-      log("reqOpts:" + JSON.stringify( reqOpts ) )
+      console.log("reqOpts:" + JSON.stringify( reqOpts ) )
       if (cb) {
         // console.log(["hoax", verb||"get", reqOpts]);
         if (verb) {
