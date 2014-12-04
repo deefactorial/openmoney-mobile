@@ -1235,7 +1235,7 @@ module.exports = function(request) {
     if (oldHoax && oldHoax.headers) {
     	var k;
         for (k in oldHoax.headers) {
-          newHoax[k] = oldHoax.headers[k];
+          newHoax.headers[k] = oldHoax.headers[k];
         }
     }
   }
