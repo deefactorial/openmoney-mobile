@@ -174,7 +174,7 @@ function setupConfig(done) {
             db.get( "_local/user", function(err, doc) {
                 if (err) { return cb( err ) }
                 doc._deleted = true;
-                db.put( "_local/user", doc, function(err, ok) {
+                config.db.put( "_local/user", doc, function(err, ok) {
                     if (err) { return cb( err ) }
                     log( "deleted local user" )
                     cb()
@@ -193,7 +193,7 @@ function setupConfig(done) {
                         config.user.user_id = newUser.username;
                         config.user.name = newUser.username;
                         config.user.email = newUser.email;
-                        db.put( "_local/user", config.user, function(err, ok) {
+                        config.db.put( "_local/user", config.user, function(err, ok) {
                             if (err) { return cb( err ) }
                             log( "updateUser ok: " + JSON.stringify( ok ) )
                             config.user._rev = ok.rev
@@ -207,7 +207,7 @@ function setupConfig(done) {
                     config.user.user_id = newUser.username;
                     config.user.name = newUser.username;
                     config.user.email = newUser.email;
-                    db.put( "_local/user", config.user, function(err, ok) {
+                    config.db.put( "_local/user", config.user, function(err, ok) {
                         if (err) { return cb( err ) }
                         log( "setUser ok: " + JSON.stringify( ok ) )
                         config.user._rev = ok.rev
