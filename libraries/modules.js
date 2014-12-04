@@ -1211,6 +1211,9 @@ module.exports = function(request) {
     }
     opts.json = true;
     opts.uri = newPax.toString();
+    if (urlOrOpts.uri || urlOrOpts.url){
+    	opts.uri = urlOrOpts.uri || urlOrOpts.url;
+    }
     if (data) {
       opts.body = JSON.stringify(data);
     }
