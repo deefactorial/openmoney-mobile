@@ -101,20 +101,24 @@ function doFirstLogin(cb) {
             	window.config.setUser( data, function(error, ok) {
                     if (error) { return cb( error ) }
                     
-                    createBeamTag( function(err) {
-                        log( "createBeamTag done " + JSON.stringify( err ) )
-
-                    } )
-                    
-                    addMyUsernameToAllLists( function(err) {
-                        log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
-
-                    } )
-                    
-                    config.syncReference = triggerSync( function(error, ok) {
-                        log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
-                        cb( error, ok )
-                    } )
+                    if (window.cblite) {
+	                    createBeamTag( function(err) {
+	                        log( "createBeamTag done " + JSON.stringify( err ) )
+	
+	                    } )
+	                    
+	                    addMyUsernameToAllLists( function(err) {
+	                        log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
+	
+	                    } )
+	                    
+	                    config.syncReference = triggerSync( function(error, ok) {
+	                        log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
+	                        cb( error, ok )
+	                    } )
+                    } else {
+                    	cb(false,"OK");
+                    }
                 } )
             } )
         } )
