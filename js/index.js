@@ -23,8 +23,7 @@ limitations under the License.
 // with appReady.
 function onDeviceReady() {
 	
-	if(typeof navigator == 'undefined') {
-		navigator = {};
+	if(typeof navigator.notification == 'undefined') {
 		navigator.notification = {};
 		navigator.notification.alert = function (message, successcb, header, button) {
 			alert(message);
