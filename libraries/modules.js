@@ -1445,6 +1445,7 @@ function run_xhr(options) {
   if(is_cors)
     xhr.withCredentials = !! options.withCredentials
   if(typeof options.headers != 'undefined' && typeof options.headers.authorization != 'undefined') {
+	  log("setting authorization headers:" + options.headers.authorization)
 	  xhr.setRequestHeader("authorization", options.headers.authorization);
   }
   xhr.send(options.body)
