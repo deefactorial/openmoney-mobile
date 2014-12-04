@@ -1449,7 +1449,7 @@ function run_xhr(options) {
 	  xhr.setRequestHeader("authorization", options.headers.authorization);
 	  if(is_cors) {
 		  console.log("is cors:" + !! options.withCredentials);
-		  xhr.withCredentials = true;
+		  //xhr.withCredentials = true;
 	  }
   }
   xhr.send(options.body)
