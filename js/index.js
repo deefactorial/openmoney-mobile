@@ -270,13 +270,16 @@ function setupConfig(done) {
             setupViews( db, function(err, views) {
                 if (err) { return done( err ) }
                 
-                getUser( db, function(err, user) {
-                    if (err) { return done( err ) }
-                    window.config = {
+                window.config = {
                         site : {
                             syncUrl : REMOTE_SYNC_URL
-                        }, user : user, setUser : window.config.setUser , db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
+                        }, setUser : window.config.setUser , db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
                     };
+                
+                getUser( db, function(err, user) {
+                    if (err) { return done( err ) }
+
+                    window.config.user = user;
                     
                     if (typeof config.db != 'undefined') {
                     	config.db.extend("get", function(options, callback) {
