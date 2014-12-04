@@ -1442,10 +1442,13 @@ function run_xhr(options) {
 
   xhr.onreadystatechange = on_state_change
   xhr.open(options.method, options.uri, true) // asynchronous
-  if(is_cors)
-    xhr.withCredentials = !! options.withCredentials
+  if(is_cors) {
+	  console.log("is cors:" + !! options.withCredentials);
+	  xhr.withCredentials = !! options.withCredentials;
+  }
+    
   if(typeof options.headers != 'undefined' && typeof options.headers.authorization != 'undefined') {
-	  log("setting authorization headers:" + options.headers.authorization)
+	  console.log("setting authorization headers:" + options.headers.authorization);
 	  xhr.setRequestHeader("authorization", options.headers.authorization);
   }
   xhr.send(options.body)
