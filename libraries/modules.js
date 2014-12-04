@@ -1226,7 +1226,10 @@ module.exports = function(request) {
   }
 
   function addExtensions(newHoax, oldHoax) {
-	console.log("addExtensions" + JSON.stringify( [ newHoax.toString(), oldHoax.toString() ] ))
+	if (typeof newHoax != 'undefined')
+	console.log("addExtensions newHoax:" + newHoax.toString())
+	if (typeof oldHoax != 'undefined')
+	console.log("addExtensions oldHoax:" + oldHoax.toString())
     if (oldHoax && oldHoax.methods) {
       var k;
       for (k in oldHoax.methods) {
