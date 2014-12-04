@@ -1154,7 +1154,7 @@ module.exports = core(request);
  */
 
 module.exports = function(request) {
-  log("request" + JSON.stringify(request))
+  console.log("request" + JSON.stringify(request))
 	
   var pax = require("pax");
 
