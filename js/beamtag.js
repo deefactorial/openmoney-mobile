@@ -20,6 +20,12 @@ limitations under the License.
  */
 
 function createBeamTag(cb) {
+	
+	//check if nfc exists
+	if (!nfc) {
+		cb(false)
+	}
+	
     log( "createBeamTag user " + JSON.stringify( config.user ) )
     var userData = JSON.parse( JSON.stringify( config.user ) );
     var beamData = { };
