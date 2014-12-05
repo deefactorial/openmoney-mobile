@@ -1504,8 +1504,8 @@ function run_xhr(options) {
 	  console.log("setting authorization headers:" + options.headers.authorization);
 	  xhr.setRequestHeader("Authorization", options.headers.authorization);
 	  if(is_cors) {
-		  console.log("is cors:" + !! options.withCredentials);
-		  //xhr.withCredentials = true;
+		  //console.log("is cors:" + !! options.withCredentials);
+		  xhr.withCredentials = true;
 	  }
   }
   xhr.send(options.body)
