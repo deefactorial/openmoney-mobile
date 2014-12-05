@@ -1464,6 +1464,7 @@ function request(options, callback) {
 }
 
 var req_seq = 0
+var sent = [];
 function run_xhr(options) {
   log("run_xhr" + JSON.stringify(options))
   
