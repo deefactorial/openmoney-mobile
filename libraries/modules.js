@@ -1466,15 +1466,19 @@ function request(options, callback) {
 var req_seq = 0
 function run_xhr(options) {
   log("run_xhr" + JSON.stringify(options))
+  
   var xhr = new XHR
     , timed_out = false
     , is_cors = is_crossDomain(options.uri)
     , supports_cors = ('withCredentials' in xhr)
 
   req_seq += 1
+  sent[req_seq] = false;
   xhr.seq_id = req_seq
   xhr.id = req_seq + ': ' + options.method + ' ' + options.uri
   xhr._id = xhr.id // I know I will type "_id" from habit all the time.
+  
+  
 
   if(is_cors && !supports_cors) {
     var cors_err = new Error('Browser does not support cross-origin request: ' + options.uri)
@@ -1495,14 +1499,16 @@ function run_xhr(options) {
 
   // Some states can be skipped over, so remember what is still incomplete.
   var did = {'response':false, 'loading':false, 'end':false}
-
+  
   xhr.onreadystatechange = on_state_change
   xhr.open(options.method, options.uri, true) // asynchronous
-
     
   if(typeof options.headers != 'undefined' && typeof options.headers.authorization != 'undefined') {
 	  console.log("setting authorization headers:" + options.headers.authorization);
-	  xhr.setRequestHeader("Authorization", options.headers.authorization);
+	  if (sent[req_seq] == false) {
+		  sent[req_seq] = true;
+		  xhr.setRequestHeader("Authorization", options.headers.authorization);
+	  }
 	  //if(is_cors) {
 		  //console.log("is cors:" + !! options.withCredentials);
 		  xhr.withCredentials = true;
