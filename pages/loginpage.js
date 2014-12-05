@@ -63,6 +63,7 @@ function goServerLogin(parameters) {
         window.plugins.spinnerDialog.show();
         
         var doc = jsonform( this );
+        log ( "doc:" + JSON.stringify( doc ) ) 
         window.config.user = {};
         window.config.user.name = doc.email;
         window.config.user.password = doc.password;

@@ -442,6 +442,7 @@ function randomString(length, chars) {
 
 function jsonform(elem) {
     var o = {}, list = $( elem ).serializeArray();
+    console.log("jsonform:" + JSON.stringify( list ) )
     for ( var i = list.length - 1; i >= 0; i--) {
         var name = list[i].name, value = list[i].value;
         if (o[name]) {
