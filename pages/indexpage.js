@@ -54,6 +54,7 @@ function goIndex(parameters) {
 	        config.views( [ "accounts", {
 	            descending : true, include_docs : true
 	        } ], function(err, view) {
+	        	log("accounts view:" + JSON.stringify( view ) )
 	        	window.plugins.spinnerDialog.hide();
 	        	tradingNamesViewLock = false;
 	            var thisUsersAccounts = {
