@@ -72,8 +72,8 @@ function goIndex(parameters) {
 	            			    	drawContainer( "#" + row.key.trading_name.replace(/\./g,"\\.") + "-" + row.key.currency.replace(/\./g,"\\."), config.t.indexBalance( view ) );
 	            			    } );
 	            			}
-	            		})
-	            	})
+	            		} )
+	            	} )
 	            }
 	
 	            thisUsersAccounts.offset = view.offset

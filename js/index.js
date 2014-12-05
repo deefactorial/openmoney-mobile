@@ -342,11 +342,19 @@ function setupConfig(done) {
     } )
 
     function setupDb(db, cb) {
-        db.get( function(err, res, body) {
-            db.put( function(err, res, body) {
-                db.get( cb )
-            } )
-        } )
+    	if (window.cblite) {
+	        db.get( function(err, res, body) {
+	            db.put( function(err, res, body) {
+	                db.get( cb )
+	            } )
+	        } )
+    	} else {
+    		db.get( function(err, res, body) {
+	            
+	            db.get( cb )
+	            
+	        } )
+    	}
     }
 
     function destroyDb(db, cb) {
