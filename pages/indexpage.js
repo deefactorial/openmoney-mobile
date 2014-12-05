@@ -66,7 +66,7 @@ function goIndex(parameters) {
 	            			if(steward == config.user.name){
 	            				thisUsersAccounts.rows.push( row );
 	            				config.views( [ "account_balance", {
-	            			    	startkey : [ row.id, {} ], endkey : [ row.id ], descending : true
+	            			    	startkey :  row.id , endkey : row.id + '\uefff'
 	            			     	} ], function(err, view) {
 	            					
 	            			    	drawContainer( "#" + row.key.trading_name.replace(/\./g,"\\.") + "-" + row.key.currency.replace(/\./g,"\\."), config.t.indexBalance( view ) );
