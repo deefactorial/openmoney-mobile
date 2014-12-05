@@ -1503,10 +1503,10 @@ function run_xhr(options) {
   if(typeof options.headers != 'undefined' && typeof options.headers.authorization != 'undefined') {
 	  console.log("setting authorization headers:" + options.headers.authorization);
 	  xhr.setRequestHeader("Authorization", options.headers.authorization);
-	  if(is_cors) {
+	  //if(is_cors) {
 		  //console.log("is cors:" + !! options.withCredentials);
 		  xhr.withCredentials = true;
-	  }
+	  //}
   }
   xhr.send(options.body)
   return xhr
