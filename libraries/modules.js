@@ -1465,6 +1465,7 @@ function request(options, callback) {
 
 var req_seq = 0
 var sent = [];
+var onlyonce = false;
 function run_xhr(options) {
   log("run_xhr" + JSON.stringify(options))
   
@@ -1506,8 +1507,8 @@ function run_xhr(options) {
     
   if(typeof options.headers != 'undefined' && typeof options.headers.authorization != 'undefined') {
 	  console.log("setting authorization headers:" + options.headers.authorization);
-	  if (sent[req_seq] == false) {
-		  sent[req_seq] = true;
+	  if (onlyonce == false) {
+		  onlyonce = true;
 		  xhr.setRequestHeader("Authorization", options.headers.authorization);
 	  }
 	  //if(is_cors) {
