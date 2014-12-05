@@ -1220,7 +1220,7 @@ module.exports = function(request) {
 //            				  for(k in value) {
 //            					  newPax += encodeURIComponent( k ) + "=" + encodeURIComponent(value[k]) + "&";
 //            				  }
-            				  newPax += serialize(value);
+            				  newPax += "?" + serialize(value);
             			  } else {
             				  newPax += value + "/";
             			  }
@@ -1244,7 +1244,7 @@ module.exports = function(request) {
 //        				  for(k in value) {
 //        					  newPax += encodeURIComponent( k ) + "=" + encodeURIComponent(value[k]) + "&";
 //        				  }
-        				  newPax += serialize(value);
+        				  newPax += "?" + serialize(value);
         			  } else {
         				  newPax += value + "/";
         			  }
