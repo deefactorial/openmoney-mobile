@@ -1157,6 +1157,19 @@ module.exports = function(request) {
   //console.log("request" + JSON.stringify(request))
 	
   var pax = require("pax");
+  
+  serialize = function(obj, prefix) {
+	  var str = [];
+	  for(var p in obj) {
+	    if (obj.hasOwnProperty(p)) {
+	      var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+	      str.push(typeof v == "object" ?
+	        serialize(v, k) :
+	        encodeURIComponent(k) + "=" + encodeURIComponent(v));
+	    }
+	  }
+	  return str.join("&");
+	}
 
   function makeHoaxCallback(cb, verb) {
     return function(err, res, body){
@@ -1202,11 +1215,12 @@ module.exports = function(request) {
             		  newPax = myPax.uri;
             		  urlOrOpts.forEach(function(value) {
             			  if (Object.prototype.toString.call(value) === '[object Object]'){
-            				  newPax += "?";
-            				  var k;
-            				  for(k in value) {
-            					  newPax += encodeURIComponent( k ) + "=" + encodeURIComponent(value[k]) + "&";
-            				  }
+//            				  newPax += "?";
+//            				  var k;
+//            				  for(k in value) {
+//            					  newPax += encodeURIComponent( k ) + "=" + encodeURIComponent(value[k]) + "&";
+//            				  }
+            				  newPax += serialize(value);
             			  } else {
             				  newPax += value + "/";
             			  }
@@ -1225,11 +1239,12 @@ module.exports = function(request) {
         		  newPax = myPax.uri;
         		  urlOrOpts.forEach(function(value) {
         			  if (Object.prototype.toString.call(value) === '[object Object]'){
-        				  newPax += "?";
-        				  var k;
-        				  for(k in value) {
-        					  newPax += encodeURIComponent( k ) + "=" + encodeURIComponent(value[k]) + "&";
-        				  }
+//        				  newPax += "?";
+//        				  var k;
+//        				  for(k in value) {
+//        					  newPax += encodeURIComponent( k ) + "=" + encodeURIComponent(value[k]) + "&";
+//        				  }
+        				  newPax += serialize(value);
         			  } else {
         				  newPax += value + "/";
         			  }
