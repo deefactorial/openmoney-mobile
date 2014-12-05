@@ -1464,7 +1464,6 @@ function request(options, callback) {
 }
 
 var req_seq = 0
-var sent = [];
 var onlyonce = false;
 function run_xhr(options) {
   log("run_xhr" + JSON.stringify(options))
@@ -1475,7 +1474,6 @@ function run_xhr(options) {
     , supports_cors = ('withCredentials' in xhr)
 
   req_seq += 1
-  sent[req_seq] = false;
   xhr.seq_id = req_seq
   xhr.id = req_seq + ': ' + options.method + ' ' + options.uri
   xhr._id = xhr.id // I know I will type "_id" from habit all the time.
