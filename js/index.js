@@ -260,9 +260,9 @@ function setupConfig(done) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
         if (err) { return done( err ) }
 
-        log ("name" + window.config.user.name)
-        if (typeof window.config.user.name != 'undefined') {
         
+        if (window.config.user.name) {
+        	log ("name" + window.config.user.name)
 	        var callback = function () {
 	        	console.log(this.responseText);
 	        }
