@@ -264,80 +264,85 @@ function setupConfig(done) {
         	console.log(this.responseText);
         }
         
-    	var xmlHttp = new XMLHttpRequest()
-    	xmlHttp.open( 'GET', url, true )
-    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.password));
-    	xmlHttp.onload = callback;
-    	xmlHttp.send()
+//    	var xmlHttp = new XMLHttpRequest()
+//    	xmlHttp.open( 'GET', url, true )
+//    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.password));
+//    	xmlHttp.onload = callback;
+//    	xmlHttp.send()
         
 
         //window.server = coax( url );
-        log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
         
-        var db = coax( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
-        
-        setupDb( db, function(err, info) {
-            if (err) { return done( err ) }
-            
-            setupViews( db, function(err, views) {
-                if (err) { return done( err ) }
-                
-                window.config = {
-                        site : {
-                            syncUrl : REMOTE_SYNC_URL
-                        }, setUser : window.config.setUser , db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
-                    };
-                
-                getUser( db, function(err, user) {
-                    if (err) { return done( err ) }
-
-                    window.config.user = user;
-                    
-                    if (typeof config.db != 'undefined') {
-                    	config.db.extend("get", function(options, callback) {
-                    		var self = this;
-                    		return self(options, function(error, result) {
-                    			if(error && error.code == 'ETIMEDOUT') {
-                    				//try again
-                    				log("ETIMEDOUT retry get");
-                    				self(options,callback);
-                    			} else {
-                    				callback(error,result);
-                    			}
-                    		} )
-                    	} )
-                    }
-                    
-                    //does not work yet
-                    if (typeof config.views != 'undefined') {
-                    	config.views.extend({}, function(options, callback) {
-                    		var self = this;
-                    		return self(options, function(error, result) {
-                    			if(error && error.code == 'ETIMEDOUT') {
-                    				//try again
-                    				log("ETIMEDOUT retry view");
-                    				self(options,callback);
-                    			} else {
-                    				callback(error,result);
-                    			}
-                    		} )
-                    	} )
-                    }
-                    
-                    if (config.user && config.user.name) {
-                    	getProfile();
-                        if (SERVER_LOGIN) {
-                            registerServer( done )
-                        } else if (FACEBOOK_LOGIN) {
-                            registerFacebookToken( done )
-                        }
-                    } else {
-                        done( false )
-                    }
-                } )
-            } )
-        } )
-    } )
+        if (typeof window.config.user.name != 'undefined') {
+	        log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
+	        
+	        var db = coax( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+	        
+	        setupDb( db, function(err, info) {
+	            if (err) { return done( err ) }
+	            
+	            setupViews( db, function(err, views) {
+	                if (err) { return done( err ) }
+	                
+	                window.config = {
+	                        site : {
+	                            syncUrl : REMOTE_SYNC_URL
+	                        }, setUser : window.config.setUser , db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
+	                    };
+	                
+	                getUser( db, function(err, user) {
+	                    if (err) { return done( err ) }
+	
+	                    window.config.user = user;
+	                    
+	                    if (typeof config.db != 'undefined') {
+	                    	config.db.extend("get", function(options, callback) {
+	                    		var self = this;
+	                    		return self(options, function(error, result) {
+	                    			if(error && error.code == 'ETIMEDOUT') {
+	                    				//try again
+	                    				log("ETIMEDOUT retry get");
+	                    				self(options,callback);
+	                    			} else {
+	                    				callback(error,result);
+	                    			}
+	                    		} )
+	                    	} )
+	                    }
+	                    
+	                    //does not work yet
+	                    if (typeof config.views != 'undefined') {
+	                    	config.views.extend({}, function(options, callback) {
+	                    		var self = this;
+	                    		return self(options, function(error, result) {
+	                    			if(error && error.code == 'ETIMEDOUT') {
+	                    				//try again
+	                    				log("ETIMEDOUT retry view");
+	                    				self(options,callback);
+	                    			} else {
+	                    				callback(error,result);
+	                    			}
+	                    		} )
+	                    	} )
+	                    }
+	                    
+	                    if (config.user && config.user.name) {
+	                    	getProfile();
+	                        if (SERVER_LOGIN) {
+	                            registerServer( done )
+	                        } else if (FACEBOOK_LOGIN) {
+	                            registerFacebookToken( done )
+	                        }
+	                    } else {
+	                        done( false )
+	                    }
+	                } )
+	            } )
+	        } )
+        }
+	} )
+	    
+    
 
     function setupDb(db, cb) {
     	if (window.cblite) {
