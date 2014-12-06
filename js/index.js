@@ -341,6 +341,8 @@ function setupConfig(done) {
 	                } )
 	            } )
 	        } )
+        } else {
+        	done( false );
         }
 	} )
 	    
