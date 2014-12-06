@@ -391,3 +391,11 @@ br.clear {
     align: middle;
     padding-left:6px;
 }
+
+/*remove the select arrow in ff
+*/
+select {
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+}
