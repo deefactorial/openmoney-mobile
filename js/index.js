@@ -342,6 +342,7 @@ function setupConfig(done) {
 	            } )
 	        } )
         } else {
+        	log ("call done");
         	done( false );
         }
 	} )
