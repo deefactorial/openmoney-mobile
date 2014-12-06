@@ -789,29 +789,33 @@ function triggerSync(cb, retryCount) {
 }
 
 function updateStatusIcon(status) {
-	$(".cloud-status").removeClass("cloud-status-queue")
-	$(".cloud-status").removeClass("cloud-status-on")
-	$(".cloud-status").removeClass("cloud-status-off")
-	$(".cloud-status").removeClass("cloud-status-done")
-	$(".cloud-status").removeClass("cloud-status-upload")
-	$(".cloud-status").removeClass("cloud-status-download")
-	if (status == 'Offline'){
-		$(".cloud-status").addClass("cloud-status-queue")
-	}
-	if (status == 'Stopped'){
-		$(".cloud-status").addClass("cloud-status-off")
-	}
-	if (status == 'Idle') {
-		$(".cloud-status").addClass("cloud-status-done")
-	}
-	if (status == 'Active') {
-		$(".cloud-status").addClass("cloud-status-on")
-	}
-	if (status == 'Download'){
-		$(".cloud-status").addClass("cloud-status-download")
-	}
-	if (status == 'Upload'){
-		$(".cloud-status").addClass("cloud-status-upload")
+	if (window.cblite) {
+		$(".cloud-status").removeClass("cloud-status-queue")
+		$(".cloud-status").removeClass("cloud-status-on")
+		$(".cloud-status").removeClass("cloud-status-off")
+		$(".cloud-status").removeClass("cloud-status-done")
+		$(".cloud-status").removeClass("cloud-status-upload")
+		$(".cloud-status").removeClass("cloud-status-download")
+		if (status == 'Offline'){
+			$(".cloud-status").addClass("cloud-status-queue")
+		}
+		if (status == 'Stopped'){
+			$(".cloud-status").addClass("cloud-status-off")
+		}
+		if (status == 'Idle') {
+			$(".cloud-status").addClass("cloud-status-done")
+		}
+		if (status == 'Active') {
+			$(".cloud-status").addClass("cloud-status-on")
+		}
+		if (status == 'Download'){
+			$(".cloud-status").addClass("cloud-status-download")
+		}
+		if (status == 'Upload'){
+			$(".cloud-status").addClass("cloud-status-upload")
+		}
+	} else {
+		$(".cloud-status").hide();
 	}
 }
 

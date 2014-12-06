@@ -393,6 +393,7 @@ br.clear {
 }
 
 /*remove the select arrow in ff
+https://bugzilla.mozilla.org/show_bug.cgi?id=649849
 */
 select {
     -moz-appearance: none;
