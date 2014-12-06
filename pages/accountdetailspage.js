@@ -83,7 +83,7 @@ function goList(parameters) {
 	        log( "Display Account Details:" + JSON.stringify( doc ) )
        
             config.views( [ "account_balance", {
-                startkey : [ id, {} ], endkey : [ id ], descending : true
+                startkey : id, endkey : id + '\uefff'
             } ], function(err, view) {
             	
             	if(err) { 
