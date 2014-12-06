@@ -260,20 +260,22 @@ function setupConfig(done) {
         console.log( "getURL: " + JSON.stringify( [ err, url ] ) )
         if (err) { return done( err ) }
 
-        var callback = function () {
-        	console.log(this.responseText);
-        }
+        if (typeof window.config.user.name != 'undefined') {
         
-//    	var xmlHttp = new XMLHttpRequest()
-//    	xmlHttp.open( 'GET', url, true )
-//    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.password));
-//    	xmlHttp.onload = callback;
-//    	xmlHttp.send()
-        
+	        var callback = function () {
+	        	console.log(this.responseText);
+	        }
+	        
+	    	var xmlHttp = new XMLHttpRequest()
+	    	xmlHttp.open( 'GET', url, true )
+	    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.password));
+	    	xmlHttp.onload = callback;
+	    	xmlHttp.send()
+	        
 
         //window.server = coax( url );
         
-        if (typeof window.config.user.name != 'undefined') {
+        
 	        log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
 	        
 	        var db = coax( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
