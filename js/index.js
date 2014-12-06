@@ -135,8 +135,20 @@ function onDeviceReady() {
 
 //document.addEventListener( "deviceready", onDeviceReady, false )
 
+//https://stackoverflow.com/questions/8068052/phonegap-detect-if-running-on-desktop-browser
+
+/**
+ * Determine whether the file loaded from PhoneGap or not
+ */
+function isPhoneGap() {
+    return (cordova || PhoneGap || phonegap) 
+    && /^file:\/{3}[^\/]/i.test(window.location.href) 
+    && /ios|iphone|ipod|ipad|android/i.test(navigator.userAgent);
+}
+
+
 window.onload = function() {
-	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+	if (isPhoneGap()) {
 	    document.addEventListener("deviceready", onDeviceReady, false);
 	} else {
 	    onDeviceReady();
