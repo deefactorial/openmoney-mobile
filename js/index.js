@@ -185,7 +185,7 @@ function setupConfig(done) {
     
     window.config.setUser = function(newUser, cb) {
         if (!window.config.user && !newUser) {
-            db.get( "_local/user", function(err, doc) {
+            config.db.get( "_local/user", function(err, doc) {
                 if (err) { return cb( err ) }
                 doc._deleted = true;
                 config.db.put( "_local/user", doc, function(err, ok) {
