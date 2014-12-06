@@ -110,7 +110,7 @@ function goList(parameters) {
             log( "Get Account Details for:" + id )
 
             config.views( [ "account_details", {
-                startkey : [ id, {} ], endkey : [ id ], descending : true
+                startkey : id + '\uefff', endkey : id , descending : true
             } ], function(err, view) {
             	if(err) { 
             		log( "Error getting " + id + " :" +JSON.stringify( err ) ); 
