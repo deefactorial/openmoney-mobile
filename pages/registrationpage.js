@@ -87,25 +87,29 @@ function doRegistration(callBack) {
         if (error) { return callBack( error ) }
         config.setUser( data, function(error, ok) {
             if (error) { return callBack( error ) }
-            
-            if (window.cblite) {
-	            createBeamTag( function(err) {
-	                log( "Create Beam Tag done " + JSON.stringify( err ) )
-	                addMyUsernameToAllLists( function(err) {
-	                    log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
-	                    if (err) { return cb( err ) }
-	                    config.syncReference = triggerSync( function(error, ok) {
-	                        log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
-	                        
-	                        connectToChanges()
-	                        
-	                        callBack( error, ok )
-	                    } )
-	                } )
-	            } )
-            } else {
-            	callBack( error, ok )
-            }
+            setupConfig( function(error, ok){
+            	if (error) {
+            		log( "Error setting up config: " + JSON.stringify( error ) ) 
+            	}
+	            if (window.cblite) {
+		            createBeamTag( function(err) {
+		                log( "Create Beam Tag done " + JSON.stringify( err ) )
+		                addMyUsernameToAllLists( function(err) {
+		                    log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
+		                    if (err) { return cb( err ) }
+		                    config.syncReference = triggerSync( function(error, ok) {
+		                        log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
+		                        
+		                        connectToChanges()
+		                        
+		                        callBack( error, ok )
+		                    } )
+		                } )
+		            } )
+	            } else {
+	            	callBack( error, ok )
+	            }
+            } )
         } )
     } )
 }
