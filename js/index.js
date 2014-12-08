@@ -208,7 +208,7 @@ function setupConfig(done) {
         	}
         } else {
             if (SERVER_LOGIN) {
-                if (config.user.name) {
+                if (typeof window.config.user.name != 'undefined') {
                     if (newUser.sessionID == '') {
                         return cb()
                     } else {
