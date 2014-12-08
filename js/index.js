@@ -341,7 +341,7 @@ function setupConfig(done) {
 	                    	} )
 	                    }
 	                    
-	                    if (config.user && config.user.name) {
+	                    if (window.config.user && window.config.user.name) {
 	                    	getProfile();
 	                        if (SERVER_LOGIN) {
 	                            registerServer( done )

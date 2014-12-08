@@ -182,8 +182,8 @@ function replacejscssfile(oldfilename, newfilename, filetype) {
 
 function getProfile(){
 	var profileID = 'anonymous';
-	if( typeof config.user.name != 'undefined') {
-		profileID = config.user.name;
+	if( typeof window.config.user.name != 'undefined') {
+		profileID = window.config.user.name;
 	}
 	config.db.get("profile," + profileID, function(error, profile) {
     	if (error) {
@@ -204,7 +204,7 @@ function getProfile(){
     			log( JSON.stringify( error ) )
     		}
     	} else {
-    		config.user.profile = profile;
+    		window.config.user.profile = profile;
             if (typeof profile.theme == 'undefined' || profile.theme === false) {
             	//dark to light
             	replacejscssfile("css/topcoat-mobile-dark.min.css", "css/topcoat-mobile-light.min.css", "css") 
@@ -220,8 +220,8 @@ function putProfile(profile, cb) {
     log( "putProfile:" + JSON.stringify( profile ) )
     // Check if Profile Document Exists
     var profileID = 'anonymous';
-    if (typeof config.user.name != 'undefined') {
-    	profileID = config.user.name
+    if (typeof window.config.user.name != 'undefined') {
+    	profileID = window.config.user.name
     }
     config.db.get( "profile," + profileID, function(error, doc) {
         if (error) {
