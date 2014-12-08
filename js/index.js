@@ -308,7 +308,10 @@ function setupConfig(done) {
 	                getUser( db, function(err, user) {
 	                    if (err) { return done( err ) }
 	
-	                    window.config.user = user;
+	                    if (user.name) {
+	                    	window.config.user = user;
+	                    }
+	                    
 	                    
 	                    if (typeof config.db != 'undefined') {
 	                    	config.db.extend("get", function(options, callback) {
@@ -496,13 +499,17 @@ function setupConfig(done) {
     }
 
     function getUser(db, cb) {
-        db.get( "_local/user", function(err, doc) {
-            var user = false;
-            if (!err) {
-                user = doc;
-            }
-            cb( false, user )
-        } )
+    	if (window.cblite) {
+	        db.get( "_local/user", function(err, doc) {
+	            var user = false;
+	            if (!err) {
+	                user = doc;
+	            }
+	            cb( false, user )
+	        } )
+    	} else {
+    		cb( false, {})
+    	}
     };
 }
 
