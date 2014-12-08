@@ -313,7 +313,7 @@ function setupConfig(done) {
 	                window.config = {
 	                        site : {
 	                            syncUrl : REMOTE_SYNC_URL
-	                        }, setUser : window.config.setUser , db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
+	                        }, setUser : window.config.setUser , user: window.config.user, db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
 	                    };
 	                
 	                getUser( db, function(err, user) {
