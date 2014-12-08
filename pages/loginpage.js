@@ -95,12 +95,13 @@ function doFirstLogin(cb) {
         doServerLogin( function(error, data) {
             if (error) { return cb( error ) }
             
-            setupConfig( function(error, ok){
-            	if (error) {
-            		log( "Error setting up config: " + JSON.stringify( error ) ) 
-            	}
-            	window.config.setUser( data, function(error, ok) {
-                    if (error) { return cb( error ) }
+            window.config.setUser( data, function(error, ok) {
+                if (error) { return cb( error ) }
+                
+		            setupConfig( function(error, ok){
+		            	if (error) {
+		            		log( "Error setting up config: " + JSON.stringify( error ) ) 
+		            	}
                     
                     if (window.cblite) {
 	                    createBeamTag( function(err) {
