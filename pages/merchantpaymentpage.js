@@ -248,7 +248,7 @@ function goCustomerPayment(parameters) {
 	doc = parameters.pop();
 	
 	
-	if (nfc) {
+	if (typeof nfc != 'undefined') {
 		nfc.removeMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
 	        // success callback
 	    }, function() {
@@ -361,7 +361,7 @@ function goCustomerPayment(parameters) {
         }
     };
 
-    if (nfc) {
+    if (typeof nfc != 'undefined') {
 	    nfc.addMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
 	        // success callback
 	    	navigator.notification.alert( "Pass terminal to the customer or scan tag."  , function() {  }, "Pass terminal or scan", "OK")
@@ -491,7 +491,7 @@ function goCustomerPayment(parameters) {
 	                                $( "#content form input[name='amount']" ).val( "" ) // Clear
 	                                $( "#content form textarea" ).val( "" ) // Clear
 
-	                                if (nfc) {
+	                                if (typeof nfc != 'undefined') {
 		                                nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
 		                                    // success callback
 		                                }, function() {
