@@ -195,15 +195,17 @@ function setupConfig(done) {
     
     window.config.setUser = function(newUser, cb) {
         if (!window.config.user && !newUser) {
-            config.db.get( "_local/user", function(err, doc) {
-                if (err) { return cb( err ) }
-                doc._deleted = true;
-                config.db.put( "_local/user", doc, function(err, ok) {
-                    if (err) { return cb( err ) }
-                    log( "deleted local user" )
-                    cb()
-                } )
-            } )
+        	if (window.cblite) {
+	            config.db.get( "_local/user", function(err, doc) {
+	                if (err) { return cb( err ) }
+	                doc._deleted = true;
+	                config.db.put( "_local/user", doc, function(err, ok) {
+	                    if (err) { return cb( err ) }
+	                    log( "deleted local user" )
+	                    cb()
+	                } )
+	            } )
+        	}
         } else {
             if (SERVER_LOGIN) {
                 if (config.user.name) {
@@ -212,31 +214,35 @@ function setupConfig(done) {
                     } else {
                         /* We Got a New Session */
                         log( "New Session setUser " + JSON.stringify( newUser ) )
-                        config.user.sessionID = newUser.sessionID;
-                        config.user.expires = newUser.expires;
-                        config.user.user_id = newUser.username;
-                        config.user.name = newUser.username;
-                        config.user.email = newUser.email;
-                        config.db.put( "_local/user", config.user, function(err, ok) {
-                            if (err) { return cb( err ) }
-                            log( "updateUser ok: " + JSON.stringify( ok ) )
-                            config.user._rev = ok.rev
-                            cb()
-                        } )
+                        window.config.user.sessionID = newUser.sessionID;
+                        window.config.user.expires = newUser.expires;
+                        window.config.user.user_id = newUser.username;
+                        window.config.user.name = newUser.username;
+                        window.config.user.email = newUser.email;
+                        if (window.cblite) {
+	                        window.config.db.put( "_local/user", config.user, function(err, ok) {
+	                            if (err) { return cb( err ) }
+	                            log( "updateUser ok: " + JSON.stringify( ok ) )
+	                            config.user._rev = ok.rev
+	                            cb()
+	                        } )
+                        }
                     }
                 } else {
                     log( "Initialize setUser " + JSON.stringify( newUser ) )
-                    config.user.sessionID = newUser.sessionID;
-                    config.user.expires = newUser.expires;
-                    config.user.user_id = newUser.username;
-                    config.user.name = newUser.username;
-                    config.user.email = newUser.email;
-                    config.db.put( "_local/user", config.user, function(err, ok) {
-                        if (err) { return cb( err ) }
-                        log( "setUser ok: " + JSON.stringify( ok ) )
-                        config.user._rev = ok.rev
-                        cb()
-                    } )
+                    window.config.user.sessionID = newUser.sessionID;
+                    window.config.user.expires = newUser.expires;
+                    window.config.user.user_id = newUser.username;
+                    window.config.user.name = newUser.username;
+                    window.config.user.email = newUser.email;
+                    if (window.cblite) {
+	                    window.config.db.put( "_local/user", config.user, function(err, ok) {
+	                        if (err) { return cb( err ) }
+	                        log( "setUser ok: " + JSON.stringify( ok ) )
+	                        config.user._rev = ok.rev
+	                        cb()
+	                    } )
+                    }
                 }
             } else if (FACEBOOK_LOGIN) {
                 if (window.config.user) {
