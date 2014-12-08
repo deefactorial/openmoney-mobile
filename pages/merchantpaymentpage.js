@@ -247,11 +247,14 @@ function goCustomerPayment(parameters) {
 	
 	doc = parameters.pop();
 	
-	nfc.removeMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-        // success callback
-    }, function() {
-        // failure callback
-    } );
+	
+	if (nfc) {
+		nfc.removeMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+	        // success callback
+	    }, function() {
+	        // failure callback
+	    } );
+	}
 
     var customerListner = function(nfcEvent) {
         var tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
@@ -358,13 +361,15 @@ function goCustomerPayment(parameters) {
         }
     };
 
-    nfc.addMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
-        // success callback
-    	navigator.notification.alert( "Pass terminal to the customer or scan tag."  , function() {  }, "Pass terminal or scan", "OK")
-    }, function() {
-        // failure callback
-    	navigator.notification.alert( "Pass terminal to the customer."  , function() {  }, "Pass terminal", "OK")
-    } );
+    if (nfc) {
+	    nfc.addMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
+	        // success callback
+	    	navigator.notification.alert( "Pass terminal to the customer or scan tag."  , function() {  }, "Pass terminal or scan", "OK")
+	    }, function() {
+	        // failure callback
+	    	navigator.notification.alert( "Pass terminal to the customer."  , function() {  }, "Pass terminal", "OK")
+	    } );
+    }
     
     var pageTitle = "Customer Payment";
     
@@ -486,17 +491,19 @@ function goCustomerPayment(parameters) {
 	                                $( "#content form input[name='amount']" ).val( "" ) // Clear
 	                                $( "#content form textarea" ).val( "" ) // Clear
 
-	                                nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
-	                                    // success callback
-	                                }, function() {
-	                                    // failure callback
-	                                } );
-
-	                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
-	                                    // success callback
-	                                }, function() {
-	                                    // failure callback
-	                                } );
+	                                if (nfc) {
+		                                nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
+		                                    // success callback
+		                                }, function() {
+		                                    // failure callback
+		                                } );
+	
+		                                nfc.addMimeTypeListener( "application/com.openmoney.mobile", window.nfcListner, function() {
+		                                    // success callback
+		                                }, function() {
+		                                    // failure callback
+		                                } );
+	                                }
 	                                navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( [ "trading_name," + doc.to + "," + doc.currency ] ); }, "Successful", "OK")
 	                                
 	                                
