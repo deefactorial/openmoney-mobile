@@ -206,7 +206,7 @@ function goPayment(parameters) {
 	                                    if (error) {
 	                                    	
 	                                        log( "Error: " + JSON.stringify( error ) )
-	                                        if (error.status == 404 || error == 'not_found') {
+	                                        if (error.status == 404 || error.error == "not_found") {
 	                                            // doc does not exists
 	                                            log( "insert new trading name journal" + JSON.stringify( doc ) )
 	                                            config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
