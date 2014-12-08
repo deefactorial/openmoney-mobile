@@ -276,6 +276,10 @@ function registerFacebookToken(cb) {
 
 function addMyUsernameToAllLists(cb) {
 	
+	if (!window.cblite) {
+		cb();
+	}
+	
 	var accounts = false, currencies = false, spaces = false, nfctags=false;
 	
     // update trading names
