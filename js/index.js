@@ -230,6 +230,7 @@ function setupConfig(done) {
                     }
                 } else {
                     log( "Initialize setUser " + JSON.stringify( newUser ) )
+                    window.config.user = {};
                     window.config.user.sessionID = newUser.sessionID;
                     window.config.user.expires = newUser.expires;
                     window.config.user.user_id = newUser.username;
