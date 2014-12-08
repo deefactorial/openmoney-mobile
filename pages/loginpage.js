@@ -278,19 +278,57 @@ function addMyUsernameToAllLists(cb) {
 	
 	if (!window.cblite) {
 		cb();
-	}
-	
-	var accounts = false, currencies = false, spaces = false, nfctags=false;
-	
-    // update trading names
-    config.views( [ "accounts", {
-        include_docs : true
-    } ], function(err, view) {
-        if (err) { return cb( err ) }
-        var docs = [];
-        view.rows.forEach( function(row) {
-        	//log("account row:" + JSON.stringify( row ) )
-        		//log("account doc before:" + JSON.stringify( row.doc ) )
+		
+	} else {
+		
+		var accounts = false, currencies = false, spaces = false, nfctags=false;
+		
+	    // update trading names
+	    config.views( [ "accounts", {
+	        include_docs : true
+	    } ], function(err, view) {
+	        if (err) { return cb( err ) }
+	        var docs = [];
+	        view.rows.forEach( function(row) {
+	        	//log("account row:" + JSON.stringify( row ) )
+	        		//log("account doc before:" + JSON.stringify( row.doc ) )
+		            if (!row.doc.steward) {
+		            	row.doc.steward = [ config.user.name ];
+		            } else {
+		                if (Array.isArray( row.doc.steward )) {
+		                    var newStewardList = [];
+		                    row.doc.steward.forEach( function(steward) {
+		                        if (steward == null) {
+		                            newStewardList.push( config.user.name );
+		                            row.doc.steward = newStewardList;
+		                        } else {
+		                        	newStewardList.push( steward );
+		                        	row.doc.steward = newStewardList;
+		                        }
+		                    } )
+		                }
+		            }
+	        		//log("account doc after:" + JSON.stringify( row.doc ) )
+		            docs.push( row.doc )
+	        	
+	        } )
+	        config.db.post( "_bulk_docs", {
+	            docs : docs
+	        }, function(err, ok) {
+	            log( "updated all trading names", err, ok )
+	            accounts = true;
+	            
+	        } )
+	    } )
+	    
+	    //update currencies
+	    
+	    config.views( [ "currencies", {
+	        include_docs : true
+	    } ], function(err, view) {
+	        if (err) { return cb( err ) }
+	        var docs = [];
+	        view.rows.forEach( function(row) {
 	            if (!row.doc.steward) {
 	            	row.doc.steward = [ config.user.name ];
 	            } else {
@@ -307,140 +345,104 @@ function addMyUsernameToAllLists(cb) {
 	                    } )
 	                }
 	            }
-        		//log("account doc after:" + JSON.stringify( row.doc ) )
 	            docs.push( row.doc )
-        	
-        } )
-        config.db.post( "_bulk_docs", {
-            docs : docs
-        }, function(err, ok) {
-            log( "updated all trading names", err, ok )
-            accounts = true;
-            
-        } )
-    } )
-    
-    //update currencies
-    
-    config.views( [ "currencies", {
-        include_docs : true
-    } ], function(err, view) {
-        if (err) { return cb( err ) }
-        var docs = [];
-        view.rows.forEach( function(row) {
-            if (!row.doc.steward) {
-            	row.doc.steward = [ config.user.name ];
-            } else {
-                if (Array.isArray( row.doc.steward )) {
-                    var newStewardList = [];
-                    row.doc.steward.forEach( function(steward) {
-                        if (steward == null) {
-                            newStewardList.push( config.user.name );
-                            row.doc.steward = newStewardList;
-                        } else {
-                        	newStewardList.push( steward );
-                        	row.doc.steward = newStewardList;
-                        }
-                    } )
-                }
-            }
-            docs.push( row.doc )
-        } )
-        config.db.post( "_bulk_docs", {
-            docs : docs
-        }, function(err, ok) {
-            log( "updated all currencies", err, ok )
-            currencies = true;
-        } )
-    } )
-    
-    //update spaces
-    
-    config.views( [ "spaces", {
-        include_docs : true
-    } ], function(err, view) {
-        if (err) { return cb( err ) }
-        var docs = [];
-        view.rows.forEach( function(row) {	
-            if (!row.doc.steward) {
-            	row.doc.steward = [ config.user.name ];
-            } else {
-                if (Array.isArray( row.doc.steward )) {
-                    var newStewardList = [];
-                    row.doc.steward.forEach( function(steward) {
-                        if (steward == null) {
-                            newStewardList.push( config.user.name );
-                            row.doc.steward = newStewardList;
-                        } else {
-                        	newStewardList.push( steward );
-                        	row.doc.steward = newStewardList;
-                        }
-                    } )
-                }
-            }
-            docs.push( row.doc )
-        } )
-        config.db.post( "_bulk_docs", {
-            docs : docs
-        }, function(err, ok) {
-            log( "updated all spaces", err, ok )
-            spaces = true;
-        } )
-    } )
-    
-    //Update NFC Tags
-    	
-    config.views( [ "nfc_tags", {
-        startkey : [ "anonymous", {} ], endkey : [ "anonymous" ], descending : true, include_docs : true
-    } ], function(error, view) {
-        if (error) { return cb( error ) }
-        var docs = [];
-        view.rows.forEach( function(row) {
-			var newDoc = {};
-			for (var key in row.doc) {
-			  if (row.doc.hasOwnProperty(key)) {
-			    log(key + " -> " + row.doc[key]);
-			    if(key != '_id' || key != '_rev')
-			    	newDoc[key] = row.doc[key]; 
-			  }
-			}
-            if (!row.doc.username) {
-            	row.doc._deleted = true;
-                newdoc.username = config.user.name;
-                newdoc._id = "beamtag," + newdoc.username + "," + newdoc.hashTag;
-            } else {
-                if (row.doc.username == 'anonymous' || row.doc.username == null) {
-                	row.doc._deleted = true;
-                	newdoc.username = config.user.name;
-                	newdoc._id = "beamtag," + newdoc.username + "," + newdoc.hashTag;
-                }
-            }
-            docs.push( row.doc )
-            docs.push( newdoc )
-        } )
-        config.db.post( "_bulk_docs", {
-            docs : docs
-        }, function(err, ok) {
-            log( "updated all tags", err, ok )
-            nfctags = true;
-        } )
-    } )
-    
-    
-    
-    //poll for when they are all complete then call callback
-    
-    function pollCompleted() {
-    	if (accounts && currencies && spaces && nfctags) {
-    		cb( null )
-    	} else {
-    	    setTimeout(function () { 
-    	    	pollCompleted()
-    	    }, 125);
-    	}
-    }
-    
-    pollCompleted()
+	        } )
+	        config.db.post( "_bulk_docs", {
+	            docs : docs
+	        }, function(err, ok) {
+	            log( "updated all currencies", err, ok )
+	            currencies = true;
+	        } )
+	    } )
+	    
+	    //update spaces
+	    
+	    config.views( [ "spaces", {
+	        include_docs : true
+	    } ], function(err, view) {
+	        if (err) { return cb( err ) }
+	        var docs = [];
+	        view.rows.forEach( function(row) {	
+	            if (!row.doc.steward) {
+	            	row.doc.steward = [ config.user.name ];
+	            } else {
+	                if (Array.isArray( row.doc.steward )) {
+	                    var newStewardList = [];
+	                    row.doc.steward.forEach( function(steward) {
+	                        if (steward == null) {
+	                            newStewardList.push( config.user.name );
+	                            row.doc.steward = newStewardList;
+	                        } else {
+	                        	newStewardList.push( steward );
+	                        	row.doc.steward = newStewardList;
+	                        }
+	                    } )
+	                }
+	            }
+	            docs.push( row.doc )
+	        } )
+	        config.db.post( "_bulk_docs", {
+	            docs : docs
+	        }, function(err, ok) {
+	            log( "updated all spaces", err, ok )
+	            spaces = true;
+	        } )
+	    } )
+	    
+	    //Update NFC Tags
+	    	
+	    config.views( [ "nfc_tags", {
+	        startkey : [ "anonymous", {} ], endkey : [ "anonymous" ], descending : true, include_docs : true
+	    } ], function(error, view) {
+	        if (error) { return cb( error ) }
+	        var docs = [];
+	        view.rows.forEach( function(row) {
+				var newDoc = {};
+				for (var key in row.doc) {
+				  if (row.doc.hasOwnProperty(key)) {
+				    log(key + " -> " + row.doc[key]);
+				    if(key != '_id' || key != '_rev')
+				    	newDoc[key] = row.doc[key]; 
+				  }
+				}
+	            if (!row.doc.username) {
+	            	row.doc._deleted = true;
+	                newdoc.username = config.user.name;
+	                newdoc._id = "beamtag," + newdoc.username + "," + newdoc.hashTag;
+	            } else {
+	                if (row.doc.username == 'anonymous' || row.doc.username == null) {
+	                	row.doc._deleted = true;
+	                	newdoc.username = config.user.name;
+	                	newdoc._id = "beamtag," + newdoc.username + "," + newdoc.hashTag;
+	                }
+	            }
+	            docs.push( row.doc )
+	            docs.push( newdoc )
+	        } )
+	        config.db.post( "_bulk_docs", {
+	            docs : docs
+	        }, function(err, ok) {
+	            log( "updated all tags", err, ok )
+	            nfctags = true;
+	        } )
+	    } )
+	    
+	    
+	    
+	    //poll for when they are all complete then call callback
+	    
+	    function pollCompleted() {
+	    	if (accounts && currencies && spaces && nfctags) {
+	    		cb( null )
+	    	} else {
+	    	    setTimeout(function () { 
+	    	    	pollCompleted()
+	    	    }, 125);
+	    	}
+	    }
+	    
+	    pollCompleted()
+	}
 }
 
 
