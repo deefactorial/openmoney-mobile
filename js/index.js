@@ -224,8 +224,10 @@ function setupConfig(done) {
 	                            if (err) { return cb( err ) }
 	                            log( "updateUser ok: " + JSON.stringify( ok ) )
 	                            config.user._rev = ok.rev
-	                            cb()
+	                            cb();
 	                        } )
+                        } else {
+                        	cb();
                         }
                     }
                 } else {
@@ -241,8 +243,10 @@ function setupConfig(done) {
 	                        if (err) { return cb( err ) }
 	                        log( "setUser ok: " + JSON.stringify( ok ) )
 	                        config.user._rev = ok.rev
-	                        cb()
+	                        cb();
 	                    } )
+                    } else {
+                    	cb();
                     }
                 }
             } else if (FACEBOOK_LOGIN) {
