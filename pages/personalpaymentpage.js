@@ -97,6 +97,19 @@ function goPayment(parameters) {
 	        $( "#content input[name='add']" ).off("click").click( function() {
 		        goAddTradingName([])
 		    } )
+		    
+		    //TODO: test should test for mobile instead
+		    if (window.cblite) {
+		    
+		    	//display number keypad on focus
+			    $( "#content input[name='amount']").off("focus").on("focus")( function () {
+			    	this.type = 'number';
+			    })
+			    
+			    $( "#content input[name='amount']").off("blur").on("blur")( function () {
+			    	this.type = 'text';
+			    })
+		    }
 	        
 	        $( "#content form" ).off("submit").submit( function(e) {
 	            e.preventDefault()
