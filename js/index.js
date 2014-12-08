@@ -319,7 +319,7 @@ function setupConfig(done) {
 	                getUser( db, function(err, user) {
 	                    if (err) { return done( err ) }
 	
-	                    if (user.name) {
+	                    if (typeof user.name != 'undefined') {
 	                    	window.config.user = user;
 	                    }
 	                    

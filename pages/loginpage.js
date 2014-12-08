@@ -253,7 +253,7 @@ function doServerLogout(callBack) {
 
 function registerServer(callBack) {
     log( "Resister Server SessionID" )
-    if (!config.user.expires || Date( config.user.expires ) < Date()) {
+    if (typeof window.config.user.expires == 'undefined' || Date( window.config.user.expires ) < Date()) {
         doFirstLogin( callBack )
     } else {
         callBack()
