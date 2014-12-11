@@ -29,11 +29,11 @@
 }
 
 .next {
-    content:url("../img/light-next.png");
+    background:url("../img/light-next.png");
 }
 
 .down {
-    content:url("../img/light-down.png");
+    background:url("../img/light-down.png");
 }
 
 
