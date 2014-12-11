@@ -28,14 +28,10 @@
 }
 
 .next {
-	width:32px;
-	height:32px;
     background: url("../img/dark-next.png");
 }
 
 .down {
-	width:32px;
-	height:32px;
     background: url("../img/dark-down.png");
 }
 
