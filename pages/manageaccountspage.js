@@ -47,8 +47,8 @@ function goManageAccounts(parameters) {
         } )
         
         
-        $( "#scrollable li.trading_names" ).off( "click", "p")
-		$( "#scrollable li.trading_names" ).on( "click", "p", function() {
+        $( "#scrollable li.trading_names" ).off( "click", "div")
+		$( "#scrollable li.trading_names" ).on( "click", "div", function() {
 			var id = $( this ).attr( "data-id" );
 			
 			
