@@ -124,8 +124,10 @@ function processAjaxData(response, urlPath) {
 	
 	log ("History pushState function:" + JSON.stringify(response) + urlPath)
 
-	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+	if (window.cblite) {
 		History.pushState(  response  , "" , urlPath );
+	} else {
+		window.history.pushstate( response, "" , urlPath );
 	}
 	
 	log ("post set page");
@@ -153,8 +155,10 @@ function updateAjaxData( response , urlPath) {
 	
 	log ("update page " + urlPath)
 
-	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
-		History.replaceState( response , null, urlPath );
+	if (window.cblite) {
+		History.replaceState( response , "", urlPath );
+	} else {
+		window.history.replaceState( response, "", urlPath );
 	}
 
 	log ("post update page");

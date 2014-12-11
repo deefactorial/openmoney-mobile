@@ -63,8 +63,8 @@ function onDeviceReady() {
 	    /*
 	     * this sets up the NFC listner 
 	     */
-	    if (typeof window.nfc != 'undefined')
-	    nfc.addMimeTypeListener( "application/com.openmoney.mobile", 
+	    if (typeof window.nfc != 'undefined') {
+	    	nfc.addMimeTypeListener( "application/com.openmoney.mobile", 
 	    		window.nfcListner, 
 	    		function() {
 			        // success callback
@@ -85,41 +85,74 @@ function onDeviceReady() {
 			    		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
 			    	}
 			    } );
-	    
+	    }
 	    /*
 	     * this handles back button events
 	     */
-	    
-	    History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
-	        var State = History.getState(); // Note: We are using History.getState() instead of event.state
-	        log ( "State Change : currentpage:" + currentpage + " State:" + State.data.pageTitle ) 
-	        if (currentpage != State.data.pageTitle) {
-	        	log ( "updated DOM doc:" + currentpage + "state:" + State.data.pageTitle)
-	        	document.getElementById( "content" ).innerHTML = State.data.html;
-	        	currentpage = State.data.pageTitle;
-	    		//call the function of the page it's supposed to be on with the parameters of the page
-	    		if(typeof State.data.pageFunction != 'undefined') {
-	    			//eval(State.data.pageFunction);
-	    			log("typeof pageFunction:" + typeof State.data.pageFunction ) 
-	    			log("pageFunction:" + State.data.pageFunction)
-	    			if (State.data.pageFunction && typeof State.data.pageFunction === 'string') {
-	    				//eval(State.data.pageFunction);
-	    				
-	    				// find object
-	    				var fn = window[State.data.pageFunction];
-	    				 
-	    				// is object a function?
-	    				if (typeof fn === "function") {
-	    					log ("pageParameters:" + JSON.stringify( State.data.pageParameters ))
-	    					fn(State.data.pageParameters);
-	    				} else {
-	    					log ("error page Fuction is not a function " + typeof fn)
-	    				}
-	    			}
-	    			
-	    		}
-	        }
-	    } );
+	    if (window.cblite) {
+		    History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
+		        var State = History.getState(); // Note: We are using History.getState() instead of event.state
+		        log ( "State Change : currentpage:" + currentpage + " State:" + State.data.pageTitle ) 
+		        if (currentpage != State.data.pageTitle) {
+		        	log ( "updated DOM doc:" + currentpage + "state:" + State.data.pageTitle)
+		        	document.getElementById( "content" ).innerHTML = State.data.html;
+		        	currentpage = State.data.pageTitle;
+		    		//call the function of the page it's supposed to be on with the parameters of the page
+		    		if(typeof State.data.pageFunction != 'undefined') {
+		    			//eval(State.data.pageFunction);
+		    			log("typeof pageFunction:" + typeof State.data.pageFunction ) 
+		    			log("pageFunction:" + State.data.pageFunction)
+		    			if (State.data.pageFunction && typeof State.data.pageFunction === 'string') {
+		    				//eval(State.data.pageFunction);
+		    				
+		    				// find object
+		    				var fn = window[State.data.pageFunction];
+		    				 
+		    				// is object a function?
+		    				if (typeof fn === "function") {
+		    					log ("pageParameters:" + JSON.stringify( State.data.pageParameters ))
+		    					fn(State.data.pageParameters);
+		    				} else {
+		    					log ("error page Fuction is not a function " + typeof fn)
+		    				}
+		    			}
+		    			
+		    		}
+		        }
+		    } );
+	    } else {
+	    	window.onpopstate = function(event) {
+	    		  console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+	    		  var State = event.state;
+	    		  log ( "State Change : currentpage:" + currentpage + " State:" + State.data.pageTitle ) 
+	    		  if (currentpage != State.data.pageTitle) {
+		        	log ( "updated DOM doc:" + currentpage + "state:" + State.data.pageTitle)
+		        	document.getElementById( "content" ).innerHTML = State.data.html;
+		        	currentpage = State.data.pageTitle;
+		    		//call the function of the page it's supposed to be on with the parameters of the page
+		    		if(typeof State.data.pageFunction != 'undefined') {
+		    			//eval(State.data.pageFunction);
+		    			log("typeof pageFunction:" + typeof State.data.pageFunction ) 
+		    			log("pageFunction:" + State.data.pageFunction)
+		    			if (State.data.pageFunction && typeof State.data.pageFunction === 'string') {
+		    				//eval(State.data.pageFunction);
+		    				
+		    				// find object
+		    				var fn = window[State.data.pageFunction];
+		    				 
+		    				// is object a function?
+		    				if (typeof fn === "function") {
+		    					log ("pageParameters:" + JSON.stringify( State.data.pageParameters ))
+		    					fn(State.data.pageParameters);
+		    				} else {
+		    					log ("error page Fuction is not a function " + typeof fn)
+		    				}
+		    			}
+		    			
+		    		}
+		        }
+	    	};
+	    }
     
 	} catch(e) {
 		//This is a catch all to report errors via email to the developer.
