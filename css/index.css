@@ -407,11 +407,15 @@ select {
 
 .scrollable {
 	position: absolute;
-    left: 0;
+    right: 0;
     overflow-x: hidden;
     overflow-y: scroll;
 }
 
 .scrollable::-webkit-scrollbar {
     display: none;
+}
+
+.scrollable::-webkit-scrollbar { 
+	width: 0 !important 
 }
