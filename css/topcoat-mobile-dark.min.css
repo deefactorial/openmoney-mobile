@@ -28,11 +28,15 @@
 }
 
 .next {
-    content:url("../img/dark-next.png");
+	width:32px;
+	height:32px;
+    background: url("../img/dark-next.png");
 }
 
 .down {
-    content:url("../img/dark-down.png");
+	width:32px;
+	height:32px;
+    background: url("../img/dark-down.png");
 }
 
 .cloud-status-off {
