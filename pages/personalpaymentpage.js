@@ -570,7 +570,12 @@ function goAddTradingName(parameters) {
 		   		 			alert( JSON.stringify( error ) )
 		   		 		}
 		   		 	} else {
-		   		 		History.back();
+		   		 		if (window.cblite) {
+		   		 			History.back();
+		   		 		} else {
+		   		 			goPayment([]);
+		   		 		}
+		   		 		
 		   		 	}
 		            
 		        } );
