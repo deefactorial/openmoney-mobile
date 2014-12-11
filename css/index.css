@@ -400,3 +400,18 @@ select {
     text-indent: 0.01px;
     text-overflow: '';
 }
+
+.content {
+	overflow:hidden;
+}
+
+.scrollable {
+	position: absolute;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.scrollable::-webkit-scrollbar {
+    display: none;
+}
