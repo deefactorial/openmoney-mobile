@@ -127,7 +127,7 @@ function processAjaxData(response, urlPath) {
 	if (window.cblite) {
 		History.pushState(  response  , "" , urlPath );
 	} else {
-		window.history.pushstate( response, "" , urlPath );
+		window.history.pushState( response, "" , urlPath );
 	}
 	
 	log ("post set page");
