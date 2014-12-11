@@ -127,7 +127,7 @@ function processAjaxData(response, urlPath) {
 	if (window.cblite) {
 		History.pushState(  response  , "" , urlPath );
 	} else {
-		window.history.pushState( response, "" , urlPath );
+		//window.history.pushState( response, "" , urlPath );
 	}
 	
 	log ("post set page");
@@ -158,7 +158,7 @@ function updateAjaxData( response , urlPath) {
 	if (window.cblite) {
 		History.replaceState( response , "", urlPath );
 	} else {
-		window.history.replaceState( response, "", urlPath );
+		//window.history.replaceState( response, "", urlPath );
 	}
 
 	log ("post update page");
