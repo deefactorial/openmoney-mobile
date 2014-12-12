@@ -424,10 +424,4 @@ select {
 .topcoat-list::-webkit-scrollbar {
     display: none;
 }
-
-html {
-    margin-right:-14px!important;
-    overflow-y:scroll;
-    overflow-x:hidden;
-}
   
