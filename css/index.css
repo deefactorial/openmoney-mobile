@@ -415,3 +415,7 @@ select {
 .scrollable::-webkit-scrollbar {
     display: none;
 }
+
+html {
+  overflow-y: hidden !important }
+  
