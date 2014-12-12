@@ -406,11 +406,10 @@ select {
 }
 
 .scrollable {
-	position: absolute;
-    right: 0;
-    width:100%;
-    overflow-x: hidden;
-    overflow-y: scroll;
+	margin-right:-14px!important;
+	margin-bottom:-14px!important;
+	overflow-y:scroll;
+	overflow-x:hidden;
 }
 
 .scrollable::-webkit-scrollbar {
