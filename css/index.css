@@ -403,7 +403,6 @@ select {
 
 .content {
 	overflow:hidden;
-	margin-right:14px!important;
 }
 
 .scrollable {
@@ -420,6 +419,7 @@ select {
 	margin-right:-14px!important;
     overflow-y:scroll;
     overflow-x:hidden;
+    list-style-type:none;
 }
 
 .topcoat-list::-webkit-scrollbar {
