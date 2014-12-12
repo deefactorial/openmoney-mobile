@@ -407,7 +407,6 @@ select {
 
 .scrollable {
 	margin-right:-14px!important;
-	margin-bottom:-14px!important;
 	overflow-y:scroll;
 	overflow-x:hidden;
 }
@@ -418,7 +417,6 @@ select {
 
 .topcoat-list {
 	margin-right:-14px!important;
-    margin-bottom:-14px!important;
     overflow-y:scroll;
     overflow-x:hidden;
 }
@@ -428,6 +426,8 @@ select {
 }
 
 html {
-  /*overflow-y: hidden !important*/ 
+    margin-right:-14px!important;
+    overflow-y:scroll;
+    overflow-x:hidden;
 }
   
