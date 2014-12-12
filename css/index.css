@@ -403,6 +403,7 @@ select {
 
 .content {
 	overflow:hidden;
+	margin-right:14px!important;
 }
 
 .scrollable {
