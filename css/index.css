@@ -416,6 +416,17 @@ select {
     display: none;
 }
 
+.topcoat-list {
+	margin-right:-14px!important;
+    margin-bottom:-14px!important;
+    overflow-y:scroll;
+    overflow-x:hidden;
+}
+
+.topcoat-list::-webkit-scrollbar {
+    display: none;
+}
+
 html {
   overflow-y: hidden !important }
   
