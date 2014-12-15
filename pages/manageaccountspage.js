@@ -61,6 +61,19 @@ function goManageAccounts(parameters) {
 			
 		} )
 		
+		//TODO: test should test for mobile instead
+	    if (window.cblite) {
+	    
+	    	//display number keypad on focus
+		    $( "#content .number").off("focus").on("focus")( function () {
+		    	this.type = 'number';
+		    })
+		    
+		    $( "#content .number").off("blur").on("blur")( function () {
+		    	this.type = 'text';
+		    })
+	    }
+		
 		$( "#content form" ).off("submit").submit( function(e) {
 			e.preventDefault() 
 			
