@@ -395,7 +395,7 @@ br.clear {
 /*remove the select arrow in ff
 https://bugzilla.mozilla.org/show_bug.cgi?id=649849
 */
-@-moz-document select {
+select {
     -moz-appearance: none;
     text-indent: 0.01px;
     text-overflow: '';
@@ -405,24 +405,8 @@ https://bugzilla.mozilla.org/show_bug.cgi?id=649849
 	overflow:hidden;
 }
 
-@-moz-document .scrollable{
-	margin-right:-14px!important;
-	overflow-y:scroll;
-	overflow-x:hidden;
-}
-
-.scrollable::-webkit-scrollbar {
-    display: none;
-}
-
-@-moz-document .topcoat-list {
-	margin-right:-14px!important;
-    overflow-y:scroll;
-    overflow-x:hidden;
+.topcoat-list {
     list-style-type:none;
 }
 
-.topcoat-list::-webkit-scrollbar {
-    display: none;
-}
   
