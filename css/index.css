@@ -395,7 +395,7 @@ br.clear {
 /*remove the select arrow in ff
 https://bugzilla.mozilla.org/show_bug.cgi?id=649849
 */
-select {
+@-moz-document select {
     -moz-appearance: none;
     text-indent: 0.01px;
     text-overflow: '';
@@ -415,7 +415,7 @@ select {
     display: none;
 }
 
-.topcoat-list {
+@-moz-document .topcoat-list {
 	margin-right:-14px!important;
     overflow-y:scroll;
     overflow-x:hidden;
