@@ -405,7 +405,7 @@ select {
 	overflow:hidden;
 }
 
-.scrollable::-moz-appearance {
+@-moz-document .scrollable{
 	margin-right:-14px!important;
 	overflow-y:scroll;
 	overflow-x:hidden;
