@@ -119,7 +119,7 @@ function goMerchantPayment(parameters) {
 	            config.db.get( doc.to, function(error, to) {
 	                if (error) {
 	                	$( "#submit" ).removeAttr("disabled","disabled");
-	                    if (error.status == 404) {
+	                    if (error.status == 404 || error.error == "not_found") {
 	                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Exists", "OK")
 	                        return false
 	                    } else {
@@ -148,7 +148,7 @@ function goMerchantPayment(parameters) {
 	            	config.db.get( "currency," + doc.currency, function(error, currency) {
 	                	if (error) {
 	                		$( "#submit" ).removeAttr("disabled","disabled");
-	                		if (error.status == 404) {
+	                		if (error.status == 404 || error.error == "not_found") {
 	                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
 	                            return false
 	                        } else {
@@ -163,7 +163,7 @@ function goMerchantPayment(parameters) {
 	                            	config.db.get( doc.from, function(error, from) {
 	                                    if (error) {
 	                                    	$( "#submit" ).removeAttr("disabled","disabled");
-	                                        if (error.status == 404) {
+	                                        if (error.status == 404 || error.error == "not_found") {
 	                                        	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Not Found", "OK")
 	                                            return false
 	                                        } else {
@@ -194,7 +194,7 @@ function goMerchantPayment(parameters) {
 	                                    config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
 	                                        if (error) {
 	                                            log( "Error: " + JSON.stringify( error ) )
-	                                            if (error.status == 404) {
+	                                            if (error.status == 404 || error.error == "not_found") {
 	                                                // doc does not exists
 	                                                log( "insert new trading name journal" + JSON.stringify( doc ) )
 	                                                config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
@@ -293,7 +293,7 @@ function goCustomerPayment(parameters) {
                     
                     config.db.get( doc.from, function(error, from) {
                         if (error) {
-                            if (error.status == 404) {
+                            if (error.status == 404 || error.error == "not_found") {
                             	navigator.notification.alert( "Customer trading account " + customer.from + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Not Found", "OK")
                                 return false
                             } else {
@@ -320,7 +320,7 @@ function goCustomerPayment(parameters) {
                         config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
                             if (error) {
                                 log( "Error: " + JSON.stringify( error ) )
-                                if (error.status == 404) {
+                                if (error.status == 404 || error.error == "not_found") {
                                     // doc does not exists
                                     log( "insert new trading name journal" + JSON.stringify( doc ) )
                                     config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {

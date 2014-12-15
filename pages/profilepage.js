@@ -31,7 +31,7 @@ function goProfile(parameters) {
 	
 	config.db.get("profile," + profileID, function(error, profile){
     	if(error) {
-    		if(error.status == 404){
+    		if(error.status == 404 || error.error == "not_found"){
     			var profile = { "type": "profile", "username" : profileID , "notification": true, "mode": false, "theme": DEFAULT_DARK_THEME, "created": new Date().getTime() }
     			if (typeof config.user.name != 'undefined') {
 	    			if (config.user.name.indexOf("@") != -1){
@@ -187,7 +187,7 @@ function getProfile(){
 	}
 	config.db.get("profile," + profileID, function(error, profile) {
     	if (error) {
-    		if (error.status == 404) {
+    		if (error.status == 404 || error.error == "not_found") {
     			profile = { "type": "profile", "username" : profileID, "notification": true, "mode": false, "theme": DEFAULT_DARK_THEME, "created": new Date().getTime() }
     			if (typeof config.user.name != 'undefined') {
 	                if (config.user.name.indexOf("@") != -1){
@@ -226,7 +226,7 @@ function putProfile(profile, cb) {
     config.db.get( "profile," + profileID, function(error, doc) {
         if (error) {
             log( "Error: " + JSON.stringify( error ) )
-            if (error.status == 404) {
+            if (error.status == 404 || error.error == "not_found") {
                 // doc does not exists
                 config.db.put( "profile," + profileID, JSON.parse( JSON.stringify( profile ) ), cb )
             } else {

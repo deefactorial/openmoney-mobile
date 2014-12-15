@@ -288,7 +288,7 @@ function insertTagInDB(tag) {
     config.db.get( "beamtag," + tag.username + "," + tag.hashTag, function(error, doc) {
     	if( error ) { 
     		 log( "Tag Error: " + JSON.stringify( error ) )
-             if (error.status == 404) {
+             if (error.status == 404 || error.error == "not_found") {
                  config.db.put( "beamtag," + tag.username + "," + tag.hashTag, tag, function() {
                 	 
                  } )

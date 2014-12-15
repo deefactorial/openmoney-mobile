@@ -135,7 +135,7 @@ function goPayment(parameters) {
 	            //doc.timestamp = doc.timestamp.toJSON()
 	            config.db.get( doc.from, function(error, from) {
 	                if (error) {
-	                    if (error.status == 404) {
+	                    if (error.status == 404 || error.error == "not_found") {
 	                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Error", "OK")
 	                    	$( "#submit" ).removeAttr("disabled","disabled");
 	                        return false
@@ -166,7 +166,7 @@ function goPayment(parameters) {
 	                } 
 	                config.db.get( "currency," + doc.currency, function(error, currency) {
 	                	if (error) {
-	                		if (error.status == 404) {
+	                		if (error.status == 404 || error.error == "not_found") {
 	                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
 	                        	$( "#submit" ).removeAttr("disabled","disabled");
 	                            return false
@@ -182,7 +182,7 @@ function goPayment(parameters) {
 	                			config.db.get( "trading_name," + doc.to + "," + doc.currency, function(error, to) {
 	                                if (error) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
-	                                    if (error.status == 404) {
+	                                    if (error.status == 404 || error.error == "not_found") {
 	                                    	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
 	                                        return false
 	                                    } else {
@@ -347,7 +347,7 @@ function goTagPayment(parameters) {
 	            config.db.get( doc.from, function(error, from) {
 	                if (error) {
 	                	$( "#submit" ).removeAttr("disabled","disabled");
-	                    if (error.status == 404) {
+	                    if (error.status == 404 || error.error == "not_found") {
 	                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Exists", "OK")
 	                        return false;
 	                    } else {
@@ -376,7 +376,7 @@ function goTagPayment(parameters) {
 	            	config.db.get( "currency," + doc.currency, function(error, currency) {
 	                	if (error) {
 	                		$( "#submit" ).removeAttr("disabled","disabled");
-	                		if (error.status == 404) {
+	                		if (error.status == 404 || error.error == "not_found") {
 	                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
 	                            return false
 	                        } else {
@@ -390,7 +390,7 @@ function goTagPayment(parameters) {
 	                			config.db.get( doc.to, function(error, to) {
 	                                if (error) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
-	                                    if (error.status == 404) {
+	                                    if (error.status == 404 || error.error == "not_found") {
 	                                    	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Exists", "OK")
 	                                        return false
 	                                    } else {
@@ -412,7 +412,7 @@ function goTagPayment(parameters) {
 	                                config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
 	                                    if (error) {
 	                                        log( "Error: " + JSON.stringify( error ) )
-	                                        if (error.status == 404) {
+	                                        if (error.status == 404 || error.error == "not_found") {
 	                                            // doc does not exists
 	                                            log( "insert new trading name journal" + JSON.stringify( doc ) )
 	                                            config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {

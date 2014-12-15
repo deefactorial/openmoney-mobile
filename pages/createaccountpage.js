@@ -81,7 +81,7 @@ function goCreateAccount(parameters) {
             config.db.get( doc.type + "," + doc.name + "," + doc.currency, function(error, existingdoc) {
                 if (error) {
                     log( "Error: " + JSON.stringify( error ) )
-                    if (error.status == 404) {
+                    if (error.status == 404 || error.error == "not_found") {
                         // doc does not exists
                         log( "insert new trading name" + JSON.stringify( doc ) )
                         config.db.put( doc.type + "," + doc.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
@@ -134,14 +134,14 @@ function goCreateAccount(parameters) {
 	        
 	        config.db.get( currency_view.type + "," + config.user.name + "," + currency_view.currency, function(error, view) {
 	        	if (error) {
-	        		if (error.status == 404) {
+	        		if (error.status == 404 || error.error == "not_found") {
 	        			// insert document
 	        			config.db.put( currency_view.type + "," + config.user.name + "," + currency_view.currency, JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
 	        	   		 	if (error) { return alert( JSON.stringify( error ) ) }
         	                config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
 	        	                if (error) {
 	        	                    log( "Error: " + JSON.stringify( error ) )
-	        	                    if (error.status == 404) {
+	        	                    if (error.status == 404 || error.error == "not_found") {
 	        	                        // doc does not exists
 	        	                        log( "insert new currency" + JSON.stringify( doc ) )
 	        	                        
@@ -164,7 +164,7 @@ function goCreateAccount(parameters) {
 	        		config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
     	                if (error) {
     	                    log( "Error: " + JSON.stringify( error ) )
-    	                    if (error.status == 404) {
+    	                    if (error.status == 404 || error.error == "not_found") {
     	                        // doc does not exists
     	                        log( "insert new currency" + JSON.stringify( doc ) )
     	                        
@@ -204,7 +204,7 @@ function goCreateAccount(parameters) {
             config.db.get( doc.type + "," + doc.space, function(error, existingdoc) {
                 if (error) {
                     log( "Error: " + JSON.stringify( error ) )
-                    if (error.status == 404) {
+                    if (error.status == 404 || error.error == "not_found") {
                         // doc does not exists
                         log( "insert new space" + JSON.stringify( doc ) )
                         config.db.put( doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
