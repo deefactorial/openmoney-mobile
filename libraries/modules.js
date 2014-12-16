@@ -1165,7 +1165,7 @@ module.exports = function(request) {
 	      var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
 	      str.push(typeof v == "object" ?
 	        serialize(v, k) :
-	        encodeURIComponent(k) + "=" + encodeURIComponent(v));
+	        encodeURIComponent(k) + "=" + encodeURIComponent(JSON.stringify(v)));
 	    }
 	  }
 	  return str.join("&");
@@ -1220,7 +1220,7 @@ module.exports = function(request) {
 //            				  for(k in value) {
 //            					  newPax += encodeURIComponent( k ) + "=" + encodeURIComponent(value[k]) + "&";
 //            				  }
-            				  newPax += "?" + serialize(JSON.stringify(value));
+            				  newPax += "?" + serialize(value);
             			  } else {
             				  newPax += value + "/";
             			  }
@@ -1244,7 +1244,7 @@ module.exports = function(request) {
 //        				  for(k in value) {
 //        					  newPax += encodeURIComponent( k ) + "=" + encodeURIComponent(value[k]) + "&";
 //        				  }
-        				  newPax += "?" + serialize(JSON.stringify(value));
+        				  newPax += "?" + serialize(value);
         			  } else {
         				  newPax += value + "/";
         			  }
