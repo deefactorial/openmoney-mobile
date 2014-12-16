@@ -449,7 +449,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-    	var design = "/_design/dev_openmoney2" ;//+ new Date().getTime();
+    	var design = "/_design/dev_openmoney3" ;//+ new Date().getTime();
 	    if (window.cblite) {
 	        
 	        db.put( design, {
@@ -498,17 +498,17 @@ function setupConfig(done) {
 	                        	}
 	                        }
 	                    }.toString()
-//	                    , reduce : function(keys, values, rereduce) {
-//	                        var result = 0;
-//	                        if (rereduce) {
-//	                            // do nothing
-//	                        } else {
-//	                            for ( var i = values.length - 1; i >= 0; i--) {
-//	                                result += values[i];
-//	                            }
-//	                        }
-//	                        return result;
-//	                    }.toString()
+	                    , reduce : function(keys, values, rereduce) {
+	                        var result = 0;
+	                        if (rereduce) {
+	                            // do nothing
+	                        } else {
+	                            for ( var i = values.length - 1; i >= 0; i--) {
+	                                result += values[i];
+	                            }
+	                        }
+	                        return result;
+	                    }.toString()
 	                }, currencies : {
 	                    map : function(doc) {
 	                        if (doc.type == "currency" && doc.currency && doc.steward) {
