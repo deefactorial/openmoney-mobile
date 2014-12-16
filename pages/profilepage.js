@@ -29,7 +29,7 @@ function goProfile(parameters) {
 		profileID = config.user.name;
 	}
 	
-	config.db.get("profile," + profileID, function(error, profile){
+	config.db.get("/profile," + profileID, function(error, profile){
     	if(error) {
     		if(error.status == 404 || error.error == "not_found"){
     			var profile = { "type": "profile", "username" : profileID , "notification": true, "mode": false, "theme": DEFAULT_DARK_THEME, "created": new Date().getTime() }
@@ -185,7 +185,7 @@ function getProfile(){
 	if( typeof window.config.user.name != 'undefined') {
 		profileID = window.config.user.name;
 	}
-	config.db.get("profile," + profileID, function(error, profile) {
+	config.db.get("/profile," + profileID, function(error, profile) {
     	if (error) {
     		if (error.status == 404 || error.error == "not_found") {
     			profile = { "type": "profile", "username" : profileID, "notification": true, "mode": false, "theme": DEFAULT_DARK_THEME, "created": new Date().getTime() }
@@ -223,12 +223,12 @@ function putProfile(profile, cb) {
     if (typeof window.config.user.name != 'undefined') {
     	profileID = window.config.user.name
     }
-    config.db.get( "profile," + profileID, function(error, doc) {
+    config.db.get( "/profile," + profileID, function(error, doc) {
         if (error) {
             log( "Error: " + JSON.stringify( error ) )
             if (error.status == 404 || error.error == "not_found") {
                 // doc does not exists
-                config.db.put( "profile," + profileID, JSON.parse( JSON.stringify( profile ) ), cb )
+                config.db.put( "/profile," + profileID, JSON.parse( JSON.stringify( profile ) ), cb )
             } else {
                 alert( " Error Posting Profile:" + JSON.stringify( error ) )
             }
@@ -239,7 +239,7 @@ function putProfile(profile, cb) {
         	    doc[key] = profile[key];
         	});
             
-            config.db.put( "profile," + profileID, doc, cb )
+            config.db.put( "/profile," + profileID, doc, cb )
         }
     } )
 }

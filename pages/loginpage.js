@@ -421,7 +421,7 @@ function addMyUsernameToAllLists(cb) {
 	            docs.push( row.doc )
 	            docs.push( newdoc )
 	        } )
-	        config.db.post( "_bulk_docs", {
+	        config.db.post( "/_bulk_docs", {
 	            docs : docs
 	        }, function(err, ok) {
 	            log( "updated all tags", err, ok )

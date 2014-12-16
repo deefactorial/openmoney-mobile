@@ -78,7 +78,7 @@ function goCreateAccount(parameters) {
             	doc.name += "." + doc.space;
             }
             
-            config.db.get( doc.type + "," + doc.name + "," + doc.currency, function(error, existingdoc) {
+            config.db.get( "/" + doc.type + "," + doc.name + "," + doc.currency, function(error, existingdoc) {
                 if (error) {
                     log( "Error: " + JSON.stringify( error ) )
                     if (error.status == 404 || error.error == "not_found") {
@@ -132,20 +132,20 @@ function goCreateAccount(parameters) {
 	        	return false;
 	        }
 	        
-	        config.db.get( currency_view.type + "," + config.user.name + "," + currency_view.currency, function(error, view) {
+	        config.db.get( "/" + currency_view.type + "," + config.user.name + "," + currency_view.currency, function(error, view) {
 	        	if (error) {
 	        		if (error.status == 404 || error.error == "not_found") {
 	        			// insert document
-	        			config.db.put( currency_view.type + "," + config.user.name + "," + currency_view.currency, JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
+	        			config.db.put( "/" + currency_view.type + "," + config.user.name + "," + currency_view.currency, JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
 	        	   		 	if (error) { return alert( JSON.stringify( error ) ) }
-        	                config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
+        	                config.db.get( "/" + doc.type + "," + doc.currency, function(error, existingdoc) {
 	        	                if (error) {
 	        	                    log( "Error: " + JSON.stringify( error ) )
 	        	                    if (error.status == 404 || error.error == "not_found") {
 	        	                        // doc does not exists
 	        	                        log( "insert new currency" + JSON.stringify( doc ) )
 	        	                        
-	        	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	        	                        config.db.put( "/" + doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	        	                            if (error) { return alert( JSON.stringify( error ) ) }
 	        	                            goManageAccounts([]) 
 	        	                        } )
@@ -161,7 +161,7 @@ function goCreateAccount(parameters) {
 	        	        } )
 	        		}
 	        	} else {
-	        		config.db.get( doc.type + "," + doc.currency, function(error, existingdoc) {
+	        		config.db.get( "/" + doc.type + "," + doc.currency, function(error, existingdoc) {
     	                if (error) {
     	                    log( "Error: " + JSON.stringify( error ) )
     	                    if (error.status == 404 || error.error == "not_found") {
@@ -170,7 +170,7 @@ function goCreateAccount(parameters) {
     	                        
     	
     	                        
-    	                        config.db.put( doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+    	                        config.db.put( "/" + doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
     	                            if (error) { return alert( JSON.stringify( error ) ) }
     	                            goManageAccounts([])
     	                        } )
@@ -201,13 +201,13 @@ function goCreateAccount(parameters) {
         		doc.space += '.' + doc.subspace;
         	}
 
-            config.db.get( doc.type + "," + doc.space, function(error, existingdoc) {
+            config.db.get( "/" + doc.type + "," + doc.space, function(error, existingdoc) {
                 if (error) {
                     log( "Error: " + JSON.stringify( error ) )
                     if (error.status == 404 || error.error == "not_found") {
                         // doc does not exists
                         log( "insert new space" + JSON.stringify( doc ) )
-                        config.db.put( doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                        config.db.put( "/" + doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 
                             if (error)
                                 return alert( JSON.stringify( error ) )
@@ -396,7 +396,7 @@ function goAddCurrency(parameters) {
         	return null;
         }
 	    
-        config.db.put( doc.type + "," + config.user.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+        config.db.put( "/" + doc.type + "," + config.user.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
    		 	if (error) {
    		 		if (error.status == 409) {
    		 			navigator.notification.alert( 'You have already added the currency ' + doc.currency , function() {}, "Invalid Currency Name", "OK")
