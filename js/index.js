@@ -200,7 +200,7 @@ window.getSyncUrl = function(callback) {
 		callback(false, url);
 
 	} else {
-		window.cblite.getUrl(callback);
+		window.cblite.getURL(callback);
 	}
 }
 
