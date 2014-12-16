@@ -34,7 +34,7 @@ Coax.extend( "active_tasks", function(opts, cb) {
 	opts = opts || {};
 
 	if (opts.feed == "continuous") {
-		var listener = self( [ "_active_tasks", opts ], function(err, ok) {
+		var listener = self( [ "/_active_tasks", opts ], function(err, ok) {
 			console.log( "modules active_tasks" + JSON.stringify( [ err, ok ] ) )
 			if (err && err.code == "ETIMEDOUT") {
 				return self.active_tasks( opts, cb ); // TODO retry
@@ -80,7 +80,7 @@ Coax.extend( "active_tasks", function(opts, cb) {
 	} else {
 		opts.feed = "longpoll";
 
-		return self( [ "_active_tasks", opts ], function(err, ok) {
+		return self( [ "/_active_tasks", opts ], function(err, ok) {
 			//console.log( "modules active_tasks:" + JSON.stringify( [ err, ok ] ) )
 			if (err && err.code == "ETIMEDOUT") {
 				return self.active_tasks( opts, cb ); 
@@ -109,7 +109,7 @@ Coax.extend("changes", function(opts, cb) {
  
   
   if (opts.feed == "continuous") {
-    var listener = self(["_changes", opts], function(err, ok) {
+    var listener = self(["/_changes", opts], function(err, ok) {
       if (err && err.code == "ETIMEDOUT") {
         return self.changes(opts, cb); // TODO retry limit?
       } else if (err) {
@@ -150,7 +150,7 @@ Coax.extend("changes", function(opts, cb) {
     opts.feed = "longpoll";
     // opts.since = opts.since || 0;
     // console.log("change opts "+JSON.stringify(opts));
-    return self(["_changes", opts], function(err, ok) {
+    return self(["/_changes", opts], function(err, ok) {
       if (err && err.code == "ETIMEDOUT") {
         return self.changes(opts, cb); // TODO retry limit?
       } else if (err) {
@@ -193,7 +193,7 @@ Coax.extend("channels", function(channels, opts) {
   // console.log(self.pax.toString())
   var x = function(){};
   x.request = true;
-  var changes = self(['_changes', opts], x);
+  var changes = self(['/_changes', opts], x);
   changes.on("data", function(data) {
     var json;
     try{
