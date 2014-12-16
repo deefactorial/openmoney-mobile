@@ -449,7 +449,7 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-    	var design = "/_design/dev_openmoney" ;//+ new Date().getTime();
+    	var design = "/_design/dev_openmoney1" ;//+ new Date().getTime();
 	    if (window.cblite) {
 	        
 	        db.put( design, {
