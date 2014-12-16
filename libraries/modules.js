@@ -1165,7 +1165,7 @@ module.exports = function(request) {
 	      var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
 	      str.push(typeof v == "object" ?
 	        serialize(v, k) :
-	        encodeURIComponent(k) + "=" + encodeURIComponent(JSON.stringify(v)));
+	        encodeURIComponent(k) + "=" + encodeURIComponent(v));
 	    }
 	  }
 	  return str.join("&");
