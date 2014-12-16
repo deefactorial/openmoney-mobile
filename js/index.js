@@ -251,8 +251,8 @@ function setupConfig(done) {
                         window.config.user.email = newUser.email;
                         if (window.cblite) {
 	                        window.config.db.put( "_local/user", config.user, function(err, ok) {
+	                        	console.log( "put local user: " + JSON.stringify( [ err, ok] ) )
 	                            if (err) { return cb( err ) }
-	                            log( "updateUser ok: " + JSON.stringify( ok ) )
 	                            config.user._rev = ok.rev
 	                            cb();
 	                        } )
