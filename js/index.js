@@ -316,16 +316,15 @@ function setupConfig(done) {
         
         if (window.cblite || window.config && window.config.user && window.config.user.name) {
         	
-//	        var callback = function () {
-//	        	console.log(this.responseText);
-//	        }
-	        
-//	    	var xmlHttp = new XMLHttpRequest()
-//	    	xmlHttp.open( 'GET', url, true )
-//	    	if (typeof window.config.user.name != 'undefined') 
-//	    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.password));
-//	    	xmlHttp.onload = callback;
-//	    	xmlHttp.send()
+	        var callback = function () {
+	        	console.log(this.responseText);
+	        }     
+	    	var xmlHttp = new XMLHttpRequest()
+	    	xmlHttp.open( 'GET', url, true )
+	    	if (window.config && window.config.user && window.config.user.name) 
+	    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.password));
+	    	xmlHttp.onload = callback;
+	    	xmlHttp.send()
 	        
 
         //window.server = coax( url );
