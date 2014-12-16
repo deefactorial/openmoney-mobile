@@ -67,7 +67,7 @@ function goIndex(parameters) {
 	            			if(steward == config.user.name){
 	            				thisUsersAccounts.rows.push( row );
 	            				config.views( [ "account_balance", {
-	            			    	startkey : JSON.stringify( row.id ) , endkey : JSON.stringify( row.id + '\uefff') 
+	            			    	startkey :  row.id  , endkey :  row.id + '\uefff'
 	            			     	} ], function(err, view) {
 	            						console.log("account_balance view: " + JSON.stringify( [ err, view ] ) )
 	            					
