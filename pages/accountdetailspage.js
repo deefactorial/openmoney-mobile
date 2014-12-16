@@ -108,10 +108,18 @@ function goList(parameters) {
             } )
             
             log( "Get Account Details for:" + id )
+            var options;
+            if(window.cblite) {
+            	options = {
+                        startkey : [ id, {} ], endkey : [ id ] , descending : true
+                } ;
+            } else {
+            	options = {
+                    startkey : id + '\uefff', endkey : id , descending : true
+                } ;
+            }
 
-            config.views( [ "account_details", {
-                startkey : id + '\uefff', endkey : id , descending : true
-            } ], function(err, view) {
+            config.views( [ "account_details", options ], function(err, view) {
             	if(err) { 
             		log( "Error getting " + id + " :" +JSON.stringify( err ) ); 
     	    		dbChangedJournal(); 
