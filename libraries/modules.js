@@ -1508,13 +1508,14 @@ function run_xhr(options) {
 	  if (onlyonce == false) {
 		  onlyonce = true;
 		  xhr.setRequestHeader("Authorization", options.headers.authorization);
-		  xhr.withCredentials = true;
+		  
 	  }
 	  //if(is_cors) {
 		  //console.log("is cors:" + !! options.withCredentials);
 		  
 	  //}
   }
+  xhr.withCredentials = true;
   xhr.send(options.body)
   return xhr
 

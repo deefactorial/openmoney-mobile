@@ -339,6 +339,7 @@ function setupConfig(done) {
         	} else {
         		db = coax( [url, appDbName] );
         	}
+        	
 	        setupDb( db, function(err, info) {
 	        	log("setupDB:" + JSON.stringify( [ err, info ] ) ); 
 	            if (err) { return done( err ) }
