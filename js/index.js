@@ -229,7 +229,7 @@ function setupConfig(done) {
 	            config.db.get( "_local/user", function(err, doc) {
 	                if (err) { return cb( err ) }
 	                doc._deleted = true;
-	                config.db.put( "_local/user", doc, function(err, ok) {
+	                config.db.put( "/_local/user", doc, function(err, ok) {
 	                    if (err) { return cb( err ) }
 	                    log( "deleted local user" )
 	                    cb()
@@ -250,7 +250,7 @@ function setupConfig(done) {
                         window.config.user.name = newUser.username;
                         window.config.user.email = newUser.email;
                         if (window.cblite) {
-	                        window.config.db.put( "_local/user", config.user, function(err, ok) {
+	                        window.config.db.put( "/_local/user", config.user, function(err, ok) {
 	                        	console.log( "put local user: " + JSON.stringify( [ err, ok] ) )
 	                            if (err) { return cb( err ) }
 	                            config.user._rev = ok.rev
@@ -269,7 +269,7 @@ function setupConfig(done) {
                     window.config.user.name = newUser.username;
                     window.config.user.email = newUser.email;
                     if (window.cblite) {
-	                    window.config.db.put( "_local/user", config.user, function(err, ok) {
+	                    window.config.db.put( "/_local/user", config.user, function(err, ok) {
 	                        if (err) { return cb( err ) }
 	                        log( "setUser ok: " + JSON.stringify( ok ) )
 	                        config.user._rev = ok.rev
@@ -286,7 +286,7 @@ function setupConfig(done) {
                     } else {
                         // we got a new facebook token
                         config.user.access_token = newUser.access_token
-                        db.put( "_local/user", config.user, function(err, ok) {
+                        db.put( "/_local/user", config.user, function(err, ok) {
                             if (err) { return cb( err ) }
                             log( "updateUser ok" )
                             config.user._rev = ok.rev
@@ -296,7 +296,7 @@ function setupConfig(done) {
                 } else {
                     newUser.user_id = newUser.email
                     log( "setUser " + JSON.stringify( newUser ) )
-                    db.put( "_local/user", newUser, function(err, ok) {
+                    db.put( "/_local/user", newUser, function(err, ok) {
                         if (err) { return cb( err ) }
                         log( "setUser ok" )
                         window.config.user = newUser
@@ -338,7 +338,7 @@ function setupConfig(done) {
         		console.log( 'XMLHttpRequest get: ' + xmlHttp.responseText )
         		
         		window.server = coax( url );
-        		db = coax( url + appDbName + "/" );
+        		db = coax( [url, appDbName] );
         	}
         	
 	        setupDb( db, function(err, info) {
