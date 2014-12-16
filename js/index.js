@@ -550,7 +550,7 @@ function setupConfig(done) {
 
     function getUser(db, cb) {
     	if (window.cblite) {
-	        db.get( "_local/user", function(err, doc) {
+	        db.get( "/_local/user", function(err, doc) {
 	            var user = false;
 	            if (!err) {
 	                user = doc;

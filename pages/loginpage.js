@@ -314,7 +314,7 @@ function addMyUsernameToAllLists(cb) {
 		            docs.push( row.doc )
 	        	
 	        } )
-	        config.db.post( "_bulk_docs", {
+	        config.db.post( "/_bulk_docs", {
 	            docs : docs
 	        }, function(err, ok) {
 	            log( "updated all trading names", err, ok )
@@ -349,7 +349,7 @@ function addMyUsernameToAllLists(cb) {
 	            }
 	            docs.push( row.doc )
 	        } )
-	        config.db.post( "_bulk_docs", {
+	        config.db.post( "/_bulk_docs", {
 	            docs : docs
 	        }, function(err, ok) {
 	            log( "updated all currencies", err, ok )
@@ -383,7 +383,7 @@ function addMyUsernameToAllLists(cb) {
 	            }
 	            docs.push( row.doc )
 	        } )
-	        config.db.post( "_bulk_docs", {
+	        config.db.post( "/_bulk_docs", {
 	            docs : docs
 	        }, function(err, ok) {
 	            log( "updated all spaces", err, ok )
