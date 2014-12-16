@@ -111,7 +111,7 @@ function goList(parameters) {
             var options;
             if(window.cblite) {
             	options = {
-                        startkey : [ id, {} ], endkey : [ id ] , descending : true
+                        startkey : [ id + '\uefff', {} ], endkey : [ id ] , descending : true
                 } ;
             } else {
             	options = {
