@@ -317,7 +317,7 @@ function setupConfig(done) {
         if (err) { return done( err ) }
 
         
-        if (window.config && window.config.user && window.config.user.name) {
+        if (window.cblite || window.config && window.config.user && window.config.user.name) {
         	log ("name" + window.config.user.name)
 	        var callback = function () {
 	        	console.log(this.responseText);
