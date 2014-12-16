@@ -73,7 +73,7 @@ function createBeamTag(cb) {
 	
 	    log( "createBeamTag put " + JSON.stringify( beamData ) )
 	    // Check if Profile Document Exists
-	    config.db.get( "beamtag," + beamData.username + "," + beamData.hashTag, function(error, doc) {
+	    config.db.get( "/beamtag," + beamData.username + "," + beamData.hashTag, function(error, doc) {
 	        if (error) {
 	            log( "Error: " + JSON.stringify( error ) )
 	            if (error.status == 404) {
@@ -84,7 +84,7 @@ function createBeamTag(cb) {
 	            }
 	        } else {
 	            beamData = doc;
-	            config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
+	            config.db.put( "/beamtag," + beamData.username + "," + beamData.hashTag, beamData, cb )
 	        }
 	    } )
 	}
@@ -131,7 +131,7 @@ function destroyBeamTag(cb) {
 	
 			    if(docs.length > 0) {
 			    	log (" destroy beam docs: " + JSON.stringify(docs) )
-			        config.db.post( "_bulk_docs", {
+			        config.db.post( "/_bulk_docs", {
 			            docs : docs
 			        }, function(err, ok) {
 			            log( "updated all tags" + JSON.stringify( err ) + JSON.stringify( ok ) )
