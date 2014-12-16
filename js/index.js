@@ -323,20 +323,24 @@ function setupConfig(done) {
 	        	console.log(this.responseText);
 	        }
 	        
-	    	var xmlHttp = new XMLHttpRequest()
-	    	xmlHttp.open( 'GET', url, true )
-	    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.password));
-	    	xmlHttp.onload = callback;
-	    	xmlHttp.send()
+//	    	var xmlHttp = new XMLHttpRequest()
+//	    	xmlHttp.open( 'GET', url, true )
+//	    	if (typeof window.config.user.name != 'undefined') 
+//	    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.password));
+//	    	xmlHttp.onload = callback;
+//	    	xmlHttp.send()
 	        
 
         //window.server = coax( url );
         
         
-	        log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
-	        
-	        var db = coax( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
-	        
+        	var db;
+        	if (!window.cblite) {
+        		log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
+        		db = coax( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+        	} else {
+        		db = coax( [url, appDbName] );
+        	}
 	        setupDb( db, function(err, info) {
 	            if (err) { return done( err ) }
 	            
