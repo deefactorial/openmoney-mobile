@@ -93,9 +93,11 @@ function goServerLogin(parameters) {
 function doFirstLogin(cb) {
     if (SERVER_LOGIN) {
         doServerLogin( function(error, data) {
+        	console.log("doServerLogin:" + JSON.stringify( [error, data] ) )
             if (error) { return cb( error ) }
             
             window.config.setUser( data, function(error, ok) {
+            	console.log("setUser:" + JSON.stringify( [ error, ok ] ) )
                 if (error) { return cb( error ) }
                 
 		            setupConfig( function(error, ok){
