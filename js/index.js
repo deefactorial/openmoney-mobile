@@ -43,10 +43,7 @@ function onDeviceReady() {
 	    setupConfig( function(err) {
 	        if (err) {
 	            log( "setupConfig Error:" + JSON.stringify( err ) )
-	            goServerLogin([ function(error) {
-	            	if (error) { return loginErr( error ) }
-                    goIndex([])
-	            } ]);
+	            goIndex([])
 	            return false;
 	        }
 	        connectToChanges()
@@ -343,9 +340,11 @@ function setupConfig(done) {
         		db = coax( [url, appDbName] );
         	}
 	        setupDb( db, function(err, info) {
+	        	log("setupDB:" + JSON.stringify( [ err, info ] ) ); 
 	            if (err) { return done( err ) }
 	            
 	            setupViews( db, function(err, views) {
+	            	log("setupviews:" + JSON.stringify( [ err, views ] ) );
 	                if (err) { return done( err ) }
 	                
 	                window.config = {
