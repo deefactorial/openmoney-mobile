@@ -338,7 +338,7 @@ function setupConfig(done) {
         		console.log( 'XMLHttpRequest get: ' + xmlHttp.responseText )
         		
         		window.server = coax( url );
-        		db = coax( [url, appDbName + "/"] );
+        		db = coax( url + appDbName + "/" );
         	}
         	
 	        setupDb( db, function(err, info) {
