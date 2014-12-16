@@ -318,10 +318,10 @@ function setupConfig(done) {
 
         
         if (window.cblite || window.config && window.config.user && window.config.user.name) {
-        	log ("name" + window.config.user.name)
-	        var callback = function () {
-	        	console.log(this.responseText);
-	        }
+        	
+//	        var callback = function () {
+//	        	console.log(this.responseText);
+//	        }
 	        
 //	    	var xmlHttp = new XMLHttpRequest()
 //	    	xmlHttp.open( 'GET', url, true )
@@ -336,6 +336,7 @@ function setupConfig(done) {
         
         	var db;
         	if (!window.cblite) {
+        		log ("name" + window.config.user.name)
         		log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
         		db = coax( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
         	} else {
