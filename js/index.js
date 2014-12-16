@@ -493,8 +493,8 @@ function setupConfig(done) {
 	                        	if (typeof doc.verified != 'undefined' && doc.verified === false) {
 	                        		
 	                        	} else {
-	                        		emit( [ "trading_name," + doc.from + "," + doc.currency, doc.timestamp ], -doc.amount )
-	                            	emit( [ "trading_name," + doc.to + "," + doc.currency, doc.timestamp ], doc.amount )
+	                        		emit( "trading_name," + doc.from + "," + doc.currency, -doc.amount )
+	                            	emit( "trading_name," + doc.to + "," + doc.currency, doc.amount )
 	                        	}
 	                        }
 	                    }.toString(), reduce : function(keys, values, rereduce) {

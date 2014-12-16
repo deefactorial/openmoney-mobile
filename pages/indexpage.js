@@ -69,6 +69,7 @@ function goIndex(parameters) {
 	            				config.views( [ "account_balance", {
 	            			    	startkey :  row.id , endkey : row.id + '\uefff'
 	            			     	} ], function(err, view) {
+	            						console.log("account_balance view: " + JSON.stringify( [ err, view ] ) )
 	            					
 	            			    	drawContainer( "#" + row.key.trading_name.replace(/\./g,"\\.") + "-" + row.key.currency.replace(/\./g,"\\."), config.t.indexBalance( view ) );
 	            			    } );
