@@ -92,11 +92,11 @@ function goMerchantPayment(parameters) {
 		    if (window.cblite) {
 		    
 		    	//display number keypad on focus
-			    $( "#content #amount").off("focus").on("focus")( function () {
+			    $( "#content #amount").off("focus").focus( function () {
 			    	this.type = 'number';
 			    })
 			    
-			    $( "#content #amount']").off("blur").on("blur")( function () {
+			    $( "#content #amount']").off("blur").blur( function () {
 			    	this.type = 'text';
 			    })
 		    }
