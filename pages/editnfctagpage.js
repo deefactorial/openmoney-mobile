@@ -285,7 +285,7 @@ function insertTagInDB(tag) {
 		tag.username = 'anonymous';
 	}
     log( "Insert Tag:" + JSON.stringify( tag ) )
-    config.db.get( "beamtag," + tag.username + "," + tag.hashTag, function(error, doc) {
+    config.db.get("/" + "beamtag," + tag.username + "," + tag.hashTag, function(error, doc) {
     	if( error ) { 
     		 log( "Tag Error: " + JSON.stringify( error ) )
              if (error.status == 404 || error.error == "not_found") {
@@ -307,7 +307,7 @@ function insertTagInDB(tag) {
     		doc.trading_names = tag.trading_names;
     		doc.created = doc.created;
     		
-    		config.db.put( "beamtag," + tag.username + "," + tag.hashTag, doc, function() {
+    		config.db.put("/" + "beamtag," + tag.username + "," + tag.hashTag, doc, function() {
                 	 
             } )
     	}

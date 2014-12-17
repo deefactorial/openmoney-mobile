@@ -94,7 +94,7 @@ function goNewNFC(parameters) {
 	
 	getThisUsersAccounts( function (thisUsersAccounts) {
 		
-		config.db.get("profile," + config.user.name , function (error, profile){
+		config.db.get("/" + "profile," + config.user.name , function (error, profile){
 			if(error) {
 				log("Profile Error:" + JSON.stringify(error))
 			}

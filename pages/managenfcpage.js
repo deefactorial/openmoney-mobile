@@ -172,7 +172,7 @@ function goManageNFC(parameters) {
 
 function isTagArchived(id, callback) {
     var result = false;
-    config.db.get( "beamtag," + config.user.name + "," + id, function(error, doc) {
+    config.db.get("/" + "beamtag," + config.user.name + "," + id, function(error, doc) {
     	if (error) {
 
     	} else {
@@ -189,11 +189,11 @@ function isTagArchived(id, callback) {
 
 function archiveTag(id) {
     log( "Archive Tag", id )
-    config.db.get( "beamtag," + config.user.name + "," + id, function(error, doc) {
+    config.db.get("/" + "beamtag," + config.user.name + "," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = true;
 	        doc.archived_at = new Date().getTime();
-	        config.db.put( "beamtag," + config.user.name + "," + id, doc, function() {
+	        config.db.put("/" + "beamtag," + config.user.name + "," + id, doc, function() {
 	        } )
     	}
     } )
@@ -205,11 +205,11 @@ function archiveTag(id) {
 
 function activateTag(id) {
     log( "Activate Tag", id )
-    config.db.get( "beamtag," + config.user.name + "," + id, function(error, doc) {
+    config.db.get("/" + "beamtag," + config.user.name + "," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = false;
 	        doc.archived_at = new Date().getTime();
-	        config.db.put( "beamtag," + config.user.name + "," + id, doc, function() {
+	        config.db.put("/" + "beamtag," + config.user.name + "," + id, doc, function() {
 	        } )
     	}
     } )

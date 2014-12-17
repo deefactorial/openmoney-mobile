@@ -133,7 +133,7 @@ function goPayment(parameters) {
 	            doc.amount = parseFloat( doc.amount )
 	            doc.timestamp = new Date().getTime();
 	            //doc.timestamp = doc.timestamp.toJSON()
-	            config.db.get( doc.from, function(error, from) {
+	            config.db.get("/" + doc.from, function(error, from) {
 	                if (error) {
 	                    if (error.status == 404 || error.error == "not_found") {
 	                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Error", "OK")
@@ -164,7 +164,7 @@ function goPayment(parameters) {
 	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                	return false
 	                } 
-	                config.db.get( "currency," + doc.currency, function(error, currency) {
+	                config.db.get("/" + "currency," + doc.currency, function(error, currency) {
 	                	if (error) {
 	                		if (error.status == 404 || error.error == "not_found") {
 	                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
@@ -179,7 +179,7 @@ function goPayment(parameters) {
 	                			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
 	                			$( "#submit" ).removeAttr("disabled","disabled");
 	                		} else {
-	                			config.db.get( "trading_name," + doc.to + "," + doc.currency, function(error, to) {
+	                			config.db.get("/" + "trading_name," + doc.to + "," + doc.currency, function(error, to) {
 	                                if (error) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    if (error.status == 404 || error.error == "not_found") {
@@ -202,14 +202,14 @@ function goPayment(parameters) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                	return false
 	                                }  
-	                                config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+	                                config.db.get("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
 	                                    if (error) {
 	                                    	
 	                                        log( "Error: " + JSON.stringify( error ) )
 	                                        if (error.status == 404 || error.error == "not_found") {
 	                                            // doc does not exists
 	                                            log( "insert new trading name journal" + JSON.stringify( doc ) )
-	                                            config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	                                            config.db.put("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                            	
 	                                                if (error)
 	                                                    return alert( JSON.stringify( error ) )
@@ -344,7 +344,7 @@ function goTagPayment(parameters) {
 	            //doc.timestamp = doc.timestamp.toJSON()
 	            delete doc.pair;
 	            log( " form doc: " + JSON.stringify( doc ) )
-	            config.db.get( doc.from, function(error, from) {
+	            config.db.get("/" + doc.from, function(error, from) {
 	                if (error) {
 	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                    if (error.status == 404 || error.error == "not_found") {
@@ -373,7 +373,7 @@ function goTagPayment(parameters) {
 	                	return false
 	                } 
 	
-	            	config.db.get( "currency," + doc.currency, function(error, currency) {
+	            	config.db.get("/" + "currency," + doc.currency, function(error, currency) {
 	                	if (error) {
 	                		$( "#submit" ).removeAttr("disabled","disabled");
 	                		if (error.status == 404 || error.error == "not_found") {
@@ -387,7 +387,7 @@ function goTagPayment(parameters) {
 	                			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
 	                			$( "#submit" ).removeAttr("disabled","disabled");
 	                		} else {
-	                			config.db.get( doc.to, function(error, to) {
+	                			config.db.get("/" + doc.to, function(error, to) {
 	                                if (error) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    if (error.status == 404 || error.error == "not_found") {
@@ -409,13 +409,13 @@ function goTagPayment(parameters) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                	return false
 	                                } 
-	                                config.db.get( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+	                                config.db.get("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
 	                                    if (error) {
 	                                        log( "Error: " + JSON.stringify( error ) )
 	                                        if (error.status == 404 || error.error == "not_found") {
 	                                            // doc does not exists
 	                                            log( "insert new trading name journal" + JSON.stringify( doc ) )
-	                                            config.db.put( doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	                                            config.db.put("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                                if (error)
 	                                                    return alert( JSON.stringify( error ) )
 	                                                $( "#content form input[name='to']" ).val( "" ) // Clear
@@ -562,7 +562,7 @@ function goAddTradingName(parameters) {
 		        	return null;
 		        }
 			    
-		        config.db.put( doc.type + "," + config.user.name + "," + doc.trading_name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+		        config.db.put("/" + doc.type + "," + config.user.name + "," + doc.trading_name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
 		   		 	if (error) {
 		   		 		if (error.status == 409) {
 		   		 			navigator.notification.alert( 'You have already added the trading name ' + doc.trading_name + " in currency " + doc.currency , function() {}, "Invalid Trading Name", "OK")
