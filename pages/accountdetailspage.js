@@ -111,7 +111,7 @@ function goList(parameters) {
             var options;
             if(window.cblite) {
             	options = {
-                        startkey :  JSON.stringify( [  id + '\uefff' ,  '\uefff'  ] ), endkey : JSON.stringify( [ id ] ), descending : true
+                        startkey : [  id + '\uefff' ,  '\uefff'  ] , endkey : [ id ] , descending : true
                 } ;
             } else {
             	options = {
