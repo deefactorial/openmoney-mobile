@@ -102,11 +102,11 @@ function goPayment(parameters) {
 		    if (window.cblite) {
 		    
 		    	//display number keypad on focus
-			    $( "#content input[name='amount']").off("focus").on("focus")( function () {
+			    $( "#content input[name='amount']").off("focus").focus( function () {
 			    	this.type = 'number';
 			    })
 			    
-			    $( "#content input[name='amount']").off("blur").on("blur")( function () {
+			    $( "#content input[name='amount']").off("blur").blur( function () {
 			    	this.type = 'text';
 			    })
 		    }

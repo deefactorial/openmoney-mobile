@@ -65,11 +65,11 @@ function goManageAccounts(parameters) {
 	    if (window.cblite) {
 	    
 	    	//display number keypad on focus
-		    $( "#content .number").off("focus").on("focus")( function () {
+		    $( "#content .number").off("focus").focus( function () {
 		    	this.type = 'number';
 		    })
 		    
-		    $( "#content .number").off("blur").on("blur")( function () {
+		    $( "#content .number").off("blur").blur( function () {
 		    	this.type = 'text';
 		    })
 	    }
