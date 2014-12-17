@@ -1163,9 +1163,10 @@ module.exports = function(request) {
 	  for(var p in obj) {
 	    if (obj.hasOwnProperty(p)) {
 	      var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
-	      str.push(typeof v == "object" ?
-	        serialize(v, k) :
-	        encodeURIComponent(k) + "=" + encodeURIComponent(v));
+	      if(k == 'startkey' || k == 'endkey') {
+	    	  v = JSON.stringify(v);
+	      }
+	      str.push(typeof v == "object" ? serialize(v, k) : encodeURIComponent(k) + "=" + encodeURIComponent(v));
 	    }
 	  }
 	  return str.join("&");
