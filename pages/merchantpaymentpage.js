@@ -96,7 +96,7 @@ function goMerchantPayment(parameters) {
 			    	this.type = 'number';
 			    })
 			    
-			    $( "#content #amount']").off("blur").blur( function () {
+			    $( "#content #amount").off("blur").blur( function () {
 			    	this.type = 'text';
 			    })
 		    }
