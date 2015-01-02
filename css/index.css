@@ -67,7 +67,7 @@ form input {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	width: 80%;
+	width: 79%;
 	padding:0;
 	margin:0;
 }
@@ -124,7 +124,6 @@ label.todo-list-item {
 .om-list-name {
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap;
 }
 
 label.om-list-item {
@@ -370,8 +369,6 @@ br.clear {
 .topcoat-navigation-bar__title.todo-unbold {
 	font-weight: 100;
 }
-
-
 
 
 .archived {
