@@ -209,7 +209,7 @@ function goPayment(parameters) {
 	                                        if (error.status == 404 || error.error == "not_found") {
 	                                            // doc does not exists
 	                                            log( "insert new trading name journal" + JSON.stringify( doc ) )
-	                                            var leadingSlash = !window.cblite ? "" : "/";	                                         	                          
+	                                            var leadingSlash = getLeadingSlash();                                        	                          
 	                                            config.db.put( leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                            	
 	                                                if (error)

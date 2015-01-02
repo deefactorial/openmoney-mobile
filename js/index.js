@@ -201,6 +201,10 @@ window.getSyncUrl = function(callback) {
 	}
 }
 
+getLeadingSlash = function(){
+	return !window.cblite ? "" : "/";
+}
+
 /*
  * The config functions don't have any visibile UI, they are used for
  * application bootstrap and then by later state. The result of the config setup
