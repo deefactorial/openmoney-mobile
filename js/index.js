@@ -379,6 +379,22 @@ function setupConfig(done) {
 	                    			}
 	                    		} )
 	                    	} )
+	                    	
+	                    	config.db.extend("put", function(options, callback) {
+	                    		var self = this;
+	                    		if(!window.cblite && /^\/.*$/.test(options) ) {
+	                    			options = options.replace(/^\/(.*)$/, '$1');
+	                    		}	                    			
+	                    		return self(options, function(error, result) {
+	                    			if(error && error.code == 'ETIMEDOUT') {
+	                    				//try again
+	                    				log("ETIMEDOUT retry put");
+	                    				self(options,callback);
+	                    			} else {
+	                    				callback(error,result);
+	                    			}
+	                    		} )
+	                    	} )
 	                    }
 	                    
 	                    //does not work yet
