@@ -216,23 +216,9 @@ function doServerLogout(callBack) {
         config.setUser( null, function(error, ok) {
             log( "User is Set to Null" )
             if (error) { log( JSON.stringify( error ) ) }
-            if (typeof config.syncReference == 'undefined') {
-            	config.destroyDatabase( config.db, function(error, ok) {
-                    log( "Database Destroyed :" + JSON.stringify( [ error, ok ] ) )
-                    config.db = null;
-                    config.views = null;
-                    setupConfig( function(error, ok) {
-                    	connectToChanges()
-                        callBack( error, result )
-                    } )
-                } )
-            } else {
-	            config.syncReference.cancelSync( function(error, ok) {
-	                if (error) {
-	                    log( JSON.stringify( error ) )
-	                }
-	                log( "Sync Replication Canceled" )
-	                config.destroyDatabase( config.db, function(error, ok) {
+            if(window.cblite) {
+	            if (typeof config.syncReference == 'undefined') {
+	            	config.destroyDatabase( config.db, function(error, ok) {
 	                    log( "Database Destroyed :" + JSON.stringify( [ error, ok ] ) )
 	                    config.db = null;
 	                    config.views = null;
@@ -241,7 +227,29 @@ function doServerLogout(callBack) {
 	                        callBack( error, result )
 	                    } )
 	                } )
-	            } )
+	            } else {
+		            config.syncReference.cancelSync( function(error, ok) {
+		                if (error) {
+		                    log( JSON.stringify( error ) )
+		                }
+		                log( "Sync Replication Canceled" )
+		                config.destroyDatabase( config.db, function(error, ok) {
+		                    log( "Database Destroyed :" + JSON.stringify( [ error, ok ] ) )
+		                    config.db = null;
+		                    config.views = null;
+		                    setupConfig( function(error, ok) {
+		                    	connectToChanges()
+		                        callBack( error, result )
+		                    } )
+		                } )
+		            } )
+	            }
+            } else {
+            	config.db = null;
+                config.views = null;
+                setupConfig( function(error, ok) {
+                    callBack( error, result )
+                } )
             }
         } )
     } )
