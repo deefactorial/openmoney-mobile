@@ -239,6 +239,8 @@ function setupConfig(done) {
 	                    cb()
 	                } )
 	            } )
+        	} else {
+        		cb();
         	}
         } else {
             if (SERVER_LOGIN) {
