@@ -380,25 +380,7 @@ function setupConfig(done) {
 	                    		} )
 	                    	} )
 	                    	
-	                    	config.db.extend("put", function(options, doc, callback) {
-	                    		var self = this;
-	                    		var uri = options;
-	                    		if(!window.cblite && /^\/.*$/.test(options) ) {
-	                    			uri = options.replace(/^\/(.*)$/, '$1');
-	                    		}	    
-	                    		options = {};
-	                    		options.uri = uri;
-	                    		options.method = "PUT";
-	                    		return self( options, doc, function(error, result) {
-	                    			if(error && error.code == 'ETIMEDOUT') {
-	                    				//try again
-	                    				log("ETIMEDOUT retry put");
-	                    				self(options, doc, callback);
-	                    			} else {
-	                    				callback(error, result);
-	                    			}
-	                    		} )
-	                    	} )
+	                    	
 	                    }
 	                    
 	                    //does not work yet
