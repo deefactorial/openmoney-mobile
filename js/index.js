@@ -544,7 +544,7 @@ function setupConfig(done) {
 	        } )
 	    } else {
 	    	//query the local server for the views since the sync_gateway doesn't support _design docs.
-	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
 	    	cb( false , views( [ design, "_view" ] ) )
 	    }
     }
