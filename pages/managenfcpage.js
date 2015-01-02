@@ -193,7 +193,8 @@ function archiveTag(id) {
     	if (!error) {
 	        doc.archived = true;
 	        doc.archived_at = new Date().getTime();
-	        config.db.put("/" + "beamtag," + config.user.name + "," + id, doc, function() {
+	        var leadingSlash = getLeadingSlash(); 
+	        config.db.put(leadingSlash + "beamtag," + config.user.name + "," + id, doc, function() {
 	        } )
     	}
     } )
@@ -209,7 +210,8 @@ function activateTag(id) {
     	if (!error) {
 	        doc.archived = false;
 	        doc.archived_at = new Date().getTime();
-	        config.db.put("/" + "beamtag," + config.user.name + "," + id, doc, function() {
+	        var leadingSlash = getLeadingSlash(); 
+	        config.db.put(leadingSlash + "beamtag," + config.user.name + "," + id, doc, function() {
 	        } )
     	}
     } )

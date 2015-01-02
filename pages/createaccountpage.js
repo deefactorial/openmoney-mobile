@@ -84,7 +84,8 @@ function goCreateAccount(parameters) {
                     if (error.status == 404 || error.error == "not_found") {
                         // doc does not exists
                         log( "insert new trading name" + JSON.stringify( doc ) )
-                        config.db.put( doc.type + "," + doc.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                        var leadingSlash = getLeadingSlash(); 
+                        config.db.put(leadingSlash + doc.type + "," + doc.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
                             if (error)
                                 return alert( JSON.stringify( error ) )
                             $( "#content form input[name='trading_name']" ).val( "" ) // Clear
@@ -136,7 +137,8 @@ function goCreateAccount(parameters) {
 	        	if (error) {
 	        		if (error.status == 404 || error.error == "not_found") {
 	        			// insert document
-	        			config.db.put( "/" + currency_view.type + "," + config.user.name + "," + currency_view.currency, JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
+	        			var leadingSlash = getLeadingSlash(); 
+	        			config.db.put( leadingSlash + currency_view.type + "," + config.user.name + "," + currency_view.currency, JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
 	        	   		 	if (error) { return alert( JSON.stringify( error ) ) }
         	                config.db.get( "/" + doc.type + "," + doc.currency, function(error, existingdoc) {
 	        	                if (error) {
@@ -144,8 +146,8 @@ function goCreateAccount(parameters) {
 	        	                    if (error.status == 404 || error.error == "not_found") {
 	        	                        // doc does not exists
 	        	                        log( "insert new currency" + JSON.stringify( doc ) )
-	        	                        
-	        	                        config.db.put( "/" + doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	        	                        var leadingSlash = getLeadingSlash(); 
+	        	                        config.db.put( leadingSlash + doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	        	                            if (error) { return alert( JSON.stringify( error ) ) }
 	        	                            goManageAccounts([]) 
 	        	                        } )
@@ -169,8 +171,8 @@ function goCreateAccount(parameters) {
     	                        log( "insert new currency" + JSON.stringify( doc ) )
     	                        
     	
-    	                        
-    	                        config.db.put( "/" + doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+    	                        var leadingSlash = getLeadingSlash(); 
+    	                        config.db.put( leadingSlash + doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
     	                            if (error) { return alert( JSON.stringify( error ) ) }
     	                            goManageAccounts([])
     	                        } )
@@ -207,7 +209,8 @@ function goCreateAccount(parameters) {
                     if (error.status == 404 || error.error == "not_found") {
                         // doc does not exists
                         log( "insert new space" + JSON.stringify( doc ) )
-                        config.db.put( "/" + doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                        var leadingSlash = getLeadingSlash(); 
+                        config.db.put( leadingSlash + doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 
                             if (error)
                                 return alert( JSON.stringify( error ) )
@@ -395,8 +398,8 @@ function goAddCurrency(parameters) {
         	navigator.notification.alert( 'The currency name cannot contain a space, comma or @.' , function() {}, "Invalid Currency Name", "OK")
         	return null;
         }
-	    
-        config.db.put( "/" + doc.type + "," + config.user.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+        var leadingSlash = getLeadingSlash(); 
+        config.db.put( leadingSlash + doc.type + "," + config.user.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
    		 	if (error) {
    		 		if (error.status == 409) {
    		 			navigator.notification.alert( 'You have already added the currency ' + doc.currency , function() {}, "Invalid Currency Name", "OK")

@@ -228,7 +228,8 @@ function putProfile(profile, cb) {
             log( "Error: " + JSON.stringify( error ) )
             if (error.status == 404 || error.error == "not_found") {
                 // doc does not exists
-                config.db.put( "/profile," + profileID, JSON.parse( JSON.stringify( profile ) ), cb )
+            	var leadingSlash = getLeadingSlash(); 
+                config.db.put(leadingSlash + "profile," + profileID, JSON.parse( JSON.stringify( profile ) ), cb )
             } else {
                 alert( " Error Posting Profile:" + JSON.stringify( error ) )
             }
@@ -238,8 +239,8 @@ function putProfile(profile, cb) {
         	    console.log( key + ":" + profile[key] );
         	    doc[key] = profile[key];
         	});
-            
-            config.db.put( "/profile," + profileID, doc, cb )
+        	var leadingSlash = getLeadingSlash(); 
+            config.db.put(leadingSlash + "profile," + profileID, doc, cb )
         }
     } )
 }

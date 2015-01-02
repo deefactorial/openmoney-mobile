@@ -289,7 +289,8 @@ function insertTagInDB(tag) {
     	if( error ) { 
     		 log( "Tag Error: " + JSON.stringify( error ) )
              if (error.status == 404 || error.error == "not_found") {
-                 config.db.put( "beamtag," + tag.username + "," + tag.hashTag, tag, function() {
+            	 var leadingSlash = getLeadingSlash(); 
+                 config.db.put(leadingSlash + "beamtag," + tag.username + "," + tag.hashTag, tag, function() {
                 	 
                  } )
              } else {
@@ -306,8 +307,8 @@ function insertTagInDB(tag) {
     		doc.pinCode = tag.pinCode;
     		doc.trading_names = tag.trading_names;
     		doc.created = doc.created;
-    		
-    		config.db.put("/" + "beamtag," + tag.username + "," + tag.hashTag, doc, function() {
+    		var leadingSlash = getLeadingSlash(); 
+    		config.db.put(leadingSlash + "beamtag," + tag.username + "," + tag.hashTag, doc, function() {
                 	 
             } )
     	}

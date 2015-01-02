@@ -274,7 +274,8 @@ function archiveTradingName(id, callback) {
     	if (!error) {
 	        doc.archived = true;
 	        doc.archived_at = new Date().getTime();
-	        config.db.put( "/" + id, doc, callback )
+	        var leadingSlash = getLeadingSlash(); 
+	        config.db.put( leadingSlash + id, doc, callback )
     	}
     } )
 }
@@ -292,7 +293,8 @@ function activateTradingName(id, callback) {
     	if (!error) {
 	        doc.archived = false;
 	        doc.archived_at = new Date().getTime();
-	        config.db.put( "/" + id, doc, callback )
+	        var leadingSlash = getLeadingSlash(); 
+	        config.db.put( leadingSlash + id, doc, callback )
     	}
     } )
 }
@@ -379,7 +381,8 @@ function updateTradingName(row, doc, callback) {
 				trading_name.transaction = Number.POSITIVE_INFINITY;
 			}
 
-			config.db.put("trading_name," + row.key.trading_name + "," + row.key.currency, trading_name, callback);
+			var leadingSlash = getLeadingSlash(); 
+			config.db.put(leadingSlash + "trading_name," + row.key.trading_name + "," + row.key.currency, trading_name, callback);
 		}
 	} )
 	

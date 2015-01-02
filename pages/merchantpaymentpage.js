@@ -197,7 +197,8 @@ function goMerchantPayment(parameters) {
 	                                            if (error.status == 404 || error.error == "not_found") {
 	                                                // doc does not exists
 	                                                log( "insert new trading name journal" + JSON.stringify( doc ) )
-	                                                config.db.put("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	                                                var leadingSlash = getLeadingSlash(); 
+	                                                config.db.put(leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                                    if (error) {
 	                                                    	$( "#submit" ).removeAttr("disabled","disabled");
 	                                                        return alert( JSON.stringify( error ) )
@@ -323,7 +324,8 @@ function goCustomerPayment(parameters) {
                                 if (error.status == 404 || error.error == "not_found") {
                                     // doc does not exists
                                     log( "insert new trading name journal" + JSON.stringify( doc ) )
-                                    config.db.put("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                    var leadingSlash = getLeadingSlash(); 
+                                    config.db.put(leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
                                         if (error)
                                             return alert( JSON.stringify( error ) )
                                         $( "#content form input[name='to']" ).val( "" ) // Clear
@@ -429,7 +431,8 @@ function goCustomerPayment(parameters) {
 			trading_name_view['trading_name'] = customer.trading_name;
 			trading_name_view['currency'] = doc.currency;
 			trading_name_view['created'] = new Date().getTime();
-			config.db.put("/" + trading_name_view['type'] + "," + trading_name_view['steward'] + "," + trading_name_view['trading_name'] + "," + trading_name_view['currency'], JSON.parse( JSON.stringify( trading_name_view ) ), function( error, ok ) { 
+			var leadingSlash = getLeadingSlash(); 
+			config.db.put(leadingSlash + trading_name_view['type'] + "," + trading_name_view['steward'] + "," + trading_name_view['trading_name'] + "," + trading_name_view['currency'], JSON.parse( JSON.stringify( trading_name_view ) ), function( error, ok ) { 
 	   		 	if (error) {
 	   		 		if (error.status == 409 || error.error == "conflict") {
 	   		 			log( 'You have already added the trading name ' + doc.trading_name + " in currency " + doc.currency)
@@ -482,7 +485,8 @@ function goCustomerPayment(parameters) {
 	                        if (error.status == 404 || error.error == "not_found") {
 	                            // doc does not exists
 	                            log( "insert new trading name journal" + JSON.stringify( doc ) )
-	                            config.db.put("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	                            var leadingSlash = getLeadingSlash(); 
+	                            config.db.put(leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                if (error) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    return alert( JSON.stringify( error ) )
