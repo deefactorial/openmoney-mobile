@@ -98,7 +98,7 @@ function goEditNFC(parameters) {
 			
 		var id = parameters.pop();
 	
-	    config.db.get( "beamtag," + config.user.name + "," + id, function(err, doc) {
+	    config.db.get("/" + "beamtag," + config.user.name + "," + id, function(err, doc) {
 	    	
 	    	var thisTag = doc;
 	    	
