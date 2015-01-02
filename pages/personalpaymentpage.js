@@ -212,7 +212,7 @@ function goPayment(parameters) {
 	                                            config.db.put("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                            	
 	                                                if (error)
-	                                                    return alert( JSON.stringify( error ) )
+	                                                    return alert("Error posting:" + JSON.stringify( error ) )
 	                                                $( "#content form input[name='to']" ).val( "" ) // Clear
 	                                                $( "#content form input[name='amount']" ).val( "" ) // Clear
 	                                                $( "#content form textarea" ).val( "" ) // Clear
