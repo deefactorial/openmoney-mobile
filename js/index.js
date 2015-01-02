@@ -366,6 +366,9 @@ function setupConfig(done) {
 	                    if (typeof config.db != 'undefined') {
 	                    	config.db.extend("get", function(options, callback) {
 	                    		var self = this;
+	                    		if(!window.cblite && /^\/.*$/.test(options) ) {
+	                    			options = options.replace(/^\/(.*)$/, '$1');
+	                    		}	                    			
 	                    		return self(options, function(error, result) {
 	                    			if(error && error.code == 'ETIMEDOUT') {
 	                    				//try again
@@ -449,9 +452,9 @@ function setupConfig(done) {
     }
 
     function setupViews(db, cb) {
-    	var design = "/_design/dev_openmoney" ;//+ new Date().getTime();
+    	
 	    if (window.cblite) {
-	        
+	    	var design = "/_design/dev_openmoney" ;//+ new Date().getTime();
 	        db.put( design, {
 	            views : {
 	                accounts : {
@@ -543,8 +546,9 @@ function setupConfig(done) {
 	            cb( false, db( [ design, "_view" ] ) )
 	        } )
 	    } else {
+	    	var design = "_design/dev_openmoney" ;//+ new Date().getTime();
 	    	//query the local server for the views since the sync_gateway doesn't support _design docs.
-	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
 	    	cb( false , views( [ design, "_view" ] ) )
 	    }
     }
