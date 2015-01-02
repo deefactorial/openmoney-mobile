@@ -330,7 +330,7 @@ function setupConfig(done) {
     	    	
         		log ("name" + window.config.user.name)
         		log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
-        		db = coax( { "uri": url + appDbName , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+        		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
         	} else {
         		var xmlHttp = new XMLHttpRequest()
         		xmlHttp.open( 'GET', url, false )
