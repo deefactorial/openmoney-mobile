@@ -32,7 +32,7 @@ function goManageAccounts(parameters) {
 			$( "#scrollable li.trading_names" ).each( function(key, trading_name){
 				console.log("setting lib for trading name" + $(this).get(0).toString())
 				var hammertime = new Hammer($(this).get(0));
-				hammertime.on('swiperight', function(ev) {
+				hammertime.on('swipe', function(ev) {
 				    console.log(ev);
 				});
 			})
