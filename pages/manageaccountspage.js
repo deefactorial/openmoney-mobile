@@ -26,18 +26,18 @@ function goManageAccounts(parameters) {
 	
 	function UIhandlers() {
 		
-		if (!window.cblite) {
-			console.log("setting hammer lib");
-			var myOptions = {};
-			$( "#scrollable li.trading_names" ).each( function(key, trading_name){
-				console.log("setting lib for trading name" + $(this).attr("id"))
-				var element = document.getElementById($(this).attr("id"));
-				var hammertime = new Hammer($(this).get(0));
-				hammertime.on('swiperight', function(ev) {
-				    console.log("swipe" + ev.type);
-				});
-			})
-		}
+//		if (!window.cblite) {
+//			console.log("setting hammer lib");
+//			var myOptions = {};
+//			$( "#scrollable li.trading_names" ).each( function(key, trading_name){
+//				console.log("setting lib for trading name" + $(this).attr("id"))
+//				var element = document.getElementById($(this).attr("id"));
+//				var hammertime = new Hammer($(this).get(0));
+//				hammertime.on('swiperight', function(ev) {
+//				    console.log("swipe" + ev.type);
+//				});
+//			})
+//		}
 		
 
 		
