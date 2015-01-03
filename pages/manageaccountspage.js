@@ -29,9 +29,9 @@ function goManageAccounts(parameters) {
 		if (!window.cblite) {
 			console.log("setting hammer lib");
 			var myOptions = {};
-			$( "#scrollable li.trading_names" ).each(function(){
-				console.log("setting lib for trading name" + JSON.stringify(this))
-				var hammertime = new Hammer(this, myOptions);
+			$( "#scrollable li.trading_names" ).each( function(key, trading_name){
+				console.log("setting lib for trading name" + JSON.stringify([key, trading_name ]))
+				var hammertime = new Hammer(trading_name, myOptions);
 				hammertime.on('swiperight', function(ev) {
 				    console.log(ev);
 				});
