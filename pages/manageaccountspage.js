@@ -31,7 +31,8 @@ function goManageAccounts(parameters) {
 			var myOptions = {};
 			$( "#scrollable li.trading_names" ).each( function(key, trading_name){
 				console.log("setting lib for trading name" + $(this).attr("id"))
-				var hammertime = new Hammer($(this).get(0));
+				var element = document.getElementById($(this).attr("id"));
+				var hammertime = new Hammer(element);
 				hammertime.on('swipe', function(ev) {
 				    console.log("swipe" + ev);
 				});
