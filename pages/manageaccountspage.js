@@ -26,6 +26,18 @@ function goManageAccounts(parameters) {
 	
 	function UIhandlers() {
 		
+		if (!window.cblite) {
+			var myOptions = {};
+			$( "#scrollable li.trading_names" ).each(function(){
+				var hammertime = new Hammer(this, myOptions);
+				hammertime.on('swiperight', function(ev) {
+				    console.log(ev);
+				});
+			})
+		}
+		
+
+		
 		$( "#scrollable li.trading_names" ).off("swipeRight").on( "swipeRight", function() {
 			
             var id = $( this ).attr( "data-id" ), listItem = this;
