@@ -30,10 +30,10 @@ function goManageAccounts(parameters) {
 			console.log("setting hammer lib");
 			var myOptions = {};
 			$( "#scrollable li.trading_names" ).each( function(key, trading_name){
-				console.log("setting lib for trading name" + $(this).get(0).toString())
+				console.log("setting lib for trading name" + $(this).attr("id"))
 				var hammertime = new Hammer($(this).get(0));
 				hammertime.on('swipe', function(ev) {
-				    console.log(ev);
+				    console.log("swipe" + ev);
 				});
 			})
 		}
