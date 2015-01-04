@@ -56,10 +56,13 @@ function goServerRegistration(parameters) {
         var doc = jsonform( this );
         config.user = {};
         config.user.name = doc.username;
-        config.user.email = doc.email;
-        if (config.user.name.indexOf("@") != -1 ) {
+        config.user.name = config.user.name.toLowerCase().replace(" ", "");
+        //if @ add to email
+        if( config.user.name.indexOf("@") != -1 ) {
         	config.user.email = doc.username;
         }
+        if( typeof doc.email != 'undefined' && doc.email != '')
+        	config.user.email = doc.email;
         config.user.password = doc.password;
         log ( "user:" + JSON.stringify( config.user ) )
         

@@ -95,8 +95,10 @@ function goCreateAccount(parameters) {
                             
                         } )                        	
                     	
+                    } else if(error.error == "Forbidden") {
+                    	navigator.notification.alert( "Trading name already exists!" , function() { }, "Existing Trading Name", "OK")
                     } else {
-                        alert( "Error: ".JSON.stringify( error ) )
+                        alert( "Error: " + JSON.stringify( error ) )
                     }
                 } else {
                     // doc exsits already
