@@ -66,7 +66,7 @@ function goServerLogin(parameters) {
         log ( "doc:" + JSON.stringify( doc ) ) 
         window.config.user = {};
         window.config.user.name = doc.email;
-        window.config.user.name = window.config.user.name.toLowerCase().replace(" ", "");
+        window.config.user.name = window.config.user.name.toLowerCase().replace(/ /g, "");
         window.config.user.password = doc.password;
         log ( "User set :" + JSON.stringify( window.config.user ) )
         doFirstLogin( function(error, result) {
