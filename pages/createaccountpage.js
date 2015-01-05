@@ -69,7 +69,8 @@ function goCreateAccount(parameters) {
         if (doc.type == "trading_name") {
         	if(doc.trading_name.length < 2) { alert("Requested Name is required.") }
         	doc.name = doc.trading_name;
-            if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { 
+        	doc.name = doc.name.toLowerCase().replace(/ /g,"");
+            if (doc.name.match( /[^A-Za-z0-9\-_]/ )) { 
             	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
             	return null;
             }
@@ -109,6 +110,8 @@ function goCreateAccount(parameters) {
         	
         } else if (doc.type == "currency") {
         	
+        	doc.symbol = doc.symbol.toLowerCase().replace(/ /g,"");
+        	
             if (doc.symbol.match( /[\. ,@]/ )) { 
             	navigator.notification.alert( 'The currency name cannot contain a dot, space, comma or @.' , function() {}, "Invalid Currency Name", "OK")
             	return null;
@@ -122,7 +125,7 @@ function goCreateAccount(parameters) {
         	if (doc.space != '')
                 doc.currency = doc.symbol + "." + doc.space;
             else
-                doc.currency = doc.symbol;
+                doc.currency = doc.symbol + "." + "cc";
         	
         	currency_view = {};
             currency_view.type = "currency_view";
@@ -154,7 +157,7 @@ function goCreateAccount(parameters) {
 	        	                            goManageAccounts([]) 
 	        	                        } )
 	        	                    } else {
-	        	                        alert( "Error: ".JSON.stringify( error ) )
+	        	                        alert( "Error: " + JSON.stringify( error ) )
 	        	                    }
 	        	                } else {
 	        	                    // doc exsits already
@@ -181,7 +184,7 @@ function goCreateAccount(parameters) {
     	
     	                        
     	                    } else {
-    	                        alert( "Error: ".JSON.stringify( error ) )
+    	                        alert( "Error: " + JSON.stringify( error ) )
     	                    }
     	                } else {
     	                    // doc exsits already
@@ -222,7 +225,7 @@ function goCreateAccount(parameters) {
                    
                         
                     } else {
-                        alert( "Error: ".JSON.stringify( error ) )
+                        alert( "Error: " + JSON.stringify( error ) )
                     }
                 } else {
                     navigator.notification.alert( "Trading Space already exists!"  , function() {  }, "Existing Space", "OK")

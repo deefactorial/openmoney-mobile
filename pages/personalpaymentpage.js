@@ -202,6 +202,7 @@ function goPayment(parameters) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                	return false
 	                                }  
+	                                
 	                                config.db.get("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
 	                                    if (error) {
 	                                    	
@@ -440,8 +441,7 @@ function goTagPayment(parameters) {
 	                            } )
 	                		}
 	                	}
-	            	} )
-	                
+	            	} )	                
 	            } )
 	        } )
 	    } )
