@@ -661,12 +661,13 @@ limitations under the License.
 
                 <li class="topcoat-list__item" data-id="subspace">
                     <select name="subspace" class="om-select-dark" >
-                        <option value="" selected="selected">in space (Optional)</option>
+                        <option value="cc" selected="selected">in space</option>
                         {{#spaces}}{{#rows}}
                             <option value="{{key}}">{{key}}</option>
                         {{/rows}}{{/spaces}}
                     </select>
                 </li>
+
                 <li class="topcoat-list__item" data-id="submit">
                     <input type="submit" class="topcoat-button" name="create" value=" Create " /> 
                 </li>
