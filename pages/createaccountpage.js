@@ -199,7 +199,7 @@ function goCreateAccount(parameters) {
         	
         } else if (doc.type == "space") {
         	doc.space = doc.space.replace(/ /g,"_");
-            if (doc.space.match( /[^A-Za-z0-9]/ )) { 
+            if (doc.space.match( /[^A-Za-z0-9_]/ )) { 
             	navigator.notification.alert( 'The Space Name you entered is not valid!' , function() {}, "Invalid Space Name", "OK")
             	return null;
             }
