@@ -211,7 +211,7 @@ function goMerchantPayment(parameters) {
 	                                                    navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
 	                                                    
 	
-	                                                    goList( [ "trading_name," + doc.to + "," + doc.currency ] )
+	                                                    goList( [ "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() ] )
 	                                                } )
 	                                            } else {
 	                                            	$( "#submit" ).removeAttr("disabled","disabled");
@@ -345,7 +345,7 @@ function goCustomerPayment(parameters) {
                                         navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
                                         
 
-                                        goList( [ "trading_name," + doc.to + "," + doc.currency ] )
+                                        goList( [ "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() ] )
                                     } )
                                 } else {
                                     alert( "Error: ".JSON.stringify( error ) )
@@ -508,7 +508,7 @@ function goCustomerPayment(parameters) {
 		                                    // failure callback
 		                                } );
 	                                }
-	                                navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( [ "trading_name," + doc.to + "," + doc.currency ] ); }, "Successful", "OK")
+	                                navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( [ "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Successful", "OK")
 	                                
 	                                
 	                            } )
