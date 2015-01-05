@@ -218,7 +218,7 @@ function goPayment(parameters) {
 	                                                $( "#content form input[name='to']" ).val( "" ) // Clear
 	                                                $( "#content form input[name='amount']" ).val( "" ) // Clear
 	                                                $( "#content form textarea" ).val( "" ) // Clear
-	                                                navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase ] ); }, "Success", "OK")
+	                                                navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")
 	                                                
 	                                                
 	                                            } )
