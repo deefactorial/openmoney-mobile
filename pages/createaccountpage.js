@@ -412,7 +412,8 @@ function goAddCurrency(parameters) {
    		 			alert( JSON.stringify( error ) )
    		 		}
    		 	} else {
-   		 		History.back();
+   		 		//History.back();
+   		 		goManageAccounts([]);
    		 	}
             
         } );
