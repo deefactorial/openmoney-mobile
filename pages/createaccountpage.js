@@ -206,6 +206,9 @@ function goCreateAccount(parameters) {
 
         	if(doc.subspace != '') {
         		doc.space += '.' + doc.subspace;
+        	} else {
+        		doc.subspace = "cc";
+        		doc.space += '.' + doc.subspace;
         	}
 
             config.db.get( "/" + doc.type + "," + doc.space.toLowerCase(), function(error, existingdoc) {
