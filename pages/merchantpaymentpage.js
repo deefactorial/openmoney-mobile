@@ -400,7 +400,7 @@ function goCustomerPayment(parameters) {
 
         doc.description = customer.description;
 
-        var credentials = '{ "username" : "' + customer.email + '", "password" : "' + customer.password + '" }';
+        var credentials = '{ "username" : "' + customer.email.toLowerCase().replace(/ /g,"_") + '", "password" : "' + customer.password + '" }';
         doCustomerTradingNameLookup( credentials, function(error, tradingnames) {
             if (error) {
             	$( "#submit" ).removeAttr("disabled","disabled");
