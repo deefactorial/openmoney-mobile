@@ -69,7 +69,7 @@ function goCreateAccount(parameters) {
         if (doc.type == "trading_name") {
         	if(doc.trading_name.length < 2) { alert("Requested Name is required.") }
         	doc.name = doc.trading_name;
-        	doc.name = doc.name.toLowerCase().replace(/ /g,"");
+        	doc.name = doc.name.replace(/ /g,"_");
             if (doc.name.match( /[^A-Za-z0-9\-_]/ )) { 
             	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
             	return null;
@@ -79,14 +79,14 @@ function goCreateAccount(parameters) {
             	doc.name += "." + doc.space;
             }
             
-            config.db.get( "/" + doc.type + "," + doc.name + "," + doc.currency, function(error, existingdoc) {
+            config.db.get( "/" + doc.type + "," + doc.name.toLowerCase() + "," + doc.currency, function(error, existingdoc) {
                 if (error) {
                     log( "Error: " + JSON.stringify( error ) )
                     if (error.status == 404 || error.error == "not_found") {
                         // doc does not exists
                         log( "insert new trading name" + JSON.stringify( doc ) )
                         var leadingSlash = getLeadingSlash(); 
-                        config.db.put(leadingSlash + doc.type + "," + doc.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                        config.db.put(leadingSlash + doc.type + "," + doc.name.toLowerCase() + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
                             if (error)
                                 return alert( JSON.stringify( error ) )
                             $( "#content form input[name='trading_name']" ).val( "" ) // Clear
@@ -110,7 +110,7 @@ function goCreateAccount(parameters) {
         	
         } else if (doc.type == "currency") {
         	
-        	doc.symbol = doc.symbol.toLowerCase().replace(/ /g,"");
+        	doc.symbol = doc.symbol.replace(/ /g,"_");
         	
             if (doc.symbol.match( /[\. ,@]/ )) { 
             	navigator.notification.alert( 'The currency name cannot contain a dot, space, comma or @.' , function() {}, "Invalid Currency Name", "OK")
@@ -138,21 +138,21 @@ function goCreateAccount(parameters) {
 	        	return false;
 	        }
 	        
-	        config.db.get( "/" + currency_view.type + "," + config.user.name + "," + currency_view.currency, function(error, view) {
+	        config.db.get( "/" + currency_view.type + "," + config.user.name + "," + currency_view.currency.toLowerCase(), function(error, view) {
 	        	if (error) {
 	        		if (error.status == 404 || error.error == "not_found") {
 	        			// insert document
 	        			var leadingSlash = getLeadingSlash(); 
-	        			config.db.put( leadingSlash + currency_view.type + "," + config.user.name + "," + currency_view.currency, JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
+	        			config.db.put( leadingSlash + currency_view.type + "," + config.user.name + "," + currency_view.currency.toLowerCase(), JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
 	        	   		 	if (error) { return alert( JSON.stringify( error ) ) }
-        	                config.db.get( "/" + doc.type + "," + doc.currency, function(error, existingdoc) {
+        	                config.db.get( "/" + doc.type + "," + doc.currency.toLowerCase(), function(error, existingdoc) {
 	        	                if (error) {
 	        	                    log( "Error: " + JSON.stringify( error ) )
 	        	                    if (error.status == 404 || error.error == "not_found") {
 	        	                        // doc does not exists
 	        	                        log( "insert new currency" + JSON.stringify( doc ) )
 	        	                        var leadingSlash = getLeadingSlash(); 
-	        	                        config.db.put( leadingSlash + doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+	        	                        config.db.put( leadingSlash + doc.type + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	        	                            if (error) { return alert( JSON.stringify( error ) ) }
 	        	                            goManageAccounts([]) 
 	        	                        } )
@@ -168,7 +168,7 @@ function goCreateAccount(parameters) {
 	        	        } )
 	        		}
 	        	} else {
-	        		config.db.get( "/" + doc.type + "," + doc.currency, function(error, existingdoc) {
+	        		config.db.get( "/" + doc.type + "," + doc.currency.toLowerCase(), function(error, existingdoc) {
     	                if (error) {
     	                    log( "Error: " + JSON.stringify( error ) )
     	                    if (error.status == 404 || error.error == "not_found") {
@@ -177,7 +177,7 @@ function goCreateAccount(parameters) {
     	                        
     	
     	                        var leadingSlash = getLeadingSlash(); 
-    	                        config.db.put( leadingSlash + doc.type + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+    	                        config.db.put( leadingSlash + doc.type + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
     	                            if (error) { return alert( JSON.stringify( error ) ) }
     	                            goManageAccounts([])
     	                        } )
@@ -198,7 +198,7 @@ function goCreateAccount(parameters) {
 	        
         	
         } else if (doc.type == "space") {
-        	
+        	doc.space = doc.space.replace(/ /g,"_");
             if (doc.space.match( /[^A-Za-z0-9]/ )) { 
             	navigator.notification.alert( 'The Space Name you entered is not valid!' , function() {}, "Invalid Space Name", "OK")
             	return null;
@@ -208,14 +208,14 @@ function goCreateAccount(parameters) {
         		doc.space += '.' + doc.subspace;
         	}
 
-            config.db.get( "/" + doc.type + "," + doc.space, function(error, existingdoc) {
+            config.db.get( "/" + doc.type + "," + doc.space.toLowerCase(), function(error, existingdoc) {
                 if (error) {
                     log( "Error: " + JSON.stringify( error ) )
                     if (error.status == 404 || error.error == "not_found") {
                         // doc does not exists
                         log( "insert new space" + JSON.stringify( doc ) )
                         var leadingSlash = getLeadingSlash(); 
-                        config.db.put( leadingSlash + doc.type + "," + doc.space, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 
                             if (error)
                                 return alert( JSON.stringify( error ) )
@@ -398,13 +398,13 @@ function goAddCurrency(parameters) {
 	    doc.type = "currency_view";
 	    doc.created = new Date().getTime();
 	    doc.steward = [ config.user.name ];
-	    
+	    doc.currency = doc.currency.replace(/ /g,"_");
         if (doc.currency.match( /[\ ,@]/ )) { 
         	navigator.notification.alert( 'The currency name cannot contain a space, comma or @.' , function() {}, "Invalid Currency Name", "OK")
         	return null;
         }
         var leadingSlash = getLeadingSlash(); 
-        config.db.put( leadingSlash + doc.type + "," + config.user.name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+        config.db.put( leadingSlash + doc.type + "," + config.user.name + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
    		 	if (error) {
    		 		if (error.status == 409) {
    		 			navigator.notification.alert( 'You have already added the currency ' + doc.currency , function() {}, "Invalid Currency Name", "OK")

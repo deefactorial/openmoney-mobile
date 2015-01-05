@@ -348,7 +348,7 @@ function updateTradingName(row, doc, callback) {
 //	var trading_name = {};
 //	trading_name.trading_name = row.key.trading_name;
 //	trading_name.currency = row.key.currency;
-	config.db.get("trading_name," + row.key.trading_name + "," + row.key.currency, function(error, trading_name){
+	config.db.get("trading_name," + row.key.trading_name.toLowerCase() + "," + row.key.currency.toLowerCase(), function(error, trading_name){
 		if(error) { 
 			log("Could not get trading name" + JSON.stringify(error) );
 			updateTradingName(row, doc, callback);
@@ -397,7 +397,7 @@ function updateTradingName(row, doc, callback) {
 			}
 
 			var leadingSlash = getLeadingSlash(); 
-			config.db.put(leadingSlash + "trading_name," + row.key.trading_name + "," + row.key.currency, trading_name, callback);
+			config.db.put(leadingSlash + "trading_name," + row.key.trading_name.toLowerCase() + "," + row.key.currency.toLowerCase(), trading_name, callback);
 		}
 	} )
 	

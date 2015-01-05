@@ -164,7 +164,7 @@ function goPayment(parameters) {
 	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                	return false
 	                } 
-	                config.db.get("/" + "currency," + doc.currency, function(error, currency) {
+	                config.db.get("/" + "currency," + doc.currency.toLowerCase(), function(error, currency) {
 	                	if (error) {
 	                		if (error.status == 404 || error.error == "not_found") {
 	                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
@@ -179,7 +179,7 @@ function goPayment(parameters) {
 	                			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
 	                			$( "#submit" ).removeAttr("disabled","disabled");
 	                		} else {
-	                			config.db.get("/" + "trading_name," + doc.to + "," + doc.currency, function(error, to) {
+	                			config.db.get("/" + "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase(), function(error, to) {
 	                                if (error) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    if (error.status == 404 || error.error == "not_found") {
@@ -559,12 +559,13 @@ function goAddTradingName(parameters) {
 			    doc.created = new Date().getTime();
 			    doc.steward = [ config.user.name ];
 			    
+			    doc.trading_name = doc.trading_name.replace(/ /g,"_");
 			    if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { 
 		        	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
 		        	return null;
 		        }
 			    var leadingSlash = getLeadingSlash(); 
-		        config.db.put(leadingSlash + doc.type + "," + config.user.name + "," + doc.trading_name + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+		        config.db.put(leadingSlash + doc.type + "," + config.user.name + "," + doc.trading_name.toLowerCase() + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
 		   		 	if (error) {
 		   		 		if (error.status == 409) {
 		   		 			navigator.notification.alert( 'You have already added the trading name ' + doc.trading_name + " in currency " + doc.currency , function() {}, "Invalid Trading Name", "OK")
