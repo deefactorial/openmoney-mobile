@@ -577,7 +577,7 @@ function goAddTradingName(parameters) {
 		   		 			History.back();
 		   		 		} else {
 		   		 			//wait a second for the document put to update the view.
-		   		 			setTimout(function(){
+		   		 			setTimeout(function(){
 		   		 				goPayment([]);
 		   		 			},1000);
 		   		 			
