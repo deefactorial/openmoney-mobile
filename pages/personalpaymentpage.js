@@ -576,7 +576,11 @@ function goAddTradingName(parameters) {
 		   		 		if (window.cblite) {
 		   		 			History.back();
 		   		 		} else {
-		   		 			goPayment([]);
+		   		 			//wait a second for the document put to update the view.
+		   		 			setTimout(function(){
+		   		 				goPayment([]);
+		   		 			},1000);
+		   		 			
 		   		 		}
 		   		 		
 		   		 	}
