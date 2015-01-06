@@ -560,7 +560,7 @@ function goAddTradingName(parameters) {
 			    doc.steward = [ config.user.name ];
 			    
 			    doc.trading_name = doc.trading_name.replace(/ /g,"_");
-			    if (doc.trading_name.match( /[^A-Za-z0-9\-_]/ )) { 
+			    if (doc.trading_name.match( /[^A-Za-z0-9\.\-_]/ )) { 
 		        	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
 		        	return null;
 		        }
