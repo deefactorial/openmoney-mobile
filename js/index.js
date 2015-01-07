@@ -325,7 +325,7 @@ function setupConfig(done) {
         	var db;
         	if (!window.cblite) {
     	        var callback = function () {
-    	        	console.log(this.responseText);
+    	        	console.log("Get Url Test:" + this.responseText);
     	        }     
     	    	var xmlHttp = new XMLHttpRequest()
     	    	xmlHttp.open( 'GET', url, true )

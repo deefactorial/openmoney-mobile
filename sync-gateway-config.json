@@ -2,7 +2,7 @@
    "SSLCert": "/etc/ssl/private/cloud.openmoney.cc.sync.crt",
    "SSLKey": "/etc/ssl/private/cloud.openmoney.cc.key.insecure",
    "CORS": {
-	    "Origin": ["*"],
+	    "Origin": ["https://cloud.openmoney.cc"],
 	    "Headers": ["Accept","DNT","X-Mx-ReqToken","Keep-Alive","User-Agent","X-Requested-With","If-Modified-Since","Cache-Control","Content-Type","Authorization"],
 	    "MaxAge": 1728000
 	  },
