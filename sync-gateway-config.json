@@ -288,6 +288,37 @@
                             access(doc.steward, doc.type + channelDelimiter + doc.space.toLowerCase());
                         }
                     }
+                } else if ( (olddoc != null && olddoc.type == "space_view" ) || (olddoc == null && doc.type == "space_view") ) {
+                    var space = doc.space.toLowerCase();
+                    
+                    if (olddoc == null) {
+                        if (!doc.steward || !doc.space || !doc.created ) {
+                            throw({forbidden: "Missing required properties"});
+                        }
+                        channel(doc.type + channelDelimiter + space);
+                        access(doc.steward, doc.type + channelDelimiter + space);
+                        access(doc.steward, "space" + channelDelimiter + space);
+                    } else {
+                    	space = olddoc.space.toLowerCase();
+                        if (doc._deleted) {
+                            requireUser(olddoc.steward);
+                            channel(olddoc.type + channelDelimiter + space);
+                            access(olddoc.steward, olddoc.type + channelDelimiter + space);
+                        } else {
+                            if (!doc.steward || !doc.currency || !doc.created ) {
+                                throw({forbidden: "Missing required properties"});
+                            }
+                            if (doc.space != olddoc.space || doc.created != olddoc.created) {
+                            	throw({forbidden: "unmutable properties"});
+                            }
+                            if (! doc.steward.equals( olddoc.steward ) ) {
+                            	requireUser(olddoc.steward)
+                            }
+                            channel(olddoc.type + channelDelimiter + space);
+                            access(doc.steward, olddoc.type + channelDelimiter + space);
+                            access(doc.steward, "space" + channelDelimiter + space);
+                        }
+                    }
                 } else if ( (olddoc != null && olddoc.type == "currency") || (olddoc == null && doc.type == "currency") ) {
                     var currency = base64_encode( doc.currency.toLowerCase() );
                     if (olddoc == null) {

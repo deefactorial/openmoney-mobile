@@ -285,6 +285,10 @@ function goCreateAccount(parameters) {
 		                        goAddCurrency([])
 		                    } )
 		                    
+		                    $( "#content input[name='addspace']" ).off("click").click( function() {
+		                        goAddSpace([])
+		                    } )
+		                    
 		                } )
 		            } )
     			}
@@ -415,10 +419,80 @@ function goAddCurrency(parameters) {
    		 			alert( JSON.stringify( error ) )
    		 		}
    		 	} else {
-   		 		//History.back();
-   		 		goManageAccounts([]);
+   		 		if(window.cblite){
+		 			History.back();
+		 		} else {
+		 			//if history isn't fixed soon this should get the value of the trading_name and go to Create accouts page
+		 			goManageAccounts([]);
+		 		}
    		 	}
             
+        } );
+        
+    } );
+}
+
+
+/*
+ * add a space to join
+ */
+
+
+function goAddSpace(parameters) {
+	
+	resetChangeTrackers();
+	
+    var pageTitle = "Add Space";
+	
+	if (currentpage != pageTitle) {
+    
+		var response = { "html" : config.t.add_space( ), "pageTitle" : pageTitle, "pageFunction" : "goAddCurrency", "pageParameters" : [ ]  };
+		
+		processAjaxData( response, "add_space.html" )
+		
+	} else {
+		
+		var response = { "html" : config.t.add_space( ), "pageTitle" : pageTitle, "pageFunction" : "goAddCurrency", "pageParameters" : [ ]  };
+		
+		drawContent( response.html );
+		
+		updateAjaxData( response, "add_space.html" )
+		
+	}
+	
+	$( "#content .om-index" ).off("click").click( function() {
+		History.back();
+    } )
+
+    setTabs()
+    
+    $( "#content form" ).off("submit").submit( function(e) {
+	    e.preventDefault()
+	    var doc = jsonform( this );
+	    doc.type = "space_view";
+	    doc.created = new Date().getTime();
+	    doc.steward = [ config.user.name ];
+	    doc.space = doc.space.replace(/ /g,"_");
+        if (doc.space.match( /[\ ,@:]/ )) { 
+        	navigator.notification.alert( 'The currency name cannot contain a comma or @.' , function() {}, "Invalid Currency Name", "OK")
+        	return null;
+        }
+        var leadingSlash = getLeadingSlash(); 
+        config.db.put( leadingSlash + doc.type + "," + config.user.name + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+   		 	if (error) {
+   		 		if (error.status == 409) {
+   		 			navigator.notification.alert( 'You have already added the space ' + doc.space , function() {}, "Invalid Currency Name", "OK")
+   		 		} else {
+   		 			alert( JSON.stringify( error ) )
+   		 		}
+   		 	} else {
+   		 		
+   		 		if(window.cblite){
+   		 			History.back();
+   		 		} else {
+   		 			goManageAccounts([]);
+   		 		}
+   		 	}
         } );
         
     } );
