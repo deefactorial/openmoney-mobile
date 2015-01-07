@@ -210,30 +210,74 @@ function goCreateAccount(parameters) {
         		doc.subspace = "cc";
         		doc.space += '.' + doc.subspace;
         	}
-
-            config.db.get( "/" + doc.type + "," + doc.space.toLowerCase(), function(error, existingdoc) {
-                if (error) {
-                    log( "Error: " + JSON.stringify( error ) )
-                    if (error.status == 404 || error.error == "not_found") {
-                        // doc does not exists
-                        log( "insert new space" + JSON.stringify( doc ) )
-                        var leadingSlash = getLeadingSlash(); 
-                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-
-                            if (error)
-                                return alert( JSON.stringify( error ) )
-                            $( "#content form input[name='space']" ).val( "" ) // Clear
-                            navigator.notification.alert( "You successfully created a new space !" , function() { goManageAccounts([]) }, "New Space", "OK")
-                        } )
-                   
-                        
-                    } else {
-                        alert( "Error: " + JSON.stringify( error ) )
-                    }
-                } else {
-                    navigator.notification.alert( "Trading Space already exists!"  , function() {  }, "Existing Space", "OK")
-                }
-            } )
+        	
+        	space_view = {};
+        	space_view.type = "space_view";
+        	space_view.created = new Date().getTime();
+        	space_view.steward = [ config.user.name ];
+        	space_view.space = doc.space;
+        	
+        	config.db.get( "/" + space_view.type + "," + config.user.name + "," + space_view.space.toLowerCase(), function(error, view) {
+	        	if (error) {
+	        		if (error.status == 404 || error.error == "not_found") {
+	        			// insert document
+	        			var leadingSlash = getLeadingSlash(); 
+	        			config.db.put( leadingSlash + space_view.type + "," + config.user.name + "," + space_view.space.toLowerCase(), JSON.parse( JSON.stringify( space_view ) ), function( error, ok ) { 
+	        	   		 	if (error) { return alert( JSON.stringify( error ) ) }
+	        	   		 	
+				            config.db.get( "/" + doc.type + "," + doc.space.toLowerCase(), function(error, existingdoc) {
+				                if (error) {
+				                    log( "Error: " + JSON.stringify( error ) )
+				                    if (error.status == 404 || error.error == "not_found") {
+				                        // doc does not exists
+				                        log( "insert new space" + JSON.stringify( doc ) )
+				                        var leadingSlash = getLeadingSlash(); 
+				                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+				
+				                            if (error)
+				                                return alert( JSON.stringify( error ) )
+				                            $( "#content form input[name='space']" ).val( "" ) // Clear
+				                            navigator.notification.alert( "You successfully created a new space !" , function() { goManageAccounts([]) }, "New Space", "OK")
+				                        } )
+				                   
+				                        
+				                    } else {
+				                        alert( "Error: " + JSON.stringify( error ) )
+				                    }
+				                } else {
+				                    navigator.notification.alert( "Trading Space already exists!"  , function() {  }, "Existing Space", "OK")
+				                }
+				            } );
+            
+	        			} );
+	        		}
+	        	} else {
+	        		config.db.get( "/" + doc.type + "," + doc.space.toLowerCase(), function(error, existingdoc) {
+		                if (error) {
+		                    log( "Error: " + JSON.stringify( error ) )
+		                    if (error.status == 404 || error.error == "not_found") {
+		                        // doc does not exists
+		                        log( "insert new space" + JSON.stringify( doc ) )
+		                        var leadingSlash = getLeadingSlash(); 
+		                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+		
+		                            if (error)
+		                                return alert( JSON.stringify( error ) )
+		                            $( "#content form input[name='space']" ).val( "" ) // Clear
+		                            navigator.notification.alert( "You successfully created a new space !" , function() { goManageAccounts([]) }, "New Space", "OK")
+		                        } )
+		                   
+		                        
+		                    } else {
+		                        alert( "Error: " + JSON.stringify( error ) )
+		                    }
+		                } else {
+		                    navigator.notification.alert( "Trading Space already exists!"  , function() {  }, "Existing Space", "OK")
+		                }
+		            } );
+	        	}
+        	} );
+            
         	
         }            
         
