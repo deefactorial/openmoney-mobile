@@ -296,7 +296,7 @@ function addMyUsernameToAllLists(cb) {
 		
 	    // update trading names
 	    config.views( [ "accounts", {
-	        include_docs : true
+	        include_docs : true, stale : "update_after"
 	    } ], function(err, view) {
 	        if (err) { return cb( err ) }
 	        var docs = [];
@@ -335,7 +335,7 @@ function addMyUsernameToAllLists(cb) {
 	    //update currencies
 	    
 	    config.views( [ "currencies", {
-	        include_docs : true
+	        include_docs : true, stale : "update_after"
 	    } ], function(err, view) {
 	        if (err) { return cb( err ) }
 	        var docs = [];
@@ -369,7 +369,7 @@ function addMyUsernameToAllLists(cb) {
 	    //update spaces
 	    
 	    config.views( [ "spaces", {
-	        include_docs : true
+	        include_docs : true, stale : "update_after"
 	    } ], function(err, view) {
 	        if (err) { return cb( err ) }
 	        var docs = [];
@@ -403,7 +403,7 @@ function addMyUsernameToAllLists(cb) {
 	    //Update NFC Tags
 	    	
 	    config.views( [ "nfc_tags", {
-	        startkey : [ "anonymous", {} ], endkey : [ "anonymous" ], descending : true, include_docs : true
+	        startkey : [ "anonymous", {} ], endkey : [ "anonymous" ], descending : true, include_docs : true, stale : "update_after"
 	    } ], function(error, view) {
 	        if (error) { return cb( error ) }
 	        var docs = [];

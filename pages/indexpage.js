@@ -52,7 +52,7 @@ function goIndex(parameters) {
     	if(currentpage == 'Openmoney') {
     		window.plugins.spinnerDialog.show();
 	        config.views( [ "accounts", {
-	            descending : true, include_docs : true
+	            descending : true, include_docs : true, stale : "update_after"
 	        } ], function(err, view) {
 	        	log("accounts view:" + JSON.stringify( view ) )
 	        	window.plugins.spinnerDialog.hide();
@@ -67,7 +67,7 @@ function goIndex(parameters) {
 	            			if(steward == config.user.name){
 	            				thisUsersAccounts.rows.push( row );
 	            				config.views( [ "account_balance", {
-	            			    	startkey :  row.id  , endkey :  row.id + '\uefff'
+	            			    	startkey :  row.id  , endkey :  row.id + '\uefff', stale : "update_after"
 	            			     	} ], function(err, view) {
 	            						console.log("account_balance view: " + JSON.stringify( [ err, view ] ) )
 	            					

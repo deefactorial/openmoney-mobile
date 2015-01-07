@@ -147,7 +147,7 @@ function goManageAccounts(parameters) {
     	
     	window.plugins.spinnerDialog.show();
     	config.views( [ "accounts", {
-            include_docs : true
+            include_docs : true, stale : "update_after"
         } ], function(error, view) {
     		window.plugins.spinnerDialog.hide();
             if (error) { 
@@ -190,7 +190,7 @@ function goManageAccounts(parameters) {
 		
     	window.plugins.spinnerDialog.show();
     	config.views( [ "currencies", {
-            include_docs : true
+            include_docs : true, stale : "update_after"
         } ], function(error, view) {
     		window.plugins.spinnerDialog.hide();
             if (error) { 
@@ -217,7 +217,7 @@ function goManageAccounts(parameters) {
     window.dbChangedSpaces = function () {
     	window.plugins.spinnerDialog.show();
     	config.views( [ "spaces", {
-            include_docs : true
+            include_docs : true, stale : "update_after"
         } ], function(error, view) {
     		window.plugins.spinnerDialog.hide();
             if (error) {

@@ -41,7 +41,7 @@ function goPayment(parameters) {
 	    
 	    window.plugins.spinnerDialog.show();
 	    config.views( [ "accounts", {
-	        include_docs : true
+	        include_docs : true 
 	    } ], function(error, view) {
 	    	window.plugins.spinnerDialog.hide();
 	        if (error) { return alert( JSON.stringify( error ) ) }
@@ -514,7 +514,7 @@ function goAddTradingName(parameters) {
 		
 		window.plugins.spinnerDialog.show();
 		config.views( [ "currencies", {
-            include_docs : true
+            include_docs : true, stale : "update_after"
         } ], function(error, currencies) {
 			window.plugins.spinnerDialog.hide();
 		

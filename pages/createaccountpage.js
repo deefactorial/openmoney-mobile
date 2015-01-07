@@ -299,7 +299,7 @@ function goCreateAccount(parameters) {
     		    		
     				window.plugins.spinnerDialog.show();
 		        	config.views( [ "currencies", {
-		                include_docs : true
+		                include_docs : true, stale : "update_after"
 		            } ], function(error, currencies) {
 		                if (error) { 
 		                	log( "Error getting currencies view: " + JSON.stringify( error ) ) 
@@ -308,7 +308,7 @@ function goCreateAccount(parameters) {
 		                }
 		
 		            	config.views( [ "spaces", {
-		                    include_docs : true
+		                    include_docs : true, stale : "update_after"
 		                } ], function(error, spaces) {
 		            		window.plugins.spinnerDialog.hide();
 		                    if (error) { 
@@ -343,7 +343,7 @@ function goCreateAccount(parameters) {
     		
     		window.dbChangedSpaces = function () {
 	        	config.views( [ "spaces", {
-	                include_docs : true
+	                include_docs : true, stale : "update_after"
 	            } ], function(error, spaces) {
 	        		window.plugins.spinnerDialog.hide();
 	                if (error) { 
@@ -373,7 +373,7 @@ function goCreateAccount(parameters) {
     		
     		window.dbChangedSpaces = function () {
 	        	config.views( [ "spaces", {
-	                include_docs : true
+	                include_docs : true, stale : "update_after"
 	            } ], function(error, spaces) {
 	        		window.plugins.spinnerDialog.hide();
 	                if (error) { 
