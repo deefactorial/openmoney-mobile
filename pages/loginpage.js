@@ -249,6 +249,7 @@ function doServerLogout(callBack) {
             	config.db = null;
                 config.views = null;
                 setupConfig( function(error, ok) {
+                	connectToChanges();
                     callBack( error, result )
                 } )
             }
