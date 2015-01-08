@@ -556,7 +556,7 @@ function connectToChanges() {
 	};
 	
 	if (typeof config != 'undefined' && typeof config.info != 'undefined') {
-		if(window.cblite) {
+		
 			config.db.changes( {
 			    	since : config.info.update_seq,
 			        conflicts : true,
@@ -564,7 +564,7 @@ function connectToChanges() {
 			        style: "all_docs"
 			        
 			    }, changes)
-		}
+		
 	}
    
 }
