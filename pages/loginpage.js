@@ -105,7 +105,9 @@ function doFirstLogin(cb) {
 		            	if (error) {
 		            		log( "Error setting up config: " + JSON.stringify( error ) ) 
 		            	}
-                    
+		            	
+		            	
+		            	
                     if (window.cblite) {
 	                    createBeamTag( function(err) {
 	                        log( "createBeamTag done " + JSON.stringify( err ) )
@@ -118,10 +120,12 @@ function doFirstLogin(cb) {
 	                    } )
 	                    
 	                    config.syncReference = triggerSync( function(error, ok) {
+	                    	connectToChanges();
 	                        log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
 	                        cb( error, ok )
 	                    } )
                     } else {
+                    	connectToChanges();
                     	cb(false,"OK");
                     }
                 } )
@@ -249,7 +253,6 @@ function doServerLogout(callBack) {
             	config.db = null;
                 config.views = null;
                 setupConfig( function(error, ok) {
-                	connectToChanges();
                     callBack( error, result )
                 } )
             }
