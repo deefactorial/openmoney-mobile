@@ -556,14 +556,15 @@ function connectToChanges() {
 	};
 	
 	if (typeof config != 'undefined' && typeof config.info != 'undefined') {
-		 config.db.changes( {
-		    	since : config.info.update_seq,
-		        conflicts : true,
-		        include_docs : true,
-		        style: "all_docs"
-		        
-		    }, changes)
-		
+		if(window.cblite) {
+			config.db.changes( {
+			    	since : config.info.update_seq,
+			        conflicts : true,
+			        include_docs : true,
+			        style: "all_docs"
+			        
+			    }, changes)
+		}
 	}
    
 }
