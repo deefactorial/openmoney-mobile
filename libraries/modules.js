@@ -106,10 +106,13 @@ Coax.extend("changes", function(opts, cb) {
   var self = this;
   opts = opts || {};
 
+  var leadingSlash = "/";
+  if(!window.cblite) {
+	  leadingSlash = "";
+  }
  
-  
   if (opts.feed == "continuous") {
-    var listener = self(["/_changes", opts], function(err, ok) {
+    var listener = self([leadingSlash+"_changes", opts], function(err, ok) {
       if (err && err.code == "ETIMEDOUT") {
         return self.changes(opts, cb); // TODO retry limit?
       } else if (err) {
@@ -150,7 +153,7 @@ Coax.extend("changes", function(opts, cb) {
     opts.feed = "longpoll";
     // opts.since = opts.since || 0;
     // console.log("change opts "+JSON.stringify(opts));
-    return self(["/_changes", opts], function(err, ok) {
+    return self([leadingSlash+"_changes", opts], function(err, ok) {
       if (err && err.code == "ETIMEDOUT") {
         return self.changes(opts, cb); // TODO retry limit?
       } else if (err) {
