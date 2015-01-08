@@ -1226,7 +1226,8 @@ module.exports = function(request) {
 //            				  }
             				  newPax += "?" + serialize(value);
             			  } else {
-            				  newPax += value + "/";
+            				  //trailing slash
+            				  newPax += value;
             			  }
             		  })
             		  
