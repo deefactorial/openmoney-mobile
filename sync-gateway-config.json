@@ -234,7 +234,7 @@
                         })
                         
                     } else {
-                    	currency = base64_encode( olddoc.currency );
+                    	currency = base64_encode( olddoc.currency.toLowerCase() );
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
                             channel(olddoc.type + channelDelimiter + olddoc.trading_name.toLowerCase() + channelDelimiter + currency);
