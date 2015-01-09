@@ -567,7 +567,7 @@ function goAddTradingName(parameters) {
 			    var leadingSlash = getLeadingSlash(); 
 		        config.db.put(leadingSlash + doc.type + "," + config.user.name + "," + doc.trading_name.toLowerCase() + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
 		   		 	if (error) {
-		   		 		if (error.status == 409) {
+		   		 		if (error.status == 409 || error.error == "conflict") {
 		   		 			navigator.notification.alert( 'You have already added the trading name ' + doc.trading_name + " in currency " + doc.currency , function() {}, "Invalid Trading Name", "OK")
 		   		 		} else {
 		   		 			alert( JSON.stringify( error ) )
