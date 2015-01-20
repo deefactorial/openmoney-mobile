@@ -51,10 +51,12 @@ function goServerRegistration(parameters) {
 	$( "#autocomplete" ).autocomplete({
 		source: function( request, response ) {
 			console.log("autocomplete requested :" + request.term );
-			var matcher = new RegExp( "" + $.ui.autocomplete.escapeRegex( request.term ) + "$", "i" );
-			response( $.grep( tags, function( item ){
-				return request.term + matcher.test( item );
-			}) );
+			//var matcher = new RegExp( "" + $.ui.autocomplete.escapeRegex( request.term ) + "$", "i" );
+			var resultArray = [];
+			forEach(tags, function(tag) {
+				resultArray.push( request.term + tag );
+			})
+			response( resultArray );
 		}
 	});
 
