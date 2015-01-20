@@ -55,7 +55,7 @@ function goServerRegistration(parameters) {
 			var filterdTags = tags.slice();
 			if(request.term.charAt(request.term.length-1) == '.') {
 				request.term = request.term.substring( 0, request.term.length-1);
-			}
+			} else 
 			
 			if(request.term.charAt(request.term.length-2) == '.') {
 				
@@ -66,7 +66,7 @@ function goServerRegistration(parameters) {
 					}
 				})
 				request.term = request.term.substring( 0, request.term.length-2);
-			}
+			} else 
 			
 			if(request.term.charAt(request.term.length-3) == '.') {
 				filterdTags = [];
@@ -77,7 +77,7 @@ function goServerRegistration(parameters) {
 					}
 				})
 				request.term = request.term.substring( 0, request.term.length-3);
-			}
+			} else 
 			
 			if(request.term.charAt(request.term.length-4) == '.') {
 				filterdTags = [];
