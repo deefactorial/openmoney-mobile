@@ -50,6 +50,7 @@ function goServerRegistration(parameters) {
     var tags = [ ".cc", ".ca", ".us", ".uk"];
 	$( "#autocomplete" ).autocomplete({
 		source: function( request, response ) {
+			console.log("autocomplete requested :" + request.term );
 			var matcher = new RegExp( "" + $.ui.autocomplete.escapeRegex( request.term ) + "$", "i" );
 			response( $.grep( tags, function( item ){
 				return request.term + matcher.test( item );
