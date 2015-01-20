@@ -52,8 +52,43 @@ function goServerRegistration(parameters) {
 		source: function( request, response ) {
 			console.log("autocomplete requested :" + request.term );
 			//var matcher = new RegExp( "" + $.ui.autocomplete.escapeRegex( request.term ) + "$", "i" );
+			var filterdTags = $.clone(tags);
+			if(request.term.charAt(request.term.length-1) == '.') {
+				request.term = substr(request.term, 0, request.term.length-1);
+			}
+			
+			if(request.term.charAt(request.term.length-2) == '.') {
+				var filterdTags = [];
+				tags.forEach(function(tag) {
+					if(tag.charAt(1) == request.term.charAt(request.term.length-1)){
+						filterdTags.push(tag);
+					}
+				})
+			}
+			
+			if(request.term.charAt(request.term.length-3) == '.') {
+				var filterdTags = [];
+				tags.forEach(function(tag) {
+					if(tag.charAt(1) == request.term.charAt(request.term.length-2) &&
+					   tag.charAt(2) == request.term.charAt(request.term.length-1) ){
+						filterdTags.push(tag);
+					}
+				})
+			}
+			
+			if(request.term.charAt(request.term.length-4) == '.') {
+				var filterdTags = [];
+				tags.forEach(function(tag) {
+					if(tag.charAt(1) == request.term.charAt(request.term.length-3) &&
+					   tag.charAt(2) == request.term.charAt(request.term.length-2) &&
+					   tag.charAt(3) == request.term.charAt(request.term.length-1) ){
+						filterdTags.push(tag);
+					}
+				})
+			}
+			
 			var resultArray = [];
-			tags.forEach( function(tag) {
+			filterdTags.forEach( function(tag) {
 				resultArray.push( request.term + tag );
 			})
 			response( resultArray );
