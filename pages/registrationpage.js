@@ -46,6 +46,16 @@ function goServerRegistration(parameters) {
     $( "#content .todo-index" ).off("click").click( function() {
         History.back()
     } )
+    
+    var tags = [ ".cc", ".ca", ".us", ".uk"];
+	$( "#autocomplete" ).autocomplete({
+		source: function( request, response ) {
+			var matcher = new RegExp( "" + $.ui.autocomplete.escapeRegex( request.term ) + "$", "i" );
+			response( $.grep( tags, function( item ){
+				return request.term + matcher.test( item );
+			}) );
+		}
+	});
 
     $( "#content form" ).off("submit").submit( function(e) {
         e.preventDefault()
