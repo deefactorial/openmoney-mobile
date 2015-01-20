@@ -54,33 +54,33 @@ function goServerRegistration(parameters) {
 			//var matcher = new RegExp( "" + $.ui.autocomplete.escapeRegex( request.term ) + "$", "i" );
 			var filterdTags = tags.slice();
 			if(request.term.charAt(request.term.length-1) == '.') {
-				request.term = substr(request.term, 0, request.term.length-1);
+				request.term = request.term.substring( 0, request.term.length-1);
 			}
 			
 			if(request.term.charAt(request.term.length-2) == '.') {
 				
-				var filterdTags = [];
+				filterdTags = [];
 				tags.forEach(function(tag) {
 					if(tag.charAt(1) == request.term.charAt(request.term.length-1)){
 						filterdTags.push(tag);
 					}
 				})
-				request.term = substr(request.term, 0, request.term.length-2);
+				request.term = request.term.substring( 0, request.term.length-2);
 			}
 			
 			if(request.term.charAt(request.term.length-3) == '.') {
-				var filterdTags = [];
+				filterdTags = [];
 				tags.forEach(function(tag) {
 					if(tag.charAt(1) == request.term.charAt(request.term.length-2) &&
 					   tag.charAt(2) == request.term.charAt(request.term.length-1) ){
 						filterdTags.push(tag);
 					}
 				})
-				request.term = substr(request.term, 0, request.term.length-3);
+				request.term = request.term.substring( 0, request.term.length-3);
 			}
 			
 			if(request.term.charAt(request.term.length-4) == '.') {
-				var filterdTags = [];
+				filterdTags = [];
 				tags.forEach(function(tag) {
 					if(tag.charAt(1) == request.term.charAt(request.term.length-3) &&
 					   tag.charAt(2) == request.term.charAt(request.term.length-2) &&
@@ -88,7 +88,7 @@ function goServerRegistration(parameters) {
 						filterdTags.push(tag);
 					}
 				})
-				request.term = substr(request.term, 0, request.term.length-4);
+				request.term = request.term.substring( 0, request.term.length-4);
 			}
 			
 			var resultArray = [];
