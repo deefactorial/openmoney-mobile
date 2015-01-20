@@ -58,12 +58,14 @@ function goServerRegistration(parameters) {
 			}
 			
 			if(request.term.charAt(request.term.length-2) == '.') {
+				
 				var filterdTags = [];
 				tags.forEach(function(tag) {
 					if(tag.charAt(1) == request.term.charAt(request.term.length-1)){
 						filterdTags.push(tag);
 					}
 				})
+				request.term = substr(request.term, 0, request.term.length-2);
 			}
 			
 			if(request.term.charAt(request.term.length-3) == '.') {
@@ -74,6 +76,7 @@ function goServerRegistration(parameters) {
 						filterdTags.push(tag);
 					}
 				})
+				request.term = substr(request.term, 0, request.term.length-3);
 			}
 			
 			if(request.term.charAt(request.term.length-4) == '.') {
@@ -85,6 +88,7 @@ function goServerRegistration(parameters) {
 						filterdTags.push(tag);
 					}
 				})
+				request.term = substr(request.term, 0, request.term.length-4);
 			}
 			
 			var resultArray = [];
