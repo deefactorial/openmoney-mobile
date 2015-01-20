@@ -62,11 +62,10 @@ function goManageAccounts(parameters) {
         } )
         
         
-        $( "#scrollable li.trading_names" ).off( "click", "div")
-		$( "#scrollable li.trading_names" ).on( "click", "div", function() {
+        //$( "#scrollable li.trading_names" ).off( "click", "div")
+		$( "#scrollable li.trading_names" ).off("click").click( function() {
 			var id = $( this ).attr( "data-id" );
-			
-			
+						
 			id = id.replace(/\./g,"\\.")
 			
 			log ("name clicked " + id);
