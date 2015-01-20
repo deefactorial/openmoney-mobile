@@ -52,7 +52,7 @@ function goServerRegistration(parameters) {
 		source: function( request, response ) {
 			console.log("autocomplete requested :" + request.term );
 			//var matcher = new RegExp( "" + $.ui.autocomplete.escapeRegex( request.term ) + "$", "i" );
-			var filterdTags = $.clone(tags);
+			var filterdTags = tags.slice();
 			if(request.term.charAt(request.term.length-1) == '.') {
 				request.term = substr(request.term, 0, request.term.length-1);
 			}
