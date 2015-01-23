@@ -213,6 +213,20 @@ function goPayment(parameters) {
 	                                            var leadingSlash = getLeadingSlash();                                        	                          
 	                                            config.db.put( leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                            	
+	                                            	//trigger a view update
+	                        			   		 	config.views( [ "account_details", {
+	                        			   		        stale : "update_after"
+	                        			   		    } ], function(error, view) {
+	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	                        			   		 	} );
+	                        			   		 	
+	                        			   		 	//trigger a view update
+	                        			   		 	config.views( [ "account_balance", {
+	                        			   		        stale : "update_after"
+	                        			   		    } ], function(error, view) {
+	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	                       			   		 		
+	                        			   		 	} );
 	                                                if (error)
 	                                                    return alert("Error Posting:" + JSON.stringify( error ) )
 	                                                $( "#content form input[name='to']" ).val( "" ) // Clear
@@ -421,12 +435,24 @@ function goTagPayment(parameters) {
 	                                            config.db.put(leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                                if (error)
 	                                                    return alert( JSON.stringify( error ) )
-	                                                $( "#content form input[name='to']" ).val( "" ) // Clear
-	                                                $( "#content form input[name='amount']" ).val( "" ) // Clear
-	                                                $( "#content form textarea" ).val( "" ) // Clear
-	                                                navigator.notification.alert( "You successfully made a payment !"  , function() {  }, "Exists", "OK")
+	                                               
+	                                                //trigger a view update
+	                        			   		 	config.views( [ "account_details", {
+	                        			   		        stale : "update_after"
+	                        			   		    } ], function(error, view) {
+	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	                        			   		 	} );
 	                                                
-	                                                goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] )
+	                                                //trigger a view update
+	                        			   		 	config.views( [ "account_balance", {
+	                        			   		        stale : "update_after"
+	                        			   		    } ], function(error, view) {
+	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	                        			   		 	} );
+	                                                    
+	                                                navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ) }, "Exists", "OK")
+	                                                
+	                                                
 	                                            } )
 	                                        } else {
 	                                        	$( "#submit" ).removeAttr("disabled","disabled");
@@ -514,7 +540,7 @@ function goAddTradingName(parameters) {
 		
 		window.plugins.spinnerDialog.show();
 		config.views( [ "currencies", {
-            include_docs : true, stale : "update_after"
+            include_docs : true
         } ], function(error, currencies) {
 			window.plugins.spinnerDialog.hide();
 		
@@ -573,15 +599,22 @@ function goAddTradingName(parameters) {
 		   		 			alert( JSON.stringify( error ) )
 		   		 		}
 		   		 	} else {
-		   		 		if (window.cblite) {
-		   		 			History.back();
-		   		 		} else {
-		   		 			//wait a second for the document put to update the view.
-		   		 			setTimeout(function(){
-		   		 				goPayment([]);
-		   		 			},1000);
-		   		 			
-		   		 		}
+		   		 		//trigger a view update
+			   		 	config.views( [ "accounts", {
+			   		        stale : "update_after"
+			   		    } ], function(error, view) {
+			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+			   		 		
+			   		 		if (window.cblite) {
+			   		 			History.back();
+			   		 		} else {
+			   		 			//wait a second for the document put to update the view.
+			   		 			
+			   		 			goPayment([]);
+			   		 			
+			   		 			
+			   		 		}
+			   		 	} );
 		   		 		
 		   		 	}
 		            

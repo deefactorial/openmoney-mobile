@@ -203,9 +203,20 @@ function goMerchantPayment(parameters) {
 	                                                    	$( "#submit" ).removeAttr("disabled","disabled");
 	                                                        return alert( JSON.stringify( error ) )
 	                                                    }
-	                                                    $( "#content form input[name='to']" ).val( "" ) // Clear
-	                                                    $( "#content form input[name='amount']" ).val( "" ) // Clear
-	                                                    $( "#content form textarea" ).val( "" ) // Clear
+	                                                    
+	                                                    //trigger a view update
+	                    	    			   		 	config.views( [ "account_details", {
+	                    	    			   		        stale : "update_after"
+	                    	    			   		    } ], function(error, view) {
+	                    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	                    	    			   		 	} );
+	                    	    			   		 	
+	                    	    			   		 	//trigger a view update
+	                    	    			   		 	config.views( [ "account_balance", {
+	                    	    			   		        stale : "update_after"
+	                    	    			   		    } ], function(error, view) {
+	                    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	                    	    			   		 	} );
 	
 	                                                    
 	                                                    navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !"  , function() {  }, "Success", "OK")
@@ -328,9 +339,21 @@ function goCustomerPayment(parameters) {
                                     config.db.put(leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
                                         if (error)
                                             return alert( JSON.stringify( error ) )
-                                        $( "#content form input[name='to']" ).val( "" ) // Clear
-                                        $( "#content form input[name='amount']" ).val( "" ) // Clear
-                                        $( "#content form textarea" ).val( "" ) // Clear
+                                        
+                                        //trigger a view update
+			    			   		 	config.views( [ "account_details", {
+			    			   		        stale : "update_after"
+			    			   		    } ], function(error, view) {
+			    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+			    			   		 	} );
+			    			   		 	
+			    			   		 	//trigger a view update
+			    			   		 	config.views( [ "account_balance", {
+			    			   		        stale : "update_after"
+			    			   		    } ], function(error, view) {
+			    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+			    			   		 	} );    
+                                            
                                         nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
                                             // success callback
                                         }, function() {
@@ -491,9 +514,20 @@ function goCustomerPayment(parameters) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    return alert( JSON.stringify( error ) )
 	                                }
-	                                $( "#content form input[name='to']" ).val( "" ) // Clear
-	                                $( "#content form input[name='amount']" ).val( "" ) // Clear
-	                                $( "#content form textarea" ).val( "" ) // Clear
+	                                
+	                                //trigger a view update
+    	    			   		 	config.views( [ "account_details", {
+    	    			   		        stale : "update_after"
+    	    			   		    } ], function(error, view) {
+    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+    	    			   		 	} );
+    	    			   		 	
+    	    			   		 	//trigger a view update
+    	    			   		 	config.views( [ "account_balance", {
+    	    			   		        stale : "update_after"
+    	    			   		    } ], function(error, view) {
+    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+    	    			   		 	} );
 
 	                                if (typeof nfc != 'undefined') {
 		                                nfc.removeMimeTypeListener( "application/com.openmoney.mobile", customerListner, function() {
