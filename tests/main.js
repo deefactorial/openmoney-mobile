@@ -1,4 +1,7 @@
 $(function() {
+	
+	jasmineEnv.addReporter(new jasmine.JSReporter());
+	
     // Handler for .ready() called.
     QUnit.test( "qunit test", function( assert ) {
         assert.ok( 1 == "1", "Passed!" );
