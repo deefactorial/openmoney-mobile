@@ -21,23 +21,30 @@ limitations under the License.
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
         <link rel="stylesheet" type="text/css" href="css/topcoat-mobile-light.min.css">
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link rel="stylesheet" type="text/css" href="css/qunit.css" />
+        <link rel="stylesheet" type="text/css" href="libraries/autocomplete/jquery-ui.min.css" />
         <title>openmoney</title>
     </head>
     <body>
-        <div id="content"></div>
+        <div id="content" class="content"></div>
+        
         <div id="qunit"></div>
         <div id="qunit-fixture"></div>
         
         <!-- Libraries -->
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="libraries/zepto.min.js"></script>
+        <!-- <script type="text/javascript" src="libraries/zepto.min.js"></script>
         <script type="text/javascript" src="libraries/zepto.touch.js"></script>
-        <script type="text/javascript" src="libraries/zepto.history.js"></script>
+        <script type="text/javascript" src="libraries/zepto.history.js"></script> -->
+        <script type="text/javascript" src="libraries/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="libraries/jquery.mobile.custom.min.js"></script>
+        <script type="text/javascript" src="libraries/jquery.history.js"></script>
         <script type="text/javascript" src="libraries/async.js"></script>
         <script type="text/javascript" src="libraries/rijndael.js"></script>
         <script type="text/javascript" src="libraries/mcrypt.js"></script>
         <script type="text/javascript" src="libraries/base64.js"></script>
+        <script type="text/javascript" src="libraries/autocomplete/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="tests/main.js"></script>
+        <!--  script type="text/javascript" src="libraries/hammer.min.js"></script>-->
         <!-- script type="text/javascript" src="libraries/sjcl.js"></script-->
         <!-- script type="text/javascript" src="libraries/phonegap.facebook.inappbrowser.js"></script> -->
         
@@ -66,10 +73,6 @@ limitations under the License.
         <script type="text/javascript" src="pages/editnfctagpage.js"></script>
         <script type="text/javascript" src="pages/personalpaymentpage.js"></script>
         <script type="text/javascript" src="pages/merchantpaymentpage.js"></script>
-        
-        <!-- Tests -->
-        <script type="text/javascript" src="js/qunit.js"></script>
-        <script type="text/javascript" src="tests/main.js"></script>
         
 <!-- mustache templates -->
 <script type="text/mustache" id="index-mu">
@@ -105,7 +108,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
 </div>
 </script>
 <script type="text/mustache" id="indexList-mu">
@@ -162,7 +165,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
 </div>
 </script>
 <script type="text/mustache" id="listTitle-mu">
@@ -199,7 +202,7 @@ limitations under the License.
         </div>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <ul class="topcoat-list" id="share-list">
         {{#rows}}
@@ -234,7 +237,7 @@ limitations under the License.
         </div>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <img src="{{image_path}}" class="todo-image" />
 </div>
 </script>
@@ -257,7 +260,7 @@ limitations under the License.
         </div>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
@@ -288,12 +291,12 @@ limitations under the License.
         </div>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
                 <li class="topcoat-list__item" data-id="username">
-                    <input type="text" class="topcoat-text-input" name="username" value="" placeholder="Username" /> 
+                    <input id="autocomplete" type="text" class="topcoat-text-input" name="username" value="" placeholder="Username" /> 
                 </li>
                 <li class="topcoat-list__item" data-id="email">
                     <input type="text" class="topcoat-text-input" name="email" value="" placeholder="Email" /> 
@@ -322,7 +325,7 @@ limitations under the License.
         </div>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
@@ -370,7 +373,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
             <ul class="topcoat-list">
                 <li class="topcoat-list__item" data-id="trading_name">
@@ -429,7 +432,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <ul class="topcoat-list">
             <li class="topcoat-list__item" data-id="create">
@@ -454,20 +457,20 @@ limitations under the License.
             </li>
         {{#rows}}
             {{#doc}}
-                <li id="{{_id}}" class="topcoat-list__item trading_names" data-id="{{_id}}" style="margin:0;padding:0;">
-                    <div class="topcoat-list">
-                        <div id="{{_id}}div" class="topcoat-list__item header" style="height:70px;padding-left:20px;padding-right:20px;padding-top:0;padding-bottom:0;">
-                            <img id="{{_id}}icon" class="next" style="float:left;margin-right:20px;margin-top:20px;margin-bottom:20px;" />
+                <li id="{{_id}}" class="topcoat-list__item trading_names" data-id="{{_id}}" style="margin: 0;padding: 0;">
+                    <div class="topcoat-list" style="margin:0; padding: 0;">
+                        <div id="{{_id}}div" data-id="{{_id}}" class="topcoat-list__item header" style="height:74px;padding-left:20px;padding-right:20px;padding-top:0;padding-bottom:0;">
+                            <img id="{{_id}}icon" class="next" style="float:left;margin-right:20px;margin-top:20px;margin-bottom:20px;padding:16px;width:0px;height:0px;" src="./img/dark-next.png"/>
                             <p id="{{_id}}p" class="{{#archived}}archived{{/archived}}" data-id="{{_id}}" style="bachground:white;line-height:42px;">{{name}} {{currency}}</p>
                         </div>
                         <ul id="{{_id}}list" class="topcoat-list__container" style="display:none;">
                             <li class="topcoat-list__item center" data-id="capacity">
                                 <label for="capacity{{name}}{{currency}}">{{name}} {{currency}} capacity</label>
-                                <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="capacity{{name}}{{currency}}" min="0" max="1.79e+308" value="{{capacity}}" placeholder="Capacity Limit" pattern="^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$"/>
+                                <input type="text" class="topcoat-text-input number" name="capacity{{name}}{{currency}}" value="{{capacity}}" placeholder="Capacity Limit" pattern="^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$"/>
                             </li>
                             <li class="topcoat-list__item center" data-id="transaction">
                                 <label for="transaction{{name}}{{currency}}">{{name}} {{currency}} transaction limit</label>
-                                <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="transaction{{name}}{{currency}}"  min="0" max="1.79e+308" value="{{transaction}}" placeholder="Transaction Limit" pattern="^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$" /> 
+                                <input type="text" class="topcoat-text-input number" name="transaction{{name}}{{currency}}" value="{{transaction}}" placeholder="Transaction Limit" pattern="^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$" /> 
                             </li>
                         </ul>
                     </div>
@@ -539,7 +542,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
@@ -563,12 +566,19 @@ limitations under the License.
                 </li>
 
                 <li class="topcoat-list__item" data-id="space">
-                    <select name="space" class="om-select-dark" >
-                        <option value="" selected="selected">in space (Optional)</option>
-                        {{#spaces}}{{#rows}}
-                            <option value="{{key}}">{{key}}</option>
-                        {{/rows}}{{/spaces}}
-                    </select>
+                    <div style="display:table; padding:0; margin: 0; width:100%">
+                        <div style="width: 50%;display:table-cell;vertical-align: middle;">
+                             <select name="space" class="om-select-dark" >
+                                <option value="cc" selected="selected">in space</option>
+                                {{#spaces}}{{#rows}}
+                                <option value="{{key}}">{{key}}</option>
+                                {{/rows}}{{/spaces}}
+                             </select>
+                        </div>
+                        <div style="width: 49%;display:table-cell;">
+                            <input type="button" class="topcoat-button" name="addspace" value=" add space " />
+                        </div>
+                    </div>
                 </li>
 
                 <li class="topcoat-list__item" data-id="currency" >
@@ -620,7 +630,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
@@ -629,6 +639,49 @@ limitations under the License.
                 </li>
                 <li class="topcoat-list__item" data-id="type">
                     <input type="submit" class="topcoat-button" name="submit" value=" Add Currency " />
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+</script>
+<script type="text/mustache" id="add_space-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item center half">
+           <h1 class="topcoat-navigation-bar__title">Add Space</h1>
+        </div>
+        <div class="topcoat-navigation-bar__item right quarter om-padded">
+            
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable" class="scrollable">
+    <div class="topcoat-list__container">
+        <form>
+            <ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="type">
+                    <input type="text" class="topcoat-text-input" name="space" value="" placeholder="Space" />
+                </li>
+                <li class="topcoat-list__item" data-id="type">
+                    <input type="submit" class="topcoat-button" name="submit" value=" Add Space " />
                 </li>
             </ul>
         </form>
@@ -667,12 +720,14 @@ limitations under the License.
 
                 <li class="topcoat-list__item" data-id="subspace">
                     <select name="subspace" class="om-select-dark" >
-                        <option value="" selected="selected">in space (Optional)</option>
+                        <option value="cc" selected="selected">in space</option>
+                        <option value="cc">cc</option>
                         {{#spaces}}{{#rows}}
                             <option value="{{key}}">{{key}}</option>
                         {{/rows}}{{/spaces}}
                     </select>
                 </li>
+
                 <li class="topcoat-list__item" data-id="submit">
                     <input type="submit" class="topcoat-button" name="create" value=" Create " /> 
                 </li>
@@ -706,7 +761,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
@@ -760,7 +815,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
@@ -824,7 +879,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
@@ -933,7 +988,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
@@ -994,7 +1049,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
 
     </div>
@@ -1028,7 +1083,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
 
     </div>
@@ -1062,7 +1117,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <ul class="topcoat-list">
             <li class="topcoat-list__item" data-id="create">
@@ -1111,7 +1166,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list__container">
         <form>
             <ul class="topcoat-list">
@@ -1196,7 +1251,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list">
         <div class="topcoat-tab-bar">
         <label class="topcoat-tab-bar__item half">
@@ -1213,23 +1268,94 @@ limitations under the License.
                 <li class="topcoat-list__item" data-id="from" style="text-align:center;">
                     <label for="from">FROM</label>
                     <select name="from" class="om-select-dark" data-native-menu="false"  >
-                        {{#rows}}
+                        {{#from}}{{#rows}}
                             <option value="{{id}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
-                        {{/rows}}
+                        {{/rows}}{{/from}}
                     </select>
                 </li>
                 <li class="topcoat-list__item" data-id="to" style="text-align:center;">
-                    <label for="to">TO</label>
-                    <input type="text" class="topcoat-text-input" name="to" value="" placeholder="Recipient Trading Name" /> 
+                    <label for="to" >TO</label>
+                    <div style="display:table; padding:0; margin: 0; width:100%">
+                        <div style="width: 50%;display:table-cell;vertical-align: middle;">
+                            <select name="to" class="om-select-dark" >
+                                <option value="cc" selected="selected">Receiver</option>
+                                {{#to}}{{#rows}}
+                                    <option value="{{#key}}{{trading_name}}{{/key}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
+                                {{/rows}}{{/to}}
+                            </select>
+                        </div>
+                        <div style="width: 49%;display:table-cell;">
+                            <input type="button" class="topcoat-button" name="add" value=" add receiver " />
+                        </div>
+                    </div>
                 </li>
                 <li class="topcoat-list__item" data-id="amount">
-                    <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
+                    <input type="text" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
                 </li>
                 <li class="topcoat-list__item" data-id="description">
                     <input type="text" class="topcoat-text-input" name="description" placeholder="Description" />
                 </li>
                 <li class="topcoat-list__item" data-id="submit">
                     <input type="submit" class="topcoat-button" id="submit" name="create" value=" Make Payment " /> 
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+</script>
+<script type="text/mustache" id="add_trading_name-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item center half">
+           <h1 class="topcoat-navigation-bar__title">Add Receiver</h1>
+        </div>
+        <div class="topcoat-navigation-bar__item right quarter om-padded">
+            
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable" class="scrollable">
+    <div class="topcoat-list__container">
+        <form>
+            <ul class="topcoat-list">
+                <li class="topcoat-list__item" data-id="type">
+                    <input type="text" class="topcoat-text-input" name="trading_name" value="" placeholder=" Trading Name " required/>
+                </li>
+                <li class="topcoat-list__item" data-id="currency" >
+                    <div style="display:table; padding:0; margin: 0; width:100%">
+                        <div style="width: 50%;display:table-cell;vertical-align: middle;">
+                            <select name="currency" class="om-select-dark" >
+                                <option value="cc" selected="selected">currency</option>
+                                {{#rows}}
+                                    <option value="{{key}}">{{key}}</option>
+                                {{/rows}}
+                            </select>
+                        </div>
+                        <div style="width: 49%;display:table-cell;">
+                            <input type="button" class="topcoat-button" name="add" value=" add currency " />
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="topcoat-list__item" data-id="type">
+                    <input type="submit" class="topcoat-button" name="submit" value=" Add Receiver " />
                 </li>
             </ul>
         </form>
@@ -1269,7 +1395,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list">
         <div class="topcoat-tab-bar">
             <label class="topcoat-tab-bar__item half">
@@ -1346,7 +1472,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list">
         <div class="topcoat-tab-bar">
         <label class="topcoat-tab-bar__item half">
@@ -1379,7 +1505,7 @@ limitations under the License.
                 </li>
                 {{/from}}
                 <li class="topcoat-list__item" data-id="amount">
-                    <input type="text" onfocus="this.type='number'" onblur="this.type='text'" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
+                    <input id="amount" type="text" class="topcoat-text-input" name="amount" value="" placeholder="amount" /> 
                 </li>
                 <li class="topcoat-list__item" data-id="submit">
                     <input type="submit" class="topcoat-button" id="submit" name="create" value=" Receive Payment " /> 
@@ -1422,7 +1548,7 @@ limitations under the License.
         </label>
     </div>
 </header>
-<div id="scrollable">
+<div id="scrollable" class="scrollable">
     <div class="topcoat-list">
         <div class="topcoat-tab-bar">
         <label class="topcoat-tab-bar__item half">
@@ -1458,4 +1584,3 @@ limitations under the License.
 </script>
     </body>
 </html>
-
