@@ -11,7 +11,9 @@ module.exports = function(grunt) {
 			all : {
 				options : {
 					urls : [ 'https://cloud.openmoney.cc/webclient/tests.html' ], build : process.env.CI_BUILD_NUMBER, testname : 'Sauce Unit Test for openmoney',
-					browsers : [ { browserName : 'firefox', version : '11', platform : 'XP'}, { browserName : 'firefox', version : '11', platform : 'Linux'} ],
+					browsers : [ { browserName : 'firefox', version : '11', platform : 'XP'},
+					             { browserName : 'firefox', version : '11', platform : 'Linux'},
+					             { browserName : 'firefox', version : '11', platform : 'OS X 10.9'}],
 					// optionally, he `browsers` param can be a flattened array:
 					// [["XP", "firefox", 19], ["XP", "chrome", 31]]
 					onTestComplete : function(result, callback) {
