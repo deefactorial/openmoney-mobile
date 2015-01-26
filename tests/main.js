@@ -43,4 +43,5 @@ $(function() {
         assert.ok( typeof window.cblite == 'undefined', "Couchbase Plugin not Loaded!" );
     });
 
+    
 });

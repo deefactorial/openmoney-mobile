@@ -1,3 +1,5 @@
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/deefactorial.svg)](https://saucelabs.com/u/deefactorial)
+
 # openmoney-mobile
 
 A mobile application to enable community currency trade.
