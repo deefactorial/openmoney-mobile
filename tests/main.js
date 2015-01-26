@@ -38,4 +38,9 @@ $(function() {
     QUnit.test( "jquery test", function( assert ) {
         assert.ok( typeof window.jQuery != 'undefined', "Jquery Passed!" );
     });
+	
+    QUnit.test( "jquery test", function( assert ) {
+        assert.ok( typeof window.jQuery == 'undefined', "Jquery Failed!" );
+    });
+
 });
