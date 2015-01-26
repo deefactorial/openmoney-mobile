@@ -39,8 +39,8 @@ $(function() {
         assert.ok( typeof window.jQuery != 'undefined', "Jquery Passed!" );
     });
 	
-    QUnit.test( "jquery test", function( assert ) {
-        assert.ok( typeof window.jQuery == 'undefined', "Jquery Failed!" );
+    QUnit.test( "Couchbase Plugin", function( assert ) {
+        assert.ok( typeof window.cblite == 'undefined', "Couchbase Plugin not Loaded!" );
     });
 
 });
