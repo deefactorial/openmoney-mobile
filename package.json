@@ -40,7 +40,8 @@
 	"grunt": "~0.4.1"
 },
 "devDependencies": {
-	"grunt-saucelabs": "^8.5.0"
+	"grunt-saucelabs": "^8.5.0",
+	"request": "^2.51.0"
 },
 "keywords": [
 "gruntplugin",
