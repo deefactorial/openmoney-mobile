@@ -1,0 +1,55 @@
+{
+	"name": "openmoney-mobile",
+	"description": "Grunt tasks for building and testing openmoney-mobile project",
+	"version": "2.0.15",
+	"homepage": "https://github.com/deefactorial/openmoney-mobile",
+	"author": {
+		"name": "deefactorial",
+		"email": "deefactorial@gmail.com",
+		"url": "http://openmoney.cc"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/deefactorial/openmoney-mobile.git"
+	},
+	"bugs": {
+		"url": "https://github.com/deefactorial/openmoney-mobile/issues"
+	},
+	"licenses": [
+{
+	"type": "Apache V2.0",
+	"url": "http://www.apache.org/licenses/LICENSE-2.0"
+}
+],
+"engines": {
+	"node": ">=0.6",
+	"npm": ">=1.2.12"
+},
+"scripts": {
+	"test": "grunt"
+},
+"dependencies": {
+	"colors": "~1.0.0",
+	"lodash": "~2.4.1",
+	"q": "~1.0.0",
+	"requestretry": "~1.2.2",
+	"sauce-tunnel": "~2.1.1",
+	"saucelabs": "~0.1.1"
+},
+"peerDependencies": {
+	"grunt": "~0.4.1"
+},
+"devDependencies": {
+	"grunt-saucelabs": "^8.5.0"
+},
+"keywords": [
+"gruntplugin",
+"grunt",
+"saucelabs",
+"test",
+"jasmine",
+"mocha",
+"qunit",
+"yui"
+]
+}
