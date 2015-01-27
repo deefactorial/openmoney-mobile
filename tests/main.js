@@ -83,7 +83,7 @@ $(function() {
 			assert.ok( true, "and one extra assert after each test" );
 		}
 	} );
-	QUnit.test( "test with setup and teardown", function() {
+	QUnit.test( "test with setup and teardown", function( assert ) {
 		assert.expect( 2 );
 	} );
 
