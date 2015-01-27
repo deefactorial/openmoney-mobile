@@ -155,7 +155,7 @@ function doRegistration(callBack) {
             if (error) { return callBack( error ) }
             setupConfig( function(error, ok){
             	if (error) {
-            		log( "Error setting up config: " + JSON.stringify( error ) ) 
+            		callBack( "Error setting up config: " + JSON.stringify( error ) ) 
             	}
 	            if (window.cblite) {
 		            createBeamTag( function(err) {
