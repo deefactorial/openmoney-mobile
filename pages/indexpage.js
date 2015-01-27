@@ -98,7 +98,7 @@ function goIndex(parameters) {
 			        goList( [ id ] )
 			    } )
 			    
-			    
+			    window.dbChangedStewardTradingNamesDone();
 	        } )
 	        
     	}
