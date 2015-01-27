@@ -97,8 +97,10 @@ $(function() {
 	    		});
 	    	});
 		}, teardown : function(assert) {
+			var done2 = assert.async();
 			$.when($("#content button.openmoney-logout").trigger("click")).done(function(){
 				assert.ok( true, "and one extra assert after each test" );
+				done2();
 			})			
 		}
 	} );
