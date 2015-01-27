@@ -43,15 +43,15 @@ function goServerLogin(parameters) {
 		
 	}
 
-    $( "#content .todo-index" ).off("click").click( function() {
+    $( "#content .openmoney-index" ).off("click").click( function() {
         History.back()
     } )
 
-    $( "#content .todo-register" ).off("click").click( function() {
+    $( "#content .openmoney-register" ).off("click").click( function() {
         goServerRegistration( [ callBack ] )
     } )
 
-    $( "#content .todo-lost" ).off("click").click( function() {
+    $( "#content .openmoney-lost" ).off("click").click( function() {
         goLostPassword( [ callBack ] )
     } )
 

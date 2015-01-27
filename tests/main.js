@@ -39,8 +39,24 @@ $(function() {
         assert.ok( typeof window.jQuery != 'undefined', "Jquery Passed!" );
     });
 	
-    QUnit.test( "Couchbase Plugin", function( assert ) {
+    QUnit.test( "Couchbase Plugin not Loaded", function( assert ) {
         assert.ok( typeof window.cblite == 'undefined', "Couchbase Plugin not Loaded!" );
+    });
+    
+    QUnit.test( "Registration test", function( assert ) {
+    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
+    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){
+    			var currentTime = new Date().getTime();
+    			var username = "testuser" + currentTime;
+    			$("input[name='username']").val(username);
+                $("input[name='email']").val( username + "@openmoney.cc");
+                $("input[name='password']").val("password " + currentTime);                
+                $.when($("#registerform").submit()).done(function(){                	
+                	var testvalue = $("li.om-list-name").attr("data-id");
+                	assert.ok( testvalue == "trading_name," + username + ".cc,cc", "Registration test:" + testvalue);
+                });
+    		});
+    	});        
     });
 
     
