@@ -46,14 +46,21 @@ $(function() {
         assert.ok( typeof window.cblite == 'undefined', "Couchbase Plugin not Loaded!" );
     });
     
-    QUnit.module( "user tests" );
+    function randomString(length, chars) {
+        var result = '';
+        for ( var i = length; i > 0; --i)
+            result += chars[Math.round( Math.random() * (chars.length - 1) )];
+        return result;
+    }
+    
+    QUnit.module( "registration" );
     QUnit.test( "Registration test", function( assert ) {
     	assert.expect( 1 );
     	var done1 = assert.async();
     	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
     		$.when($("#content button.openmoney-register").trigger("click")).done(function(){
     			var currentTime = new Date().getTime();
-    			var username = "testuser" + currentTime;
+    			var username = "testuser" + currentTime +  randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
     			$("input[name='username']").val(username);
                 $("input[name='email']").val( username + "@openmoney.cc");
                 $("input[name='password']").val("password " + currentTime);                
