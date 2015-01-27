@@ -76,7 +76,7 @@ $(function() {
 //    	});        
 //    });
 	    
-    QUnit.module( "module", {
+    QUnit.module( "registration", {
 		setup : function(assert) {
 			var done1 = assert.async();
 	    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
@@ -105,7 +105,11 @@ $(function() {
 		}
 	} );
     
-	QUnit.test( "test with setup and teardown", function( assert ) {
-		assert.expect( 2 );
+	QUnit.test( "Personal Payment", function( assert ) {
+		assert.expect( 3 );		
+		var done3 = assert.async();		
+		$.when($("#content button.om-payments").trigger("click")).done(function(){
+			
+		})
 	} );
 });

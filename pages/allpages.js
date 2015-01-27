@@ -266,7 +266,7 @@ function setTabs() {
     } )
 
     $( "#content .om-payments" ).off("click").click( function() {
-    	if (typeof config.user != 'undefined' && typeof config.user.profile != 'undefined') {
+    	if (typeof config != 'undefined' && typeof config.user != 'undefined' && typeof config.user.profile != 'undefined') {
     		if (config.user.profile.mode) {
     			goMerchantPayment([])
     		} else {
