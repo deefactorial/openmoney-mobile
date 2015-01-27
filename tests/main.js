@@ -30,6 +30,9 @@ $(function() {
 	  });
 	});
 	
+
+
+	QUnit.module( "library tests" );
     // Handler for .ready() called.
     QUnit.test( "qunit test", function( assert ) {
         assert.ok( typeof window.QUnit != 'undefined', "Qunit Passed!" );
@@ -43,6 +46,7 @@ $(function() {
         assert.ok( typeof window.cblite == 'undefined', "Couchbase Plugin not Loaded!" );
     });
     
+    QUnit.module( "user tests" );
     QUnit.test( "Registration test", function( assert ) {
     	assert.expect( 1 );
     	var done1 = assert.async();
@@ -58,10 +62,7 @@ $(function() {
                 		var testvalue = $("#content li.om-list-name").attr("data-id");
                     	assert.ok( testvalue == "trading_name," + username + ".cc,cc", "Registration test:" + testvalue);
                     	done1();
-                	};
-//                	setTimeout(function(){
-//                		
-//                	},5000);                	
+                	};            	
                 });
     		});
     	});        
