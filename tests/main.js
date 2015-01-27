@@ -53,28 +53,28 @@ $(function() {
         return result;
     }
     
-    QUnit.module( "registration" );
-    QUnit.test( "Registration test", function( assert ) {
-    	assert.expect( 1 );
-    	var done1 = assert.async();
-    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
-    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){
-    			var currentTime = new Date().getTime();
-    			var username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-    			$("input[name='username']").val(username);
-                $("input[name='email']").val( username + "@openmoney.cc");
-                $("input[name='password']").val("password " + currentTime);                
-                $.when($("#registerform").submit()).done(function(){
-                	window.dbChangedStewardTradingNamesDone = function() {
-                		var testvalue = $("#content li.om-list-name").attr("data-id");
-                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
-                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' != '" + expected + "'");
-                    	done1();
-                	};            	
-                });
-    		});
-    	});        
-    });
+//    QUnit.module( "registration" );
+//    QUnit.test( "Registration test", function( assert ) {
+//    	assert.expect( 1 );
+//    	var done1 = assert.async();
+//    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
+//    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){
+//    			var currentTime = new Date().getTime();
+//    			var username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+//    			$("input[name='username']").val(username);
+//                $("input[name='email']").val( username + "@openmoney.cc");
+//                $("input[name='password']").val("password " + currentTime);                
+//                $.when($("#registerform").submit()).done(function(){
+//                	window.dbChangedStewardTradingNamesDone = function() {
+//                		var testvalue = $("#content li.om-list-name").attr("data-id");
+//                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
+//                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' != '" + expected + "'");
+//                    	done1();
+//                	};            	
+//                });
+//    		});
+//    	});        
+//    });
 	    
     QUnit.module( "module", {
 		setup : function(assert) {
