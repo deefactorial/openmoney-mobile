@@ -51,9 +51,11 @@ $(function() {
     			$("input[name='username']").val(username);
                 $("input[name='email']").val( username + "@openmoney.cc");
                 $("input[name='password']").val("password " + currentTime);                
-                $.when($("#registerform").submit()).done(function(){                	
-                	var testvalue = $("li.om-list-name").attr("data-id");
-                	assert.ok( testvalue == "trading_name," + username + ".cc,cc", "Registration test:" + testvalue);
+                $.when($("#registerform").submit()).done(function(){
+                	setTimeout(function(){
+                		var testvalue = $("li.om-list-name").attr("data-id");
+                    	assert.ok( testvalue == "trading_name," + username + ".cc,cc", "Registration test:" + testvalue);
+                	},150);                	
                 });
     		});
     	});        
