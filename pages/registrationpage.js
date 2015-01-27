@@ -200,14 +200,14 @@ function doServerRegistration(callBack) {
         var url = REMOTE_SERVER_REGISTRATION_URL;
         var login = coax( url );
         
-        var credentials = {}
+        var credentials = {};
         credentials.username = config.user.name;
         credentials.password = config.user.password;
         if( typeof config.user.email != 'undefined' ) {
         	credentials.email = config.user.email;
         }
-        log( "http " + url + " " + JSON.stringify( credentials ) )
-        $.POST(url,credentials,
+        log( "http " + url + " " + JSON.stringify( credentials ) );
+        $.post( url , credentials,
         	function(result){
         		callBack( false, result )
         	}).fail(function(){
