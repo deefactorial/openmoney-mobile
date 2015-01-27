@@ -55,7 +55,7 @@ $(function() {
                 	setTimeout(function(){
                 		var testvalue = $("li.om-list-name").attr("data-id");
                     	assert.ok( testvalue == "trading_name," + username + ".cc,cc", "Registration test:" + testvalue);
-                	},150);                	
+                	},250);                	
                 });
     		});
     	});        
