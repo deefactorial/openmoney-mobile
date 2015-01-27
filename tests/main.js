@@ -67,7 +67,7 @@ $(function() {
                 $.when($("#registerform").submit()).done(function(){
                 	window.dbChangedStewardTradingNamesDone = function() {
                 		var testvalue = $("#content li.om-list-name").attr("data-id");
-                		var expected = "trading_name," + username + ".cc,cc";
+                		var expected = "trading_name," + username.toLower() + ".cc,cc";
                     	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' != '" + expected + "'");
                     	done1();
                 	};            	
