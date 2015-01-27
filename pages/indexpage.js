@@ -51,6 +51,7 @@ function goIndex(parameters) {
     	tradingNamesViewLock = true;
     	if(currentpage == 'Openmoney') {
     		window.plugins.spinnerDialog.show();
+    		if( typeof config.views != 'undefined' )
 	        config.views( [ "accounts", {
 	            descending : true, include_docs : true, stale : "update_after"
 	        } ], function(err, view) {
