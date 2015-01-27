@@ -44,6 +44,8 @@ $(function() {
     });
     
     QUnit.test( "Registration test", function( assert ) {
+    	assert.expect( 1 );
+    	var done1 = assert.async();
     	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
     		$.when($("#content button.openmoney-register").trigger("click")).done(function(){
     			var currentTime = new Date().getTime();
@@ -55,6 +57,7 @@ $(function() {
                 	setTimeout(function(){
                 		var testvalue = $("li.om-list-name").attr("data-id");
                     	assert.ok( testvalue == "trading_name," + username + ".cc,cc", "Registration test:" + testvalue);
+                    	done1();
                 	},250);                	
                 });
     		});
