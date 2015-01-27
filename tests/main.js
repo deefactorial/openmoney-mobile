@@ -75,6 +75,17 @@ $(function() {
     		});
     	});        
     });
+	    
+    QUnit.module( "module", {
+		setup : function(assert) {
+			assert.ok( true, "one extra assert per test" );
+		}, teardown : function(assert) {
+			assert.ok( true, "and one extra assert after each test" );
+		}
+	} );
+	QUnit.test( "test with setup and teardown", function() {
+		assert.expect( 2 );
+	} );
 
     
 });

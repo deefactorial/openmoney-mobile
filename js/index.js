@@ -338,6 +338,32 @@ function setupConfig(done) {
         		log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
         		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
     	    	
+//    	    	// define vars
+//    	    	var username = window.config.user.name;
+//    	    	var password = window.config.user.password;
+//    	    	var url = url + appDbName + "/";
+//    	    	var data = {};
+//
+//    	    	// ajax call
+//    	    	$.ajax({
+//    	    	    url: url,
+//    	    	    data: data,
+//    	    	    dataType : 'jsonp',
+//    	    	    beforeSend : function(xhr) {
+//    	    	      // generate base 64 string from username + password
+//    	    	      var bytes = Crypto.charenc.Binary.stringToBytes(username + ":" + password);
+//    	    	      var base64 = Crypto.util.bytesToBase64(bytes);
+//    	    	      // set header
+//    	    	      xhr.setRequestHeader("Authorization", "Basic " + base64);
+//    	    	    },
+//    	    	    fail : function() {
+//    	    	    	// error handler
+//    	    	    },
+//    	    	    done: function(data) {
+//    	    	        // success handler
+//    	    	    }
+//    	    	});
+    	    	
         	} else {
         		var xmlHttp = new XMLHttpRequest()
         		xmlHttp.open( 'GET', url, false )
