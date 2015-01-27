@@ -99,13 +99,11 @@ $(function() {
 		}, teardown : function(assert) {
 			$.when($("#content button.openmoney-logout").trigger("click")).done(function(){
 				assert.ok( true, "and one extra assert after each test" );
-			})
-			
+			})			
 		}
 	} );
+    
 	QUnit.test( "test with setup and teardown", function( assert ) {
 		assert.expect( 2 );
 	} );
-
-    
 });
