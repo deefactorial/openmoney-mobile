@@ -206,12 +206,18 @@ function doServerRegistration(callBack) {
         if( typeof config.user.email != 'undefined' ) {
         	credentials.email = config.user.email;
         }
-        log( "http " + url + " " + JSON.stringify( credentials ) ) 
-        login.post( credentials , function(error, result) {
-            if (error) { return callBack( error ) }
-            log( "Server Regisration Result:" + JSON.stringify( result ) )
-            callBack( false, result )
-        } )
+        log( "http " + url + " " + JSON.stringify( credentials ) )
+        $.POST(url,credentials,
+        	function(result){
+        		callBack( false, result )
+        	}).fail(function(){
+        		callBack("failed to submit registration")
+        	})
+//        login.post( credentials , function(error, result) {
+//            if (error) { return callBack( error ) }
+//            log( "Server Regisration Result:" + JSON.stringify( result ) )
+//            callBack( false, result )
+//        } )
     } else {
         return callBack( {
             reason : "Configuration User is not Set!"
