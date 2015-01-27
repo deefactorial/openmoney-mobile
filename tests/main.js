@@ -55,10 +55,10 @@ $(function() {
                 $("input[name='password']").val("password " + currentTime);                
                 $.when($("#registerform").submit()).done(function(){
                 	setTimeout(function(){
-                		var testvalue = $("li.om-list-name").attr("data-id");
+                		var testvalue = $("#content li.om-list-name").attr("data-id");
                     	assert.ok( testvalue == "trading_name," + username + ".cc,cc", "Registration test:" + testvalue);
                     	done1();
-                	},250);                	
+                	},500);                	
                 });
     		});
     	});        
