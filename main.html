@@ -1273,7 +1273,7 @@ limitations under the License.
                     <label for="to" >TO</label>
                     <div style="display:table; padding:0; margin: 0; width:100%">
                         <div style="width: 50%;display:table-cell;vertical-align: middle;">
-                            <select name="to" class="om-select-dark" >
+                            <select id="to" name="to" class="om-select-dark" >
                                 <option value="cc" selected="selected">Receiver</option>
                                 {{#to}}{{#rows}}
                                     <option value="{{#key}}{{trading_name}}{{/key}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>

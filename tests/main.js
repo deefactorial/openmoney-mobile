@@ -112,8 +112,8 @@ $(function() {
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			
 			var amount = parseInt( randomString( 8, '0123456789' ) );
-			$("select[name='to'] option:eq(" + username + ".cc)").prop('selected', true);
-			var testvalue = $("#content select[name='to']").val();
+			$("select#to option:eq(" + username + ".cc)").prop('selected', true);
+			var testvalue = $("select#to").val();
 			var expected = username + ".cc";
 			assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' != '" + expected + "'");
         	done3();
