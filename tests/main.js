@@ -110,7 +110,7 @@ $(function() {
 		assert.expect( 3 );		
 		var done3 = assert.async();		
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
-			window.dbChangedStewardTradingNamesDone = function() {
+			window.dbChangedTradingNamesDone = function() {
 				$("input[name='amount']").val( amount );
 				$("input[name='description']").val( "example test" );
 				var amount = parseInt( randomString( 8, '0123456789' ) );

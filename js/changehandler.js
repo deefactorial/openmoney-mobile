@@ -39,7 +39,8 @@ var beamsViewLock = false;
 function resetChangeTrackers() {
 	
 	window.dbChanged = function() {}
-	window.dbChangedTradingNames = function() {}	
+	window.dbChangedTradingNames = function() {}
+	window.dbChangedTradingNamesDone = function() {};
 	window.dbChangedStewardTradingNames = function () {}
 	window.dbChangedStewardTradingNamesDone = function() {};
 	window.dbChangedCurrencies = function() {}
