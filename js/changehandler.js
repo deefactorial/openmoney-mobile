@@ -39,20 +39,24 @@ var beamsViewLock = false;
 function resetChangeTrackers() {
 	
 	window.dbChanged = function() {}
-	window.dbChangedTradingNames = function() {}
-	window.dbChangedTradingNamesDone = function() {};
-	window.dbChangedStewardTradingNames = function () {}
-	window.dbChangedStewardTradingNamesDone = function() {};
+	window.dbChangedTradingNames = function() {}	
+	window.dbChangedStewardTradingNames = function () {}	
 	window.dbChangedCurrencies = function() {}
-	window.dbChangedCurrenciesDone = function() {}
 	window.dbChangedSpaces = function() {}
-	window.dbChangedJournal = function() {}
-	window.dbChangedJournalDone = function() {}
+	window.dbChangedJournal = function() {}	
 	window.dbChangedProfile = function() {}
 	window.dbChangedTags = function() {}
-	window.dbChangedBeams = function() {}
+	window.dbChangedBeams = function() {}	
 	
-	
+	//done callback handlers
+	if (typeof window.dbChangedStewardTradingNamesDone == 'undefined')
+		window.dbChangedStewardTradingNamesDone = function() {};
+	if (typeof window.dbChangedTradingNamesDone == 'undefined')
+		window.dbChangedTradingNamesDone = function() {};
+	if (typeof window.dbChangedCurrenciesDone == 'undefined')
+		window.dbChangedCurrenciesDone = function() {};
+	if (typeof window.dbChangedJournalDone == 'undefined')
+		window.dbChangedJournalDone = function() {};
 	
 //	window.dbChangedTradingNames = function() {
 //		if (!tradingNamesViewLock) {
