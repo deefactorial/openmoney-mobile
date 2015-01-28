@@ -70,6 +70,8 @@ function regErr(error) {
     	navigator.notification.alert( error.msg , function() {  }, "Register Error", "OK")
     } else if (error.reason) {
     	navigator.notification.alert( error.reason , function() {  }, "Register Error", "OK")
+    } else if (error.responseJSON && error.responseJSON.msg) {
+    	navigator.notification.alert( error.responseJSON.msg , function() {  }, "Register Error", "OK")
     } else {
     	navigator.notification.alert( "Register error: " + JSON.stringify( error ) , function() {  }, "Register Error", "OK")
     }
