@@ -100,8 +100,12 @@ $(function() {
 		}, teardown : function(assert) {
 			var done2 = assert.async();
 			$.when($("#content button.openmoney-logout").trigger("click")).done(function(){
-				assert.ok( true, "logout test" );
-				done2();
+				window.dbChangedStewardTradingNamesDone = function(){
+					var testvalue = $("#content button.openmoney-login").length
+					var expected = 1;
+					assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' != '" + expected + "'");
+					done2();
+				}
 			})			
 		}
 	} );
