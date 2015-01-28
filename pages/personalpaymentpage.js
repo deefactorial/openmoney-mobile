@@ -111,6 +111,8 @@ function goPayment(parameters) {
 			    })
 		    }
 	        
+	        
+	        
 	        $( "#content form" ).off("submit").submit( function(e) {
 	            e.preventDefault()
 	            $( "#submit" ).attr("disabled","disabled");
@@ -252,6 +254,8 @@ function goPayment(parameters) {
 	                } )
 	            } )
 	        } )
+	        
+	        window.dbChangedTradingNamesDone();
 	    } )
 	}
 	window.dbChangedTradingNames();
