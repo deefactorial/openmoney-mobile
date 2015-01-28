@@ -53,6 +53,11 @@ $(function() {
         return result;
     }
     
+    navigator.notification.alert = function (message, successcb, header, button) {
+		console.log(message);
+		successcb();
+	};
+    
 //    QUnit.module( "registration" );
 //    QUnit.test( "Registration test", function( assert ) {
 //    	assert.expect( 1 );
