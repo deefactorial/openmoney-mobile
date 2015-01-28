@@ -100,7 +100,7 @@ $(function() {
 		}, teardown : function(assert) {
 			var done2 = assert.async();
 			$.when($("#content button.openmoney-logout").trigger("click")).done(function(){
-				assert.ok( true, "and one extra assert after each test" );
+				assert.ok( true, "logout test" );
 				done2();
 			})			
 		}
@@ -115,7 +115,7 @@ $(function() {
 			$("#content input[name='amount']").val( amount );
 			$("#content input[name='description']").val( "example test" );
 			$.when($("#personal-payment").submit()).done(function(){
-				var testvalue = $("#content div.what.isPositive").html();
+				var testvalue = $("#content div.isPositive").html();
 				var expected = amount + " cc";
 				assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' != '" + expected + "'");
             	done3();
