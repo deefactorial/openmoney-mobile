@@ -155,6 +155,7 @@ $(function() {
 									assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
 					            	done3();
 								}
+								var done4 = assert.async();	
 								
 								var amount = parseInt( randomString( 8, '0123456789' ) );
 								$("input[name='amount']").val( amount );
@@ -165,7 +166,7 @@ $(function() {
 										var testvalue = $("#content div.isNegative").html();
 										var expected = -amount + " cc";
 										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
-						            	done3();
+						            	done4();
 									}
 								})
 							};
