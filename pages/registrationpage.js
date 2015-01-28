@@ -210,8 +210,8 @@ function doServerRegistration(callBack) {
         $.post( url , credentials,
         	function(result){
         		callBack( false, result )
-        	}).fail(function(){
-        		callBack("failed to submit registration")
+        	}).fail(function( error ){
+        		callBack("Unauthorized" + JSON.stringify(error))
         	})
 //        login.post( credentials , function(error, result) {
 //            if (error) { return callBack( error ) }
