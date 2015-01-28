@@ -132,6 +132,9 @@ $(function() {
 		})
 	} );
 	
+	currentTime = new Date().getTime();
+	username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+	
 	QUnit.test( "Add Recipient", function( assert ) {
 		assert.expect( 3 );		
 		var done3 = assert.async();		
