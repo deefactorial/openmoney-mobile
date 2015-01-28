@@ -625,6 +625,8 @@ function goAddTradingName(parameters) {
 		        } );
 		        
 		    } );
+			
+			window.dbChangedCurrenciesDone();
 		
 		} );
 		

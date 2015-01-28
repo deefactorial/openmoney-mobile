@@ -44,12 +44,16 @@ function resetChangeTrackers() {
 	window.dbChangedStewardTradingNames = function () {}
 	window.dbChangedStewardTradingNamesDone = function() {};
 	window.dbChangedCurrencies = function() {}
+	window.dbChangedCurrenciesDone = function() {}
 	window.dbChangedSpaces = function() {}
 	window.dbChangedJournal = function() {}
 	window.dbChangedJournalDone = function() {}
 	window.dbChangedProfile = function() {}
 	window.dbChangedTags = function() {}
 	window.dbChangedBeams = function() {}
+	
+	
+	
 //	window.dbChangedTradingNames = function() {
 //		if (!tradingNamesViewLock) {
 //			tradingNamesViewLock = true;

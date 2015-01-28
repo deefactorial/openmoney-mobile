@@ -143,19 +143,21 @@ $(function() {
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			window.dbChangedTradingNamesDone = function() {
 				$.when($("#content input[name='add']").trigger("click")).done(function(){
-					$("input[name='trading_name']").val( "deefactorial" );
-					$.when($("input[name='submit']").trigger("click")).done(function(){
-						window.dbChangedTradingNamesDone = function() {
-							var expected = "deefactorial"
-							$('select#to option').each( function( index ) {
-								var testvalue = $(this).val();
-								if(testvalue == expected) {
-									assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
-					            	done3();
-								}
-							})
-						};
-					})
+					window.dbChangedCurrenciesDone = function() {
+						$("input[name='trading_name']").val( "deefactorial" );
+						$.when($("input[name='submit']").trigger("click")).done(function(){
+							window.dbChangedTradingNamesDone = function() {
+								var expected = "deefactorial"
+								$('select#to option').each( function( index ) {
+									var testvalue = $(this).val();
+									if(testvalue == expected) {
+										assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
+						            	done3();
+									}
+								})
+							};
+						})
+					}					
 				})
 			};
 		})
