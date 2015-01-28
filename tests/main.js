@@ -111,9 +111,9 @@ $(function() {
 		var done3 = assert.async();		
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			var amount = parseInt( randomString( 8, '0123456789' ) );
-			$("#content select[name='to'] option:eq(" + username + ".cc)").prop('selected', true);
-			$("#content input[name='amount']").val( amount );
-			$("#content input[name='description']").val( "example test" );
+			$("select[name='to'] option:eq(" + username + ".cc)").prop('selected', true);
+			$("input[name='amount']").val( amount );
+			$("input[name='description']").val( "example test" );
 			$.when($("#personal-payment").submit()).done(function(){
 				var testvalue = $("#content div.isPositive").html();
 				var expected = amount + " cc";
