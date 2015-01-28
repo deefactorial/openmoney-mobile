@@ -53,6 +53,7 @@ $(function() {
         return result;
     }
     
+    navigator.notification = {};
     navigator.notification.alert = function (message, successcb, header, button) {
 		console.log(message);
 		successcb();
