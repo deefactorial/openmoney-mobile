@@ -105,6 +105,9 @@ $(function() {
 					var expected = 1;
 					assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' == '" + expected + "'");
 					done2();
+					
+					currentTime = new Date().getTime();
+					username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
 				}
 			})			
 		}
@@ -132,8 +135,7 @@ $(function() {
 		})
 	} );
 	
-	currentTime = new Date().getTime();
-	username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+
 	
 	QUnit.test( "Add Recipient", function( assert ) {
 		assert.expect( 3 );		
