@@ -110,15 +110,18 @@ $(function() {
 		assert.expect( 3 );		
 		var done3 = assert.async();		
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
+			
 			var amount = parseInt( randomString( 8, '0123456789' ) );
 			$("select[name='to'] option:eq(" + username + ".cc)").prop('selected', true);
 			$("input[name='amount']").val( amount );
 			$("input[name='description']").val( "example test" );
 			$.when($("#personal-payment").submit()).done(function(){
-				var testvalue = $("#content div.isPositive").html();
-				var expected = amount + " cc";
-				assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' != '" + expected + "'");
-            	done3();
+				window.dbChangedJournalDone = function() {
+					var testvalue = $("#content div.isPositive").html();
+					var expected = amount + " cc";
+					assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' != '" + expected + "'");
+	            	done3();
+				}
 			})
 		})
 	} );

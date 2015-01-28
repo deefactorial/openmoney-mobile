@@ -45,6 +45,7 @@ function resetChangeTrackers() {
 	window.dbChangedCurrencies = function() {}
 	window.dbChangedSpaces = function() {}
 	window.dbChangedJournal = function() {}
+	window.dbChangedJournalDone = function() {}
 	window.dbChangedProfile = function() {}
 	window.dbChangedTags = function() {}
 	window.dbChangedBeams = function() {}

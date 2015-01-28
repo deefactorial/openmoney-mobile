@@ -179,6 +179,7 @@ function goList(parameters) {
 		            	}
 		            } )
 		        } )
+		        window.dbChangedJournalDone();
             } )
     	} )
 	}
