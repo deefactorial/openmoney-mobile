@@ -128,6 +128,8 @@ $(function() {
 		})
 	} );
 	
+	QUnit.module();
+	
 	QUnit.test( "Add Recipient", function( assert ) {
 		assert.expect( 3 );		
 		var done3 = assert.async();		
