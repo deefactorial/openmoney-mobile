@@ -148,13 +148,14 @@ $(function() {
 						$.when($("input[name='submit']").trigger("click")).done(function(){
 							window.dbChangedTradingNamesDone = function() {
 								var expected = "deefactorial"
-								$('select#to option').each( function( index ) {
-									var testvalue = $(this).val();
-									if(testvalue == expected) {
-										assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
-						            	done3();
-									}
-								})
+							    $('select#to').val(expected);
+								
+								var testvalue = $('select#to').val();
+								if(testvalue == expected) {
+									assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
+					            	done3();
+								}
+								
 							};
 						})
 					}					
