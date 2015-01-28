@@ -91,7 +91,7 @@ $(function() {
 	                	window.dbChangedStewardTradingNamesDone = function() {
 	                		var testvalue = $("#content li.om-list-name").attr("data-id");
 	                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
-	                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' != '" + expected + "'");
+	                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
 	                    	done1();
 	                	};            	
 	                });
@@ -103,7 +103,7 @@ $(function() {
 				window.dbChangedStewardTradingNamesDone = function(){
 					var testvalue = $("#content button.openmoney-login").length
 					var expected = 1;
-					assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' != '" + expected + "'");
+					assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' == '" + expected + "'");
 					done2();
 				}
 			})			
@@ -124,7 +124,7 @@ $(function() {
 					window.dbChangedJournalDone = function() {
 						var testvalue = $("#content div.isPositive").html();
 						var expected = amount + " cc";
-						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' != '" + expected + "'");
+						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' == '" + expected + "'");
 		            	done3();
 					}
 				})
@@ -145,7 +145,7 @@ $(function() {
 							$('select#to option').each( function( index ) {
 								var testvalue = $(this).val();
 								if(testvalue == expected) {
-									assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' != '" + expected + "'");
+									assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
 					            	done3();
 								}
 							})

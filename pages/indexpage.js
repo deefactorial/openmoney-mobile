@@ -51,56 +51,60 @@ function goIndex(parameters) {
     	tradingNamesViewLock = true;
     	if(currentpage == 'Openmoney') {
     		window.plugins.spinnerDialog.show();
-    		if( typeof(config.views) == "function" )
-	        config.views( [ "accounts", {
-	            descending : true, include_docs : true, stale : "update_after"
-	        } ], function(err, view) {
-	        	log("accounts view:" + JSON.stringify( view ) )
-	        	window.plugins.spinnerDialog.hide();
-	        	tradingNamesViewLock = false;
-	            var thisUsersAccounts = {
-	                rows : []
-	            }
-	            
-	            if (typeof view.rows != 'undefined' && config.user != null) {
-	            	view.rows.forEach(function(row) {
-	            		row.key.steward.forEach(function(steward) {
-	            			if(steward == config.user.name){
-	            				thisUsersAccounts.rows.push( row );
-	            				config.views( [ "account_balance", {
-	            			    	startkey :  row.id  , endkey :  row.id + '\uefff', stale : "update_after"
-	            			     	} ], function(err, view) {
-	            						console.log("account_balance view: " + JSON.stringify( [ err, view ] ) )
-	            					
-	            			    	drawContainer( "#" + row.key.trading_name.replace(/\./g,"\\.") + "-" + row.key.currency.replace(/\./g,"\\."), config.t.indexBalance( view ) );
-	            			    } );
-	            			}
-	            		} )
-	            	} )
-	            }
-	
-	            thisUsersAccounts.offset = view.offset
-	            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
-	
-	            log( "accounts " + JSON.stringify( thisUsersAccounts ) )
-	            drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) )
-	            //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
-	            
-	            var response = {
-	            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goIndex", "pageParameters" : []
-	        	}
-	            
-	            updateAjaxData( response, "index.html" )
-	            
-	                // If you click a list,
-	            $( "#scrollable" ).off( "click", "li")
-			    $( "#scrollable" ).on( "click", "li", function() {
-			        var id = $( this ).attr( "data-id" );
-			        goList( [ id ] )
-			    } )
-			    
-			    window.dbChangedStewardTradingNamesDone();
-	        } )
+    		if( typeof(config.views) == "function" ) {
+    			config.views( [ "accounts", {
+    	            descending : true, include_docs : true, stale : "update_after"
+    	        } ], function(err, view) {
+    	        	log("accounts view:" + JSON.stringify( view ) )
+    	        	window.plugins.spinnerDialog.hide();
+    	        	tradingNamesViewLock = false;
+    	            var thisUsersAccounts = {
+    	                rows : []
+    	            }
+    	            
+    	            if (typeof view.rows != 'undefined' && config.user != null) {
+    	            	view.rows.forEach(function(row) {
+    	            		row.key.steward.forEach(function(steward) {
+    	            			if(steward == config.user.name){
+    	            				thisUsersAccounts.rows.push( row );
+    	            				config.views( [ "account_balance", {
+    	            			    	startkey :  row.id  , endkey :  row.id + '\uefff', stale : "update_after"
+    	            			     	} ], function(err, view) {
+    	            						console.log("account_balance view: " + JSON.stringify( [ err, view ] ) )
+    	            					
+    	            			    	drawContainer( "#" + row.key.trading_name.replace(/\./g,"\\.") + "-" + row.key.currency.replace(/\./g,"\\."), config.t.indexBalance( view ) );
+    	            			    } );
+    	            			}
+    	            		} )
+    	            	} )
+    	            }
+    	
+    	            thisUsersAccounts.offset = view.offset
+    	            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+    	
+    	            log( "accounts " + JSON.stringify( thisUsersAccounts ) )
+    	            drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) )
+    	            //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
+    	            
+    	            var response = {
+    	            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goIndex", "pageParameters" : []
+    	        	}
+    	            
+    	            updateAjaxData( response, "index.html" )
+    	            
+    	                // If you click a list,
+    	            $( "#scrollable" ).off( "click", "li")
+    			    $( "#scrollable" ).on( "click", "li", function() {
+    			        var id = $( this ).attr( "data-id" );
+    			        goList( [ id ] )
+    			    } )
+    			    
+    			    window.dbChangedStewardTradingNamesDone();
+    	        } )
+    		} else {
+    			window.dbChangedStewardTradingNamesDone();
+    		}
+	        
 	        
     	}
     }
