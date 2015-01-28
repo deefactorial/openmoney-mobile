@@ -212,7 +212,7 @@ function doServerRegistration(callBack) {
         		callBack( false, result )
         	}).fail(function( error ){        		
         		callBack(error);
-        	})
+        	},"json")
 //        login.post( credentials , function(error, result) {
 //            if (error) { return callBack( error ) }
 //            log( "Server Regisration Result:" + JSON.stringify( result ) )
