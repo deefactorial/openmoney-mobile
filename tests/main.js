@@ -114,13 +114,7 @@ $(function() {
 				var amount = parseInt( randomString( 8, '0123456789' ) );
 				$("input[name='amount']").val( amount );
 				$("input[name='description']").val( "example test" );
-				
-				//$('select#to option').eq(username + ".cc").prop('selected', true);
 				$('select#to').val(username + ".cc");
-				var testvalue = $("select#to").val();
-				var expected = username + ".cc";
-				assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' != '" + expected + "'");
-	        	done3();
 				
 				$.when($("#personal-payment").submit()).done(function(){
 					window.dbChangedJournalDone = function() {
