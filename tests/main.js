@@ -127,4 +127,28 @@ $(function() {
 			};
 		})
 	} );
+	
+	QUnit.test( "Add Recipient", function( assert ) {
+		assert.expect( 3 );		
+		var done3 = assert.async();		
+		$.when($("#content button.om-payments").trigger("click")).done(function(){
+			window.dbChangedTradingNamesDone = function() {
+				$.when($("#content input[name='add']").trigger("click")).done(function(){
+					$("input[name='trading_name']").val( "deefactorial" );
+					$.when($("input[name='submit']").trigger("click")).done(function(){
+						window.dbChangedTradingNamesDone = function() {
+							var expected = "deefactorial"
+							$('select#to option').each( function( index ) {
+								var testvalue = $(this).val();
+								if(testvalue == expected) {
+									assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' != '" + expected + "'");
+					            	done3();
+								}
+							})
+						};
+					})
+				})
+			};
+		})
+	} );
 });
