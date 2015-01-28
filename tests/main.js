@@ -76,13 +76,14 @@ $(function() {
 //    	});        
 //    });
 	    
+    var currentTime = new Date().getTime();
+	var username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+    
     QUnit.module( "registration", {
 		setup : function(assert) {
 			var done1 = assert.async();
 	    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
-	    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){
-	    			var currentTime = new Date().getTime();
-	    			var username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+	    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){	    			
 	    			$("input[name='username']").val(username);
 	                $("input[name='email']").val( username + "@openmoney.cc");
 	                $("input[name='password']").val("password " + currentTime);                
@@ -105,11 +106,20 @@ $(function() {
 		}
 	} );
     
-	QUnit.test( "Personal Payment", function( assert ) {
+	QUnit.test( "Personal Self Payment", function( assert ) {
 		assert.expect( 3 );		
 		var done3 = assert.async();		
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
-			
+			var amount = parseInt( randomString( 8, '0123456789' ) );
+			$("#content select[name='to'] option:eq(" + username + ".cc)").prop('selected', true);
+			$("#content input[name='amount']").val( amount );
+			$("#content input[name='description']").val( "example test" );
+			$.when($("#personal-payment").submit()).done(function(){
+				var testvalue = $("#content div.what.isPositive").html();
+				var expected = amount + " cc";
+				assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' != '" + expected + "'");
+            	done3();
+			})
 		})
 	} );
 });
