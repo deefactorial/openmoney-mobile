@@ -137,8 +137,8 @@ $(function() {
 	
 
 	
-	QUnit.test( "Add Recipient", function( assert ) {
-		assert.expect( 3 );		
+	QUnit.test( "New Recipent Payment", function( assert ) {
+		assert.expect( 4 );		
 		var done3 = assert.async();		
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			window.dbChangedTradingNamesDone = function() {
@@ -156,6 +156,18 @@ $(function() {
 					            	done3();
 								}
 								
+								var amount = parseInt( randomString( 8, '0123456789' ) );
+								$("input[name='amount']").val( amount );
+								$("input[name='description']").val( "example test" );
+								
+								$.when($("#personal-payment").submit()).done(function(){
+									window.dbChangedJournalDone = function() {
+										var testvalue = $("#content div.isNegative").html();
+										var expected = -amount + " cc";
+										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
+						            	done3();
+									}
+								})
 							};
 						})
 					}					
