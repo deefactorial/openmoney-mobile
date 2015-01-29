@@ -215,6 +215,9 @@ function goPayment(parameters) {
 	                                            var leadingSlash = getLeadingSlash();                                        	                          
 	                                            config.db.put( leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                            	
+	                                            	if (error)
+	                                                    return alert("Error Posting:" + JSON.stringify( error ) )
+	                                            	
 	                                            	//trigger a view update
 	                        			   		 	config.views( [ "account_details", {
 	                        			   		        stale : "update_after"
@@ -227,14 +230,12 @@ function goPayment(parameters) {
 	                        			   		        stale : "update_after"
 	                        			   		    } ], function(error, view) {
 	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	                        			   		 		navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")
 	                       			   		 		
 	                        			   		 	} );
-	                                                if (error)
-	                                                    return alert("Error Posting:" + JSON.stringify( error ) )
-	                                                $( "#content form input[name='to']" ).val( "" ) // Clear
-	                                                $( "#content form input[name='amount']" ).val( "" ) // Clear
-	                                                $( "#content form textarea" ).val( "" ) // Clear
-	                                                navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")
+	                                                
+
+	                                                
 	                                                
 	                                                
 	                                            } )
