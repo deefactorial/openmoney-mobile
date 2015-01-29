@@ -103,10 +103,11 @@ $(function() {
 	QUnit.test( "Personal Self Payment", function( assert ) {
 		assert.expect( 3 );		
 		var done3 = assert.async();		
+		var amount = parseInt( randomString( 8, '0123456789' ) );
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			window.dbChangedTradingNamesDone = function() {
 				
-				var amount = parseInt( randomString( 8, '0123456789' ) );
+				
 				$("input[name='amount']").val( amount );
 				$("input[name='description']").val( "example test" );
 				$('select#to').val(username + ".cc");
