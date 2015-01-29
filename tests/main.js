@@ -103,7 +103,7 @@ $(function() {
 		var done3 = assert.async();		
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			window.dbChangedTradingNamesDone = function() {
-				window.dbChangedTradingNamesDone = function() {};
+				
 				var amount = parseInt( randomString( 8, '0123456789' ) );
 				$("input[name='amount']").val( amount );
 				$("input[name='description']").val( "example test" );
@@ -116,6 +116,7 @@ $(function() {
 						var expected = amount + " cc";
 						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' == '" + expected + "'");
 		            	done3();
+		            	window.dbChangedTradingNamesDone = function() {};
 		            	window.dbChangedJournalDone = function() {};
 					}
 				})
