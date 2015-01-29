@@ -140,7 +140,7 @@ $(function() {
 						$("input[name='trading_name']").val( "deefactorial" );
 						$.when($("input[name='submit']").trigger("click")).done(function(){
 							window.dbChangedTradingNamesDone = function() {
-								window.dbChangedTradingNamesDone = function() {};
+								
 								var expected = "deefactorial"
 							    $('select#to').val(expected);
 								
@@ -163,6 +163,7 @@ $(function() {
 										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
 						            	done4();
 						            	window.dbChangedJournalDone = function() {};
+						            	window.dbChangedTradingNamesDone = function() {};
 									}
 								})
 							};
