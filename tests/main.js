@@ -119,8 +119,8 @@ $(function() {
 						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' == '" + expected + "'");
 		            	done3();
 		            	
-		            	window.dbChangedTradingNamesDone = function() {};
-		            	window.dbChangedJournalDone = function() {};
+		            	//window.dbChangedTradingNamesDone = function() {};
+		            	//window.dbChangedJournalDone = function() {};
 					}
 				})
 			};
