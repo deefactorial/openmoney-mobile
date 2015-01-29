@@ -111,12 +111,12 @@ $(function() {
 				
 				$.when($("#personal-payment").submit()).done(function(){
 					window.dbChangedJournalDone = function() {
-						
+						window.dbChangedJournalDone = function() {};
 						var testvalue = $("#content div.isPositive").html();
 						var expected = amount + " cc";
 						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' == '" + expected + "'");
 		            	done3();
-		            	window.dbChangedJournalDone = function() {};
+		            	
 					}
 				})
 			};
