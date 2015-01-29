@@ -193,10 +193,10 @@ $(function() {
 					    $('select#to').val(expected);
 						
 						var testvalue = $('select#to').val();
-						if(testvalue == expected) {
+						
 							assert.ok( testvalue == expected, "Account Select Test: '" + testvalue + "' == '" + expected + "'");
 			            	done3();
-						}
+						
 						var done4 = assert.async();	
 						
 						var amount = parseInt( randomString( 8, '0123456789' ) );
@@ -221,12 +221,8 @@ $(function() {
 						            	window.customerPaymentPageDone = function() {};
 									}
 								})
-								
-								
 							}
-						})
-														
-						
+						})					
 					}
 				})
 			};

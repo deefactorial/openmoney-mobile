@@ -234,10 +234,6 @@ function goPayment(parameters) {
 	                       			   		 		
 	                        			   		 	} );
 	                                                
-
-	                                                
-	                                                
-	                                                
 	                                            } )
 	                                        } else {
 	                                        	$( "#submit" ).removeAttr("disabled","disabled");
