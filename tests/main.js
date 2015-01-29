@@ -175,5 +175,62 @@ $(function() {
 	} );
 	
 	
+	var merchantUsername = 'merchanttestaccount';
+	var merchantPassword = '123456';
+	
+	QUnit.test( "Merchant Payment", function( assert ) {
+		assert.expect( 4 );		
+		var done3 = assert.async();		
+		$.when($("#content button.om-payments").trigger("click")).done(function(){
+			window.dbChangedTradingNamesDone = function() {
+				window.dbChangedTradingNamesDone = function() {};
+				$.when($("#content button.om-merchant").trigger("click")).done(function(){
+					window.dbChangedTradingNamesDone = function() {
+						window.dbChangedTradingNamesDone = function() {};
+						
+										
+						var expected = "trading_name," + username + ".cc,cc";
+					    $('select#to').val(expected);
+						
+						var testvalue = $('select#to').val();
+						if(testvalue == expected) {
+							assert.ok( testvalue == expected, "Account Select Test: '" + testvalue + "' == '" + expected + "'");
+			            	done3();
+						}
+						var done4 = assert.async();	
+						
+						var amount = parseInt( randomString( 8, '0123456789' ) );
+						$("input[name='amount']").val( amount );
+						
+						
+						$.when($("#submit").trigger("click")).done(function(){
+							window.customerPaymentPageDone = function() {
+								
+								$("input[name='email']").val( merchantUsername );
+								$("input[name='password']").val( merchantPassword );
+								$("input[name='description']").val( "example test" );
+								
+								$.when($("input[name='payment']").trigger("click")).done(function(){
+									window.dbChangedJournalDone = function() {
+									
+										var testvalue = $("#content div.isPositive").html();
+										var expected = amount + " cc";
+										assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
+						            	done4();
+						            	window.dbChangedJournalDone = function() {};
+						            	window.customerPaymentPageDone = function() {};
+									}
+								})
+								
+								
+							}
+						})
+														
+						
+					}
+				})
+			};
+		})
+	} );
 	
 });

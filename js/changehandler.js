@@ -57,6 +57,8 @@ function resetChangeTrackers() {
 		window.dbChangedCurrenciesDone = function() {};
 	if (typeof window.dbChangedJournalDone == 'undefined')
 		window.dbChangedJournalDone = function() {};
+    if (typeof window.customerPaymentPageDone == 'undefined')
+    	window.customerPaymentPageDone = function() {};
 	
 //	window.dbChangedTradingNames = function() {
 //		if (!tradingNamesViewLock) {

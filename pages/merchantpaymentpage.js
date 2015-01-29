@@ -27,7 +27,7 @@ function goMerchantPayment(parameters) {
 	
 	fromAccounts = parameters.pop();
 	
-	    window.dbChangedTradingNames = function() { 
+	window.dbChangedTradingNames = function() { 
 	    
 	    window.plugins.spinnerDialog.show();
 	    config.views( [ "accounts", {
@@ -246,6 +246,8 @@ function goMerchantPayment(parameters) {
 	                
 	            } )
 	        } )
+	        
+	        window.dbChangedTradingNamesDone();
 	    } )
 	}
 	window.dbChangedTradingNames();
@@ -565,6 +567,8 @@ function goCustomerPayment(parameters) {
             
         } )
     } )
+    
+    window.customerPaymentPageDone();
 	
 }
 
