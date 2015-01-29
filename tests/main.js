@@ -77,7 +77,7 @@ $(function() {
 	                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
 	                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
 	                    	done1();
-	                    	window.dbChangedStewardTradingNamesDone = function(){};
+	                    	//window.dbChangedStewardTradingNamesDone = function(){};
 	                	};            	
 	                });
 	    		});
@@ -94,7 +94,7 @@ $(function() {
 					
 					currentTime = new Date().getTime();
 					username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-					window.dbChangedStewardTradingNamesDone = function(){};
+					//window.dbChangedStewardTradingNamesDone = function(){};
 				}
 			})			
 		}
