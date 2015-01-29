@@ -58,29 +58,6 @@ $(function() {
 		console.log(message);
 		successcb();
 	};
-    
-//    QUnit.module( "registration" );
-//    QUnit.test( "Registration test", function( assert ) {
-//    	assert.expect( 1 );
-//    	var done1 = assert.async();
-//    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
-//    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){
-//    			var currentTime = new Date().getTime();
-//    			var username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-//    			$("input[name='username']").val(username);
-//                $("input[name='email']").val( username + "@openmoney.cc");
-//                $("input[name='password']").val("password " + currentTime);                
-//                $.when($("#registerform").submit()).done(function(){
-//                	window.dbChangedStewardTradingNamesDone = function() {
-//                		var testvalue = $("#content li.om-list-name").attr("data-id");
-//                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
-//                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' != '" + expected + "'");
-//                    	done1();
-//                	};            	
-//                });
-//    		});
-//    	});        
-//    });
 	    
     var currentTime = new Date().getTime();
 	var username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
@@ -95,6 +72,7 @@ $(function() {
 	                $("input[name='password']").val("password " + currentTime);                
 	                $.when($("#registerform").submit()).done(function(){
 	                	window.dbChangedStewardTradingNamesDone = function() {
+	                		window.dbChangedStewardTradingNamesDone = function(){};
 	                		var testvalue = $("#content li.om-list-name").attr("data-id");
 	                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
 	                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
@@ -107,6 +85,7 @@ $(function() {
 			var done2 = assert.async();
 			$.when($("#content button.openmoney-logout").trigger("click")).done(function(){
 				window.dbChangedStewardTradingNamesDone = function(){
+					window.dbChangedStewardTradingNamesDone = function(){};
 					var testvalue = $("#content button.openmoney-login").length
 					var expected = 1;
 					assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' == '" + expected + "'");
@@ -124,6 +103,7 @@ $(function() {
 		var done3 = assert.async();		
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			window.dbChangedTradingNamesDone = function() {
+				window.dbChangedTradingNamesDone = function() {};
 				var amount = parseInt( randomString( 8, '0123456789' ) );
 				$("input[name='amount']").val( amount );
 				$("input[name='description']").val( "example test" );
@@ -131,6 +111,7 @@ $(function() {
 				
 				$.when($("#personal-payment").submit()).done(function(){
 					window.dbChangedJournalDone = function() {
+						window.dbChangedJournalDone = function() {};
 						var testvalue = $("#content div.isPositive").html();
 						var expected = amount + " cc";
 						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' == '" + expected + "'");
@@ -141,18 +122,19 @@ $(function() {
 		})
 	} );
 	
-
-	
 	QUnit.test( "New Recipent Payment", function( assert ) {
 		assert.expect( 4 );		
 		var done3 = assert.async();		
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			window.dbChangedTradingNamesDone = function() {
+				window.dbChangedTradingNamesDone = function() {};
 				$.when($("#content input[name='add']").trigger("click")).done(function(){
 					window.dbChangedCurrenciesDone = function() {
+						window.dbChangedCurrenciesDone = function() {};
 						$("input[name='trading_name']").val( "deefactorial" );
 						$.when($("input[name='submit']").trigger("click")).done(function(){
 							window.dbChangedTradingNamesDone = function() {
+								window.dbChangedTradingNamesDone = function() {};
 								var expected = "deefactorial"
 							    $('select#to').val(expected);
 								
@@ -169,6 +151,7 @@ $(function() {
 								
 								$.when($("#personal-payment").submit()).done(function(){
 									window.dbChangedJournalDone = function() {
+										window.dbChangedJournalDone = function() {};
 										var testvalue = $("#content div.isNegative").html();
 										var expected = -amount + " cc";
 										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
@@ -182,4 +165,50 @@ $(function() {
 			};
 		})
 	} );
+	
+	QUnit.test( "New Recipent Payment", function( assert ) {
+		assert.expect( 4 );		
+		var done3 = assert.async();		
+		$.when($("#content button.om-payments").trigger("click")).done(function(){
+			window.dbChangedTradingNamesDone = function() {
+				window.dbChangedTradingNamesDone = function() {};
+				$.when($("#content input[name='add']").trigger("click")).done(function(){
+					window.dbChangedCurrenciesDone = function() {
+						window.dbChangedCurrenciesDone = function() {};
+						$("input[name='trading_name']").val( "deefactorial" );
+						$.when($("input[name='submit']").trigger("click")).done(function(){
+							window.dbChangedTradingNamesDone = function() {
+								window.dbChangedTradingNamesDone = function() {};
+								var expected = "deefactorial"
+							    $('select#to').val(expected);
+								
+								var testvalue = $('select#to').val();
+								if(testvalue == expected) {
+									assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
+					            	done3();
+								}
+								var done4 = assert.async();	
+								
+								var amount = parseInt( randomString( 8, '0123456789' ) );
+								$("input[name='amount']").val( amount );
+								$("input[name='description']").val( "example test" );
+								
+								$.when($("#personal-payment").submit()).done(function(){
+									window.dbChangedJournalDone = function() {
+										window.dbChangedJournalDone = function() {};
+										var testvalue = $("#content div.isNegative").html();
+										var expected = -amount + " cc";
+										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
+						            	done4();
+									}
+								})
+							};
+						})
+					}					
+				})
+			};
+		})
+	} );
+	
+	
 });
