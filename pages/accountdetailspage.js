@@ -23,10 +23,10 @@ limitations under the License.
 function goList(parameters) {
 	
 	//don't reset this function.
-	var backup = window.dbChangedJournalDone;	
+	//var backup = window.dbChangedJournalDone;	
 	resetChangeTrackers();	
-	window.dbChangedJournalDone = backup;
-	delete(backup);
+	//window.dbChangedJournalDone = backup;
+	//delete(backup);
 	
 	var id = parameters.pop();
 	
