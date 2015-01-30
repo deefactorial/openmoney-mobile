@@ -425,7 +425,7 @@ function goCreateAccount(parameters) {
 	                spaces.rows.forEach(function (row) {
 	                	if (row.key == "cc") {
 	                		row.doc.steward.forEach(function(steward){
-	                			if(steward == config.user.name) {
+	                			if(steward == window.config.user.name) {
 	                				defaultRoot = "";
 	                			}
 	                		})
