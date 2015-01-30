@@ -420,13 +420,20 @@ function goCreateAccount(parameters) {
 	                	return false;
 	                	
 	                }
-	                
+	                var defaultRoot = "cc";
 	                if (typeof doc.space != 'undefined')
 	                spaces.rows.forEach(function (row) {
+	                	if (row.key == "cc") {
+	                		row.doc.steward.forEach(function(steward){
+	                			if(steward == config.user.name) {
+	                				defaultRoot = "";
+	                			}
+	                		})
+	                	}
 	                	
 	                })
 	                
-	                var view = { "spaces" : spaces, "doc": doc }
+	                var view = {"default": defaultRoot, "spaces" : spaces, "doc": doc }
 	                
 	                drawContainer( "div#form", config.t.space_form( view )) 
 	                
