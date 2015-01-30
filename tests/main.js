@@ -96,6 +96,7 @@ $(function() {
 					
 					currentTime = new Date().getTime();
 					username = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+					email = username + "@openmoney.cc";
 					window.dbChangedStewardTradingNamesDone = function(){};
 				}
 			})			
