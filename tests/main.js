@@ -254,13 +254,7 @@ $(function() {
 		var password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 		var email = '';
 		
-	    var merchantUsername = 'cv.ca';
-		var merchantPassword = 'cccc';
-		var inamount = 0;
-		
-		var receiver = "io.cv.ca";
-		var outamount = 0;
-    	var expectedcurrency = "cv.ca";
+
 	    
 	    QUnit.module( "import registration", {
 			setup : function(assert) {
@@ -271,8 +265,7 @@ $(function() {
 			    currentTime = new Date().getTime();			
 				password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 				email = record.email;
-				inamount = record.paymentin;
-				outamount = record.paymentout;
+
 
 				
 		    	var done1 = assert.async();
@@ -313,6 +306,13 @@ $(function() {
 
 	    
 		QUnit.test( "Merchant Payment", function( assert ) {
+			
+		    var merchantUsername = 'cv.ca';
+			var merchantPassword = 'cccc';
+			var inamount = record.paymentin;
+			var expectedcurrency = "cv.ca";
+			
+			
 			assert.expect( 4 );		
 			var done3 = assert.async();		
 			$.when($("#content button.om-payments").trigger("click")).done(function(){
@@ -357,6 +357,11 @@ $(function() {
 							            	
 							            	
 							            	QUnit.test( "New receiver Payment", function( assert ) {
+							            		
+							        			var receiver = "io.cv.ca";
+							        			var outamount = record.paymentout;
+							        	    	
+							            		
 							            		assert.expect( 4 );		
 							            		var done3 = assert.async();		
 							            		$.when($("#content button.om-payments").trigger("click")).done(function(){
