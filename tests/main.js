@@ -255,14 +255,16 @@ $(function() {
 		
 		importArray.forEach(function(record){
 			
-			username = record.username;
-		    currentTime = new Date().getTime();			
-			password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-			email = record.email;
-			expectedcurrency = "cv.ca";
+
 			
 			QUnit.module( record.username + "import registration", {
 				setup : function(assert) {
+					
+					username = record.username;
+				    currentTime = new Date().getTime();			
+					password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+					email = record.email;
+					expectedcurrency = "cv.ca";
 					
 			    	var done1 = assert.async();
 			    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
