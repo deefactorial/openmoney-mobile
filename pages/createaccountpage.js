@@ -408,32 +408,37 @@ function goCreateAccount(parameters) {
     		
     		window.dbChangedSpaces = function () {
 	        	config.views( [ "spaces", {
-	                include_docs : true, stale : "update_after"
+	                include_docs : true
 	            } ], function(error, spaces) {
-	        		window.plugins.spinnerDialog.hide();
-	                if (error) { 
-	                	log( "Error getting spaces view: " + JSON.stringify( error ) );
-	                	window.dbChangedSpaces();
-	                	return false;
-	                	
-	                }
-	                var defaultRoot = "cc";
-	                if (typeof spaces != 'undefined')
-	                spaces.rows.forEach(function (row) {
-	                	if (row.key == "cc") {
-	                		row.doc.steward.forEach(function(steward){
-	                			if(steward == window.config.user.name) {
-	                				defaultRoot = "";
-	                			}
-	                		})
-	                	}
-	                	
-	                })
-	                
-	                var view = {"default": defaultRoot, "spaces" : spaces, "doc": doc }
-	                
-	                drawContainer( "div#form", config.t.space_form( view )) 
-	                
+	        		config.views( [ "currencies", {
+		                include_docs : true
+		            } ], function(error, currencies) {
+	        			
+	        		
+		        		window.plugins.spinnerDialog.hide();
+		                if (error) { 
+		                	log( "Error getting spaces view: " + JSON.stringify( error ) );
+		                	window.dbChangedSpaces();
+		                	return false;
+		                	
+		                }
+		                var defaultRoot = "cc";
+		                if (typeof spaces != 'undefined')
+		                spaces.rows.forEach(function (row) {
+		                	if (row.key == "cc") {
+		                		row.doc.steward.forEach(function(steward){
+		                			if(steward == window.config.user.name) {
+		                				defaultRoot = "";
+		                			}
+		                		})
+		                	}
+		                	
+		                })
+		                
+		                var view = {"default": defaultRoot, "currencies": currencies, "spaces" : spaces, "doc": doc }
+		                
+		                drawContainer( "div#form", config.t.space_form( view )) 
+	        		})
 	        	} )
         	
     		}

@@ -723,6 +723,15 @@ limitations under the License.
                     </select>
                 </li>
 
+                <li class="topcoat-list__item" data-id="default-currency">
+                    <select name="defaultcurrency" class="om-select-dark" >
+                        <option value="{{default}}" selected="selected">default currency ({{default}})</option>
+                        {{#currencies}}{{#rows}}
+                            <option value="{{key}}">{{key}}</option>
+                        {{/rows}}{{/currencies}}
+                    </select>
+                </li>
+
                 <li class="topcoat-list__item" data-id="submit">
                     <input type="submit" class="topcoat-button" name="create" value=" Create " /> 
                 </li>
