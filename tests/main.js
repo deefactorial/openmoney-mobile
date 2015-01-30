@@ -95,7 +95,7 @@ $(function() {
 					done2();
 					
 					currentTime = new Date().getTime();
-					username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+					username = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
 					window.dbChangedStewardTradingNamesDone = function(){};
 				}
 			})			
