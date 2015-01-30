@@ -211,7 +211,7 @@
                             	throw({forbidden: "unmutable properties"});
                             }
                             if (! doc.steward.equals( olddoc.steward ) ) {
-                            	requireUser(olddoc.steward);
+                            	//requireUser(olddoc.steward);
                             }
                             channel(olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
                             channel("trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
