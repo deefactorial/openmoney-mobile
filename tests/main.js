@@ -60,7 +60,7 @@ $(function() {
 	};
 	    
     var currentTime = new Date().getTime();
-	var username = "testuser" + randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+	var username = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
 	var email = username + "@openmoney.cc";
 	var password = "password " + currentTime;
     
