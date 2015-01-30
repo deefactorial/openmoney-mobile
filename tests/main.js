@@ -305,113 +305,120 @@ $(function() {
 		    
 			QUnit.test( record.username + "Merchant Payment", function( assert ) {
 				
-			    var merchantUsername = 'cv.ca';
-				var merchantPassword = 'cccc';
-				var inamount = record.paymentin;
+				
+				var receiver = "io.cv.ca";
+    			var outamount = record.paymentout;
+    	    	
+        		
+        			
+        		var done5 = assert.async();		
+        		$.when($("#content button.om-payments").trigger("click")).done(function(){
+        			window.dbChangedTradingNamesDone = function() {
+        				window.dbChangedTradingNamesDone = function() {};
+        				$.when($("#content input[name='add']").trigger("click")).done(function(){
+        					window.dbChangedCurrenciesDone = function() {
+        						window.dbChangedCurrenciesDone = function() {};
+        						$("input[name='trading_name']").val( receiver );
+        						$("select[name='currency']").val( expectedcurrency );
+        						$.when($("input[name='submit']").trigger("click")).done(function(){
+        							window.dbChangedTradingNamesDone = function() {
+        								
+        								var expected = receiver;
+        							    $('select#to').val(expected);
+        								
+        								var testvalue = $('select#to').val();
+        								if(testvalue == expected) {
+        									assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
+        					            	done5();
+        								}
+        								var done6 = assert.async();	
+        								
+        								$("input[name='amount']").val( outamount );
+        								$("input[name='description']").val( "example test" );
+        								
+        								$.when($("#personal-payment").submit()).done(function(){
+        									window.dbChangedJournalDone = function() {
+        										
+        										var testvalue = $("#content div.isNegative").html();
+        										var expected = -outamount + " " + expectedcurrency;
+        										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
+        						            	done6();
+        						            	window.dbChangedJournalDone = function() {};
+        						            	window.dbChangedTradingNamesDone = function() {};
+        						            	
+        						            	
+        						            	var merchantUsername = 'cv.ca';
+        										var merchantPassword = 'cccc';
+        										var inamount = record.paymentin;
+        										
+        										
+        										
+        										assert.expect( 6 );		
+        										var done3 = assert.async();		
+        										$.when($("#content button.om-payments").trigger("click")).done(function(){
+        											window.dbChangedTradingNamesDone = function() {
+        												window.dbChangedTradingNamesDone = function() {};
+        												$.when($("#content button.om-merchant").trigger("click")).done(function(){
+        													window.dbChangedTradingNamesDone = function() {
+        														window.dbChangedTradingNamesDone = function() {};
+        														
+        																		
+        														var expected = "trading_name," + username.toLowerCase() + "," + expectedcurrency;
+        													    $('select#to').val(expected);
+        														
+        														var testvalue = $('select#to').val();
+        														
+        															assert.ok( testvalue == expected, "Account Select Test: '" + testvalue + "' == '" + expected + "'");
+        											            	done3();
+        														
+        														var done4 = assert.async();	
+        														
+        														
+        														$("input[name='amount']").val( inamount );
+        														
+        														
+        														$.when($("#submit").trigger("click")).done(function(){
+        															window.customerPaymentPageDone = function() {
+        																
+        																$("input[name='email']").val( merchantUsername );
+        																$("input[name='password']").val( merchantPassword );
+        																$("input[name='description']").val( "example test" );
+        																
+        																$.when($("input[name='payment']").trigger("click")).done(function(){
+        																	window.dbChangedJournalDone = function() {
+        																	
+        																		var testvalue = $("#content div.isPositive").html();
+        																		var expected = inamount + " " + expectedcurrency;
+        																		assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
+        														            	done4();
+        														            	window.dbChangedJournalDone = function() {};
+        														            	window.customerPaymentPageDone = function() {};
+        														            	
+        														            	
+        														            	
+        														            	
+        														            		
+        														        			
+        														            	
+        																	}
+        																})
+        															}
+        														})					
+        													}
+        												})
+        											};
+        										})
+        									}
+        								})
+        							};
+        						})
+        					}					
+        				})
+        			};
+        		})
 				
 				
-				
-				assert.expect( 6 );		
-				var done3 = assert.async();		
-				$.when($("#content button.om-payments").trigger("click")).done(function(){
-					window.dbChangedTradingNamesDone = function() {
-						window.dbChangedTradingNamesDone = function() {};
-						$.when($("#content button.om-merchant").trigger("click")).done(function(){
-							window.dbChangedTradingNamesDone = function() {
-								window.dbChangedTradingNamesDone = function() {};
-								
-												
-								var expected = "trading_name," + username.toLowerCase() + "," + expectedcurrency;
-							    $('select#to').val(expected);
-								
-								var testvalue = $('select#to').val();
-								
-									assert.ok( testvalue == expected, "Account Select Test: '" + testvalue + "' == '" + expected + "'");
-					            	done3();
-								
-								var done4 = assert.async();	
-								
-								
-								$("input[name='amount']").val( inamount );
-								
-								
-								$.when($("#submit").trigger("click")).done(function(){
-									window.customerPaymentPageDone = function() {
-										
-										$("input[name='email']").val( merchantUsername );
-										$("input[name='password']").val( merchantPassword );
-										$("input[name='description']").val( "example test" );
-										
-										$.when($("input[name='payment']").trigger("click")).done(function(){
-											window.dbChangedJournalDone = function() {
-											
-												var testvalue = $("#content div.isPositive").html();
-												var expected = inamount + " " + expectedcurrency;
-												assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
-								            	done4();
-								            	window.dbChangedJournalDone = function() {};
-								            	window.customerPaymentPageDone = function() {};
-								            	
-								            	
-								            	
-								            	
-								            		
-								        			var receiver = "io.cv.ca";
-								        			var outamount = record.paymentout;
-								        	    	
-								            		
-								            			
-								            		var done5 = assert.async();		
-								            		$.when($("#content button.om-payments").trigger("click")).done(function(){
-								            			window.dbChangedTradingNamesDone = function() {
-								            				window.dbChangedTradingNamesDone = function() {};
-								            				$.when($("#content input[name='add']").trigger("click")).done(function(){
-								            					window.dbChangedCurrenciesDone = function() {
-								            						window.dbChangedCurrenciesDone = function() {};
-								            						$("input[name='trading_name']").val( receiver );
-								            						$("select[name='currency']").val( expectedcurrency );
-								            						$.when($("input[name='submit']").trigger("click")).done(function(){
-								            							window.dbChangedTradingNamesDone = function() {
-								            								
-								            								var expected = receiver;
-								            							    $('select#to').val(expected);
-								            								
-								            								var testvalue = $('select#to').val();
-								            								if(testvalue == expected) {
-								            									assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
-								            					            	done5();
-								            								}
-								            								var done6 = assert.async();	
-								            								
-								            								$("input[name='amount']").val( outamount );
-								            								$("input[name='description']").val( "example test" );
-								            								
-								            								$.when($("#personal-payment").submit()).done(function(){
-								            									window.dbChangedJournalDone = function() {
-								            										
-								            										var testvalue = $("#content div.isNegative").html();
-								            										var expected = -outamount + " " + expectedcurrency;
-								            										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
-								            						            	done6();
-								            						            	window.dbChangedJournalDone = function() {};
-								            						            	window.dbChangedTradingNamesDone = function() {};
-								            									}
-								            								})
-								            							};
-								            						})
-								            					}					
-								            				})
-								            			};
-								            		})
-								            	
-											}
-										})
-									}
-								})					
-							}
-						})
-					};
-				})
+			    
 			} );
 		})
 
