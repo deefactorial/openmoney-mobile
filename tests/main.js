@@ -236,7 +236,8 @@ $(function() {
 	
 	
 	if (typeof importArray != 'undefined') {
-		importArray.forEach( function( record ) {
+		
+			var record = importArray.pop();
 			
 			var username = record.username;
 		    var currentTime = new Date().getTime();			
@@ -280,6 +281,22 @@ $(function() {
 							var expected = 1;
 							assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' == '" + expected + "'");
 							done2();
+							
+							record = importArray.pop();
+							
+							username = record.username;
+						    currentTime = new Date().getTime();			
+							password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+							email = record.email;
+							
+						    merchantUsername = 'cv.ca';
+							merchantPassword = 'cccc';
+							inamount = record.paymentin;
+							
+							receiver = "io.cv.ca";
+							outamount = record.paymentout;
+				        	expectedcurrency = "cv.ca";
+							
 						}
 					})			
 				}
@@ -384,7 +401,7 @@ $(function() {
 					};
 				})
 			} );
-		})
+		
 		
 	    
 		
