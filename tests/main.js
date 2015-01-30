@@ -70,7 +70,7 @@ $(function() {
 			currentTime = new Date().getTime();
 			username = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
 			email = username + "@openmoney.cc";
-			window.dbChangedStewardTradingNamesDone = function(){};
+			
 			
 			var done1 = assert.async();
 	    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
@@ -99,7 +99,7 @@ $(function() {
 					var expected = 1;
 					assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' == '" + expected + "'");
 					done2();
-					
+					window.dbChangedStewardTradingNamesDone = function(){};
 					
 				}
 			})			
@@ -240,24 +240,35 @@ $(function() {
 	
 	if (typeof importArray != 'undefined') {
 		
-		var record = importArray.pop();
+		var record = {};
 		
-		var username = record.username;
+		var username = '';
 	    var currentTime = new Date().getTime();			
 		var password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-		var email = record.email;
+		var email = '';
 		
 	    var merchantUsername = 'cv.ca';
 		var merchantPassword = 'cccc';
-		var inamount = record.paymentin;
+		var inamount = 0;
 		
 		var receiver = "io.cv.ca";
-		var outamount = record.paymentout;
+		var outamount = 0;
     	var expectedcurrency = "cv.ca";
 	    
 	    QUnit.module( "import registration", {
 			setup : function(assert) {
-				var done1 = assert.async();
+				
+				record = importArray.pop();
+				
+				username = record.username;
+			    currentTime = new Date().getTime();			
+				password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
+				email = record.email;
+				inamount = record.paymentin;
+				outamount = record.paymentout;
+
+				
+		    	var done1 = assert.async();
 		    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
 		    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){	    			
 		    			$("input[name='username']").val( username );
@@ -285,21 +296,6 @@ $(function() {
 						var expected = 1;
 						assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' == '" + expected + "'");
 						done2();
-						
-						record = importArray.pop();
-						
-						username = record.username;
-					    currentTime = new Date().getTime();			
-						password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
-						email = record.email;
-						
-					    merchantUsername = 'cv.ca';
-						merchantPassword = 'cccc';
-						inamount = record.paymentin;
-						
-						receiver = "io.cv.ca";
-						outamount = record.paymentout;
-			        	expectedcurrency = "cv.ca";
 			        	
 			        	window.dbChangedStewardTradingNamesDone = function(){};
 					}
