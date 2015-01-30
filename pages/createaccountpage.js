@@ -310,9 +310,11 @@ function goCreateAccount(parameters) {
 		                	
 		                	existingdoc.steward.forEach(function(steward){
 		                		if (steward == window.config.user.name) {
+		                			
+		                			existingdoc.defaultcurrency = doc.defaultcurrency;
 		                			log( "update space" + JSON.stringify( doc ) )
 			                        var leadingSlash = getLeadingSlash(); 
-			                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+			                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( existingdoc ) ), function(error, ok) {
 			
 			                            if (error)
 			                                return alert( JSON.stringify( error ) )
