@@ -1,2 +1,3 @@
-var importArray = [{"username":"test4.cv.ca", "email":"omdev.ca+test4QQQlets.net@gmail.com", "paymentin":65278, "paymentout":8275},
-{"username":"test5.cv.ca", "email":"omdev.ca+test5QQQlets.net@gmail.com", "paymentin":65278, "paymentout":8275}];
+var timestamp = time();
+var importArray = [{"username":"test" + timestamp + ".cv.ca", "email":"omdev.ca+test" + timestamp + "QQQlets.net@gmail.com", "paymentin":65278, "paymentout":8275},
+{"username":"test" + timestamp + "2.cv.ca", "email":"omdev.ca+test" + timestamp + "2QQQlets.net@gmail.com", "paymentin":65278, "paymentout":8275}];
