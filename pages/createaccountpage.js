@@ -307,6 +307,29 @@ function goCreateAccount(parameters) {
 		                        alert( "Error: " + JSON.stringify( error ) )
 		                    }
 		                } else {
+		                	
+		                	existingdoc.steward.forEach(function(steward){
+		                		if (steward == window.config.user.name) {
+		                			log( "update space" + JSON.stringify( doc ) )
+			                        var leadingSlash = getLeadingSlash(); 
+			                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+			
+			                            if (error)
+			                                return alert( JSON.stringify( error ) )
+			                                
+			                            //trigger a view update
+	    	    			   		 	config.views( [ "spaces", {
+	    	    			   		        stale : "update_after"
+	    	    			   		    } ], function(error, view) {
+	    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	    	    			   		 	} );
+
+			                                
+			                            navigator.notification.alert( "You successfully created a new space !" , function() { goManageAccounts([]) }, "New Space", "OK")
+			                        } )
+		                		}
+		                	} )
+		                	
 		                    navigator.notification.alert( "Trading Space already exists!"  , function() {  }, "Existing Space", "OK")
 		                }
 		            } );
