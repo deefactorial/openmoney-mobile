@@ -277,6 +277,7 @@ $(function() {
 				$.when($("#content button.openmoney-logout").trigger("click")).done(function(){
 					window.dbChangedStewardTradingNamesDone = function(){
 						
+						
 						var testvalue = $("#content button.openmoney-login").length
 						var expected = 1;
 						assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' == '" + expected + "'");
@@ -296,7 +297,8 @@ $(function() {
 						receiver = "io.cv.ca";
 						outamount = record.paymentout;
 			        	expectedcurrency = "cv.ca";
-						
+			        	
+			        	window.dbChangedStewardTradingNamesDone = function(){};
 					}
 				})			
 			}
