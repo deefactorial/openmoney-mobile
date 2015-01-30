@@ -292,7 +292,7 @@ $(function() {
 								window.dbChangedTradingNamesDone = function() {};
 								
 												
-								var expected = "trading_name," + username.toLowerCase() + ",cc";
+								var expected = "trading_name," + username.toLowerCase() + ",cv.ca";
 							    $('select#to').val(expected);
 								
 								var testvalue = $('select#to').val();

@@ -151,7 +151,7 @@ function goCreateAccount(parameters) {
 	        			config.db.put( leadingSlash + currency_view.type + "," + config.user.name + "," + currency_view.currency.toLowerCase(), JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
 	        	   		 	if (error) { return alert( JSON.stringify( error ) ) }
 	        	   		 	//set a timeout for the sync gateway to update doc.
-        	                setTimout(function(){
+        	                setTimeout(function(){
         	                	config.db.get( "/" + doc.type + "," + doc.currency.toLowerCase(), function(error, existingdoc) {
     	        	                if (error) {
     	        	                    log( "Error: " + JSON.stringify( error ) )
