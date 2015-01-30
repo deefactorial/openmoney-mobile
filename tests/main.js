@@ -292,7 +292,7 @@ $(function() {
 								window.dbChangedTradingNamesDone = function() {};
 								
 												
-								var expected = "trading_name," + username.toLowerCase() + ",cv.ca";
+								var expected = "trading_name," + username.toLowerCase() + ",cc";
 							    $('select#to').val(expected);
 								
 								var testvalue = $('select#to').val();
@@ -317,7 +317,7 @@ $(function() {
 											window.dbChangedJournalDone = function() {
 											
 												var testvalue = $("#content div.isPositive").html();
-												var expected = amount + " cv.ca";
+												var expected = amount + " cc";
 												assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
 								            	done4();
 								            	window.dbChangedJournalDone = function() {};
@@ -356,7 +356,7 @@ $(function() {
 								            									window.dbChangedJournalDone = function() {
 								            										
 								            										var testvalue = $("#content div.isNegative").html();
-								            										var expected = -amount + " cv.ca";
+								            										var expected = -amount + " cc";
 								            										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
 								            						            	done4();
 								            						            	window.dbChangedJournalDone = function() {};
