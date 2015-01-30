@@ -230,9 +230,6 @@ function goCreateAccount(parameters) {
 
         	if(doc.subspace != '') {
         		doc.space += '.' + doc.subspace;
-        	} else {
-        		doc.subspace = "cc";
-        		doc.space += '.' + doc.subspace;
         	}
         	
         	space_view = {};
@@ -275,7 +272,7 @@ function goCreateAccount(parameters) {
 					                        alert( "Error: " + JSON.stringify( error ) )
 					                    }
 					                } else {
-					                    navigator.notification.alert( "Trading Space already exists!"  , function() {  }, "Existing Space", "OK")
+					                    navigator.notification.alert( "Space already exists!"  , function() {  }, "Existing Space", "OK")
 					                }
 					            } );
 	        	   		 	},250);
