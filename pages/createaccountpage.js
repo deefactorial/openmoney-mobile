@@ -421,7 +421,7 @@ function goCreateAccount(parameters) {
 	                	
 	                }
 	                var defaultRoot = "cc";
-	                if (typeof doc.space != 'undefined')
+	                if (typeof spaces != 'undefined')
 	                spaces.rows.forEach(function (row) {
 	                	if (row.key == "cc") {
 	                		row.doc.steward.forEach(function(steward){
