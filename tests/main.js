@@ -242,6 +242,14 @@ $(function() {
 		    var currentTime = new Date().getTime();			
 			var password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 			var email = record.email;
+			
+		    var merchantUsername = 'cv.ca';
+			var merchantPassword = 'cccc';
+			var inamount = record.paymentin;
+			
+			var receiver = "io.cv.ca";
+			var outamount = record.paymentout;
+        	var expectedcurrency = "cv.ca";
 		    
 		    QUnit.module( "import registration", {
 				setup : function(assert) {
@@ -255,7 +263,7 @@ $(function() {
 			                	window.dbChangedStewardTradingNamesDone = function() {
 			                		
 			                		var testvalue = $("#content li.om-list-name").attr("data-id");
-			                		var expected = "trading_name," + username.toLowerCase() + ",cc";
+			                		var expected = "trading_name," + username.toLowerCase() + "," + expectedcurrency;
 			                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
 			                    	done1();
 			                    	window.dbChangedStewardTradingNamesDone = function(){};
@@ -277,13 +285,7 @@ $(function() {
 				}
 			} );
 		    
-		    var merchantUsername = 'cv.ca';
-			var merchantPassword = 'cccc';
-			var inamount = record.paymentin;
-			
-			var receiver = "io.cv.ca";
-			var outamount = record.paymentout;
-        	var currency = "cv.ca";
+
 		    
 			QUnit.test( "Merchant Payment", function( assert ) {
 				assert.expect( 4 );		
@@ -296,7 +298,7 @@ $(function() {
 								window.dbChangedTradingNamesDone = function() {};
 								
 												
-								var expected = "trading_name," + username.toLowerCase() + "," + currency;
+								var expected = "trading_name," + username.toLowerCase() + "," + expectedcurrency;
 							    $('select#to').val(expected);
 								
 								var testvalue = $('select#to').val();
@@ -321,7 +323,7 @@ $(function() {
 											window.dbChangedJournalDone = function() {
 											
 												var testvalue = $("#content div.isPositive").html();
-												var expected = inamount + " " + currency;
+												var expected = inamount + " " + expectedcurrency;
 												assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
 								            	done4();
 								            	window.dbChangedJournalDone = function() {};
