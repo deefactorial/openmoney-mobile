@@ -253,7 +253,7 @@ $(function() {
 	    var currentTime = new Date().getTime();			
 		var password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 		var email = '';
-		
+		var expectedcurrency = "cv.ca";
 
 	    
 	    QUnit.module( "import registration", {
@@ -265,7 +265,7 @@ $(function() {
 			    currentTime = new Date().getTime();			
 				password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 				email = record.email;
-
+				expectedcurrency = "cv.ca";
 
 				
 		    	var done1 = assert.async();
@@ -310,7 +310,7 @@ $(function() {
 		    var merchantUsername = 'cv.ca';
 			var merchantPassword = 'cccc';
 			var inamount = record.paymentin;
-			var expectedcurrency = "cv.ca";
+			
 			
 			
 			assert.expect( 4 );		
