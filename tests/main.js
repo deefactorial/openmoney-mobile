@@ -279,7 +279,11 @@ $(function() {
 		    
 		    var merchantUsername = 'cv.ca';
 			var merchantPassword = 'cccc';
-			var amount = record.paymentin;
+			var inamount = record.paymentin;
+			
+			var receiver = "io.cv.ca";
+			var outamount = record.paymentout;
+        	var currency = "cv.ca";
 		    
 			QUnit.test( "Merchant Payment", function( assert ) {
 				assert.expect( 4 );		
@@ -292,7 +296,7 @@ $(function() {
 								window.dbChangedTradingNamesDone = function() {};
 								
 												
-								var expected = "trading_name," + username.toLowerCase() + ",cv.ca";
+								var expected = "trading_name," + username.toLowerCase() + "," + currency;
 							    $('select#to').val(expected);
 								
 								var testvalue = $('select#to').val();
@@ -303,7 +307,7 @@ $(function() {
 								var done4 = assert.async();	
 								
 								
-								$("input[name='amount']").val( amount );
+								$("input[name='amount']").val( inamount );
 								
 								
 								$.when($("#submit").trigger("click")).done(function(){
@@ -317,14 +321,13 @@ $(function() {
 											window.dbChangedJournalDone = function() {
 											
 												var testvalue = $("#content div.isPositive").html();
-												var expected = amount + " cc";
+												var expected = inamount + " " + currency;
 												assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
 								            	done4();
 								            	window.dbChangedJournalDone = function() {};
 								            	window.customerPaymentPageDone = function() {};
 								            	
-								            	var receiver = "io.cv.ca";
-								            	var amount = record.paymentout;
+								            	
 								            	
 								            	QUnit.test( "New receiver Payment", function( assert ) {
 								            		assert.expect( 4 );		
@@ -349,14 +352,14 @@ $(function() {
 								            								}
 								            								var done4 = assert.async();	
 								            								
-								            								$("input[name='amount']").val( amount );
+								            								$("input[name='amount']").val( outamount );
 								            								$("input[name='description']").val( "example test" );
 								            								
 								            								$.when($("#personal-payment").submit()).done(function(){
 								            									window.dbChangedJournalDone = function() {
 								            										
 								            										var testvalue = $("#content div.isNegative").html();
-								            										var expected = -amount + " cc";
+								            										var expected = -outamount + " " + currency;
 								            										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
 								            						            	done4();
 								            						            	window.dbChangedJournalDone = function() {};
