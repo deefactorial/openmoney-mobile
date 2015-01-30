@@ -66,6 +66,12 @@ $(function() {
     
     QUnit.module( "registration", {
 		setup : function(assert) {
+			
+			currentTime = new Date().getTime();
+			username = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+			email = username + "@openmoney.cc";
+			window.dbChangedStewardTradingNamesDone = function(){};
+			
 			var done1 = assert.async();
 	    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
 	    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){	    			
@@ -94,10 +100,7 @@ $(function() {
 					assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' == '" + expected + "'");
 					done2();
 					
-					currentTime = new Date().getTime();
-					username = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-					email = username + "@openmoney.cc";
-					window.dbChangedStewardTradingNamesDone = function(){};
+					
 				}
 			})			
 		}
