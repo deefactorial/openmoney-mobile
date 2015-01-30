@@ -371,6 +371,7 @@ $(function() {
 							            					window.dbChangedCurrenciesDone = function() {
 							            						window.dbChangedCurrenciesDone = function() {};
 							            						$("input[name='trading_name']").val( receiver );
+							            						$("select[name='currency']").val( expectedcurrency );
 							            						$.when($("input[name='submit']").trigger("click")).done(function(){
 							            							window.dbChangedTradingNamesDone = function() {
 							            								
@@ -391,7 +392,7 @@ $(function() {
 							            									window.dbChangedJournalDone = function() {
 							            										
 							            										var testvalue = $("#content div.isNegative").html();
-							            										var expected = -outamount + " " + currency;
+							            										var expected = -outamount + " " + expectedcurrency;
 							            										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
 							            						            	done4();
 							            						            	window.dbChangedJournalDone = function() {};
