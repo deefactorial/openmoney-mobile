@@ -131,7 +131,7 @@ $(function() {
 		})
 	} );
 	
-	var receiver = "deefactorial";
+	var receiver = "deefactorial.cc";
 	var amount = parseInt( randomString( 8, '0123456789' ) );
 	
 	QUnit.test( "New receiver Payment", function( assert ) {
