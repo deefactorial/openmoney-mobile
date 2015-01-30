@@ -591,7 +591,18 @@ function goAddTradingName(parameters) {
 		        	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
 		        	return null;
 		        }
-			    var leadingSlash = getLeadingSlash(); 
+			    
+			    if (typeof doc.trading_name == 'undefined' || doc.trading_name == '') { 
+		        	navigator.notification.alert( 'The Trading Name you entered is not valid!' , function() {}, "Invalid Trading Name", "OK")
+		        	return null;
+		        }
+			    
+			    if (typeof doc.currency == 'undefined' || doc.currency == '') { 
+		        	navigator.notification.alert( 'The currency you entered is not valid!' , function() {}, "Invalid Currency", "OK")
+		        	return null;
+		        }
+			    
+			    var leadingSlash = getLeadingSlash();
 		        config.db.put(leadingSlash + doc.type + "," + config.user.name + "," + doc.trading_name.toLowerCase() + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
 		   		 	if (error) {
 		   		 		if (error.status == 409 || error.error == "conflict") {
