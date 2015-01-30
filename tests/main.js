@@ -255,7 +255,7 @@ $(function() {
 			                	window.dbChangedStewardTradingNamesDone = function() {
 			                		
 			                		var testvalue = $("#content li.om-list-name").attr("data-id");
-			                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
+			                		var expected = "trading_name," + username.toLowerCase() + ",cc";
 			                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
 			                    	done1();
 			                    	window.dbChangedStewardTradingNamesDone = function(){};
@@ -292,7 +292,7 @@ $(function() {
 								window.dbChangedTradingNamesDone = function() {};
 								
 												
-								var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
+								var expected = "trading_name," + username.toLowerCase() + ",cv.ca";
 							    $('select#to').val(expected);
 								
 								var testvalue = $('select#to').val();
@@ -317,7 +317,7 @@ $(function() {
 											window.dbChangedJournalDone = function() {
 											
 												var testvalue = $("#content div.isPositive").html();
-												var expected = amount + " cc";
+												var expected = amount + " cv.ca";
 												assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
 								            	done4();
 								            	window.dbChangedJournalDone = function() {};
@@ -356,7 +356,7 @@ $(function() {
 								            									window.dbChangedJournalDone = function() {
 								            										
 								            										var testvalue = $("#content div.isNegative").html();
-								            										var expected = -amount + " cc";
+								            										var expected = -amount + " cv.ca";
 								            										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
 								            						            	done4();
 								            						            	window.dbChangedJournalDone = function() {};
