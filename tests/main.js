@@ -251,7 +251,7 @@ $(function() {
 	    var currentTime = new Date().getTime();			
 		var password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 		var email = '';
-		var expectedcurrency = "cv.ca";
+		var expectedcurrency = "cw.cv.ca";
 		
 		importArray.forEach(function(record){
 			
@@ -264,7 +264,6 @@ $(function() {
 				    currentTime = new Date().getTime();			
 					password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 					email = record.email;
-					expectedcurrency = "cv.ca";
 					
 			    	var done1 = assert.async();
 			    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
