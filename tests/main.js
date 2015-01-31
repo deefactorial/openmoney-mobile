@@ -257,7 +257,7 @@ $(function() {
 			
 
 			
-			QUnit.module( record.username + "import registration", {
+			QUnit.module( " " + record.username + ": Import Registration", {
 				setup : function(assert) {
 					
 					username = record.username;
@@ -303,7 +303,7 @@ $(function() {
 		    
 
 		    
-			QUnit.test( record.username + "Merchant Payment", function( assert ) {
+			QUnit.test( " " + record.username + ": Initial Account Payments", function( assert ) {
 				
 				
 				var receiver = "io.cv.ca";
@@ -334,7 +334,7 @@ $(function() {
         								var done6 = assert.async();	
         								
         								$("input[name='amount']").val( outamount );
-        								$("input[name='description']").val( "example test" );
+        								$("input[name='description']").val( "Total expense to date." );
         								
         								$.when($("#personal-payment").submit()).done(function(){
         									window.dbChangedJournalDone = function() {
@@ -382,7 +382,7 @@ $(function() {
         																
         																$("input[name='email']").val( merchantUsername );
         																$("input[name='password']").val( merchantPassword );
-        																$("input[name='description']").val( "example test" );
+        																$("input[name='description']").val( "Total income to date." );
         																
         																$.when($("input[name='payment']").trigger("click")).done(function(){
         																	window.dbChangedJournalDone = function() {
