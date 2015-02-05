@@ -341,7 +341,7 @@ function setupConfig(done) {
     	    	
         		log ("name" + window.config.user.name)
         		log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } ))
-        		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+        		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
     	    	
 //    	    	// define vars
 //    	    	var username = window.config.user.name;
