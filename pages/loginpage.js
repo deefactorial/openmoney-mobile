@@ -178,9 +178,13 @@ function doServerLogin(callBack) {
         var url = REMOTE_SERVER_LOGIN_URL;
         var login = coax( url );
         var credentials = {};
-        credentials.username = window.config.user.name;
-        credentials.password = window.config.user.password;
-        if(config.user.name.indexOf("@") != -1) {
+        if (typeof window.config.user != 'undefined' && typeof window.config.user.name != 'undefined') {
+        	credentials.username = window.config.user.name;
+        }
+        if (typeof window.config.user != 'undefined' && typeof window.config.user.password != 'undefined') {
+        	credentials.password = window.config.user.password;
+        }
+        if(typeof window.config.user != 'undefined' && typeof window.config.user.name != 'undefined' && window.config.user.name.indexOf("@") != -1) {
         	credentials.email = window.config.user.name;
         }
         log( "http " + url + " " + JSON.stringify( credentials ) )
