@@ -263,47 +263,47 @@ $(function() {
 		})
 	} );
 	
-	QUnit.module( "login", {
-		setup : function(assert) {
-			
-			currentTime = new Date().getTime();
-			username = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-			email = username + "@openmoney.cc";
-			
-			
-			var done1 = assert.async();
-	    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
-	    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){	    			
-	    			$("input[name='username']").val( username );
-	                $("input[name='email']").val( email );
-	                $("input[name='password']").val( password );                
-	                $.when($("#registerform").submit()).done(function(){
-	                	window.dbChangedStewardTradingNamesDone = function() {
-	                		
-	                		var testvalue = $("#content li.om-list-name").attr("data-id");
-	                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
-	                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
-	                    	done1();
-	                    	window.dbChangedStewardTradingNamesDone = function(){};
-	                	};            	
-	                });
-	    		});
-	    	});
-		}, teardown : function(assert) {
-			var done2 = assert.async();
-			$.when($("#content button.openmoney-logout").trigger("click")).done(function(){
-				window.dbChangedStewardTradingNamesDone = function(){
-					
-					var testvalue = $("#content button.openmoney-login").length
-					var expected = 1;
-					assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' == '" + expected + "'");
-					done2();
-					window.dbChangedStewardTradingNamesDone = function(){};
-					
-				}
-			})			
-		}
-	} );
+//	QUnit.module( "login", {
+//		setup : function(assert) {
+//			
+//			currentTime = new Date().getTime();
+//			username = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+//			email = username + "@openmoney.cc";
+//			
+//			
+//			var done1 = assert.async();
+//	    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
+//	    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){	    			
+//	    			$("input[name='username']").val( username );
+//	                $("input[name='email']").val( email );
+//	                $("input[name='password']").val( password );                
+//	                $.when($("#registerform").submit()).done(function(){
+//	                	window.dbChangedStewardTradingNamesDone = function() {
+//	                		
+//	                		var testvalue = $("#content li.om-list-name").attr("data-id");
+//	                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
+//	                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
+//	                    	done1();
+//	                    	window.dbChangedStewardTradingNamesDone = function(){};
+//	                	};            	
+//	                });
+//	    		});
+//	    	});
+//		}, teardown : function(assert) {
+//			var done2 = assert.async();
+//			$.when($("#content button.openmoney-logout").trigger("click")).done(function(){
+//				window.dbChangedStewardTradingNamesDone = function(){
+//					
+//					var testvalue = $("#content button.openmoney-login").length
+//					var expected = 1;
+//					assert.ok( testvalue === expected, "Logout test: '" + testvalue + "' == '" + expected + "'");
+//					done2();
+//					window.dbChangedStewardTradingNamesDone = function(){};
+//					
+//				}
+//			})			
+//		}
+//	} );
 	
 	
 	if (typeof importArray != 'undefined') {
