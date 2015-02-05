@@ -18,15 +18,7 @@ limitations under the License.
 function goIndex(parameters) {
 	log ("goIndex" + JSON.stringify(parameters));
 	
-	window.dbChanged = function() {}
-	window.dbChangedTradingNames = function() {}
-	window.dbChangedStewardTradingNames = function() {}
-	window.dbChangedCurrencies = function() {}
-	window.dbChangedSpaces = function() {}
-	window.dbChangedJournal = function() {}
-	window.dbChangedProfile = function() {}
-	window.dbChangedTags = function() {}
-	window.dbChangedBeams = function() {}
+	resetChangeTrackers();
 
 	var response = { "html" : config.t.index(), "pageTitle" : "Openmoney", "pageFunction" : "goIndex", "pageParameters" : [] }
 	
