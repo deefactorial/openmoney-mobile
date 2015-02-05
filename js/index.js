@@ -332,12 +332,12 @@ function setupConfig(done) {
     	        var callback = function () {
     	        	console.log("Get Url Test:" + this.responseText);
     	        }     
-    	    	var xmlHttp = new XMLHttpRequest()
-    	    	xmlHttp.open( 'GET', url, true )
-    	    	if (window.config && window.config.user && window.config.user.name) 
-    	    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.session_token));
-    	    	xmlHttp.onload = callback;
-    	    	xmlHttp.send()
+//    	    	var xmlHttp = new XMLHttpRequest()
+//    	    	xmlHttp.open( 'GET', url, true )
+//    	    	if (window.config && window.config.user && window.config.user.name) 
+//    	    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.session_token));
+//    	    	xmlHttp.onload = callback;
+//    	    	xmlHttp.send()
     	    	
         		log ("name" + window.config.user.name)
         		log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } ))
