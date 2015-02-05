@@ -174,7 +174,7 @@ function doServerLogin(callBack) {
             reason : "No network connection"
         } ) }
     }
-    if (window.config && window.config.user) {
+    //if (window.config && window.config.user) {
         var url = REMOTE_SERVER_LOGIN_URL;
         var login = coax( url );
         var credentials = {};
@@ -189,11 +189,11 @@ function doServerLogin(callBack) {
             log( "Server Login Result:" + JSON.stringify( result ) )
             callBack( false, result )
         } )
-    } else {
-        return callBack( {
-            reason : "Configuration User is not Set!"
-        } )
-    }
+//    } else {
+//        return callBack( {
+//            reason : "Configuration User is not Set!"
+//        } )
+//    }
 }
 
 
