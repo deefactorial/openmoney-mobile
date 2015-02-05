@@ -47,7 +47,9 @@ function onDeviceReady() {
 	            return false;
 	        }
 	        
-	        goIndex([])
+	        doFirstLogin(function(error){
+	        	goIndex([])
+	        });
 	        
 	        if( window.cblite ) {
 	        	config.syncReference = triggerSync( function(err) {
