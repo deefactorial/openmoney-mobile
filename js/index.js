@@ -46,15 +46,16 @@ function onDeviceReady() {
 	            goIndex([])
 	            return false;
 	        }
-	        connectToChanges()
 	        
 	        goIndex([])
 	        
-	        config.syncReference = triggerSync( function(err) {
-	            if (err) {
-	                log( "error on sync" + JSON.stringify( err ) )
-	            }
-	        } )
+	        if( window.cblite ) {
+	        	config.syncReference = triggerSync( function(err) {
+		            if (err) {
+		                log( "error on sync" + JSON.stringify( err ) )
+		            }
+		        } )
+	        }
 	    } )
 	    
 	    /*
@@ -255,6 +256,7 @@ function setupConfig(done) {
                         window.config.user.user_id = newUser.username;
                         window.config.user.name = newUser.username;
                         window.config.user.email = newUser.email;
+                        window.config.user.session_token = newUser.session_token;
                         if (window.cblite) {
 	                        window.config.db.put( "/_local/user", config.user, function(err, ok) {
 	                        	console.log( "put local user: " + JSON.stringify( [ err, ok] ) )
@@ -274,6 +276,7 @@ function setupConfig(done) {
                     window.config.user.user_id = newUser.username;
                     window.config.user.name = newUser.username;
                     window.config.user.email = newUser.email;
+                    window.config.user.session_token = newUser.session_token;
                     if (window.cblite) {
 	                    window.config.db.put( "/_local/user", config.user, function(err, ok) {
 	                        if (err) { return cb( err ) }
@@ -330,12 +333,12 @@ function setupConfig(done) {
     	    	var xmlHttp = new XMLHttpRequest()
     	    	xmlHttp.open( 'GET', url, true )
     	    	if (window.config && window.config.user && window.config.user.name) 
-    	    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.password));
+    	    	xmlHttp.setRequestHeader("authorization", 'Basic ' + b64_enc(window.config.user.name + ':' + window.config.user.session_token));
     	    	xmlHttp.onload = callback;
     	    	xmlHttp.send()
     	    	
         		log ("name" + window.config.user.name)
-        		log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ))
+        		log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } ))
         		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
     	    	
 //    	    	// define vars
@@ -433,12 +436,12 @@ function setupConfig(done) {
 	                    }
 	                    
 	                    if (window.config.user && window.config.user.name) {
-	                    	getProfile();
 	                        if (SERVER_LOGIN) {
 	                            registerServer( done )
 	                        } else if (FACEBOOK_LOGIN) {
 	                            registerFacebookToken( done )
 	                        }
+	                        
 	                    } else {
 	                        done( false )
 	                    }
@@ -583,7 +586,7 @@ function setupConfig(done) {
 	    } else {
 	    	var design = "_design/dev_openmoney" ;//+ new Date().getTime();
 	    	//query the local server for the views since the sync_gateway doesn't support _design docs.
-	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
 	    	cb( false , views( [ design, "_view" ] ) )
 	    }
     }
@@ -666,7 +669,7 @@ function triggerSync(cb, retryCount) {
 
     if (SERVER_LOGIN) {
         var remote = {
-            url : REMOTE_SYNC_PROTOCOL + encodeURIComponent( config.user.name ) + ":" + encodeURIComponent( config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/" + REMOTE_SYNC_DATABASE + "/"
+            url : REMOTE_SYNC_PROTOCOL + encodeURIComponent( config.user.name ) + ":" + encodeURIComponent( config.user.session_token ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/" + REMOTE_SYNC_DATABASE + "/"
         };
     } else if (FACEBOOK_LOGIN) {
         var remote = {

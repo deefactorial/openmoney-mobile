@@ -98,16 +98,14 @@ function doFirstLogin(cb) {
             if (error) { return cb( error ) }
             
             window.config.setUser( data, function(error, ok) {
-            	console.log("setUser:" + JSON.stringify( [ error, ok ] ) )
-                if (error) { return cb( error ) }
-                
-		            setupConfig( function(error, ok){
-		            	if (error) {
-		            		log( "Error setting up config: " + JSON.stringify( error ) ) 
-		            	}
-		            	
-		            	
-		            	
+        		console.log("setUser:" + JSON.stringify( [ error, ok ] ) )
+        		if (error) { return cb( error ) }
+            
+	            setupConfig( function(error, ok){
+	            	if (error) {
+	            		log( "Error setting up config: " + JSON.stringify( error ) ) 
+	            	}
+	            	
                     if (window.cblite) {
 	                    createBeamTag( function(err) {
 	                        log( "createBeamTag done " + JSON.stringify( err ) )
@@ -121,15 +119,17 @@ function doFirstLogin(cb) {
 	                    
 	                    config.syncReference = triggerSync( function(error, ok) {
 	                    	connectToChanges();
+	                    	getProfile();
 	                        log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
 	                        cb( error, ok )
 	                    } )
                     } else {
                     	connectToChanges();
+                    	getProfile();
                     	cb(false,"OK");
                     }
                 } )
-            } )
+        	} )
         } )
     } else if (FACEBOOK_LOGIN) {
         doFacebook( function(err, data) {
