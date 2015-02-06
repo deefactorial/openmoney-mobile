@@ -61,6 +61,9 @@ $(function() {
 			successcb();
 		};
 		
+		//turn off changes feed.
+		window.connectToChanges = function(){};
+		
 	//	QUnit.test( "lost password test", function( assert ) {	
 	//		var username = 'losttest1';
 	//		var email = 'deefactorial+losttest1@gmail.com'

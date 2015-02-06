@@ -190,7 +190,7 @@
                         channel("trading_name_steward" + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency);
                         //channel( "currency" + channelDelimiter + currency )
                         //access( doc.steward , "currency" + channelDelimiter + currency)
-                        //access( doc.steward , doc.type + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency )
+                        access( doc.steward , doc.type + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency )
                         access( doc.steward , "trading_name_steward" + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency )
                         //role( doc.steward, "role:" + doc.name + "_" + doc.currency)
                     } else {
@@ -201,7 +201,7 @@
                         	channel("trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
                         	//channel( "currency" + channelDelimiter + currency )
                         	//access( olddoc.steward , "currency" + channelDelimiter + currency)
-                        	//access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
+                        	access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
                         	access( olddoc.steward , "trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
                         } else {
                             if (!doc.steward || !doc.name || !doc.trading_name || !doc.currency || !doc.created ) {
@@ -217,7 +217,7 @@
                             channel("trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
                             //channel( "currency" + channelDelimiter + currency )
                             //access( doc.steward , "currency" + channelDelimiter + currency)
-                            //access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
+                            access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
                             access( olddoc.steward , "trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency)
                         }
                     }
