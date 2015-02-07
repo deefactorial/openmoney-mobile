@@ -146,7 +146,7 @@ $(function() {
 					
 					$("input[name='amount']").val( amount );
 					$("input[name='description']").val( "example test" );
-					$('select#to').val(username + ".cc");
+					$('select#to').val(usernamecopy + ".cc");
 					
 					$.when($("#personal-payment").submit()).done(function(){
 						window.dbChangedJournalDone = function() {
