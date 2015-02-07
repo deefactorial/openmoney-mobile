@@ -122,6 +122,7 @@ function runTests(  ){
 	                		var expected = "trading_name," + usernamecopy.toLowerCase() + ".cc,cc";
 	                		console.log("username:" + window.testusername);
 	                		console.log("usernamecopy:" + usernamecopy);
+	                		window.testusername = usernamecopy; //copy back
 	                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
 	                    	done1();
 	                    	window.dbChangedStewardTradingNamesDone = function(){};
