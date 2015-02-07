@@ -93,7 +93,7 @@ $(function() {
 				
 				currentTime = new Date().getTime();
 				testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-				email = username + "@openmoney.cc";
+				email = testusername + "@openmoney.cc";
 				
 				var usernamecopy = testusername;
 				var done1 = assert.async();
@@ -102,7 +102,7 @@ $(function() {
 		    			$("input[name='username']").val( testusername );
 		                $("input[name='email']").val( email );
 		                $("input[name='password']").val( password );        
-		                console.log("before username:" + username);
+		                console.log("before username:" + testusername);
 		                
 		                $.when($("#registerform").submit()).done(function(){
 		                	window.dbChangedStewardTradingNamesDone = function() {
