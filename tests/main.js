@@ -137,6 +137,7 @@ $(function() {
 		QUnit.test( "Personal Self Payment", function( assert ) {
 			var amount = parseInt( randomString( 8, '0123456789' ) );
 			var usernamecopy = username;
+			console.log("username"+ username);
 			
 			assert.expect( 3 );		
 			var done3 = assert.async();		
