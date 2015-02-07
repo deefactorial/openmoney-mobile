@@ -1,18 +1,17 @@
 $(function() {
 	
-	var results = null;
-	window.dbChangedStewardTradingNamesDone = function() {
-		window.dbChangedStewardTradingNamesDone = function() {};
-		runTests(function(data){
-			results = data;
-			console.log(results);
-		});
-	}
+	//var results = null;
+//	window.dbChangedStewardTradingNamesDone = function() {
+//		window.dbChangedStewardTradingNamesDone = function() {};
+//		runTests();
+//	}
+	
+	setTimeout(function(){runTests();},1000);
 	
 });
 
 
-function runTests( done ){
+function runTests(  ){
 	var log = [];
 	var testName;
 
@@ -104,9 +103,10 @@ function runTests( done ){
 			
 			window.currentTime = new Date().getTime();
 			window.testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-			email = window.testusername + "@openmoney.cc";
+			window.email = window.testusername + "@openmoney.cc";
 			
 			var usernamecopy = window.testusername;
+			
 			var done1 = assert.async();
 	    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
 	    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){	    			
@@ -148,7 +148,7 @@ function runTests( done ){
 	QUnit.test( "Personal Self Payment", function( assert ) {
 		var amount = parseInt( randomString( 3, '0123456789' ) );
 		var usernamecopy = window.testusername;
-		console.log("personal username:" + window.testusername);
+		console.log("personal username:" + usernamecopy);
 		
 		assert.expect( 3 );		
 		var done3 = assert.async();		
@@ -502,7 +502,7 @@ function runTests( done ){
 				
 			    
 			} );
-			done("test");
+			
 		})
 
 	    
