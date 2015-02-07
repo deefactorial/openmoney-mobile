@@ -83,33 +83,33 @@ $(function() {
 		
 		
 		    
-	    var currentTime = new Date().getTime();
-		var testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-		var email = testusername + "@openmoney.cc";
-		var password = "password " + currentTime;
+	    window.currentTime = new Date().getTime();
+		window.testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+		window.email = testusername + "@openmoney.cc";
+		window.password = "password " + currentTime;
 	    
 	    QUnit.module( "registration", {
 			setup : function(assert) {
 				
-				currentTime = new Date().getTime();
-				testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-				email = testusername + "@openmoney.cc";
+				window.currentTime = new Date().getTime();
+				window.testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
+				email = window.testusername + "@openmoney.cc";
 				
-				var usernamecopy = testusername;
+				var usernamecopy = window.testusername;
 				var done1 = assert.async();
 		    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
 		    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){	    			
-		    			$("input[name='username']").val( testusername );
-		                $("input[name='email']").val( email );
-		                $("input[name='password']").val( password );        
-		                console.log("before username:" + testusername);
+		    			$("input[name='username']").val( window.testusername );
+		                $("input[name='email']").val( window.email );
+		                $("input[name='password']").val( window.password );        
+		                console.log("before username:" + window.testusername);
 		                
 		                $.when($("#registerform").submit()).done(function(){
 		                	window.dbChangedStewardTradingNamesDone = function() {
 		                		
 		                		var testvalue = $("#content li.om-list-name").attr("data-id");
 		                		var expected = "trading_name," + usernamecopy.toLowerCase() + ".cc,cc";
-		                		console.log("username:" + testusername);
+		                		console.log("username:" + window.testusername);
 		                		console.log("usernamecopy:" + usernamecopy);
 		                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
 		                    	done1();
@@ -136,8 +136,8 @@ $(function() {
 	    
 		QUnit.test( "Personal Self Payment", function( assert ) {
 			var amount = parseInt( randomString( 8, '0123456789' ) );
-			var usernamecopy = testusername;
-			console.log("personal username:"+ testusername);
+			var usernamecopy = window.testusername;
+			console.log("personal username:"+ window.testusername);
 			
 			assert.expect( 3 );		
 			var done3 = assert.async();		
@@ -148,7 +148,7 @@ $(function() {
 					
 					$("input[name='amount']").val( amount );
 					$("input[name='description']").val( "example test" );
-					$('select#to').val(testusername + ".cc");
+					$('select#to').val(window.testusername + ".cc");
 					
 					$.when($("#personal-payment").submit()).done(function(){
 						window.dbChangedJournalDone = function() {
@@ -235,7 +235,7 @@ $(function() {
 							window.dbChangedTradingNamesDone = function() {};
 							
 											
-							var expected = "trading_name," + testusername.toLowerCase() + ".cc,cc";
+							var expected = "trading_name," + window.testusername.toLowerCase() + ".cc,cc";
 						    $('select#to').val(expected);
 							
 							var testvalue = $('select#to').val();
@@ -319,7 +319,7 @@ $(function() {
 		
 		if (typeof importArray != 'undefined') {
 			
-			var testusername = '';
+			window.testusername = '';
 		    var currentTime = new Date().getTime();			
 			var password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 			var email = '';
@@ -332,7 +332,7 @@ $(function() {
 				QUnit.module( " " + record.username + ": Import Registration", {
 					setup : function(assert) {
 						
-						testusername = record.username;
+						window.testusername = record.username;
 					    currentTime = new Date().getTime();			
 						password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 						email = record.email;
@@ -340,14 +340,14 @@ $(function() {
 				    	var done1 = assert.async();
 				    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
 				    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){	    			
-				    			$("input[name='username']").val( testusername );
+				    			$("input[name='username']").val( window.testusername );
 				                $("input[name='email']").val( email );
 				                $("input[name='password']").val( password );                
 				                $.when($("#registerform").submit()).done(function(){
 				                	window.dbChangedStewardTradingNamesDone = function() {
 				                		
 				                		var testvalue = $("#content li.om-list-name").attr("data-id");
-				                		var expected = "trading_name," + testusername.toLowerCase() + "," + expectedcurrency;
+				                		var expected = "trading_name," + window.testusername.toLowerCase() + "," + expectedcurrency;
 				                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
 				                    	done1();
 				                    	window.dbChangedStewardTradingNamesDone = function(){};
@@ -434,7 +434,7 @@ $(function() {
 	        														window.dbChangedTradingNamesDone = function() {};
 	        														
 	        																		
-	        														var expected = "trading_name," + testusername.toLowerCase() + "," + expectedcurrency;
+	        														var expected = "trading_name," + window.testusername.toLowerCase() + "," + expectedcurrency;
 	        													    $('select#to').val(expected);
 	        														
 	        														var testvalue = $('select#to').val();
