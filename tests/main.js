@@ -1,7 +1,7 @@
 $(function() {
 	
-	window.dbChangedStewardTradingNamesDone = function() {
-		
+	//window.dbChangedStewardTradingNamesDone = function() {
+		//window.dbChangedStewardTradingNamesDone = function() {};
 		var log = [];
 		var testName;
 	
@@ -497,7 +497,7 @@ $(function() {
 		    
 		}
 		
-		window.dbChangedStewardTradingNamesDone = function() {};
-	}
+		
+	//}
 	
 });
