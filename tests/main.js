@@ -108,7 +108,7 @@ $(function() {
 		                	window.dbChangedStewardTradingNamesDone = function() {
 		                		
 		                		var testvalue = $("#content li.om-list-name").attr("data-id");
-		                		var expected = "trading_name," + testusername.toLowerCase() + ".cc,cc";
+		                		var expected = "trading_name," + usernamecopy.toLowerCase() + ".cc,cc";
 		                		console.log("username:" + testusername);
 		                		console.log("usernamecopy:" + usernamecopy);
 		                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
@@ -137,7 +137,7 @@ $(function() {
 		QUnit.test( "Personal Self Payment", function( assert ) {
 			var amount = parseInt( randomString( 8, '0123456789' ) );
 			var usernamecopy = testusername;
-			console.log("username"+ testusername);
+			console.log("personal username:"+ testusername);
 			
 			assert.expect( 3 );		
 			var done3 = assert.async();		

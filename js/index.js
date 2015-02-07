@@ -437,16 +437,16 @@ function setupConfig(done) {
 	                    	} )
 	                    }
 	                    
-	                    //if (window.config.user && window.config.user.name) {
+	                    if (typeof window.config.user == 'undefined' || typeof window.config.user.expires == 'undefined') {
 	                        if (SERVER_LOGIN) {
 	                            registerServer( done )
 	                        } else if (FACEBOOK_LOGIN) {
 	                            registerFacebookToken( done )
 	                        }
 	                        
-//	                    } else {
-//	                        done( false )
-//	                    }
+	                    } else {
+	                        done( false )
+	                    }
 	                } )
 	            } )
 	        } )
