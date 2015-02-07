@@ -85,7 +85,7 @@ $(function() {
 		    
 	    var currentTime = new Date().getTime();
 		var testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-		var email = username + "@openmoney.cc";
+		var email = testusername + "@openmoney.cc";
 		var password = "password " + currentTime;
 	    
 	    QUnit.module( "registration", {
