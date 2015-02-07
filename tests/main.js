@@ -95,7 +95,7 @@ $(function() {
 				username = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
 				email = username + "@openmoney.cc";
 				
-				
+				var usernamecopy = username;
 				var done1 = assert.async();
 		    	$.when($("#content button.openmoney-login").trigger("click")).done(function(){
 		    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){	    			
@@ -103,7 +103,7 @@ $(function() {
 		                $("input[name='email']").val( email );
 		                $("input[name='password']").val( password );        
 		                console.log("before username:" + username);
-		                var usernamecopy = username;
+		                
 		                $.when($("#registerform").submit()).done(function(){
 		                	window.dbChangedStewardTradingNamesDone = function() {
 		                		
@@ -136,6 +136,7 @@ $(function() {
 	    
 		QUnit.test( "Personal Self Payment", function( assert ) {
 			var amount = parseInt( randomString( 8, '0123456789' ) );
+			var usernamecopy = username;
 			
 			assert.expect( 3 );		
 			var done3 = assert.async();		
