@@ -1,14 +1,18 @@
 $(function() {
 	
+	var results = null;
 	window.dbChangedStewardTradingNamesDone = function() {
 		window.dbChangedStewardTradingNamesDone = function() {};
-		runTests();
+		runTests(function(data){
+			results = data;
+			console.log(results);
+		});
 	}
 	
 });
 
 
-function runTests(){
+function runTests( done ){
 	var log = [];
 	var testName;
 
@@ -144,7 +148,7 @@ function runTests(){
 	QUnit.test( "Personal Self Payment", function( assert ) {
 		var amount = parseInt( randomString( 8, '0123456789' ) );
 		var usernamecopy = window.testusername;
-		console.log("personal username:"+ window.testusername);
+		console.log("personal username:" + window.testusername);
 		
 		assert.expect( 3 );		
 		var done3 = assert.async();		
@@ -498,6 +502,7 @@ function runTests(){
 				
 			    
 			} );
+			done("test");
 		})
 
 	    
