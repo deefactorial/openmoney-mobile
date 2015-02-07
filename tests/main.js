@@ -107,6 +107,7 @@ $(function() {
 		                		
 		                		var testvalue = $("#content li.om-list-name").attr("data-id");
 		                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
+		                		console.log("username:" + username);
 		                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
 		                    	done1();
 		                    	window.dbChangedStewardTradingNamesDone = function(){};
