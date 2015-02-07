@@ -108,7 +108,7 @@ $(function() {
 		                	window.dbChangedStewardTradingNamesDone = function() {
 		                		
 		                		var testvalue = $("#content li.om-list-name").attr("data-id");
-		                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
+		                		var expected = "trading_name," + usernamecopy.toLowerCase() + ".cc,cc";
 		                		console.log("username:" + username);
 		                		console.log("usernamecopy:" + usernamecopy);
 		                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
