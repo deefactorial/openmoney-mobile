@@ -101,13 +101,16 @@ $(function() {
 		    		$.when($("#content button.openmoney-register").trigger("click")).done(function(){	    			
 		    			$("input[name='username']").val( username );
 		                $("input[name='email']").val( email );
-		                $("input[name='password']").val( password );                
+		                $("input[name='password']").val( password );        
+		                console.log("before username:" + username);
+		                var usernamecopy = username;
 		                $.when($("#registerform").submit()).done(function(){
 		                	window.dbChangedStewardTradingNamesDone = function() {
 		                		
 		                		var testvalue = $("#content li.om-list-name").attr("data-id");
 		                		var expected = "trading_name," + username.toLowerCase() + ".cc,cc";
 		                		console.log("username:" + username);
+		                		console.log("usernamecopy:" + usernamecopy);
 		                    	assert.ok( testvalue == expected, "Registration test: '" + testvalue + "' == '" + expected + "'");
 		                    	done1();
 		                    	window.dbChangedStewardTradingNamesDone = function(){};
