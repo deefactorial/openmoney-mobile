@@ -73,7 +73,7 @@ function runTests( done ){
 	};
 	
 	//turn off changes feed.
-	window.connectToChanges = function(){};
+	//window.connectToChanges = function(){};
 	
 //	QUnit.test( "lost password test", function( assert ) {	
 //		var username = 'losttest1';
@@ -146,7 +146,7 @@ function runTests( done ){
 	} );
     
 	QUnit.test( "Personal Self Payment", function( assert ) {
-		var amount = parseInt( randomString( 8, '0123456789' ) );
+		var amount = parseInt( randomString( 3, '0123456789' ) );
 		var usernamecopy = window.testusername;
 		console.log("personal username:" + window.testusername);
 		
@@ -182,7 +182,7 @@ function runTests( done ){
 	QUnit.test( "New receiver Payment", function( assert ) {
 		
 		var receiver = "deefactorial.cc";
-		var amount = parseInt( randomString( 8, '0123456789' ) );
+		var amount = parseInt( randomString( 3, '0123456789' ) );
 		
 		assert.expect( 4 );		
 		var done3 = assert.async();		
