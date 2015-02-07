@@ -1,7 +1,7 @@
 $(function() {
 	
 	window.dbChangedStewardTradingNamesDone = function() {
-		window.dbChangedStewardTradingNamesDone = function() {};
+		
 		var log = [];
 		var testName;
 	
@@ -85,7 +85,7 @@ $(function() {
 		    
 	    window.currentTime = new Date().getTime();
 		window.testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
-		window.email = testusername + "@openmoney.cc";
+		window.email = window.testusername + "@openmoney.cc";
 		window.password = "password " + currentTime;
 	    
 	    QUnit.module( "registration", {
@@ -496,6 +496,8 @@ $(function() {
 		    
 		    
 		}
+		
+		window.dbChangedStewardTradingNamesDone = function() {};
 	}
 	
 });
