@@ -185,6 +185,7 @@ function getProfile(){
 	if( typeof window.config.user.name != 'undefined') {
 		profileID = window.config.user.name;
 	}
+	if (typeof config.db != 'undefined')
 	config.db.get("/profile," + profileID, function(error, profile) {
     	if (error) {
     		if (error.status == 404 || error.error == "not_found") {
