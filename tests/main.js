@@ -93,7 +93,8 @@ function runTests(  ){
 	
 	
 	    
-    window.currentTime = new Date().getTime();
+	var date = new Date();
+	window.currentTime = date.getTime();
 	window.testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
 	window.email = window.testusername + "@openmoney.cc";
 	window.password = "password " + currentTime;
@@ -101,7 +102,8 @@ function runTests(  ){
     QUnit.module( "registration", {
 		setup : function(assert) {
 			
-			window.currentTime = new Date().getTime();
+			var date = new Date();
+			window.currentTime = date.getTime();
 			window.testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
 			window.email = window.testusername + "@openmoney.cc";
 			
