@@ -589,8 +589,8 @@ function setupConfig(done) {
 	    } else {
 	    	var design = "_design/dev_openmoney" ;//+ new Date().getTime();
 	    	//query the local server for the views since the sync_gateway doesn't support _design docs.
-	    	//var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
-	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" } );
+	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
+	    	//var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" } );
 	    	cb( false , views( [ design, "_view" ] ) )
 	    }
     }
