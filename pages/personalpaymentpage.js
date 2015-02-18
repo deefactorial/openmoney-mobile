@@ -135,7 +135,7 @@ function goPayment(parameters) {
 	            doc.amount = parseFloat( doc.amount )
 	            doc.timestamp = new Date().getTime();
 	            
-	            makePersonalPayment( true );
+	            makePersonalPayment( doc, true );
 	        } )
 	        
 	        window.dbChangedTradingNamesDone();
@@ -146,7 +146,7 @@ function goPayment(parameters) {
 
 
 
-function makePersonalPayment( retry ) {
+function makePersonalPayment( doc, retry ) {
 	config.db.get("/" + doc.from, function(error, from) {
         if (error) {
             if (error.status == 404 || error.error == "not_found") {
@@ -155,7 +155,7 @@ function makePersonalPayment( retry ) {
             	if( retry ) {
             		setTimeout(function(){
                 		// call this
-                		makePersonalPayment( false )
+                		makePersonalPayment( doc, false )
                 	},500)
             	} else {
             		navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Error", "OK")
