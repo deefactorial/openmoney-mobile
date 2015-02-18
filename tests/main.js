@@ -170,7 +170,7 @@ function runTests(  ){
 				$.when($("#personal-payment").submit()).done(function(){
 					window.dbChangedJournalDone = function() {
 						
-						var testvalue = $("#content div.isPositive").html();
+						var testvalue = $("#content div.isPositive").text();
 						var expected = amount + " cc";
 						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' == '" + expected + "'");
 		            	done3();
@@ -218,7 +218,7 @@ function runTests(  ){
 								$.when($("#personal-payment").submit()).done(function(){
 									window.dbChangedJournalDone = function() {
 										
-										var testvalue = $("#content div.isNegative").html();
+										var testvalue = $("#content div.isNegative").text();
 										var expected = -amount + " cc";
 										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
 						            	done4();
@@ -275,7 +275,7 @@ function runTests(  ){
 								$.when($("input[name='payment']").trigger("click")).done(function(){
 									window.dbChangedJournalDone = function() {
 									
-										var testvalue = $("#content div.isPositive").html();
+										var testvalue = $("#content div.isPositive").text();
 										var expected = amount + " cc";
 										assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
 						            	done4();
