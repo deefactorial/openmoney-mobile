@@ -90,11 +90,15 @@ function runTests(  ){
 //		
 //	});
 	
-	
+	if (!Date.now) {
+	  Date.now = function now() {
+	    return new Date().getTime();
+	  };
+	}
 	
 	    
-	var date = new Date();
-	window.currentTime = date.getTime();
+
+	window.currentTime = Date.now();
 	window.testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
 	window.email = window.testusername + "@openmoney.cc";
 	window.password = "password " + currentTime;
@@ -102,8 +106,7 @@ function runTests(  ){
     QUnit.module( "registration", {
 		setup : function(assert) {
 			
-			var date = new Date();
-			window.currentTime = date.getTime();
+			window.currentTime = Date.now();
 			window.testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;
 			window.email = window.testusername + "@openmoney.cc";
 			
@@ -333,21 +336,17 @@ function runTests(  ){
 	
 	if (typeof importArray != 'undefined') {
 		
-		window.testusername = '';
-	    var currentTime = new Date().getTime();			
+		window.testusername = '';			
 		var password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 		var email = '';
 		var expectedcurrency = "cw.cv.ca";
 		
-		importArray.forEach(function(record){
-			
-
+		importArray.forEach( function( record ) {
 			
 			QUnit.module( " " + record.username + ": Import Registration", {
 				setup : function(assert) {
 					
-					window.testusername = record.username;
-				    currentTime = new Date().getTime();			
+					window.testusername = record.username;	
 					password = randomString( 32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' );
 					email = record.email;
 					
