@@ -134,134 +134,149 @@ function goPayment(parameters) {
 	            doc.type = "trading_name_journal"
 	            doc.amount = parseFloat( doc.amount )
 	            doc.timestamp = new Date().getTime();
-	            //doc.timestamp = doc.timestamp.toJSON()
-	            config.db.get("/" + doc.from, function(error, from) {
-	                if (error) {
-	                    if (error.status == 404 || error.error == "not_found") {
-	                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Error", "OK")
-	                    	$( "#submit" ).removeAttr("disabled","disabled");
-	                        return false
-	                    } else {
-	                    	$( "#submit" ).removeAttr("disabled","disabled");
-	                        return alert( JSON.stringify( error ) )
-	                    }
-	                }
-	                doc.from = from.name
-	                doc.currency = from.currency
-	                if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null && from.capacity < doc.amount) {
-	                	navigator.notification.alert( "Your trading account doesn't have the capacity for this transaction!"  , function() { goManageAccounts([]) }, "Error", "OK")
-	                	$( "#submit" ).removeAttr("disabled","disabled");
-	                	return false
-	                }
-	                
-	                if (typeof from.archived != 'undefined' && from.archived === true ) {
-	                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
-	                	$( "#submit" ).removeAttr("disabled","disabled");
-	                	return false
-	                } 
-	                
-	                
-	                if (typeof from.enabled != 'undefined' && from.enabled === false ) {
-	                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-	                	$( "#submit" ).removeAttr("disabled","disabled");
-	                	return false
-	                } 
-	                config.db.get("/" + "currency," + doc.currency.toLowerCase(), function(error, currency) {
-	                	if (error) {
-	                		if (error.status == 404 || error.error == "not_found") {
-	                        	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
-	                        	$( "#submit" ).removeAttr("disabled","disabled");
-	                            return false
-	                        } else {
-	                        	$( "#submit" ).removeAttr("disabled","disabled");
-	                            return alert( JSON.stringify( error ) )
-	                        }
-	                	} else {
-	                		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
-	                			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-	                			$( "#submit" ).removeAttr("disabled","disabled");
-	                		} else {
-	                			config.db.get("/" + "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase(), function(error, to) {
-	                                if (error) {
-	                                	$( "#submit" ).removeAttr("disabled","disabled");
-	                                    if (error.status == 404 || error.error == "not_found") {
-	                                    	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
-	                                        return false
-	                                    } else {
-	                                        return alert( JSON.stringify( error ) )
-	                                    }
-	                                }
-	                                doc.to = to.name
-	                               
-	                                if (typeof to.archived != 'undefined' && to.archived === true ) {
-	                                	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
-	                                	$( "#submit" ).removeAttr("disabled","disabled");
-	                                	return false
-	                                } 
-	                                
-	                                if (typeof to.enabled != 'undefined' && to.enabled === false ) {
-	                                	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
-	                                	$( "#submit" ).removeAttr("disabled","disabled");
-	                                	return false
-	                                }  
-	                                
-	                                config.db.get("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
-	                                    if (error) {
-	                                    	
-	                                        log( "Error: " + JSON.stringify( error ) )
-	                                        if (error.status == 404 || error.error == "not_found") {
-	                                            // doc does not exists
-	                                            log( "insert new trading name journal" + JSON.stringify( doc ) )
-	                                            var leadingSlash = getLeadingSlash();                                        	                          
-	                                            config.db.put( leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
-	                                            	
-	                                            	if (error)
-	                                                    return alert("Error Posting:" + JSON.stringify( error ) )
-	                                            	
-
-	                        			   		 	
-	                        			   		 	//trigger a view update
-	                        			   		 	config.views( [ "account_balance", {
-	                        			   		 		startkey : "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
-	                        			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
-	                        			   		        stale : "update_after"
-	                        			   		    } ], function(error, view) {
-	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
-	                        			   		 		
-	                        			   		 	} );
-	                                            	
-	                                            	//trigger a view update
-	                        			   		 	config.views( [ "account_details", {
-	                        			   		 		startkey : "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
-	                        			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
-	                        			   		        stale : "update_after"
-	                        			   		    } ], function(error, view) {
-	                        			   		 		console.log("view personal account details update response:" + JSON.stringify( [ error , view ] ) )
-	                        			   		 		navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")	                       			   		 		
-	                        			   		 	} );
-	                                                
-	                                            } )
-	                                        } else {
-	                                        	$( "#submit" ).removeAttr("disabled","disabled");
-	                                            alert( "Error: " + JSON.stringify( error ) )
-	                                        }
-	                                    } else {
-	                                        // doc exsits already
-	                                    	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
-	                                        
-	                                    }
-	                                } )
-	                            } )
-	                		}
-	                	}
-	                } )
-	            } )
+	            
+	            makePersonaPayment();
 	        } )
 	        
 	        window.dbChangedTradingNamesDone();
 	    } )
 	}
 	window.dbChangedTradingNames();
+}
+
+function makePersonalPayment( retry ) {
+	config.db.get("/" + doc.from, function(error, from) {
+        if (error) {
+            if (error.status == 404 || error.error == "not_found") {
+            	
+            	//try again half a second later to allow the sync gateway to update its db
+            	if( retry ) {
+            		setTimeout(function(){
+                		// call this
+                		makePersonalPayment( false )
+                	},500)
+            	} else {
+            		navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Error", "OK")
+            		$( "#submit" ).removeAttr("disabled","disabled");
+            		return false;
+            	}
+            	
+            } else {
+            	$( "#submit" ).removeAttr("disabled","disabled");
+                return alert( JSON.stringify( error ) )
+            }
+        } else {
+            doc.from = from.name
+            doc.currency = from.currency
+            if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null && from.capacity < doc.amount) {
+            	navigator.notification.alert( "Your trading account doesn't have the capacity for this transaction!"  , function() { goManageAccounts([]) }, "Error", "OK")
+            	$( "#submit" ).removeAttr("disabled","disabled");
+            	return false
+            }
+            
+            if (typeof from.archived != 'undefined' && from.archived === true ) {
+            	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
+            	$( "#submit" ).removeAttr("disabled","disabled");
+            	return false
+            } 
+            
+            
+            if (typeof from.enabled != 'undefined' && from.enabled === false ) {
+            	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+            	$( "#submit" ).removeAttr("disabled","disabled");
+            	return false
+            } 
+            config.db.get("/" + "currency," + doc.currency.toLowerCase(), function(error, currency) {
+            	if (error) {
+            		if (error.status == 404 || error.error == "not_found") {
+                    	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
+                    	$( "#submit" ).removeAttr("disabled","disabled");
+                        return false
+                    } else {
+                    	$( "#submit" ).removeAttr("disabled","disabled");
+                        return alert( JSON.stringify( error ) )
+                    }
+            	} else {
+            		if (typeof currency.enabled != 'undefined' && currency.enabled === false) {
+            			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+            			$( "#submit" ).removeAttr("disabled","disabled");
+            		} else {
+            			config.db.get("/" + "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase(), function(error, to) {
+                            if (error) {
+                            	$( "#submit" ).removeAttr("disabled","disabled");
+                                if (error.status == 404 || error.error == "not_found") {
+                                	navigator.notification.alert( "Recipient trading account " + doc.to + " in currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
+                                    return false
+                                } else {
+                                    return alert( JSON.stringify( error ) )
+                                }
+                            }
+                            doc.to = to.name
+                           
+                            if (typeof to.archived != 'undefined' && to.archived === true ) {
+                            	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
+                            	$( "#submit" ).removeAttr("disabled","disabled");
+                            	return false
+                            } 
+                            
+                            if (typeof to.enabled != 'undefined' && to.enabled === false ) {
+                            	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+                            	$( "#submit" ).removeAttr("disabled","disabled");
+                            	return false
+                            }  
+                            
+                            config.db.get("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                                if (error) {
+                                	
+                                    log( "Error: " + JSON.stringify( error ) )
+                                    if (error.status == 404 || error.error == "not_found") {
+                                        // doc does not exists
+                                        log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                        var leadingSlash = getLeadingSlash();                                        	                          
+                                        config.db.put( leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                        	
+                                        	if (error)
+                                                return alert("Error Posting:" + JSON.stringify( error ) )
+                                        	
+
+                    			   		 	
+                    			   		 	//trigger a view update
+                    			   		 	config.views( [ "account_balance", {
+                    			   		 		startkey : "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
+                    			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
+                    			   		        stale : "update_after"
+                    			   		    } ], function(error, view) {
+                    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+                    			   		 		
+                    			   		 	} );
+                                        	
+                                        	//trigger a view update
+                    			   		 	config.views( [ "account_details", {
+                    			   		 		startkey : "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
+                    			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
+                    			   		        stale : "update_after"
+                    			   		    } ], function(error, view) {
+                    			   		 		console.log("view personal account details update response:" + JSON.stringify( [ error , view ] ) )
+                    			   		 		navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")	                       			   		 		
+                    			   		 	} );
+                                            
+                                        } )
+                                    } else {
+                                    	$( "#submit" ).removeAttr("disabled","disabled");
+                                        alert( "Error: " + JSON.stringify( error ) )
+                                    }
+                                } else {
+                                    // doc exsits already
+                                	navigator.notification.alert( "Payment already exists!"  , function() {  }, "Exists", "OK")
+                                    
+                                }
+                            } )
+                        } )
+            		}
+            	}
+            } )
+        }
+    } )
 }
 
 /*
