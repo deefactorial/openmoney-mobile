@@ -135,7 +135,7 @@ function goPayment(parameters) {
 	            doc.amount = parseFloat( doc.amount )
 	            doc.timestamp = new Date().getTime();
 	            
-	            makePersonaPayment();
+	            makePersonaPayment( true );
 	        } )
 	        
 	        window.dbChangedTradingNamesDone();
@@ -143,6 +143,8 @@ function goPayment(parameters) {
 	}
 	window.dbChangedTradingNames();
 }
+
+
 
 function makePersonalPayment( retry ) {
 	config.db.get("/" + doc.from, function(error, from) {
