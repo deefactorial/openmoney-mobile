@@ -135,7 +135,7 @@ function goPayment(parameters) {
 	            doc.amount = parseFloat( doc.amount )
 	            doc.timestamp = new Date().getTime();
 	            
-	            makePersonaPayment( true );
+	            makePersonalPayment( true );
 	        } )
 	        
 	        window.dbChangedTradingNamesDone();
