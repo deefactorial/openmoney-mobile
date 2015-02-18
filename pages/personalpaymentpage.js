@@ -223,6 +223,8 @@ function goPayment(parameters) {
 	                        			   		        stale : "update_after"
 	                        			   		    } ], function(error, view) {
 	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	                        			   		 		navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")
+	                       			   		 		
 	                        			   		 	} );
 	                        			   		 	
 	                        			   		 	//trigger a view update
@@ -230,8 +232,7 @@ function goPayment(parameters) {
 	                        			   		        stale : "update_after"
 	                        			   		    } ], function(error, view) {
 	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
-	                        			   		 		navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")
-	                       			   		 		
+	                        			   		 		
 	                        			   		 	} );
 	                                                
 	                                            } )
