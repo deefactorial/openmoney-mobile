@@ -218,14 +218,7 @@ function goPayment(parameters) {
 	                                            	if (error)
 	                                                    return alert("Error Posting:" + JSON.stringify( error ) )
 	                                            	
-	                                            	//trigger a view update
-	                        			   		 	config.views( [ "account_details", {
-	                        			   		        stale : "update_after"
-	                        			   		    } ], function(error, view) {
-	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
-	                        			   		 		navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")
-	                       			   		 		
-	                        			   		 	} );
+
 	                        			   		 	
 	                        			   		 	//trigger a view update
 	                        			   		 	config.views( [ "account_balance", {
@@ -233,6 +226,15 @@ function goPayment(parameters) {
 	                        			   		    } ], function(error, view) {
 	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
 	                        			   		 		
+	                        			   		 	} );
+	                                            	
+	                                            	//trigger a view update
+	                        			   		 	config.views( [ "account_details", {
+	                        			   		        stale : "update_after"
+	                        			   		    } ], function(error, view) {
+	                        			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	                        			   		 		navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")
+	                       			   		 		
 	                        			   		 	} );
 	                                                
 	                                            } )

@@ -534,20 +534,23 @@ function goCustomerPayment(parameters) {
 	                                }
 	                                
 	                                //trigger a view update
-    	    			   		 	config.views( [ "account_details", {
-    	    			   		        stale : "update_after"
-    	    			   		    } ], function(error, view) {
-    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
-    	    			   		 	} );
-    	    			   		 	
-    	    			   		 	//trigger a view update
     	    			   		 	config.views( [ "account_balance", {
     	    			   		        stale : "update_after"
     	    			   		    } ], function(error, view) {
     	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
     	    			   		 		
+    	    			   		 		
+    	    			   		 	} );
+	                                
+	                                //trigger a view update
+    	    			   		 	config.views( [ "account_details", {
+    	    			   		        stale : "update_after"
+    	    			   		    } ], function(error, view) {
+    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
     	    			   		 		navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( [ "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Successful", "OK")
     	    			   		 	} );
+    	    			   		 	
+    	    			   		 	
 	                                
 	                            } )
 	                        } else {
