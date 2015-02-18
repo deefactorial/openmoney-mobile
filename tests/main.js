@@ -176,7 +176,7 @@ function runTests(  ){
 						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' == '" + expected + "'");
 		            	done3();	
 		            	
-		            	alert("here");
+		            	//alert("here");
 		            	
 		            	window.dbChangedJournalDone = function() {};
 					}
