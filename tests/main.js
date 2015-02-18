@@ -247,10 +247,10 @@ function runTests(  ){
 		var done3 = assert.async();		
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			window.dbChangedTradingNamesDone = function() {
-				window.dbChangedTradingNamesDone = function() {};
+				
 				$.when($("#content button.om-merchant").trigger("click")).done(function(){
 					window.dbChangedTradingNamesDone = function() {
-						window.dbChangedTradingNamesDone = function() {};
+						
 						
 										
 						var expected = "trading_name," + window.testusername.toLowerCase() + ".cc,cc";
@@ -281,13 +281,19 @@ function runTests(  ){
 										assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
 						            	done4();
 						            	window.dbChangedJournalDone = function() {};
-						            	window.customerPaymentPageDone = function() {};
+						            	
 									}
 								})
+								
+								window.customerPaymentPageDone = function() {};
 							}
-						})					
+						})	
+						
+						window.dbChangedTradingNamesDone = function() {};
 					}
-				})
+				});
+				
+				window.dbChangedTradingNamesDone = function() {};
 			};
 		})
 	} );
@@ -421,7 +427,7 @@ function runTests(  ){
         								$("input[name='amount']").val( outamount );
         								$("input[name='description']").val( "Total expense to date." );
         								
-        								$.when($("#personal-payment").submit()).done(function(){
+        								$.when($("#personalPayment").submit()).done(function(){
         									window.dbChangedJournalDone = function() {
         										
         										var testvalue = $("#content div.isNegative").html();
