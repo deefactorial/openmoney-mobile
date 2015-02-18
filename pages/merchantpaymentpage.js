@@ -537,9 +537,7 @@ function goCustomerPayment(parameters) {
     	    			   		 	config.views( [ "account_balance", {
     	    			   		        stale : "update_after"
     	    			   		    } ], function(error, view) {
-    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
-    	    			   		 		
-    	    			   		 		
+    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )	
     	    			   		 	} );
 	                                
 	                                //trigger a view update

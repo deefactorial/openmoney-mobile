@@ -174,7 +174,9 @@ function runTests(  ){
 						var testvalue = $("#content div.isPositive").text();
 						var expected = amount + " cc";
 						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' == '" + expected + "'");
-		            	done3();		 
+		            	done3();	
+		            	
+		            	alert("here");
 		            	
 		            	window.dbChangedJournalDone = function() {};
 					}
