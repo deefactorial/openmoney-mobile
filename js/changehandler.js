@@ -49,16 +49,26 @@ function resetChangeTrackers() {
 	window.dbChangedBeams = function() {}	
 	
 	//done callback handlers
-	if (typeof window.dbChangedStewardTradingNamesDone == 'undefined')
+	if (typeof window.dbChangedStewardTradingNamesDone == 'undefined') {
 		window.dbChangedStewardTradingNamesDone = function() {};
-	if (typeof window.dbChangedTradingNamesDone == 'undefined')
+	}
+		
+	if (typeof window.dbChangedTradingNamesDone == 'undefined'){
 		window.dbChangedTradingNamesDone = function() {};
-	if (typeof window.dbChangedCurrenciesDone == 'undefined')
+	}
+		
+	if (typeof window.dbChangedCurrenciesDone == 'undefined'){
 		window.dbChangedCurrenciesDone = function() {};
-	if (typeof window.dbChangedJournalDone == 'undefined')
+	}
+		
+	if (typeof window.dbChangedJournalDone == 'undefined'){
 		window.dbChangedJournalDone = function() {};
-    if (typeof window.customerPaymentPageDone == 'undefined')
+	}
+		
+    if (typeof window.customerPaymentPageDone == 'undefined'){
     	window.customerPaymentPageDone = function() {};
+    }
+    	
 	
 //	window.dbChangedTradingNames = function() {
 //		if (!tradingNamesViewLock) {
