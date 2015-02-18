@@ -239,8 +239,6 @@ function makePersonalPayment( doc, retry ) {
                                         	
                                         	if (error)
                                                 return alert("Error Posting:" + JSON.stringify( error ) )
-                                        	
-
                     			   		 	
                     			   		 	//trigger a view update
                     			   		 	config.views( [ "account_balance", {
@@ -248,8 +246,7 @@ function makePersonalPayment( doc, retry ) {
                     			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
                     			   		        stale : "update_after"
                     			   		    } ], function(error, view) {
-                    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
-                    			   		 		
+                    			   		 		console.log("view personal acccount balance update response:" + JSON.stringify( [ error , view ] ) )                   			   		 		
                     			   		 	} );
                                         	
                                         	//trigger a view update
