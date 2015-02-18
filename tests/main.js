@@ -247,22 +247,23 @@ function runTests(  ){
 		var amount = parseInt( randomString( 8, '0123456789' ) );
 		
 		assert.expect( 4 );		
-		var done3 = assert.async();		
+		
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			window.dbChangedTradingNamesDone = function() {
 				
 				$.when($("#content button.om-merchant").trigger("click")).done(function(){
 					window.dbChangedTradingNamesDone = function() {
 						
-						
-										
+						var done3 = assert.async();	
+									
 						var expected = "trading_name," + window.testusername.toLowerCase() + ".cc,cc";
+						
 					    $('select#to').val(expected);
 						
 						var testvalue = $('select#to').val();
 						
-							assert.ok( testvalue == expected, "Account Select Test: '" + testvalue + "' == '" + expected + "'");
-			            	done3();
+						assert.ok( testvalue == expected, "Account Select Test: '" + testvalue + "' == '" + expected + "'");
+		            	done3();
 						
 						var done4 = assert.async();	
 						
@@ -270,6 +271,7 @@ function runTests(  ){
 						
 						
 						$.when($("#submit").trigger("click")).done(function(){
+							
 							window.customerPaymentPageDone = function() {
 								
 								$("input[name='email']").val( merchantUsername );
