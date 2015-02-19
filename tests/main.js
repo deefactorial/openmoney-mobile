@@ -195,7 +195,7 @@ function runTests(  ){
 		var amount = parseInt( randomString( 3, '0123456789' ) );
 		
 		assert.expect( 4 );		
-		var done3 = assert.async();		
+			
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			window.dbChangedTradingNamesDone = function() {
 				window.dbChangedTradingNamesDone = function() {};
@@ -206,6 +206,7 @@ function runTests(  ){
 						$.when($("input[name='submit']").trigger("click")).done(function(){
 							window.dbChangedTradingNamesDone = function() {
 								
+								var done3 = assert.async();	
 								var expected = receiver;
 							    $('select#to').val( expected );
 								
