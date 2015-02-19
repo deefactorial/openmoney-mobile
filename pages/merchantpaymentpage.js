@@ -549,9 +549,15 @@ function goCustomerPayment(parameters) {
     	    			   		        stale : "update_after"
     	    			   		    } ], function(error, view) {
     	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
-    	    			   		 		navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( [ "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Successful", "OK")
+    	    			   		 		config.views( [ "account_details", {
+    	    			   		 		startkey : "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase(),
+    	    			   		 		endkey : "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase(),
+    	    			   		        stale : "update_after"
+	    	    			   		    } ], function(error, view) {
+	    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+	    	    			   		 		navigator.notification.alert( "Customer successfully made payment of " + doc.amount + " " + doc.currency + " !" , function() {  goList( [ "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Successful", "OK")
+    	    			   		 		} );
     	    			   		 	} );
-    	    			   		 	
     	    			   		 	
 	                                
 	                            } )
