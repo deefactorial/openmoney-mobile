@@ -544,14 +544,16 @@ function goCustomerPayment(parameters) {
 	                                
 	                                //trigger a view update
     	    			   		 	config.views( [ "account_details", {
-    	    			   		 		startkey : "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase(),
-    	    			   		 		endkey : "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() + '\uefff',
+    	    			   		 		startkey : "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() + '\uefff',
+    	    			   		 		endkey : "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() ,
+    	    			   		 		descending : true,
     	    			   		        stale : "update_after"
     	    			   		    } ], function(error, view) {
     	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
     	    			   		 		config.views( [ "account_details", {
-    	    			   		 		startkey : "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase(),
-    	    			   		 		endkey : "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() + '\uefff',
+    	    			   		 		startkey : "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase()+ '\uefff',
+    	    			   		 		endkey : "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase() ,
+    	    			   		 		descending : true,
     	    			   		        stale : "update_after"
 	    	    			   		    } ], function(error, view) {
 	    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )

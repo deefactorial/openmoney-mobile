@@ -251,14 +251,16 @@ function makePersonalPayment( doc, retry ) {
                                         	
                                         	//trigger a view update
                     			   		 	config.views( [ "account_details", {
-                    			   		 		startkey : "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
-                    			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() + '\uefff',
+                    			   		 		startkey : "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() + '\uefff',
+                    			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ,
+                    			   		 		descending : true,
                     			   		        stale : "update_after"
                     			   		    } ], function(error, view) {
                     			   		 		console.log("view personal account details update response:" + JSON.stringify( [ error , view ] ) )
 		                			   		 	config.views( [ "account_details", {
-		                			   		 		startkey : "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
-		                			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() + '\uefff',
+		                			   		 		startkey : "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() + '\uefff',
+		                			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ,
+		                			   		 		descending : true,
 		                			   		        stale : "update_after"
 		                			   		    } ], function(error, view) {
 		                			   		 		console.log("view personal account details update response:" + JSON.stringify( [ error , view ] ) )
