@@ -255,8 +255,14 @@ function makePersonalPayment( doc, retry ) {
                     			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
                     			   		        stale : "update_after"
                     			   		    } ], function(error, view) {
-                    			   		 		console.log("view personal account details update response:" + JSON.stringify( [ error , view ] ) )
-                    			   		 		navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")	                       			   		 		
+		                			   		 	config.views( [ "account_details", {
+		                			   		 		startkey : "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
+		                			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase(),
+		                			   		        stale : "update_after"
+		                			   		    } ], function(error, view) {
+		                			   		 		console.log("view personal account details update response:" + JSON.stringify( [ error , view ] ) )
+		                			   		 		navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")	
+		                			   		 	} );
                     			   		 	} );
                                             
                                         } )
