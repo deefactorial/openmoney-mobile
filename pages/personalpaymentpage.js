@@ -49,7 +49,8 @@ function goPayment(parameters) {
 	        var thisUsersAccounts = {
 	            rows : []
 	        }
-	
+	        
+	        
 	        for ( var i = view.rows.length - 1; i >= 0; i--) {
 	            //log( "row:" + JSON.stringify( view.rows[i] ) )
 	            //log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )

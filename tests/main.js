@@ -191,6 +191,8 @@ function runTests(  ){
 	
 	QUnit.test( "New receiver Payment", function( assert ) {
 		
+		console.log("New receiver Payment Test Started");
+		
 		var receiver = "deefactorial.cc";
 		var amount = parseInt( randomString( 3, '0123456789' ) );
 		
