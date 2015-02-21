@@ -1192,7 +1192,7 @@ module.exports = function(request) {
   }
 
   function processArguments(myPax, urlOrOpts, data, cb, verb) {
-	console.log("processArguments" + JSON.stringify([myPax, urlOrOpts, data, cb, verb]))
+	//console.log("processArguments" + JSON.stringify([myPax, urlOrOpts, data, cb, verb]))
     var opts = {}, newPax = myPax;
     if (typeof urlOrOpts === 'function') {
       cb = urlOrOpts;
@@ -1509,7 +1509,7 @@ function run_xhr(options) {
   xhr.open(options.method, options.uri, true) // asynchronous
     
   if(typeof options.headers != 'undefined' && typeof options.headers.authorization != 'undefined') {
-	  console.log("setting authorization headers:" + options.headers.authorization);
+	  //console.log("setting authorization headers:" + options.headers.authorization);
 	  if (onlyonce == false) {
 		  onlyonce = true;
 		  xhr.setRequestHeader("Authorization", options.headers.authorization);
@@ -1748,7 +1748,7 @@ function is_crossDomain(url) {
     )
   )
 
-  console.debug('is_crossDomain('+url+') -> ' + result)
+  //console.debug('is_crossDomain('+url+') -> ' + result)
   return result
 }
 
