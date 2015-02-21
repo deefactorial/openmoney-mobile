@@ -171,7 +171,7 @@ limitations under the License.
 <div class="topcoat-list__container">
     <ul class="topcoat-list">
     {{#rows}}
-        <li class="topcoat-list__item" data-id="trading_name_journal,{{#value}},{{from}},{{to}},{{timestamp}}{{/value}}">
+        <li class="topcoat-list__item" data-id="trading_name_journal{{#value}},{{from}},{{to}},{{timestamp}}{{/value}}">
         {{#value}}
             <div class="who {{#verified}}verified{{/verified}} {{#verified_reason}}strike{{/verified_reason}} {{^verified}}pending{{/verified}}"><b>{{subject}}</b> <i>{{description}}</i><br/>{{timestamp_pretty}}</div>
             <div class="what {{#isPositive}}isPositive{{/isPositive}}{{^isPositive}}isNegative{{/isPositive}} {{#verified_reason}}strike{{/verified_reason}}">{{amount}} {{currency}}</div>
