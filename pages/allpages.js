@@ -124,7 +124,7 @@ function processAjaxData(response, urlPath) {
 
 	currentpage = response.pageTitle;
 	
-	log ("History pushState function:" + JSON.stringify(response) + urlPath)
+	//log ("History pushState function:" + JSON.stringify(response) + urlPath)
 
 	if (window.cblite) {
 		History.pushState(  response  , "" , urlPath );
