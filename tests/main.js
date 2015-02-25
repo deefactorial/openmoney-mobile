@@ -205,7 +205,6 @@ function runTests(  ){
 			setTimeout( function() {
 				if(window.currentpage == "Openmoney" && $(".openmoney-logout").attr("style") == "display: inline-block;") {
 					deferred.resolve();
-					alert("this")
 				} else {
 					resolveLoop();
 					console.log("currentpage:" + window.currentpage + ", style:" + $(".openmoney-logout").attr("style"))
@@ -279,7 +278,6 @@ function runTests(  ){
 			setTimeout( function() {
 				if(window.currentpage == "Openmoney" && $(".openmoney-logout").attr("style") == "display: inline-block;") {
 					deferred.resolve();
-					alert("this")
 				} else {
 					resolveLoop();
 					console.log("currentpage:" + window.currentpage + ", style:" + $(".openmoney-logout").attr("style"))
