@@ -213,6 +213,9 @@ function runTests(  ){
 		var amount = parseInt( randomString( 3, '0123456789' ) );
 		
 		assert.expect( 4 );		
+		
+		var done3 = assert.async();	
+		var done4 = assert.async();	
 			
 		$.when( deferred ).done(function(){
 			$.when($("#content button.om-payments").trigger("click")).done(function(){
@@ -225,7 +228,7 @@ function runTests(  ){
 							$.when($("input[name='submit']").trigger("click")).done(function(){
 								window.dbChangedTradingNamesDone = function() {
 									
-									var done3 = assert.async();	
+									
 									var expected = receiver;
 								    $('select#to').val( expected );
 									
@@ -234,7 +237,7 @@ function runTests(  ){
 										assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
 						            	done3();
 									}
-									var done4 = assert.async();	
+									
 									
 									$("input[name='amount']").val( amount );
 									$("input[name='description']").val( "example test" );
