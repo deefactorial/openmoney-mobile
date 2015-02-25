@@ -180,9 +180,6 @@ function runTests(  ){
 						var expected = amount + " cc";
 						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' == '" + expected + "'");
 		            	done3();	
-		            	
-		            	alert("here");
-		            	
 		            	window.dbChangedJournalDone = function() {};
 					}
 				})
@@ -208,8 +205,6 @@ function runTests(  ){
 				}
 			}, 250);
 		}
-		
-		//alert("here");
 		
 		console.log("New receiver Payment Test Started");
 		
