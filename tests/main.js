@@ -201,7 +201,7 @@ function runTests(  ){
 		
 		function resolveLoop() {
 			setTimout( function() {
-				if(window.currentpage == "Openmoney") {
+				if(window.currentpage == "Openmoney" && $(".openmoney-logout").attr("display") == "inline-block") {
 					deferred.resolve();
 				} else {
 					resolveLoop();
