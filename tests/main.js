@@ -203,6 +203,7 @@ function runTests(  ){
 					alert("this")
 				} else {
 					resolveLoop();
+					console.log("currentpage:" + window.currentpage + "display:" + $(".openmoney-logout").attr("display"))
 				}
 			}, 250);
 		}
