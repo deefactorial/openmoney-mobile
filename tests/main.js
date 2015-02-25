@@ -154,7 +154,7 @@ function runTests(  ){
 	} );
     
 	QUnit.test( "Personal Self Payment", function( assert ) {
-		alert("here");
+		
 		
 		
 		var amount = parseInt( randomString( 3, '0123456789' ) );
@@ -196,6 +196,8 @@ function runTests(  ){
 	
 	QUnit.test( "New receiver Payment", function( assert ) {
 		
+		alert("here");
+		
 		console.log("New receiver Payment Test Started");
 		
 		var receiver = "deefactorial.cc";
@@ -205,10 +207,10 @@ function runTests(  ){
 			
 		$.when($("#content button.om-payments").trigger("click")).done(function(){
 			window.dbChangedTradingNamesDone = function() {
-				window.dbChangedTradingNamesDone = function() {};
+				
 				$.when($("#content input[name='add']").trigger("click")).done(function(){
 					window.dbChangedCurrenciesDone = function() {
-						window.dbChangedCurrenciesDone = function() {};
+						
 						$("input[name='trading_name']").val( receiver );
 						$.when($("input[name='submit']").trigger("click")).done(function(){
 							window.dbChangedTradingNamesDone = function() {
@@ -235,13 +237,14 @@ function runTests(  ){
 										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
 						            	done4();
 						            	window.dbChangedJournalDone = function() {};
-						            	window.dbChangedTradingNamesDone = function() {};
 									}
 								})
 							};
 						})
+						window.dbChangedCurrenciesDone = function() {};
 					}					
 				})
+				window.dbChangedTradingNamesDone = function() {};
 			};
 		})
 	} );
