@@ -267,6 +267,7 @@ function doServerLogout(callBack) {
 
 
 
+//https://stackoverflow.com/questions/179355/clearing-all-cookies-with-javascript
 
 function deleteAllCookies() {
     var cookies = document.cookie.split(";");

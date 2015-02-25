@@ -198,7 +198,7 @@ function doServerRegistration(callBack) {
     }
     if (config && config.user) {
         var url = REMOTE_SERVER_REGISTRATION_URL;
-        var login = coax( url );
+        //var login = coax( url );
         
         var credentials = {};
         credentials.username = config.user.name;
