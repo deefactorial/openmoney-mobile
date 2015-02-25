@@ -193,6 +193,11 @@ function runTests(  ){
 	
 	QUnit.test( "New receiver Payment", function( assert ) {
 		
+		assert.expect( 4 );		
+		
+		var done3 = assert.async();	
+		var done4 = assert.async();	
+		
 		//check that we are where we are supposed to be before we start.
 		var deferred = new $.Deferred();
 		
@@ -209,18 +214,14 @@ function runTests(  ){
 		}
 		
 		resolveLoop();
-		
-		console.log("New receiver Payment Test Started");
-		
-		var receiver = "deefactorial.cc";
-		var amount = parseInt( randomString( 3, '0123456789' ) );
-		
-		assert.expect( 4 );		
-		
-		var done3 = assert.async();	
-		var done4 = assert.async();	
 			
 		$.when( deferred ).done(function(){
+			
+			console.log("New receiver Payment Test Started");
+			
+			var receiver = "deefactorial.cc";
+			var amount = parseInt( randomString( 3, '0123456789' ) );
+			
 			$.when($("#content button.om-payments").trigger("click")).done(function(){
 				window.dbChangedTradingNamesDone = function() {
 					
@@ -270,65 +271,88 @@ function runTests(  ){
 	
 	
 	QUnit.test( "Merchant Payment", function( assert ) {
-		var merchantUsername = 'merchanttestaccount';
-		var merchantPassword = '123456';
-		var amount = parseInt( randomString( 8, '0123456789' ) );
 		
-		assert.expect( 4 );		
+		//check that we are where we are supposed to be before we start.
+		var deferred = new $.Deferred();
 		
-		$.when($("#content button.om-payments").trigger("click")).done(function(){
-			window.dbChangedTradingNamesDone = function() {
-				
-				$.when($("#content button.om-merchant").trigger("click")).done(function(){
-					window.dbChangedTradingNamesDone = function() {
-						
-						var done3 = assert.async();	
-									
-						var expected = "trading_name," + window.testusername.toLowerCase() + ".cc,cc";
-						
-					    $('select#to').val(expected);
-						
-						var testvalue = $('select#to').val();
-						
-						assert.ok( testvalue == expected, "Account Select Test: '" + testvalue + "' == '" + expected + "'");
-		            	done3();
-						
-						var done4 = assert.async();	
-						
-						$("input[name='amount']").val( amount );
-						
-						
-						$.when($("#submit").trigger("click")).done(function(){
+		function resolveLoop() {
+			setTimeout( function() {
+				if(window.currentpage == "Openmoney" && $(".openmoney-logout").attr("style") == "display: inline-block;") {
+					deferred.resolve();
+					alert("this")
+				} else {
+					resolveLoop();
+					console.log("currentpage:" + window.currentpage + ", style:" + $(".openmoney-logout").attr("style"))
+				}
+			}, 250);
+		}
+		
+		$.when( deferred ).done(function(){
+		
+			var merchantUsername = 'merchanttestaccount';
+			var merchantPassword = '123456';
+			var amount = parseInt( randomString( 8, '0123456789' ) );
+			
+			assert.expect( 4 );
+			
+			var done3 = assert.async();	
+			
+			var done4 = assert.async();	
+			
+			$.when($("#content button.om-payments").trigger("click")).done(function(){
+				window.dbChangedTradingNamesDone = function() {
+					
+					$.when($("#content button.om-merchant").trigger("click")).done(function(){
+						window.dbChangedTradingNamesDone = function() {
 							
-							window.customerPaymentPageDone = function() {
+							
+										
+							var expected = "trading_name," + window.testusername.toLowerCase() + ".cc,cc";
+							
+						    $('select#to').val(expected);
+							
+							var testvalue = $('select#to').val();
+							
+							assert.ok( testvalue == expected, "Account Select Test: '" + testvalue + "' == '" + expected + "'");
+			            	done3();
+							
+							
+							
+							$("input[name='amount']").val( amount );
+							
+							
+							$.when($("#submit").trigger("click")).done(function(){
 								
-								$("input[name='email']").val( merchantUsername );
-								$("input[name='password']").val( merchantPassword );
-								$("input[name='description']").val( "example test" );
-								
-								$.when($("input[name='payment']").trigger("click")).done(function(){
-									window.dbChangedJournalDone = function() {
+								window.customerPaymentPageDone = function() {
 									
-										var testvalue = $("#content div.isPositive").text();
-										var expected = amount + " cc";
-										assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
-						            	done4();
-						            	window.dbChangedJournalDone = function() {};
-						            	
-									}
-								})
-								
-								window.customerPaymentPageDone = function() {};
-							}
-						})	
-						
-						window.dbChangedTradingNamesDone = function() {};
-					}
-				});
-				
-				window.dbChangedTradingNamesDone = function() {};
-			};
-		})
+									$("input[name='email']").val( merchantUsername );
+									$("input[name='password']").val( merchantPassword );
+									$("input[name='description']").val( "example test" );
+									
+									$.when($("input[name='payment']").trigger("click")).done(function(){
+										window.dbChangedJournalDone = function() {
+										
+											var testvalue = $("#content div.isPositive").text();
+											var expected = amount + " cc";
+											assert.ok( testvalue == expected, "Merchant Payment test: '" + testvalue + "' == '" + expected + "'");
+							            	done4();
+							            	window.dbChangedJournalDone = function() {};
+							            	
+										}
+									})
+									
+									window.customerPaymentPageDone = function() {};
+								}
+							})	
+							
+							window.dbChangedTradingNamesDone = function() {};
+						}
+					});
+					
+					window.dbChangedTradingNamesDone = function() {};
+				};
+			})
+		});
 	} );
 	
 //	QUnit.module( "login", {
