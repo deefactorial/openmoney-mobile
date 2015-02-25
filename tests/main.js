@@ -196,7 +196,20 @@ function runTests(  ){
 	
 	QUnit.test( "New receiver Payment", function( assert ) {
 		
-		alert("here");
+		//check that we are where we are supposed to be before we start.
+		var deferred = new $.Deferred();
+		
+		function resolveLoop() {
+			setTimout( function() {
+				if(window.currentpage == "Openmoney") {
+					deferred.resolve();
+				} else {
+					resolveLoop();
+				}
+			}, 250);
+		}
+		
+		//alert("here");
 		
 		console.log("New receiver Payment Test Started");
 		
@@ -205,47 +218,49 @@ function runTests(  ){
 		
 		assert.expect( 4 );		
 			
-		$.when($("#content button.om-payments").trigger("click")).done(function(){
-			window.dbChangedTradingNamesDone = function() {
-				
-				$.when($("#content input[name='add']").trigger("click")).done(function(){
-					window.dbChangedCurrenciesDone = function() {
-						
-						$("input[name='trading_name']").val( receiver );
-						$.when($("input[name='submit']").trigger("click")).done(function(){
-							window.dbChangedTradingNamesDone = function() {
-								
-								var done3 = assert.async();	
-								var expected = receiver;
-							    $('select#to').val( expected );
-								
-								var testvalue = $('select#to').val();
-								if(testvalue == expected) {
-									assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
-					            	done3();
-								}
-								var done4 = assert.async();	
-								
-								$("input[name='amount']").val( amount );
-								$("input[name='description']").val( "example test" );
-								
-								$.when($("#personalPayment").submit()).done(function(){
-									window.dbChangedJournalDone = function() {
-										
-										var testvalue = $("#content div.isNegative").text();
-										var expected = -amount + " cc";
-										assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
-						            	done4();
-						            	window.dbChangedJournalDone = function() {};
+		$.when( deferred ).done(function(){
+			$.when($("#content button.om-payments").trigger("click")).done(function(){
+				window.dbChangedTradingNamesDone = function() {
+					
+					$.when($("#content input[name='add']").trigger("click")).done(function(){
+						window.dbChangedCurrenciesDone = function() {
+							
+							$("input[name='trading_name']").val( receiver );
+							$.when($("input[name='submit']").trigger("click")).done(function(){
+								window.dbChangedTradingNamesDone = function() {
+									
+									var done3 = assert.async();	
+									var expected = receiver;
+								    $('select#to').val( expected );
+									
+									var testvalue = $('select#to').val();
+									if(testvalue == expected) {
+										assert.ok( testvalue == expected, "Add Receipient test: '" + testvalue + "' == '" + expected + "'");
+						            	done3();
 									}
-								})
-							};
-						})
-						window.dbChangedCurrenciesDone = function() {};
-					}					
-				})
-				window.dbChangedTradingNamesDone = function() {};
-			};
+									var done4 = assert.async();	
+									
+									$("input[name='amount']").val( amount );
+									$("input[name='description']").val( "example test" );
+									
+									$.when($("#personalPayment").submit()).done(function(){
+										window.dbChangedJournalDone = function() {
+											
+											var testvalue = $("#content div.isNegative").text();
+											var expected = -amount + " cc";
+											assert.ok( testvalue == expected, "New Recipent Payment test: '" + testvalue + "' == '" + expected + "'");
+							            	done4();
+							            	window.dbChangedJournalDone = function() {};
+										}
+									})
+								};
+							})
+							window.dbChangedCurrenciesDone = function() {};
+						}					
+					})
+					window.dbChangedTradingNamesDone = function() {};
+				};
+			})
 		})
 	} );
 	
