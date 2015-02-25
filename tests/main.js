@@ -154,6 +154,8 @@ function runTests(  ){
 	} );
     
 	QUnit.test( "Personal Self Payment", function( assert ) {
+		alert("here");
+		
 		var amount = parseInt( randomString( 3, '0123456789' ) );
 		var usernamecopy = window.testusername;
 		console.log("personal username:" + usernamecopy);
