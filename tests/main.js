@@ -208,6 +208,8 @@ function runTests(  ){
 			}, 250);
 		}
 		
+		resolveLoop();
+		
 		console.log("New receiver Payment Test Started");
 		
 		var receiver = "deefactorial.cc";
