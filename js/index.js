@@ -495,7 +495,7 @@ function setupConfig(done) {
     function setupViews(db, cb) {
     	
 	    if (window.cblite) {
-	    	var design = "/_design/dev_openmoney5" ;//+ new Date().getTime();
+	    	var design = "/_design/dev_openmoney6" ;//+ new Date().getTime();
 	        db.put( design, {
 	            views : {
 	                accounts : {

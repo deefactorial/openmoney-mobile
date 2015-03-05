@@ -182,7 +182,7 @@ function replacejscssfile(oldfilename, newfilename, filetype) {
 
 function getProfile(){
 	var profileID = 'anonymous';
-	if( typeof window.config.user.name != 'undefined') {
+	if( typeof window.config.user != 'undefined' && typeof window.config.user.name != 'undefined') {
 		profileID = window.config.user.name;
 	}
 	if (typeof config.db != 'undefined')
