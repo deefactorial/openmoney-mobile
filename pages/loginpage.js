@@ -289,7 +289,7 @@ function deleteAllCookies() {
 
 function registerServer(callBack) {
     log( "Resister Server SessionID" )
-    if (typeof window.config.user.expires == 'undefined' || Date( window.config.user.expires ) < Date()) {
+    if (typeof window.config.user != 'undefined' && typeof window.config.user.expires != 'undefined' && Date( window.config.user.expires ) < Date()) {
         doFirstLogin( callBack )
     } else {
         callBack()
