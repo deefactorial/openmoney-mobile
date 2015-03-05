@@ -669,7 +669,7 @@ var replication_error = false;
 
 function triggerSync(cb, retryCount) {
 
-    if (typeof config.user.name == 'undefined') { log( "no user defined!" ); return false; }
+    if (typeof config.user == 'undefined' || typeof config.user.name == 'undefined') { log( "no user defined!" ); return false; }
 
     if (SERVER_LOGIN) {
         var remote = {
