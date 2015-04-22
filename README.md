@@ -12,27 +12,27 @@ First create an empty PhoneGap app container using the [PhoneGap npm package](ht
 
 
 ```sh
-npm install -g phonegap
-phonegap create openmoney-mobile-phonegap com.openmoney.mobile openmoney
-cd openmoney-mobile-phonegap
+npm install -g cordova
+cordova create openmoney-mobile-cordova com.openmoney.mobile openmoney
+cd openmoney-mobile-cordova
 ```
 
 Now install the PhoneGap plugins required to make it run. This activates Couchbase Lite, the camera, and the InAppBrowser.
 
 ```sh
-phonegap local plugin add https://github.com/couchbaselabs/Couchbase-Lite-PhoneGap-Plugin.git
-phonegap local plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git
-phonegap local plugin add https://github.com/apache/cordova-plugin-inappbrowser.git
-phonegap local plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-network-information.git
-phonegap local plugin add https://github.com/chariotsolutions/phonegap-nfc.git
-phonegap local plugin add org.apache.cordova.dialogs
-phonegap local plugin add org.apache.cordova.vibration
-phonegap local plugin add https://github.com/Paldom/SpinnerDialog.git
-phonegap local plugin add org.apache.cordova.splashscreen
-phonegap local plugin add https://github.com/deefactorial/cordova-activity-plugin.git
-phonegap local plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
-phonegap local plugin add https://github.com/VitaliiBlagodir/cordova-plugin-datepicker
-phonegap local plugin add org.apache.cordova.globalization
+cordova plugin add https://github.com/couchbaselabs/Couchbase-Lite-PhoneGap-Plugin.git
+//cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git
+//cordova plugin add https://github.com/apache/cordova-plugin-inappbrowser.git
+cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-network-information.git
+cordova plugin add https://github.com/chariotsolutions/phonegap-nfc.git
+cordova plugin add org.apache.cordova.dialogs
+cordova plugin add org.apache.cordova.vibration
+cordova plugin add https://github.com/Paldom/SpinnerDialog.git
+cordova plugin add org.apache.cordova.splashscreen
+cordova plugin add https://github.com/deefactorial/cordova-activity-plugin.git
+cordova plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
+cordova plugin add https://github.com/VitaliiBlagodir/cordova-plugin-datepicker.git
+cordova plugin add org.apache.cordova.globalization
 ```
 
 Now replace the generated application with the openmoney-mobile source code.
@@ -45,13 +45,15 @@ git clone https://github.com/deefactorial/openmoney-mobile.git www
 That's it, now you are ready to run the app:
 
 ```sh
-phonegap run ios
+cordova platform add ios
+cordova run ios
 ```
 
 or
 
 ```sh
-phonegap run android
+cordova platform add android
+cordova run android
 ```
 
 This will launch the app in your iOS or Android Simulator. If you want to launch the app on an iOS device, open the project in Xcode. From the project directory, you can run:
@@ -60,7 +62,7 @@ This will launch the app in your iOS or Android Simulator. If you want to launch
 open platforms/ios/openmoney-mobile.xcodeproj/
 ```
 
-Do note that the Xcode project is only updated by the `phonegap` command line tool, so you must run `phonegap run ios` or `phonegap build ios` before it will pick up any changes made in the `www` directory.
+Do note that the Xcode project is only updated by the `cordova` command line tool, so you must run `cordova run ios` or `cordova build ios` before it will pick up any changes made in the `www` directory.
 
 ## Running your own Sync Gateway server
 
@@ -68,9 +70,8 @@ In `www/js/index.js` there is a value for `syncUrl` which is set to a remote ser
 
 If you are running your own server, launch it by pointing it at the `sync-gateway-config.json` that is shipped as part of this repository. If you are launching a Sync Gateway instance in the cloud, the only configuration you'll need to provide is to copy the sync function from that JSON file into the web UI.
 
-## Release Notes / TODO
+## Running your own server instance
 
-
-## Community
-
+see project
+https://github.com/deefactorial/openmoney-server.git
 

@@ -91,14 +91,11 @@ function runTests(  ){
 //	});
 	
 	//Date shim
-	
 	if (!Date.now) {
 	  Date.now = function now() {
 	    return new Date().getTime();
 	  };
 	}
-	
-	    
 
 	window.currentTime = Date.now();
 	window.testusername = "testuser" + randomString( 5, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' ) + currentTime ;

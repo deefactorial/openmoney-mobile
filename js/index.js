@@ -1052,17 +1052,21 @@ function syncManager(serverUrl, syncDefinition) {
 
     function taskInfo(id, cb) {
     	config.db.active_tasks( {"session_id": id, "feed": "longpoll" } , function(err, tasks) {
-        //coax( [ serverUrl, "_active_tasks"], { "session_id": id }, function(err, tasks) {
-    		//log ("taskInfo [" + id + "]:" + JSON.stringify( [ err, tasks ] ) )
-            var me = {};
-            for ( var i = tasks.length - 1; i >= 0; i--) {
-                if (tasks[i].task == id) {
-                    me = tasks[i]
-                }
-            }
-            if (!canceled) {
-            	cb( false, me );
-            }
+			if (err.error) {
+				console.log(err.error);
+			} else {
+				//coax( [ serverUrl, "_active_tasks"], { "session_id": id }, function(err, tasks) {
+				//log ("taskInfo [" + id + "]:" + JSON.stringify( [ err, tasks ] ) )
+				var me = {};
+				for (var i = tasks.length - 1; i >= 0; i--) {
+					if (tasks[i].task == id) {
+						me = tasks[i]
+					}
+				}
+				if (!canceled) {
+					cb(false, me);
+				}
+			}
         } )
     }
 
