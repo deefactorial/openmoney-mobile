@@ -28,12 +28,12 @@ function goManageNFC(parameters) {
     	
     	window.plugins.spinnerDialog.show();
         config.views( [ "nfc_tags", {
-            startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true
+            startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true, stale : "update_after"
         } ], function(error, view) {
         	window.plugins.spinnerDialog.hide();
             if (error) { return alert( JSON.stringify( error ) ) }
 
-            log( "nfc_tags: " + JSON.stringify( view ) )
+            console.log( "nfc_tags: " + JSON.stringify( view ) );
             
 			var pageTitle = "Manage NFC";
 			
@@ -76,7 +76,7 @@ function goManageNFC(parameters) {
                         if (tag.isWritable) {
                         	
                         	try {
-	                            var payload = JSON.parse( nfc.bytesToString( ndefMessage[0].payload ) )
+	                            var payload = JSON.parse( nfc.bytesToString( ndefMessage[0].payload ) );
 	                            if (typeof payload.key !== 'undefined') {
 	                            	archiveTag(payload.key)
 	                            } 
@@ -111,7 +111,7 @@ function goManageNFC(parameters) {
                         	navigator.notification.alert( "Tag is not writeable!"  , function() {  }, "Not Writeable", "OK")
                         }
                     }
-                }
+                };
                 
                 nfc.addNdefListener( eraseTagListner , function() { // success callback
                     //alert( "Waiting for NFC tag" );
@@ -119,10 +119,9 @@ function goManageNFC(parameters) {
                 }, function(error) { // error callback
                     //alert( "Error adding NDEF listener " + JSON.stringify( error ) );
                 	if (error == "NFC_DISABLED") {
-                		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
-                			window.OpenActivity.NFCSettings(function(error, result){
-    		    				log("Open Activity NFCSettings:" + JSON.stringify( [ error, result ] ) )
-    		    			});
+                		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() {
+                            if(typeof cordova.plugins.settings.openSetting != undefined)
+                                cordova.plugins.settings.openSetting("nfc_settings", function(){console.log("opened nfc settings")},function(){console.log("failed to open nfc settings")});
                 		}, "Turn on NFC", "OK")
                 	} else {
                 		navigator.notification.alert( "Error adding NDEF listener:" + JSON.stringify( error )  , function() {  }, "Error", "OK")
@@ -130,39 +129,38 @@ function goManageNFC(parameters) {
                 	
                 } );
             	
-            } )
+            } );
             
             $( "#content .om-new_nfc" ).off("click").click( function() {
-            	log("goNewNFC")
+            	console.log("goNewNFC");
                 goNewNFC( [] )
-            } )
+            } );
 
-            $( "#scrollable li.nfc_item" ).off("click").click( function() {
-                var id = $( this ).attr( "data-id" )
+            $( "#scrollable div.nfc_item" ).off("click").click( function() {
+                var id = $( this ).attr( "data-id" );
+                console.log("goEditNFC:" + JSON.stringify(id));
                 goEditNFC( [ id ] )
-            } )
+            } );
 
-            $( "#scrollable li.nfc_item" ).off("swipeRight").on( "swipeRight", function() {
+            $( "#scrollable input.active" ).off("click").click( function() {
 
-                var id = $( this ).attr( "data-id" ), listItem = this;
-                isTagArchived( id, function(error, result) {
-                    // log ( "received result:" + result)
-                    if (result) {
-                        //$( listItem ).find( ".om-activate" ).show().click( function() {
-                            activateTag( id )
-                        //} )
-                    } else {
-                        //$( listItem ).find( ".om-archive" ).show().click( function() {
-                            archiveTag( id )
-                        //} )
-                    }
-                } )
-            } )
+                var id = $( this ).attr( "name" ), checkbox = this;
+                console.log("checkbox id:" + id + " checked:" + checkbox.checked);
+
+
+                if (checkbox.checked) {
+                    activateTag( id );
+                } else {
+                    archiveTag( id );
+                }
+
+
+            } );
 
             setTabs()
         } );
 
-    }
+    };
     window.dbChangedTags()
 }
 
@@ -178,7 +176,7 @@ function isTagArchived(id, callback) {
     	} else {
     		result = doc.archived;
     	}
-        log( "is Tag (" + id + ") Archived:" + result )
+        console.log( "is Tag (" + id + ") Archived:" + result );
         callback( error, result )
     } )
 }
@@ -187,14 +185,15 @@ function isTagArchived(id, callback) {
  * This is will find the tag on the users account and archive it
  */
 
-function archiveTag(id) {
-    log( "Archive Tag", id )
+function archiveTag(id ) {
+    console.log( "Archive Tag", id );
     config.db.get("/" + "beamtag," + config.user.name + "," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = true;
 	        doc.archived_at = new Date().getTime();
 	        var leadingSlash = getLeadingSlash(); 
 	        config.db.put(leadingSlash + "beamtag," + config.user.name + "," + id, doc, function() {
+
 	        } )
     	}
     } )
@@ -205,13 +204,14 @@ function archiveTag(id) {
  */
 
 function activateTag(id) {
-    log( "Activate Tag", id )
+    console.log( "Activate Tag", id );
     config.db.get("/" + "beamtag," + config.user.name + "," + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = false;
 	        doc.archived_at = new Date().getTime();
 	        var leadingSlash = getLeadingSlash(); 
 	        config.db.put(leadingSlash + "beamtag," + config.user.name + "," + id, doc, function() {
+
 	        } )
     	}
     } )

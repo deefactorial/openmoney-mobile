@@ -2,9 +2,9 @@
 <widget id="com.openmoney.mobile" version="2.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>openmoney</name>
     <description>
-        Openmoney Mobile Application 
+        Openmoney Mobile Application
     </description>
-    <author email="deefactorial@openmoney.cc" href="http://dev.openmoney.org">
+    <author email="deefactorial@gmail.com" href="http://openmoney.cc">
         Dominique Legault
     </author>
     <feature name="http://api.phonegap.com/1.0/device" />
@@ -21,16 +21,32 @@
     <preference name="show-splash-screen-spinner" value="true" />
     <preference name="auto-hide-splash-screen" value="true" />
     <preference name="disable-cursor" value="false" />
-    <preference name="android-minSdkVersion" value="7" />
+    <preference name="android-minSdkVersion" value="10" />
     <preference name="android-installLocation" value="auto" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="10000" />
-    
-    <icon src="res/icon/android/icon.png" />
-    <icon gap:density="ldpi" gap:platform="android" src="res/icon/android/icon-36-ldpi.png" />
-    <icon gap:density="mdpi" gap:platform="android" src="res/icon/android/icon-48-mdpi.png" />
-    <icon gap:density="hdpi" gap:platform="android" src="res/icon/android/icon-72-hdpi.png" />
-    <icon gap:density="xhdpi" gap:platform="android" src="res/icon/android/icon-96-xhdpi.png" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
+
+    <icon src="www/res/icon/android/icon.png" />
+    <splash src="www/res/screen/android/screen-mdpi-portrait.png" />
+
+    <platform name="android">
+        <icon src="www/res/icon/android/icon.png" />
+        <icon src="www/res/icon/android/icon-36-ldpi.png" density="ldpi" />
+        <icon src="www/res/icon/android/icon-48-mdpi.png" density="mdpi" />
+        <icon src="www/res/icon/android/icon-72-hdpi.png" density="hdpi" />
+        <icon src="www/res/icon/android/icon-96-xhdpi.png" density="xhdpi" />
+
+        <splash src="www/res/screen/android/screen-hdpi-landscape.png" density="land-hdpi"/>
+        <splash src="www/res/screen/android/screen-ldpi-landscape.png" density="land-ldpi"/>
+        <splash src="www/res/screen/android/screen-mdpi-landscape.png" density="land-mdpi"/>
+        <splash src="www/res/screen/android/screen-xhdpi-landscape.png" density="land-xhdpi"/>
+        <splash src="www/res/screen/android/screen-hdpi-portrait.png" density="port-hdpi"/>
+        <splash src="www/res/screen/android/screen-ldpi-portrait.png" density="port-ldpi"/>
+        <splash src="www/res/screen/android/screen-mdpi-portrait.png" density="port-mdpi"/>
+        <splash src="www/res/screen/android/screen-xhdpi-portrait.png" density="port-xhdpi"/>
+    </platform>
+    <!--
     <icon gap:platform="blackberry" src="res/icon/blackberry/icon-80.png" />
     <icon gap:platform="blackberry" gap:state="hover" src="res/icon/blackberry/icon-80.png" />
     <icon gap:platform="ios" height="57" src="res/icon/ios/icon-57.png" width="57" />
@@ -40,22 +56,18 @@
     <icon gap:platform="webos" src="res/icon/webos/icon-64.png" />
     <icon gap:platform="winphone" src="res/icon/windows-phone/icon-48.png" />
     <icon gap:platform="winphone" gap:role="background" src="res/icon/windows-phone/icon-173.png" />
-    <gap:splash gap:density="ldpi" gap:platform="android" src="res/screen/android/screen-ldpi-portrait.png" />
-    <gap:splash gap:density="mdpi" gap:platform="android" src="res/screen/android/screen-mdpi-portrait.png" />
-    <gap:splash gap:density="hdpi" gap:platform="android" src="res/screen/android/screen-hdpi-portrait.png" />
-    <gap:splash gap:density="xhdpi" gap:platform="android" src="res/screen/android/screen-xhdpi-portrait.png" />
     <gap:splash gap:platform="blackberry" src="res/screen/blackberry/screen-225.png" />
     <gap:splash gap:platform="ios" height="480" src="res/screen/ios/screen-iphone-portrait.png" width="320" />
     <gap:splash gap:platform="ios" height="960" src="res/screen/ios/screen-iphone-portrait-2x.png" width="640" />
     <gap:splash gap:platform="ios" height="1024" src="res/screen/ios/screen-ipad-portrait.png" width="768" />
     <gap:splash gap:platform="ios" height="768" src="res/screen/ios/screen-ipad-landscape.png" width="1024" />
-    <gap:splash gap:platform="winphone" src="res/screen/windows-phone/screen-portrait.jpg" />
-    <gap:plugin name="org.apache.cordova.camera" />
-    <gap:plugin name="org.apache.cordova.inappbrowser" />
+    <gap:splash gap:platform="winphone" src="res/screen/windows-phone/screen-portrait.jpg" />-->
+    <gap:plugin name="com.chariotsolutions.nfc.plugin" />
+    <gap:plugin name="com.plugin.datepicker" />
     <gap:plugin name="org.apache.cordova.network-information" />
-    <gap:plugin name="com.couchbase.lite.phonegap" />
-    <gap:plugin name="com.chariotsolutions.nfc.plugin.NfcPlugin" />
-    <gap:plugin name="org.apache.cordova.splashscreen" />
-    
+    <gap:plugin name="org.apache.cordova.dialogs" />
+    <gap:plugin name="org.apache.cordova.globalization" />
+    <gap:plugin name="cordova-plugin-splashscreen" />
+
     <access origin="*" />
 </widget>

@@ -26,7 +26,7 @@ function createBeamTag(cb) {
 		cb(false)
 	} else {
 		
-	    log( "createBeamTag user " + JSON.stringify( config.user ) )
+	    console.log( "createBeamTag user " + JSON.stringify( config.user ) )
 	    var userData = JSON.parse( JSON.stringify( config.user ) );
 	    var beamData = { };
 	    beamData.type = "beamtag";
@@ -55,7 +55,7 @@ function createBeamTag(cb) {
 	
 	    beamData.pinCode = base64_encode( String( encodedString ) )
 	
-	    log( " BeamTag: " + JSON.stringify( beamData ) )
+	    console.log( " BeamTag: " + JSON.stringify( beamData ) )
 	
 	    var type = "application/com.openmoney.mobile", id = "", payload = nfc.stringToBytes( JSON.stringify( {
 	        key : beamData.hashTag
@@ -71,16 +71,17 @@ function createBeamTag(cb) {
 	        log( "Failed to beam!" )
 	    } );
 	
-	    log( "createBeamTag put " + JSON.stringify( beamData ) )
+	    console.log( "createBeamTag put " + JSON.stringify( beamData ) )
 	    // Check if Profile Document Exists
 	    config.db.get( "/beamtag," + beamData.username + "," + beamData.hashTag, function(error, doc) {
 	        if (error) {
-	            log( "Error: " + JSON.stringify( error ) )
+
 	            if (error.status == 404) {
 	                // doc does not exists
 	                config.db.put( "beamtag," + beamData.username + "," + beamData.hashTag, JSON.parse( JSON.stringify( beamData ) ), cb )
 	            } else {
-	                alert( " Error Posting Beam Tag:" + JSON.stringify( error ) )
+					//console.log( "Error: " + JSON.stringify( error ) )
+	                console.log( " Error Posting Beam Tag:" + JSON.stringify( error ) )
 	            }
 	        } else {
 	            beamData = doc;

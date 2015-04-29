@@ -64,8 +64,8 @@ function goPayment(parameters) {
 	            }
 	        }
 	
-	        thisUsersAccounts.offset = view.offset
-	        thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+	        thisUsersAccounts.offset = view.offset;
+	        thisUsersAccounts.total_rows = thisUsersAccounts.rows.length;
 	        
 	        var payment = { "from" : thisUsersAccounts, "to" : view }; 
 	
@@ -91,9 +91,9 @@ function goPayment(parameters) {
 	
 	        setLoginLogoutButton();
 	
-	        setTabs()
+	        setTabs();
 	
-	        setModes()
+	        setModes();
 	        
 	        $( "#content input[name='add']" ).off("click").click( function() {
 		        goAddTradingName([])
@@ -115,33 +115,33 @@ function goPayment(parameters) {
 	        
 	        
 	        $( "#content form" ).off("submit").submit( function(e) {
-	            e.preventDefault()
+	            e.preventDefault();
 	            $( "#submit" ).attr("disabled","disabled");
 	            
-	            var doc = jsonform( this )
+	            var doc = jsonform( this );
 	            
 	            if (typeof doc.to == 'undefined' || doc.to == '') {
-	            	navigator.notification.alert( "Recipient Trading Name Required!"  , function() {  }, "Error", "OK")
+	            	navigator.notification.alert( "Recipient Trading Name Required!"  , function() {  }, "Error", "OK");
 	            	$( "#submit" ).removeAttr("disabled","disabled");
 	            	return false;
 	            }
 	            
 	            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseFloat( doc.amount ) < 0) {
-	            	navigator.notification.alert( "Amount zero or greater Required!"  , function() {  }, "Error", "OK")
+	            	navigator.notification.alert( "Amount zero or greater Required!"  , function() {  }, "Error", "OK");
 	            	$( "#submit" ).removeAttr("disabled","disabled");
 	            	return false;
 	            }
 	            
-	            doc.type = "trading_name_journal"
-	            doc.amount = parseFloat( doc.amount )
+	            doc.type = "trading_name_journal";
+	            doc.amount = parseFloat( doc.amount );
 	            doc.timestamp = new Date().getTime();
 	            
 	            makePersonalPayment( doc, true );
-	        } )
+	        } );
 	        
 	        window.dbChangedTradingNamesDone();
 	    } )
-	}
+	};
 	window.dbChangedTradingNames();
 }
 
@@ -169,8 +169,8 @@ function makePersonalPayment( doc, retry ) {
                 return alert( JSON.stringify( error ) )
             }
         } else {
-            doc.from = from.name
-            doc.currency = from.currency
+            doc.from = from.name;
+            doc.currency = from.currency;
             if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null && from.capacity < doc.amount) {
             	navigator.notification.alert( "Your trading account doesn't have the capacity for this transaction!"  , function() { goManageAccounts([]) }, "Error", "OK")
             	$( "#submit" ).removeAttr("disabled","disabled");
@@ -214,7 +214,7 @@ function makePersonalPayment( doc, retry ) {
                                     return alert( JSON.stringify( error ) )
                                 }
                             }
-                            doc.to = to.name
+                            doc.to = to.name;
                            
                             if (typeof to.archived != 'undefined' && to.archived === true ) {
                             	navigator.notification.alert( "the recipient trading account " + doc.to + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
@@ -231,15 +231,15 @@ function makePersonalPayment( doc, retry ) {
                             config.db.get("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
                                 if (error) {
                                 	
-                                    log( "Error: " + JSON.stringify( error ) )
+                                    console.log( "Error: " + JSON.stringify( error ) );
                                     if (error.status == 404 || error.error == "not_found") {
                                         // doc does not exists
-                                        log( "insert new trading name journal" + JSON.stringify( doc ) )
+                                        console.log( "insert new trading name journal" + JSON.stringify( doc ) );
                                         var leadingSlash = getLeadingSlash();                                        	                          
                                         config.db.put( leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
                                         	
                                         	if (error)
-                                                return alert("Error Posting:" + JSON.stringify( error ) )
+                                                return alert("Error Posting:" + JSON.stringify( error ) );
                     			   		 	
                     			   		 	//trigger a view update
                     			   		 	config.views( [ "account_balance", {
@@ -257,14 +257,14 @@ function makePersonalPayment( doc, retry ) {
                     			   		 		descending : true,
                     			   		        stale : "update_after"
                     			   		    } ], function(error, view) {
-                    			   		 		console.log("view personal account details update response:" + JSON.stringify( [ error , view ] ) )
+                    			   		 		console.log("view personal account details update response:" + JSON.stringify( [ error , view ] ) );
 		                			   		 	config.views( [ "account_details", {
 		                			   		 		startkey : "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() + '\uefff',
 		                			   		 		endkey: "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ,
 		                			   		 		descending : true,
 		                			   		        stale : "update_after"
 		                			   		    } ], function(error, view) {
-		                			   		 		console.log("view personal account details update response:" + JSON.stringify( [ error , view ] ) )
+		                			   		 		console.log("view personal account details update response:" + JSON.stringify( [ error , view ] ) );
 		                			   		 		navigator.notification.alert( "You successfully made a payment !"  , function() { goList( [ "trading_name," + doc.from.toLowerCase() + "," + doc.currency.toLowerCase() ] ); }, "Success", "OK")	
 		                			   		 	} );
                     			   		 	} );
@@ -298,7 +298,7 @@ function goTagPayment(parameters) {
 	
 	tradingNames = parameters.pop();
 	
-    log( "Go Tag Payment Page: " + JSON.stringify( tradingNames ) )
+    console.log( "Go Tag Payment Page: " + JSON.stringify( tradingNames ) );
     
     window.dbChangedTradingNames = function () {
 		
@@ -323,8 +323,8 @@ function goTagPayment(parameters) {
 	            }
 	        }
 	
-	        thisUsersAccounts.offset = view.offset
-	        thisUsersAccounts.total_rows = thisUsersAccounts.rows.length
+	        thisUsersAccounts.offset = view.offset;
+	        thisUsersAccounts.total_rows = thisUsersAccounts.rows.length;
 	
 	        var fromAccounts = [];
 	        var toAccounts = [];
@@ -333,15 +333,15 @@ function goTagPayment(parameters) {
 	            fromAccounts.push( {
 	                "from" : row.id, "name" : row.key.trading_name + " " + row.key.currency
 	            } )
-	        } )
+	        } );
 	
 	        tradingNames.forEach( function(tradingname) {
 	            toAccounts.push( {
 	                "to" : "trading_name," + tradingname.trading_name + "," + tradingname.currency , "name" : tradingname.trading_name + " " + tradingname.currency
 	            } )
-	        } )
+	        } );
 	        
-	        log("toAccounts:" + JSON.stringify( toAccounts ) )
+	        log("toAccounts:" + JSON.stringify( toAccounts ) );
 	
 	        var pageTitle = "Tag Payment";
 			
@@ -369,15 +369,15 @@ function goTagPayment(parameters) {
 	
 	        setLoginLogoutButton();
 	
-	        setTabs()
+	        setTabs();
 	
-	        setModes()
+	        setModes();
 	        
 	        $( "#content form" ).off("submit").submit( function(e) {
-	            e.preventDefault()
+	            e.preventDefault();
 	            $( "#submit" ).attr("disabled","disabled");
-	            var doc = jsonform( this )
-	            doc.type = "trading_name_journal"
+	            var doc = jsonform( this );
+	            doc.type = "trading_name_journal";
 	            	
 	            if (typeof doc.amount == 'undefined' || doc.amount == '' || parseFloat( doc.amount ) < 0 ){
 	            	navigator.notification.alert( "Amount zero or greater required!"  , function() {  }, "Error", "OK")
@@ -385,37 +385,37 @@ function goTagPayment(parameters) {
 	            	return false;
 	            }
 	            
-	            doc.amount = parseFloat( doc.amount )
+	            doc.amount = parseFloat( doc.amount );
 	
 	            doc.timestamp = new Date().getTime();
 	            //doc.timestamp = doc.timestamp.toJSON()
 	            delete doc.pair;
-	            log( " form doc: " + JSON.stringify( doc ) )
+	            console.log( " form doc: " + JSON.stringify( doc ) );
 	            config.db.get("/" + doc.from, function(error, from) {
 	                if (error) {
 	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                    if (error.status == 404 || error.error == "not_found") {
-	                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Exists", "OK")
+	                    	navigator.notification.alert( "Your trading account doesn't exist!"  , function() {  }, "Exists", "OK");
 	                        return false;
 	                    } else {
 	                        return alert( JSON.stringify( error ) )
 	                    }
 	                }
-	                doc.from = from.name
-	                doc.currency = from.currency
+	                doc.from = from.name;
+	                doc.currency = from.currency;
 	                
 	                if (typeof from.capacity != 'undefined' && from.capacity !== '' && from.capacity !== null && from.capacity < doc.amount) {
-	                	navigator.notification.alert( "Your trading account doesn't have the capacity for this transaction!"  , function() { goManageAccounts([]) }, "Error", "OK")
+	                	navigator.notification.alert( "Your trading account doesn't have the capacity for this transaction!"  , function() { goManageAccounts([]) }, "Error", "OK");
 	                	return false
 	                }
 	                
 	                if (typeof from.archived != 'undefined' && from.archived === true ) {
-	                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK")
+	                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been archived!"  , function() { goManageAccounts([]) }, "Error", "OK");
 	                	return false
 	                } 
 	                
 	                if (typeof from.enabled != 'undefined' && from.enabled === false ) {
-	                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
+	                	navigator.notification.alert( "Your trading account " + doc.from + " in currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK");
 	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                	return false
 	                } 
@@ -465,7 +465,7 @@ function goTagPayment(parameters) {
 	                                            var leadingSlash = getLeadingSlash();
 	                                            config.db.put(leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                                if (error)
-	                                                    return alert( JSON.stringify( error ) )
+	                                                    return alert( JSON.stringify( error ) );
 	                                               
 	                                                //trigger a view update
 	                        			   		 	config.views( [ "account_details", {

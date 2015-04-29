@@ -249,21 +249,21 @@ function connectToChanges() {
 	
 	var changes = function(err, change) {
 	    if (err) {
-	        log( " Changes Error: " + JSON.stringify( err ) )
+	        console.log( " Changes Error: " + JSON.stringify( err ) )
 	        connectToChanges();
 	        return false;
 	    }
 	    if (change) {
 	    	lastSeq = change.seq;
-	    	log("Change sequence: " + lastSeq);
+	    	console.log("Change sequence: " + lastSeq);
 	    }
 	        
 	    
-	    log( "connectToChanges:" + JSON.stringify( change ) )
+	    console.log( "connectToChanges:" + JSON.stringify( change ) )
 	    
 	    if (typeof change != 'undefined' && change.doc._conflicts) {
 	    	//window.plugins.toast.showShortTop("Conflicting Document:" + JSON.stringify( change.doc ) , function(a){console.log('toast success: ' + a)}, function(b){alert('toast error: ' + b)})
-	    	log ("Conflicting Document:" + JSON.stringify( change.doc ))
+	    	console.log ("Conflicting Document:" + JSON.stringify( change.doc ))
 	    	var thisrev = [ change.doc._id, { "rev": change.doc._rev } ] ;
 	    	var thatConflicts = new Array();
 	    	change.doc._conflicts.forEach(function(rev) {
@@ -285,7 +285,7 @@ function connectToChanges() {
 		    				//there was a timedout error try to resetup config.
 		    				//refreshConfig();
 		    			}
-		    			log( "This Rev Conflicting Error:" + JSON.stringify( thisrev ) + ":" + JSON.stringify(error) ) 
+		    			console.log( "This Rev Conflicting Error:" + JSON.stringify( thisrev ) + ":" + JSON.stringify(error) )
 		    			return false;
 		    		}
 		    		
@@ -297,11 +297,11 @@ function connectToChanges() {
 				    				//there was a timedout error try to resetup config.
 				    				//refreshConfig();
 				    			}
-			        			log( "That Rev Conflicting Error:" + JSON.stringify( thatrev ) + ":" +JSON.stringify(error) ); 
+			        			console.log( "That Rev Conflicting Error:" + JSON.stringify( thatrev ) + ":" +JSON.stringify(error) );
 			        			return false;
 			        		}
 			        		
-			        		log("Conflicting Documents: This:" + JSON.stringify( thisdoc ) + ",That:" + JSON.stringify( thatdoc ) );
+			        		console.log("Conflicting Documents: This:" + JSON.stringify( thisdoc ) + ",That:" + JSON.stringify( thatdoc ) );
 			        		
 			        		
 			        		var deletedDocument = null;
@@ -315,7 +315,7 @@ function connectToChanges() {
 		            		}
 		        		
 			        		//find the me in steward.
-		        			log ("Delete Conflicting Document:" + JSON.stringify( deletedDocument ) )
+		        			console.log ("Delete Conflicting Document:" + JSON.stringify( deletedDocument ) )
 //		        			if( deletedDocument != null && typeof deletedDocument.steward != 'undefined' && Object.prototype.toString.call( deletedDocument.steward ) === Object.prototype.toString.call( [] ) ) 
 //			        		deletedDocument.steward.forEach(function(steward) {
 //			    				if(steward == config.user.name) {
@@ -353,7 +353,7 @@ function connectToChanges() {
 	    }
 	    
 	    if (typeof change != 'undefined') {
-	    	log ("Change Document:" + JSON.stringify( change.doc ) )
+	    	console.log ("Change Document:" + JSON.stringify( change.doc ) )
 	    	if (change.doc.type == 'trading_name_journal') {
 	    		
 	    		if( typeof change.doc.verified != 'undefined' && (typeof change.doc.from_verification_viewed == 'undefined' || typeof change.doc.to_verification_viewed == 'undefined') ) {
@@ -391,7 +391,7 @@ function connectToChanges() {
 	    		    }, function(error) {
 	    		        // All done
 	    		    	if (error) {
-	    		    		log( JSON.stringify( error ) )
+	    		    		console.log( JSON.stringify( error ) )
 	    		    	} else {
 	    		    		if (notify_to || notify_from) {
 	    						config.db.get(change.doc._id, function(error, journal) {
@@ -424,18 +424,18 @@ function connectToChanges() {
 		    	    config.db.get("profile,anonymous", function(error,profile) {
 		    	    	if (error) {
 		    	    		getProfile();
-		    	    		log( JSON.stringify( error ) )
+		    	    		console.log( JSON.stringify( error ) )
 		    	    	} else {
 		    	    		if( profile._deleted == true) {
 		    	    			getProfile();
-		    	    			log ("profile is deleted")
+		    	    			console.log ("profile is deleted")
 		    	    		} else {
 		    	    	
 				    	    	var profileCopy = clone( profile );
 				    	    	profile._deleted = true;
 				    	    	config.db.put("profile,anonymous", profile, function(error,ok){
 				    	    		if(error) {
-				    	    			log( "Error putting anonymous doc:" + JSON.strigify([error,ok]) )
+				    	    			console.log( "Error putting anonymous doc:" + JSON.strigify([error,ok]) )
 				    	    		} else {
 						    	    	if (typeof config.user.name == 'undefined') { alert ("cannot update a profile with a username that isn't defined")}
 						    	    	//add username
@@ -454,7 +454,7 @@ function connectToChanges() {
 						    	    				
 						    	    			} else {
 						    	    				getProfile();
-						    	    				log ( "Error getting Profile" + JSON.stringify( error ) )
+						    	    				console.log ( "Error getting Profile" + JSON.stringify( error ) )
 						    	    			}
 						    	    		} else {
 							    	    		//update the profile with the local settings.
@@ -487,7 +487,7 @@ function connectToChanges() {
 	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
 	    			//this will need a lookup on the previous doc to make sure that this is not this users doc.
 	    			
-    				log( "Changed Trading Name Document" + JSON.stringify( change.doc ) )
+    				console.log( "Changed Trading Name Document" + JSON.stringify( change.doc ) )
     				//this will not happen because this user does not have access to the document.
     				if (typeof change.doc._revisions != 'undefined') {
     					
@@ -495,12 +495,12 @@ function connectToChanges() {
     					//get the last revision
     					if (start > 0) {
 							config.db.get([change.doc._id, { "rev": start + "-" + change.doc._revisions.ids[1] } ], function( error, previous) {
-								log("Changed Trading Name Document Previous:" + JSON.stringify( [error,previous] ) )
+								console.log("Changed Trading Name Document Previous:" + JSON.stringify( [error,previous] ) )
 								//if this is my document then log and report it.
 								if (previous.steward.indexOf(config.user.name) != -1) {
 		    						navigator.notification.alert( "The trading name " + trading_name + " you created in currency " + currency + " has already been taken!",
 		    			    				function() { 
-		    									log(JSON.stringify(change))
+		    									console.log(JSON.stringify(change))
 		    									goCreateAccount( [ { "type" : "trading_name" } ] )
 		    			    				}, "Taken", "OK")
 								}
@@ -527,7 +527,7 @@ function connectToChanges() {
 	    			//the currency this user created got deleted because someone else has a trading name or space of that name.
 	    			navigator.notification.alert( "The currency " + currency + " you created has already been taken!",
 		    				function() { 
-								log(JSON.stringify(change))
+								console.log(JSON.stringify(change))
 								goCreateAccount( [ { "type" : "currency" } ] )
 		    				}, "Taken", "OK")
 	    		}
@@ -540,15 +540,15 @@ function connectToChanges() {
 	    			//the space this user created got deleted because someone else has a trading name or currency of that name.
 	    			navigator.notification.alert( "The space " + space + " you created has already been taken!",
 		    				function() { 
-								log(JSON.stringify(change))
+								console.log(JSON.stringify(change))
 								goCreateAccount( [ { "type" : "space" } ] )
 		    				}, "Taken", "OK")
 	    		} else {
 	    			//get the document to see if there was a conflict.
 	    			if( typeof change.doc._rev != 'undefined' )
 	    			config.db.get([change.doc._id, { "rev":change.doc._rev, "conflicts": true, "deleted_conflicts" : true } ], function(error, doc) {
-	    				if(error) { log ("Error getting space revision:" + JSON.stringify( error ) ); return false; }
-	    				log( "Changed Space Document" + JSON.stringify( doc ) )
+	    				if(error) { console.log ("Error getting space revision:" + JSON.stringify( error ) ); return false; }
+	    				console.log( "Changed Space Document" + JSON.stringify( doc ) )
 	    				//this will not happen because this user does not have access to the document.
 	    				if (typeof doc._conflicts != 'undefined') {
 	    					doc._conflicts.forEach( function(rev) {
@@ -557,8 +557,8 @@ function connectToChanges() {
 	    							if (conflict.steward.indexOf(config.user.name) != -1) {
 	    								conflict._deleted = true;
 	    								config.db.put(change.doc._id, conflict, function(error, ok) {
-	    									if (error) { log ("Error deleting conflicting document" + JSON.stringify( error ) ); return false; }
-	    									log ("Successfully deleted confilicting document" + JSON.stringify( ok ) )
+	    									if (error) { console.log ("Error deleting conflicting document" + JSON.stringify( error ) ); return false; }
+	    									console.log ("Successfully deleted confilicting document" + JSON.stringify( ok ) )
 	    								} )
 	    							}
 	    						} )

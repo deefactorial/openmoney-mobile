@@ -103,24 +103,24 @@ function doFirstLogin(cb) {
             
 	            setupConfig( function(error, ok){
 	            	if (error) {
-	            		log( "Error setting up config: " + JSON.stringify( error ) ) 
+	            		console.log( "Error setting up config: " + JSON.stringify( error ) )
 	            	}
 	            	
                     if (window.cblite) {
 	                    createBeamTag( function(err) {
-	                        log( "createBeamTag done " + JSON.stringify( err ) )
+	                        console.log( "createBeamTag done " + JSON.stringify( err ) )
 	
-	                    } )
+	                    } );
 	                    
 	                    addMyUsernameToAllLists( function(err) {
-	                        log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
+	                        console.log( "addMyUsernameToAllLists done " + JSON.stringify( err ) )
 	
-	                    } )
+	                    } );
 	                    
-	                    config.syncReference = triggerSync( function(error, ok) {
+	                    window.config.syncReference = triggerSync( function(error, ok) {
+							console.log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
 	                    	connectToChanges();
 	                    	getProfile();
-	                        log( "triggerSync done, Error:" + JSON.stringify( error ) + " , ok:" + JSON.stringify( ok ) )
 	                        cb( error, ok )
 	                    } )
                     } else {
@@ -288,7 +288,7 @@ function deleteAllCookies() {
  */
 
 function registerServer(callBack) {
-    log( "Resister Server SessionID" )
+    console.log( "Resister Server SessionID" );
     if (typeof window.config.user != 'undefined' && typeof window.config.user.expires != 'undefined' && Date( window.config.user.expires ) < Date()) {
         doFirstLogin( callBack )
     } else {

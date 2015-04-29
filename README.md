@@ -20,19 +20,25 @@ cd openmoney-mobile-cordova
 Now install the PhoneGap plugins required to make it run. This activates Couchbase Lite, the camera, and the InAppBrowser.
 
 ```sh
-cordova plugin add https://github.com/couchbaselabs/Couchbase-Lite-PhoneGap-Plugin.git
-//cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git
-//cordova plugin add https://github.com/apache/cordova-plugin-inappbrowser.git
-cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-network-information.git
+cordova plugin add https://github.com/apache/cordova-plugin-network-information.git
 cordova plugin add https://github.com/chariotsolutions/phonegap-nfc.git
 cordova plugin add org.apache.cordova.dialogs
 cordova plugin add org.apache.cordova.vibration
-cordova plugin add https://github.com/Paldom/SpinnerDialog.git
 cordova plugin add org.apache.cordova.splashscreen
-cordova plugin add https://github.com/deefactorial/cordova-activity-plugin.git
-cordova plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
-cordova plugin add https://github.com/VitaliiBlagodir/cordova-plugin-datepicker.git
 cordova plugin add org.apache.cordova.globalization
+cordova plugin add https://github.com/VitaliiBlagodir/cordova-plugin-datepicker.git
+```
+
+Depreciated Plugins
+
+```sh
+cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-network-information.git
+cordova plugin add https://github.com/couchbaselabs/Couchbase-Lite-PhoneGap-Plugin.git
+cordova plugin add https://github.com/deefactorial/cordova-activity-plugin.git
+cordova plugin add https://github.com/Paldom/SpinnerDialog.git
+cordova plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
+cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git
+cordova plugin add https://github.com/apache/cordova-plugin-inappbrowser.git
 ```
 
 Now replace the generated application with the openmoney-mobile source code.

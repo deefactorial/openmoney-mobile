@@ -86,14 +86,16 @@ Coax.extend( "active_tasks", function(opts, cb) {
 				return self.active_tasks( opts, cb ); 
 			} else if (err) { 
 				log ("active_tasks error:" + JSON.stringify(err))
-				return self.active_tasks( opts, cb );
-			}
-			//return result
-			cb( false, [ ok ] );
-			//initiate new request
-			setTimeout(function(){
-				self.active_tasks( opts, cb );
-			}, 500);
+                cb(err, false);
+				//return self.active_tasks( opts, cb );
+			} else {
+              //return result
+              cb(false, [ok]);
+              //initiate new request
+              setTimeout(function () {
+                self.active_tasks(opts, cb);
+              }, 500);
+            }
 		} );
 	}
 } )
@@ -1471,7 +1473,7 @@ function request(options, callback) {
 var req_seq = 0
 var onlyonce = false;
 function run_xhr(options) {
-  log("run_xhr" + JSON.stringify(options))
+  //log("run_xhr" + JSON.stringify(options))
   
   var xhr = new XHR
     , timed_out = false

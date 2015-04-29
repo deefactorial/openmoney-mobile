@@ -34,16 +34,16 @@ function clone(obj) {
 function refreshConfig(){
 	 setupConfig( function(err) {
         if (err) {
-            log( "setupConfig Error:" + JSON.stringify( err ) )
+            console.log( "setupConfig Error:" + JSON.stringify( err ) )
             return false;
         }
-        connectToChanges()
+        connectToChanges();
         
-        goIndex()
+        goIndex([]);
         
         config.syncReference = triggerSync( function(err) {
             if (err) {
-                log( "error on sync" + JSON.stringify( err ) )
+                console.log( "error on sync" + JSON.stringify( err ) )
             }
         } )
     } )
@@ -94,7 +94,7 @@ function logoutError(error) {
 function drawContent(html) {
 	//log( "drawContent" + html.toString())
 	
-	scroll( 0, 0 )
+	scroll( 0, 0 );
     
     $( "#content" ).html( html )
     
@@ -102,9 +102,9 @@ function drawContent(html) {
 
 function drawContainer(id, html) {
 	
-	scroll( 0, 0 )
+	scroll( 0, 0 );
 
-	console.log( "drawContainer(" + id + ")" )
+	console.log( "drawContainer(" + id + ")" );
 
 	$( id ).html( html );
 	
@@ -118,7 +118,7 @@ function drawContainer(id, html) {
 
 function processAjaxData(response, urlPath) {
 	
-	log ("set page " + urlPath )
+	console.log ("set page " + urlPath )
 	
 	drawContent( response.html );
 
@@ -132,7 +132,7 @@ function processAjaxData(response, urlPath) {
 		//window.history.pushState( response, "" , urlPath );
 	}
 	
-	log ("post set page");
+	console.log ("post set page");
 }
 
 
@@ -155,7 +155,7 @@ function processAjaxData(response, urlPath) {
 
 function updateAjaxData( response , urlPath) {
 	
-	log ("update page " + urlPath)
+	console.log ("update page " + urlPath)
 
 	if (window.cblite) {
 		History.replaceState( response , "", urlPath );
@@ -163,7 +163,7 @@ function updateAjaxData( response , urlPath) {
 		//window.history.replaceState( response, "", urlPath );
 	}
 
-	log ("post update page");
+	console.log ("post update page");
 }
 
 
@@ -184,11 +184,11 @@ function setLoginLogoutButton() {
     if (!config.user || !config.user.user_id) {
         if (SERVER_LOGIN) {
             $( "#content .openmoney-login" ).show().off( "click" ).click( function() {
-            	log("go to login")
+            	console.log("go to login")
             	window.plugins.spinnerDialog.show();
                 goServerLogin( [ function(error) {
                 	
-                	log( "Login CallBack" )
+                	console.log( "Login CallBack" )
                     $( ".openmoney-login" ).hide().off( "click" )
                     setLoginLogoutButton()
                     if (error) { return loginErr( error ) }
@@ -263,7 +263,7 @@ function setLoginLogoutButton() {
 
 function setTabs() {
     $( "#content .om-accounts" ).off("click").click( function() {
-    	log("go Index")
+    	console.log("go Index")
     	goIndex([])
     } )
 
@@ -294,11 +294,11 @@ function doOnOrientationChange () {
     {  
       case -90:
       case 90:
-        log('landscape');
+        console.log('landscape');
         adjustHeader();
         break; 
       default:
-        log('portrait');
+        console.log('portrait');
         adjustHeader();
         break; 
     }
@@ -333,11 +333,11 @@ window.nfcListner = function(nfcEvent) {
     // dump the raw json of the message
     // note: real code will need to decode
     // the payload from each record
-    log( JSON.stringify( tag ) );
+    console.log( JSON.stringify( tag ) );
 
     // assuming the first record in the message has
     // a payload that can be converted to a string.
-    log( nfc.bytesToString( ndefMessage[0].payload ) );
+    console.log( nfc.bytesToString( ndefMessage[0].payload ) );
     var payload = JSON.parse( nfc.bytesToString( ndefMessage[0].payload ) )
     if (typeof payload.key !== 'undefined') {
         // do a lookup of the key
@@ -345,7 +345,7 @@ window.nfcListner = function(nfcEvent) {
             if (error)
                 alert( "Tag Lookup Error: " + JSON.stringify( error ) )
             else {
-                log( JSON.stringify( "Tag Lookup Result:" + JSON.stringify( result ) ) )
+                console.log( JSON.stringify( "Tag Lookup Result:" + JSON.stringify( result ) ) )
 //                
 //                forEach( function(name) {
 //                	config.db.get("trading_name_view," + config.user.name + "," + name.trading_name + "," + name.currency, function(error, doc) {
@@ -398,19 +398,19 @@ window.nfcListner = function(nfcEvent) {
 
 function doTagLookup(key, callBack) {
     if (navigator && navigator.connection) {
-        log( "connection " + navigator.connection.type )
+        console.log( "connection " + navigator.connection.type )
         if (navigator.connection.type == "none") { return callBack( {
             reason : "No network connection"
         } ) }
     }
     if (typeof config != 'undefined' && typeof config.user != 'undefined' && typeof config.user.name != 'undefined') {
         var url = REMOTE_SERVER_TAG_LOOKUP_URL;
-        var login = coax( url );
-        var credentials = '{ "username" : "' + config.user.name + '", "password": "' + config.user.password + '", "key": "' + key + '" }';
-        log( "http " + url + " " + credentials )
-        login.post( JSON.parse( credentials ), function(error, result) {
+        var taglookup = coax( url );
+        var credentials = '{ "username" : "' + config.user.name + '", "password": "' + config.user.sessionID + '", "key": "' + key + '" }';
+        console.log( "http " + url + " " + credentials )
+        taglookup.post( JSON.parse( credentials ), function(error, result) {
+            console.log( "Tag Lookup Result:" + JSON.stringify([error,result]));
             if (error) { return callBack( error ) }
-            log( "Key Lookup Result:" + JSON.stringify( result ) )
             callBack( false, result )
         } )
     } else {

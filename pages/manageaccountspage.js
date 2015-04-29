@@ -38,40 +38,34 @@ function goManageAccounts(parameters) {
 //				});
 //			})
 //		}
-		
 
-		
-		$( "#scrollable li.trading_names" ).off("swipeRight").on( "swipeRight", function() {
-			
-            var id = $( this ).attr( "data-id" ), listItem = this;
-            
-            log( "swipe right " + id);
-            
-            isTradingNameArchived( id, function(error, result) {
-                // log ( "received result:" + result)
-                if (result) {
-                    //$( listItem ).find( ".om-activate" ).show().click( function() {
-                        activateTradingName( id , function(error, ok) { })
-                    //} )
-                } else {
-                    //$( listItem ).find( ".om-archive" ).show().click( function() {
-                        archiveTradingName( id , function (error, ok) { })
-                    //} )
-                }
-            } )
-        } )
-        
+
+		$( "#scrollable input.active" ).off("click").click( function() {
+
+			var id = $(this).attr("name"), checkbox = this;
+			console.log("checkbox id:" + id + " checked:" + checkbox.checked);
+
+			//id = id.replace(/-/g,",");
+
+			if (checkbox.checked) {
+				activateTradingName( id , function(error, ok) { })
+			} else {
+				archiveTradingName( id , function (error, ok) { })
+			}
+		});
         
         //$( "#scrollable li.trading_names" ).off( "click", "div")
-		$( "#scrollable li.trading_names" ).off("click").click( function() {
+		$( "#scrollable div.trading_names" ).off("click").click( function() {
 			var id = $( this ).attr( "data-id" );
 						
-			id = id.replace(/\./g,"\\.")
-			
+			//id = id.replace(/\./g,"\\.");
+			id = id.replace(/-/g,",");
 			log ("name clicked " + id);
-			$( "#" + id + "div").toggleClass("topcoat-list__item").toggleClass("topcoat-list__header");
-			$( "#" + id + 'list').toggle();
-			$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
+			//$( "#" + id + "div").toggleClass("topcoat-list__item").toggleClass("topcoat-list__header");
+			//$( "#" + id + 'list').toggle();
+			//$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
+
+			goEditTradingName([id]);
 			
 		} )
 		
@@ -328,19 +322,7 @@ function updateTradingNames(thisUsersAccounts, doc, callback) {
     });
 }
 
-/*
- * https://github.com/mikolalysenko/almost-equal/blob/master/almost_equal.js
- */
 
-function almostEqual(a, b, absoluteError, relativeError) {
-	var d = Math.abs( a - b )
-	if (d <= absoluteError) { return true }
-	if (d <= relativeError * Math.min( Math.abs( a ), Math.abs( b ) )) { return true }
-	return a === b
-}
-
-FLT_EPSILON = 1.19209290e-7;
-DBL_EPSILON = 2.2204460492503131e-16;
 
 function updateTradingName(row, doc, callback) {
 	var changed = false;

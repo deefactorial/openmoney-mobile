@@ -62,6 +62,7 @@ limitations under the License.
         <script type="text/javascript" src="pages/lostpasswordpage.js"></script>
         <script type="text/javascript" src="pages/settingspage.js"></script>
         <script type="text/javascript" src="pages/manageaccountspage.js"></script>
+        <script type="text/javascript" src="pages/edittradingnamepage.js"></script>
         <script type="text/javascript" src="pages/createaccountpage.js"></script>
         <script type="text/javascript" src="pages/profilepage.js"></script>
         <script type="text/javascript" src="pages/managenfcpage.js"></script>
@@ -445,40 +446,35 @@ limitations under the License.
 </div>
 </script>
 <script type="text/mustache" id="accounts_list-mu">
-     <form>
+
         
-        <ul class="topcoat-list">
-            <li class="topcoat-list__header" data-id="list" style="text-align:center;">
-                <b>Trading Name Accounts</b>
-            </li>
-        {{#rows}}
-            {{#doc}}
-                <li id="{{_id}}" class="topcoat-list__item trading_names" data-id="{{_id}}" style="margin: 0;padding: 0;">
-                    <div class="topcoat-list" style="margin:0; padding: 0;">
-                        <div id="{{_id}}div" data-id="{{_id}}" class="topcoat-list__item header" style="height:74px;padding-left:20px;padding-right:20px;padding-top:0;padding-bottom:0;">
-                            <img id="{{_id}}icon" class="next" style="float:left;margin-right:20px;margin-top:20px;margin-bottom:20px;padding:16px;width:0px;height:0px;" src="./img/dark-next.png"/>
-                            <p id="{{_id}}p" class="{{#archived}}archived{{/archived}}" data-id="{{_id}}" style="bachground:white;line-height:42px;">{{name}} {{currency}}</p>
+    <ul class="topcoat-list">
+        <li class="topcoat-list__header" data-id="list" style="text-align:center;">
+            <b>Trading Name Accounts</b>
+        </li>
+    {{#rows}}
+        {{#doc}}
+            <li id="{{_id}}" class="topcoat-list__item" data-id="{{_id}}" style="margin: 0;padding: 0;">
+                <div class="topcoat-list" style="margin:0; padding: 0;">
+                    <div style="display:table; padding:0; margin: 0; width:100%;">
+                        <div id="{{_id}}div" data-id="{{_id}}" class="topcoat-list__item header trading_names {{#archived}}archived{{/archived}}" style="width: 66.666%;display:table-cell;vertical-align: middle;
+                            <p id="{{_id}}p" class="" data-id="{{_id}}" >{{name}} {{currency}}</p>
                         </div>
-                        <ul id="{{_id}}list" class="topcoat-list__container" style="display:none;">
-                            <li class="topcoat-list__item center" data-id="capacity">
-                                <label for="capacity{{name}}{{currency}}">{{name}} {{currency}} capacity</label>
-                                <input type="text" class="topcoat-text-input number" name="capacity{{name}}{{currency}}" value="{{capacity}}" placeholder="Capacity Limit" pattern="^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$"/>
-                            </li>
-                            <li class="topcoat-list__item center" data-id="transaction">
-                                <label for="transaction{{name}}{{currency}}">{{name}} {{currency}} transaction limit</label>
-                                <input type="text" class="topcoat-text-input number" name="transaction{{name}}{{currency}}" value="{{transaction}}" placeholder="Transaction Limit" pattern="^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$" /> 
-                            </li>
-                        </ul>
+                        <div class="topcoat-list__item header" style="width: 33.333%;display:table-cell;">
+                            <label class="topcoat-switch" style="z-index:1;">
+                                <input name="{{_id}}" type="checkbox" class="topcoat-switch__input active" value="true" {{^archived}}checked="checked"{{/archived}}>
+                                <div class="topcoat-switch__toggle"></div>
+                            </label>
+                        </div>
                     </div>
-                </li>
-            {{/doc}}
-        {{/rows}}
-            <li class="topcoat-list__item" data-id="submit">
-                <input type="submit" class="topcoat-button" name="submit" value=" Update Trading Names " /> 
+                </div>
             </li>
-        </ul>
+        {{/doc}}
+    {{/rows}}
+
+    </ul>
        
-    </form>
+
 </script>
 <script type="text/mustache" id="currencies_list-mu">
         <ul class="topcoat-list">
@@ -509,6 +505,57 @@ limitations under the License.
         {{/rows}}
         </ul>
     
+</script>
+<script type="text/mustache" id="edit_trading_name-mu">
+<header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item center half">
+           <h1 class="topcoat-navigation-bar__title">Edit Trading Name</h1>
+        </div>
+        <div class="topcoat-navigation-bar__item right quarter om-padded">
+
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable" class="scrollable">
+    <div class="topcoat-list__container">
+        <form>
+            <ul id="list" class="topcoat-list__container">
+                <li class="topcoat-list__header center" data-id="label">
+                    <b>{{name}} {{currency}}</b>
+                </li>
+                <li class="topcoat-list__item center" data-id="capacity">
+                    <label for="capacity">Capacity Limit</label>
+                    <input type="text" class="topcoat-text-input number" name="capacity" value="{{capacity}}" placeholder="Capacity Limit" pattern="^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$"/>
+                </li>
+                <li class="topcoat-list__item center" data-id="transaction">
+                    <label for="transaction">Transaction Limit</label>
+                    <input type="text" class="topcoat-text-input number" name="transaction" value="{{transaction}}" placeholder="Transaction Limit" pattern="^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$" />
+                </li>
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" name="submit" value=" Update Trading Name " />
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
 </script>
 <script type="text/mustache" id="create_account-mu">
 <header>
@@ -927,6 +974,14 @@ limitations under the License.
                         </div>
                     </div>
                 </li>
+                <li class="topcoat-list__item" data-id="digest" style="padding-top:0">
+                    Timezone:<br/>
+                    <select name="offset" class="om-select-dark">
+                        {{#timezones}}
+                            <option value="{{offset}}" {{#selected}}selected="selected"{{/selected}} >{{timezone}}</option>
+                        {{/timezones}}
+                    </select>
+                </li>
                 <li class="topcoat-list__item" data-id="mode" style="padding-top:0">
                     <div style="display:table; padding:0; margin: 0; width:100%;">
                         <div style="width: 66.666%;display:table-cell;vertical-align: middle;">
@@ -1132,9 +1187,18 @@ limitations under the License.
             </li>
             {{#rows}} 
                 {{#value}}
-                <li class="topcoat-list__item nfc_item" data-id="{{hashTag}}">
-                    <div class="who {{#archived}}archived{{/archived}}"><b>{{name}}</b></div>
-                    <br class="clear"/>
+                <li class="topcoat-list__item">
+                    <div style="display:table; padding:0; margin: 0; width:100%;">
+                        <div class="nfc_item {{#archived}}archived{{/archived}}"  data-id="{{hashTag}}" style="width: 66.666%;display:table-cell;vertical-align: middle;">
+                             <b>{{name}}</b>
+                        </div>
+                        <div style="width: 33.333%;display:table-cell;">
+                            <label class="topcoat-switch" style="z-index:1;">
+                                <input name="{{hashTag}}" type="checkbox" class="topcoat-switch__input active" value="true" {{^archived}}checked="checked"{{/archived}}>
+                                <div class="topcoat-switch__toggle"></div>
+                            </label>
+                        </div>
+                    </div>
                 </li>
                 {{/value}}  
             {{/rows}} 
@@ -1199,9 +1263,22 @@ limitations under the License.
             </ul>
             <ul class="topcoat-list formlist" id="formlist">
                 {{#trading_names}}
-                <li id="{{trading_name}} {{currency}}" class="topcoat-list__item trading_names" data-id="{{trading_name}} {{currency}}" style="font-size:24px;vertical-align:middle;">
+                <!--li id="{{trading_name}} {{currency}}" class="topcoat-list__item trading_names" data-id="{{trading_name}} {{currency}}" style="font-size:24px;vertical-align:middle;">
                         {{trading_name}} {{currency}}
                     <input type="hidden" name="{{trading_name}}{{currency}}" value="true" />
+                </li-->
+                <li id="{{trading_name}} {{currency}}" class="topcoat-list__item trading_names" data-id="{{trading_name}} {{currency}}" style="font-size:18px;vertical-align:middle;">
+                    <div style="display:table; padding:0; margin: 0; width:100%;">
+                        <div style="width: 66.666%;display:table-cell;vertical-align: middle;">
+                            {{trading_name}} {{currency}}
+                        </div>
+                        <div style="width: 33.333%;display:table-cell;">
+                            <label class="topcoat-switch" style="z-index:1;">
+                                <input name="{{trading_name}}{{currency}}" type="checkbox" class="topcoat-switch__input" value="true" {{#active}}checked="checked"{{/active}}>
+                                <div class="topcoat-switch__toggle"></div>
+                            </label>
+                        </div>
+                    </div>
                 </li>
                 {{/trading_names}}
             </ul>

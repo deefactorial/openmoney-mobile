@@ -14,12 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-
-/*
- * The list UI lets you create todo tasks and check them off or delete them. It
- * also links to a screen for sharing each list with a different set of friends.
- */
-
 function goList(parameters) {
 	
 	//don't reset this function.
@@ -67,7 +61,7 @@ function goList(parameters) {
 	
 	
     $( "#content .todo-index" ).off("click").click( function() {
-    	log ("Back Clicked" + window.History.getCurrentIndex())
+    	console.log ("Back Clicked" + window.History.getCurrentIndex())
         History.back()
     } )
 
@@ -80,7 +74,7 @@ function goList(parameters) {
     	window.plugins.spinnerDialog.show();
 	    config.db.get( "/" + id, function(err, doc) {
 	    	if(err) { 
-	    		log( "Error getting " + id + " :" +JSON.stringify( err ) ); 
+	    		console.log( "Error getting " + id + " :" +JSON.stringify( err ) );
 	    		dbChangedJournal(); 
 	    		return false;
 	    	}
@@ -91,12 +85,12 @@ function goList(parameters) {
             } ], function(err, view) {
             	
             	if(err) { 
-            		log( "Error getting " + id + " :" +JSON.stringify( err ) ); 
+            		console.log( "Error getting " + id + " :" +JSON.stringify( err ) );
     	    		dbChangedJournal(); 
     	    		return false;
     	    	}
             	
-                log( "account_balance" + JSON.stringify( view ))
+                console.log( "account_balance" + JSON.stringify( view ))
                 if (view.total_rows > 0)
                     doc.balance = view.rows[0].value;
                 
@@ -111,7 +105,7 @@ function goList(parameters) {
                 
             } )
             
-            log( "Get Account Details for:" + id )
+            console.log( "Get Account Details for:" + id )
             var options;
             if(window.cblite) {
             	options = {
@@ -125,7 +119,7 @@ function goList(parameters) {
 
             config.views( [ "account_details", options ], function(err, view) {
             	if(err) { 
-            		log( "Error getting " + id + " :" +JSON.stringify( err ) ); 
+            		console.log( "Error getting " + id + " :" +JSON.stringify( err ) );
     	    		dbChangedJournal(); 
     	    		return false;
     	    	}
@@ -134,7 +128,7 @@ function goList(parameters) {
             	
             	view.rows.forEach( function( row ) {
             		
-        				log( "journal row:" + JSON.stringify(row) )
+        				console.log( "journal row:" + JSON.stringify(row) )
         				
             			var transactionTime = new Date( row.value.timestamp )
                 		var now = Date.now()
@@ -148,7 +142,7 @@ function goList(parameters) {
                 		row.value.verified_timestamp = new Date( row.value.verfied_timestamp ).toLocaleTimeString();            		 
             	} )
             	
-            	log( "account_details" + JSON.stringify( view ))
+            	console.log( "account_details" + JSON.stringify( view ))
                 
                 drawContainer( "#scrollable", config.t.listItems( view ) )
                 
@@ -161,7 +155,7 @@ function goList(parameters) {
                 $( "#scrollable" ).off( "click", "li" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
 		            config.db.get( "/" + id , function (error, journal) {
-		            	if (error) { alert ( JSON.stringify( error ) ) } else {
+		            	if (error) { console.log ( JSON.stringify( error ) ) } else {
 		            		var transactionTime = new Date( journal.timestamp )
                     		var now = Date.now()
                     		var elapsed = now - transactionTime.getTime()

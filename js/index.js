@@ -39,26 +39,32 @@ function onDeviceReady() {
 	}
 	
 	try {
-		
 	    setupConfig( function(err) {
 	        if (err) {
-	            log( "setupConfig Error:" + JSON.stringify( err ) )
-	            goIndex([])
+	            console.log( "setupConfig Error:" + JSON.stringify( err ) );
+	            goIndex([]);
 	            return false;
 	        }
-	        
-	        doFirstLogin(function(error){
-	        	goIndex([])
-	        });
-	        
 	        if( window.cblite ) {
-	        	config.syncReference = triggerSync( function(err) {
-		            if (err) {
-		                log( "error on sync" + JSON.stringify( err ) )
-		            }
-		        } )
-	        }
-	    } )
+				if(window.config != undefined && window.config.user != undefined) {
+					config.syncReference = triggerSync( function(err, ok) {
+						console.log("triggerSync done" + JSON.stringify([err,ok]))
+						connectToChanges();
+						getProfile();
+						goIndex([]);
+					} )
+				} else {
+					goIndex([]);
+				}
+
+	        } else {
+				doFirstLogin(function(error, ok){
+					console.log("doFirstLogin Done: " + JSON.stringify([error, ok]));
+					goIndex([])
+				});
+			}
+
+	    } );
 	    
 	    /*
 	     * this sets up the NFC listner 
@@ -72,10 +78,9 @@ function onDeviceReady() {
 			        // failure callback
 			    	
 			    	if (error == "NFC_DISABLED") {
-			    		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() { 
-			    			window.OpenActivity.NFCSettings(function(error, result){
-			    				log("Open Activity NFCSettings:" + JSON.stringify( [ error, result ] ) )
-			    			});
+			    		navigator.notification.alert( "NFC is disabled please turn on in settings." , function() {
+							if(typeof cordova.plugins.settings.openSetting != undefined)
+								cordova.plugins.settings.openSetting("nfc_settings", function(){console.log("opened nfc settings")},function(){console.log("failed to open nfc settings")});
 			    		}, "Turn on NFC", "OK")
 			    	} else if(error == "NO_NFC") {
 			    		navigator.notification.alert( "You do not have the capability to read and write NFC tags." , function() { 
@@ -92,31 +97,30 @@ function onDeviceReady() {
 	    if (window.cblite) {
 		    History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
 		        var State = History.getState(); // Note: We are using History.getState() instead of event.state
-		        log ( "State Change : currentpage:" + currentpage + " State:" + State.data.pageTitle ) 
+		        console.log ( "State Change : currentpage:" + currentpage + " State:" + State.data.pageTitle )
 		        if (currentpage != State.data.pageTitle) {
-		        	log ( "updated DOM doc:" + currentpage + "state:" + State.data.pageTitle)
+		        	console.log ( "updated DOM doc:" + currentpage + "state:" + State.data.pageTitle)
 		        	document.getElementById( "content" ).innerHTML = State.data.html;
 		        	currentpage = State.data.pageTitle;
 		    		//call the function of the page it's supposed to be on with the parameters of the page
 		    		if(typeof State.data.pageFunction != 'undefined') {
 		    			//eval(State.data.pageFunction);
-		    			log("typeof pageFunction:" + typeof State.data.pageFunction ) 
-		    			log("pageFunction:" + State.data.pageFunction)
+		    			console.log("typeof pageFunction:" + typeof State.data.pageFunction )
+		    			console.log("pageFunction:" + State.data.pageFunction)
 		    			if (State.data.pageFunction && typeof State.data.pageFunction === 'string') {
-		    				//eval(State.data.pageFunction);
-		    				
-		    				// find object
-		    				var fn = window[State.data.pageFunction];
-		    				 
-		    				// is object a function?
-		    				if (typeof fn === "function") {
-		    					log ("pageParameters:" + JSON.stringify( State.data.pageParameters ))
-		    					fn(State.data.pageParameters);
-		    				} else {
-		    					log ("error page Fuction is not a function " + typeof fn)
-		    				}
-		    			}
-		    			
+							//eval(State.data.pageFunction);
+
+							// find object
+							var fn = window[State.data.pageFunction];
+
+							// is object a function?
+							if (typeof fn === "function") {
+								console.log("pageParameters:" + JSON.stringify(State.data.pageParameters))
+								fn(State.data.pageParameters);
+							} else {
+								console.log("error page Fuction is not a function " + typeof fn)
+							}
+						}
 		    		}
 		        }
 		    } );
@@ -160,7 +164,7 @@ function onDeviceReady() {
 		// var e = new Error("This is a new Error I would like a error report about");
 		 if (typeof window.OpenActivity != 'undefined')
 	     window.OpenActivity.sendErrorReport([ { "error": e.stack } ], function(error, result){
-	    	 log("OpenActivity sendErrorReport:" + JSON.stringify( [error, result ] ) )
+	    	 console.log("OpenActivity sendErrorReport:" + JSON.stringify( [error, result ] ) )
 	     });
 	}
 
@@ -191,7 +195,7 @@ window.onload = function() {
 window.getSyncUrl = function(callback) {
 	//alert( window.platform.parse().layout );
 	if (!window.cblite) {
-		log ("config:" + JSON.stringify( window.config ) ) 
+		console.log ("config:" + JSON.stringify( window.config ) )
 		
 			//configure the url to be the sync gateway
 			//var url = REMOTE_SYNC_PROTOCOL + encodeURIComponent( window.config.user.name ) + ":" + encodeURIComponent( window.config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/";
@@ -238,7 +242,7 @@ function setupConfig(done) {
 	                doc._deleted = true;
 	                config.db.put( "/_local/user", doc, function(err, ok) {
 	                    if (err) { return cb( err ) }
-	                    log( "deleted local user" )
+	                    console.log( "deleted local user" )
 	                    cb()
 	                } )
 	            } )
@@ -252,7 +256,7 @@ function setupConfig(done) {
                         return cb()
                     } else {
                         /* We Got a New Session */
-                        log( "New Session setUser " + JSON.stringify( newUser ) )
+                        console.log( "New Session setUser " + JSON.stringify( newUser ) )
                         window.config.user.sessionID = newUser.sessionID;
                         window.config.user.expires = newUser.expires;
                         window.config.user.user_id = newUser.username;
@@ -271,7 +275,7 @@ function setupConfig(done) {
                         }
                     }
                 } else {
-                    log( "Initialize setUser " + JSON.stringify( newUser ) )
+                    console.log( "Initialize setUser " + JSON.stringify( newUser ) )
                     window.config.user = {};
                     window.config.user.sessionID = newUser.sessionID;
                     window.config.user.expires = newUser.expires;
@@ -282,7 +286,7 @@ function setupConfig(done) {
                     if (window.cblite) {
 	                    window.config.db.put( "/_local/user", config.user, function(err, ok) {
 	                        if (err) { return cb( err ) }
-	                        log( "setUser ok: " + JSON.stringify( ok ) )
+	                        console.log( "setUser ok: " + JSON.stringify( ok ) )
 	                        config.user._rev = ok.rev
 	                        cb();
 	                    } )
@@ -589,7 +593,7 @@ function setupConfig(done) {
 	    } else {
 	    	var design = "_design/dev_openmoney" ;//+ new Date().getTime();
 	    	//query the local server for the views since the sync_gateway doesn't support _design docs.
-	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
 	    	//var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" } );
 	    	cb( false , views( [ design, "_view" ] ) )
 	    }
@@ -669,11 +673,11 @@ var replication_error = false;
 
 function triggerSync(cb, retryCount) {
 
-    if (typeof config.user == 'undefined' || typeof config.user.name == 'undefined') { log( "no user defined!" ); return false; }
+    if (typeof window.config.user == 'undefined' || typeof window.config.user.name == 'undefined') { log( "no user defined!" ); return false; }
 
     if (SERVER_LOGIN) {
         var remote = {
-            url : REMOTE_SYNC_PROTOCOL + encodeURIComponent( config.user.name ) + ":" + encodeURIComponent( config.user.session_token ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/" + REMOTE_SYNC_DATABASE + "/"
+            url : REMOTE_SYNC_PROTOCOL + encodeURIComponent( window.config.user.name ) + ":" + encodeURIComponent( window.config.user.password ) + "@" + REMOTE_SYNC_SERVER + ":" + REMOTE_SYNC_PORT + "/" + REMOTE_SYNC_DATABASE + "/"
         };
     } else if (FACEBOOK_LOGIN) {
         var remote = {
@@ -734,7 +738,7 @@ function triggerSync(cb, retryCount) {
         	push_status = "Offline";
         	combined_status = "Offline";
         	updateStatusIcon(combined_status);
-            if (err) { return callBack( log( "pushSync Cancel Error: " + JSON.stringify( err ) ) ) }
+            if (err) { return callBack( console.log( "pushSync Cancel Error: " + JSON.stringify( err ) ) ) }
             pullSync.cancel( function(err, ok) {
             	pull_status = "Offline";
             	combined_status = "Offline";
@@ -758,7 +762,7 @@ function triggerSync(cb, retryCount) {
     pullSync.on( "auth-challenge", authChallenge )
 
     pushSync.on( "error", function(err) {
-    	log("Push Sync Error:" + err)
+    	console.log("Push Sync Error:" + err)
         if (challenged) { return }
         cb( err )
     } )
@@ -766,7 +770,7 @@ function triggerSync(cb, retryCount) {
     	log("push sync connected handler called" + JSON.stringify( task ))
         push_connected = true;
     	if (typeof task.status != 'undefined') {
-    		log ("push sync status change: " + push_status + " to " + task.status)
+    		console.log ("push sync status change: " + push_status + " to " + task.status)
     		
     		if (typeof task.error != 'undefined') {
     			push_error = true;
@@ -801,23 +805,23 @@ function triggerSync(cb, retryCount) {
     	}
     } )
     pushSync.on( "started", function( info ) {
-    	log("pushSync started handler called" + JSON.stringify( info ) )
+    	console.log("pushSync started handler called" + JSON.stringify( info ) )
     	push_session_id = info.session_id;
     	if (pull_status == "Offline" && pull_session_id == null){
     		pullSync.start()
     	}
     } )
     pushSync.on( "canceled", function( info ) {
-    	log("pushSync canceled handler called" + JSON.stringify( info ) )
+    	console.log("pushSync canceled handler called" + JSON.stringify( info ) )
     } )
     
     pullSync.on( "error", function(err) {
-    	log("Pull Sync Error:" + err)
+    	console.log("Pull Sync Error:" + err)
         if (challenged) { return }
         cb( err )
     } )
     pullSync.on( "connected", function( task ) {
-    	log("pull sync connected handler called" + JSON.stringify( task ))
+    	console.log("pull sync connected handler called" + JSON.stringify( task ))
     	if (task.error) {
     		//if there is an error try restarting the sync
     		pullSync.cancel( function(err, ok) {
@@ -829,7 +833,7 @@ function triggerSync(cb, retryCount) {
     	}
     	pull_connected = true;
     	if (typeof task.status != 'undefined') {
-    		log ("pull sync status change: " + push_status + " to " + task.status)
+    		console.log ("pull sync status change: " + push_status + " to " + task.status)
     		
     		if (typeof task.error != 'undefined') {
     			pull_error = true;
@@ -867,18 +871,18 @@ function triggerSync(cb, retryCount) {
     	}
     } )
     pullSync.on( "started", function( info ) {
-    	log("pullSync started handler called" + JSON.stringify( info ) )
+    	console.log("pullSync started handler called" + JSON.stringify( info ) )
     	pull_session_id = info.session_id;
     } )
     pullSync.on( "canceled", function( info ) {
-    	log("pullSync canceled handler called" + JSON.stringify( info ) )
+    	console.log("pullSync canceled handler called" + JSON.stringify( info ) )
     } )
 
     pushSync.start()
     
     pollConnected = function () {
     	if(pull_connected && push_connected) {
-    		log ("push and pull sync replicators started and connected")
+    		console.log ("push and pull sync replicators started and connected")
     		cb();
     	} else {
     		setTimeout(pollConnected, 200);
@@ -1051,12 +1055,14 @@ function syncManager(serverUrl, syncDefinition) {
     }
 
     function taskInfo(id, cb) {
-    	config.db.active_tasks( {"session_id": id, "feed": "longpoll" } , function(err, tasks) {
-			if (err.error) {
-				console.log(err.error);
+        //config.db.active_tasks( {"session_id": id, "feed": "longpoll" } , function(err, tasks) {
+		coax( [ serverUrl, "_active_tasks"], { "session_id": id }, function(err, tasks) {
+			//log ("taskInfo [" + id + "]:" + JSON.stringify( [ err, tasks ] ) )
+			if (err) {
+				console.log("taskInfo Error: " + err);
+				cb(err);
 			} else {
-				//coax( [ serverUrl, "_active_tasks"], { "session_id": id }, function(err, tasks) {
-				//log ("taskInfo [" + id + "]:" + JSON.stringify( [ err, tasks ] ) )
+
 				var me = {};
 				for (var i = tasks.length - 1; i >= 0; i--) {
 					if (tasks[i].task == id) {
