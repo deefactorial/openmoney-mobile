@@ -188,22 +188,21 @@
                         if (!doc.steward || !doc.trading_name || !doc.name || !doc.currency || !doc.created ) {
                             throw( { forbidden: "Missing required properties" } );
                         }
-                                channel("currency" + channelDelimiter + currency);
                         channel(doc.type + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency);
                         channel("trading_name_steward" + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency);
-                        //channel( "currency" + channelDelimiter + currency )
-                        //access( doc.steward , "currency" + channelDelimiter + currency)
+                        channel( "currency" + channelDelimiter + currency )
+
                         access( doc.steward , doc.type + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency )
                         access( doc.steward , "trading_name_steward" + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency )
-                        //role( doc.steward, "role:" + doc.name + "_" + doc.currency)
+
                     } else {
                     	currency = base64_encode( olddoc.currency.toLowerCase() );
                         if (doc._deleted) {
                         	requireUser(olddoc.steward);
                         	channel(olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
                         	channel("trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
-                        	//channel( "currency" + channelDelimiter + currency )
-                        	//access( olddoc.steward , "currency" + channelDelimiter + currency)
+                        	channel( "currency" + channelDelimiter + currency )
+
                         	access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
                         	access( olddoc.steward , "trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
                         } else {
@@ -218,8 +217,8 @@
                             //}
                             channel(olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
                             channel("trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
-                            //channel( "currency" + channelDelimiter + currency )
-                            //access( doc.steward , "currency" + channelDelimiter + currency)
+                            channel( "currency" + channelDelimiter + currency )
+
                             access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
                             access( olddoc.steward , "trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency)
                         }
@@ -286,7 +285,7 @@
                             	throw({forbidden: "unmutable properties"});
                             }
                             if (! doc.steward.equals(  olddoc.steward ) ) {
-                            	//requireUser(olddoc.steward);
+                            	requireUser(olddoc.steward);
                             }
                             channel(doc.type + channelDelimiter + doc.space.toLowerCase());
                             access(doc.steward, doc.type + channelDelimiter + doc.space.toLowerCase());
@@ -374,7 +373,7 @@
                             	throw({forbidden: "unmutable properties"});
                             }
                             if (! doc.steward.equals( olddoc.steward ) ) {
-                            	//requireUser(olddoc.steward)
+                            	requireUser(olddoc.steward)
                             }
                             channel(olddoc.type + channelDelimiter + currency);
                             access(doc.steward, olddoc.type + channelDelimiter + currency);
@@ -391,8 +390,9 @@
                         if (!doc.from || !doc.to || typeof doc.amount == 'undefined' || parseFloat( doc.amount ) < 0 || !doc.currency || !doc.timestamp ) {
                             throw({forbidden: "Missing required properties"});
                         }
-                        channel("trading_name_steward" + channelDelimiter + from + channelDelimiter + currency)
-                        channel("trading_name_steward" + channelDelimiter + to + channelDelimiter + currency)
+                        channel("trading_name_steward" + channelDelimiter + from + channelDelimiter + currency);
+                        channel("trading_name_steward" + channelDelimiter + to + channelDelimiter + currency);
+                        channel("currency" + channelDelimiter + currency);
                         //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                     } else {
                         if (doc._deleted) {
@@ -407,6 +407,7 @@
                             //channel(table + channelDelimiter + from + channelDelimiter + to + channelDelimiter + channelTimestamp);
                             channel("trading_name_steward" + channelDelimiter + from + channelDelimiter + currency)
                             channel("trading_name_steward" + channelDelimiter + to + channelDelimiter + currency)
+                            channel("currency" + channelDelimiter + currency);
                             //requireUser([olddoc.from , olddoc.to]);
                         }
                     }
