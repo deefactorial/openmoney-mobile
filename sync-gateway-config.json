@@ -16,7 +16,7 @@
         "shadow": { 
           "server": "http://cloud.openmoney.cc:8091",
           "bucket": "openmoney"},
-          "sync":'function(doc, olddoc) {
+          "sync":`function(doc, olddoc) {
         	
         	// attach the .equals method to Array's prototype to call it on any array
         	Array.prototype.equals = function (array) {
@@ -190,7 +190,7 @@
                         }
                         channel(doc.type + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency);
                         channel("trading_name_steward" + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency);
-                        channel( "currency" + channelDelimiter + currency )
+                        channel("currency" + channelDelimiter + currency);
 
                         access( doc.steward , doc.type + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency )
                         access( doc.steward , "trading_name_steward" + channelDelimiter + doc.name.toLowerCase() + channelDelimiter + currency )
@@ -201,10 +201,10 @@
                         	requireUser(olddoc.steward);
                         	channel(olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
                         	channel("trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
-                        	channel( "currency" + channelDelimiter + currency )
+                        	channel("currency" + channelDelimiter + currency);
 
-                        	access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
-                        	access( olddoc.steward , "trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
+                        	access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency );
+                        	access( olddoc.steward , "trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency );
                         } else {
                             if (!doc.steward || !doc.name || !doc.trading_name || !doc.currency || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
@@ -212,15 +212,15 @@
                             if (doc.trading_name != olddoc.trading_name || doc.name != olddoc.name || doc.currency != olddoc.currency || doc.created != olddoc.created) {
                             	throw({forbidden: "unmutable properties"});
                             }
-                            //if (! doc.steward.equals( olddoc.steward ) ) {
-                            	//requireUser(olddoc.steward);
-                            //}
+                            if (! doc.steward.equals( olddoc.steward ) ) {
+                            	requireUser(olddoc.steward);
+                            }
                             channel(olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
                             channel("trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
-                            channel( "currency" + channelDelimiter + currency )
+                            channel("currency" + channelDelimiter + currency);
 
-                            access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency )
-                            access( olddoc.steward , "trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency)
+                            access( olddoc.steward , olddoc.type + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency );
+                            access( olddoc.steward , "trading_name_steward" + channelDelimiter + olddoc.name.toLowerCase() + channelDelimiter + currency);
                         }
                     }
                 } else if ( (olddoc != null && olddoc.type == "trading_name_view" ) || (olddoc == null && doc.type == "trading_name_view") ) {
@@ -255,7 +255,7 @@
                             	throw({forbidden: "unmutable properties"});
                             }
                             if (! doc.steward.equals( olddoc.steward ) ) {
-                            	requireUser(olddoc.steward)
+                            	requireUser(olddoc.steward);
                             }
                             olddoc.steward.forEach(function (steward) {
                             	channel(olddoc.type + channelDelimiter + steward + channelDelimiter + olddoc.trading_name.toLowerCase() + channelDelimiter + currency);
@@ -315,7 +315,7 @@
                             	throw({forbidden: "unmutable properties"});
                             }
                             if (! doc.steward.equals( olddoc.steward ) ) {
-                            	requireUser(olddoc.steward)
+                            	requireUser(olddoc.steward);
                             }
                             channel(olddoc.type + channelDelimiter + space);
                             access(doc.steward, olddoc.type + channelDelimiter + space);
@@ -373,7 +373,7 @@
                             	throw({forbidden: "unmutable properties"});
                             }
                             if (! doc.steward.equals( olddoc.steward ) ) {
-                            	requireUser(olddoc.steward)
+                            	requireUser(olddoc.steward);
                             }
                             channel(olddoc.type + channelDelimiter + currency);
                             access(doc.steward, olddoc.type + channelDelimiter + currency);
