@@ -75,7 +75,7 @@ function goList(parameters) {
 	    config.db.get( "/" + id, function(err, doc) {
 	    	if(err) { 
 	    		console.log( "Error getting " + id + " :" +JSON.stringify( err ) );
-	    		dbChangedJournal(); 
+	    		//dbChangedJournal();
 	    		return false;
 	    	}
 	        log( "Display Account Details:" + JSON.stringify( doc ) )
@@ -85,8 +85,8 @@ function goList(parameters) {
             } ], function(err, view) {
             	
             	if(err) { 
-            		console.log( "Error getting " + id + " :" +JSON.stringify( err ) );
-    	    		dbChangedJournal(); 
+            		console.log( "Error getting " + id + " balance :" +JSON.stringify( err ) );
+    	    		//dbChangedJournal();
     	    		return false;
     	    	}
             	

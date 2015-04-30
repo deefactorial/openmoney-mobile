@@ -63,6 +63,7 @@ limitations under the License.
         <script type="text/javascript" src="pages/settingspage.js"></script>
         <script type="text/javascript" src="pages/manageaccountspage.js"></script>
         <script type="text/javascript" src="pages/edittradingnamepage.js"></script>
+        <script type="text/javascript" src="pages/managecurrencypage.js"></script>
         <script type="text/javascript" src="pages/createaccountpage.js"></script>
         <script type="text/javascript" src="pages/profilepage.js"></script>
         <script type="text/javascript" src="pages/managenfcpage.js"></script>
@@ -483,28 +484,79 @@ limitations under the License.
             </li>
         {{#rows}}
             {{#doc}}
-            <li class="topcoat-list__item" data-id="{{currency}}">
+            <li class="topcoat-list__item currency" data-id="{{currency}}">
                 {{currency}} - {{name}}
             </li>
             {{/doc}}
         {{/rows}}
         </ul>
 </script>
+<script type="text/mustache" id="manage_currency-mu">
+    <header>
+    <div class="topcoat-navigation-bar">
+        <div class="topcoat-navigation-bar__item left quarter om-padded">
+            <button class="om-index topcoat-button todo-small">&larr;</button>
+        </div>
+        <div class="topcoat-navigation-bar__item center half">
+           <h1 class="topcoat-navigation-bar__title">Edit Trading Name</h1>
+        </div>
+        <div class="topcoat-navigation-bar__item right quarter om-padded">
+
+        </div>
+    </div>
+    <div class="topcoat-tab-bar">
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-accounts topcoat-tab-bar__button">accounts</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-payments topcoat-tab-bar__button">payment</button>
+        </label>
+        <label class="topcoat-tab-bar__item">
+            <input type="radio" name="tab-bar">
+            <button class="om-settings topcoat-tab-bar__button">settings</button>
+        </label>
+    </div>
+</header>
+<div id="scrollable" class="scrollable">
+    <div class="topcoat-list__container">
+        <form>
+            <ul id="list" class="topcoat-list__container">
+                <li class="topcoat-list__header center" data-id="label">
+                    <b>{{currency}}</b>
+                </li>
+                <li class="topcoat-list__item center" data-id="name">
+                    <label for="name">Description</label>
+                    <input type="text" class="topcoat-text-input" name="name" value="{{name}}" placeholder="Description" />
+                </li>
+                <li class="topcoat-list__item" data-id="submit">
+                    <input type="submit" class="topcoat-button" name="submit" value=" Update Currency " />
+                </li>
+            </ul>
+        </form>
+        <ul id="list" class="topcoat-list__container">
+            <li class="topcoat-list__header center" data-id="label">
+                <b>{{currency}} Transactions:</b>
+            </li>
+        </ul>
+        <div id="currencylist"></div>
+    </div>
+</div>
+</script>
 <script type="text/mustache" id="spaces_list-mu">
-    
         <ul class="topcoat-list">
             <li class="topcoat-list__header" data-id="list" style="text-align:center;padding:20px;">
                 <b>Spaces</b>
             </li>
         {{#rows}}
             {{#doc}}
-            <li class="topcoat-list__item" data-id="{{space}}">
+            <li class="topcoat-list__item space" data-id="{{space}}">
                 {{space}}
             </li>
             {{/doc}}
         {{/rows}}
         </ul>
-    
 </script>
 <script type="text/mustache" id="edit_trading_name-mu">
 <header>

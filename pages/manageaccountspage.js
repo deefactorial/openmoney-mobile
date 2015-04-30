@@ -60,14 +60,19 @@ function goManageAccounts(parameters) {
 						
 			//id = id.replace(/\./g,"\\.");
 			id = id.replace(/-/g,",");
-			log ("name clicked " + id);
+			console.log ("trading name clicked " + id);
 			//$( "#" + id + "div").toggleClass("topcoat-list__item").toggleClass("topcoat-list__header");
 			//$( "#" + id + 'list').toggle();
 			//$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
 
 			goEditTradingName([id]);
 			
-		} )
+		} );
+
+		$( "#scrollable li.currency").off("click").click(function(){
+			var id = $(this).attr("data-id");
+			goManageCurrency([id]);
+		} );
 		
 		//TODO: test should test for mobile instead
 	    if (window.cblite) {

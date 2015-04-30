@@ -2,7 +2,7 @@
  * Created by deefactorial on 28/04/15.
  */
 /*
- Copyright 2014 Dominique Legault
+ Copyright 2015 Dominique Legault
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ function goEditTradingName(parameters){
 
                 doc.modified = new Date().getTime();
 
-                config.db.get("/" + id, function(error, trading_name){
+                config.db.get(getLeadingSlash() + id, function(error, trading_name){
                     if(error) {
                         console.log("Could not get trading name" + JSON.stringify(error) );
                         return false;
@@ -105,8 +105,8 @@ function goEditTradingName(parameters){
                             trading_name.transaction = Number.POSITIVE_INFINITY;
                         }
 
-                        var leadingSlash = getLeadingSlash();
-                        config.db.put(leadingSlash + "trading_name," + trading_name.name.toLowerCase() + "," + trading_name.currency.toLowerCase(), trading_name, function(){goManageAccounts()});
+
+                        config.db.put(getLeadingSlash() + "trading_name," + trading_name.name.toLowerCase() + "," + trading_name.currency.toLowerCase(), trading_name, function(){goManageAccounts()});
                     }
                 } )
             });
