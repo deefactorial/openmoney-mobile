@@ -94,15 +94,16 @@ function logoutError(error) {
 function drawContent(html) {
 	//log( "drawContent" + html.toString())
 	
-	scroll( 0, 0 );
+	//scroll( 0, 0 );
     
     $( "#content" ).html( html )
     
 }
 
+
 function drawContainer(id, html) {
 	
-	scroll( 0, 0 );
+	//scroll( 0, 0 );
 
 	console.log( "drawContainer(" + id + ")" );
 

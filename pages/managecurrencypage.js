@@ -83,10 +83,10 @@ function goManageCurrency(parameters){
             var thisCurrenciesAccounts = {
                 rows: []
             };
-            config.views(["accounts", {
-                descending: true, include_docs: true//, stale : "update_after"
+            config.views(["currency_accounts", {
+                startkey: id + '\uefff', endkey: id, descending: true, include_docs: true//, stale : "update_after"
             }], function (err, view) {
-                console.log("accounts view:" + JSON.stringify(view));
+                console.log("Currency Accounts view:" + JSON.stringify(view));
                 if (typeof view.rows != 'undefined' && config.user != null) {
                     view.rows.forEach(function (row) {
 

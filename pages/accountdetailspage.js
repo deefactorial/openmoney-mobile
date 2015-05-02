@@ -78,7 +78,7 @@ function goList(parameters) {
 	    		//dbChangedJournal();
 	    		return false;
 	    	}
-	        log( "Display Account Details:" + JSON.stringify( doc ) )
+	        console.log( "Display Account Details:" + JSON.stringify( doc ) )
        
             config.views( [ "account_balance", {
                 startkey : id, endkey : id + '\uefff'
@@ -119,8 +119,8 @@ function goList(parameters) {
 
             config.views( [ "account_details", options ], function(err, view) {
             	if(err) { 
-            		console.log( "Error getting " + id + " :" +JSON.stringify( err ) );
-    	    		dbChangedJournal(); 
+            		console.log( "Error getting " + id + " account details view :" +JSON.stringify( [err, view] ) );
+    	    		//dbChangedJournal();
     	    		return false;
     	    	}
             	

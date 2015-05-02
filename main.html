@@ -455,20 +455,20 @@ limitations under the License.
         </li>
     {{#rows}}
         {{#doc}}
-            <li id="{{_id}}" class="topcoat-list__item" data-id="{{_id}}" style="margin: 0;padding: 0;">
-                <div class="topcoat-list" style="margin:0; padding: 0;">
+            <li id="{{_id}}" class="topcoat-list__item" data-id="{{_id}}">
+
                     <div style="display:table; padding:0; margin: 0; width:100%;">
-                        <div id="{{_id}}div" data-id="{{_id}}" class="topcoat-list__item header trading_names {{#archived}}archived{{/archived}}" style="width: 66.666%;display:table-cell;vertical-align: middle;
+                        <div id="{{_id}}div" data-id="{{_id}}" class="trading_names {{#archived}}archived{{/archived}}" style="width: 66.666%;display:table-cell;vertical-align: middle;">
                             <p id="{{_id}}p" class="" data-id="{{_id}}" >{{name}} {{currency}}</p>
                         </div>
-                        <div class="topcoat-list__item header" style="width: 33.333%;display:table-cell;">
+                        <div  style="width: 33.333%;display:table-cell;">
                             <label class="topcoat-switch" style="z-index:1;">
-                                <input name="{{_id}}" type="checkbox" class="topcoat-switch__input active" value="true" {{^archived}}checked="checked"{{/archived}}>
+                                <input name="{{_id}}" type="checkbox" class="topcoat-switch__input tradingname_archived" value="true" {{^archived}}checked="checked"{{/archived}}>
                                 <div class="topcoat-switch__toggle"></div>
                             </label>
                         </div>
                     </div>
-                </div>
+
             </li>
         {{/doc}}
     {{/rows}}
@@ -484,8 +484,23 @@ limitations under the License.
             </li>
         {{#rows}}
             {{#doc}}
-            <li class="topcoat-list__item currency" data-id="{{currency}}">
-                {{currency}} - {{name}}
+            <li class="topcoat-list__item currency" >
+                {{^isSteward}}
+                    {{currency}} - {{name}}
+                {{/isSteward}}
+                {{#isSteward}}
+                <div style="display:table; padding:0; margin: 0; width:100%;">
+                    <div class="currency {{#archived}}archived{{/archived}}" data-id="{{currency}}" style="width: 66.666%;display:table-cell;vertical-align: middle;">
+                        <p>{{currency}} - {{name}}</p>
+                    </div>
+                    <div style="width: 33.333%;display:table-cell;">
+                        <label class="topcoat-switch" style="z-index:1;">
+                            <input name="{{currency}}" type="checkbox" class="topcoat-switch__input currency_archived" value="true" {{^archived}}checked="checked"{{/archived}}>
+                            <div class="topcoat-switch__toggle"></div>
+                        </label>
+                    </div>
+                </div>
+                {{/isSteward}}
             </li>
             {{/doc}}
         {{/rows}}
@@ -537,7 +552,7 @@ limitations under the License.
         </form>
         <ul id="list" class="topcoat-list__container">
             <li class="topcoat-list__header center" data-id="label">
-                <b>{{currency}} Transactions:</b>
+                <b>{{currency}} Accounts:</b>
             </li>
         </ul>
         <div id="currencylist"></div>

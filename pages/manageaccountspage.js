@@ -40,7 +40,7 @@ function goManageAccounts(parameters) {
 //		}
 
 
-		$( "#scrollable input.active" ).off("click").click( function() {
+		$( "#scrollable input.tradingname_archived" ).off("click").click( function() {
 
 			var id = $(this).attr("name"), checkbox = this;
 			console.log("checkbox id:" + id + " checked:" + checkbox.checked);
@@ -53,11 +53,26 @@ function goManageAccounts(parameters) {
 				archiveTradingName( id , function (error, ok) { })
 			}
 		});
+
+		$( "#scrollable input.currency_archived" ).off("click").click( function() {
+
+			var id = $(this).attr("name"), checkbox = this;
+			console.log("checkbox id:" + id + " checked:" + checkbox.checked);
+
+			id = "currency," + id;
+			//id = id.replace(/-/g,",");
+
+			if (checkbox.checked) {
+				activateID( id , function(error, ok) { })
+			} else {
+				archiveID( id , function (error, ok) { })
+			}
+		});
         
         //$( "#scrollable li.trading_names" ).off( "click", "div")
 		$( "#scrollable div.trading_names" ).off("click").click( function() {
 			var id = $( this ).attr( "data-id" );
-						
+
 			//id = id.replace(/\./g,"\\.");
 			id = id.replace(/-/g,",");
 			console.log ("trading name clicked " + id);
@@ -66,12 +81,24 @@ function goManageAccounts(parameters) {
 			//$( "#" + id + 'icon').toggleClass("next").toggleClass("down");
 
 			goEditTradingName([id]);
-			
+
 		} );
 
-		$( "#scrollable li.currency").off("click").click(function(){
+		$( "#scrollable div.currency").off("click").click(function(){
 			var id = $(this).attr("data-id");
-			goManageCurrency([id]);
+
+			config.db.get(getLeadingSlash() + "currency," + id, function(err, doc) {
+				if (err) {
+					alert("Error getting document:" + JSON.stringify(err));
+				} else {
+					console.log("currency: " + JSON.stringify(doc));
+					doc.steward.forEach(function(steward){
+						if(steward == config.user.name) {
+							goManageCurrency([id]);
+						}
+					})
+				}
+			});
 		} );
 		
 		//TODO: test should test for mobile instead
@@ -192,20 +219,34 @@ function goManageAccounts(parameters) {
         } ], function(error, view) {
     		window.plugins.spinnerDialog.hide();
             if (error) { 
-            	log( "ERROR getting currency view " + alert( JSON.stringify( error ) ))
+            	console.log( "ERROR getting currency view " + JSON.stringify( error ) );
             	window.dbChangedCurrencies();
             	return false;
             }
 
-            drawContainer( "div#currencies_list" , config.t.currencies_list( view ) )
+			console.log("Before Currency View: " + JSON.stringify(view) );
+
+			view.rows.forEach(function(row){
+				row.doc.steward.forEach(function(steward){
+					if(steward == config.user.name) {
+						row.doc.isSteward = true;
+					}
+				})
+			});
+
+			console.log("Currency View: " + JSON.stringify(view) );
+
+            drawContainer( "div#currencies_list" , config.t.currencies_list( view ) );
             
             var response = {
         		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" :  "goManageAccounts", "pageParameters" : [ ]
-            }
+            };
         
-            updateAjaxData( response , "manage_accounts.html")
+            updateAjaxData( response , "manage_accounts.html");
             
             currencies = true;
+
+			UIhandlers();
 
         } )
         
@@ -274,9 +315,7 @@ function isTradingNameArchived(id, callback) {
     } )
 }
 
-/*
- * This is will find the tag on the users account and archive it
- */
+
 
 function archiveTradingName(id, callback) {
 	//id = id.replace(" ", ",");
@@ -293,9 +332,6 @@ function archiveTradingName(id, callback) {
     } )
 }
 
-/*
- * This is will find the tag on the users account and archive it
- */
 
 function activateTradingName(id, callback) {
 	//id = id.replace(" ", ",")
@@ -310,6 +346,36 @@ function activateTradingName(id, callback) {
 	        config.db.put( leadingSlash + id, doc, callback )
     	}
     } )
+}
+
+
+function archiveID(id, callback) {
+	//id = id.replace(" ", ",");
+	//id = id.replace(/-/g,",");
+	//id = id.replace(/:/g,".");
+	console.log( "Archive trading_name," + id );
+	config.db.get( getLeadingSlash() + id, function(error, doc) {
+		if (!error) {
+			doc.archived = true;
+			doc.archived_at = new Date().getTime();
+			config.db.put( getLeadingSlash() + id, doc, callback )
+		}
+	} )
+}
+
+
+function activateID(id, callback) {
+	//id = id.replace(" ", ",")
+	//id = id.replace(/-/g,",");
+	//id = id.replace(/:/g,".");
+	console.log( "Activate :" + id );
+	config.db.get( getLeadingSlash() + id, function(error, doc) {
+		if (!error) {
+			doc.archived = false;
+			doc.archived_at = new Date().getTime();
+			config.db.put( getLeadingSlash() + id, doc, callback )
+		}
+	} )
 }
 
 function updateTradingNames(thisUsersAccounts, doc, callback) {
