@@ -1,14 +1,7 @@
 {
     "views":{
         "account_balance":{
-            "map":"function(doc, meta) {
-                if (doc.type == \"trading_name_journal\") {
-
-                        emit( \"trading_name,\" + doc.from + \",\" + doc.currency, -doc.amount );
-                        emit( \"trading_name,\" + doc.to + \",\" + doc.currency, doc.amount );
-
-                }
-            }"
+            "map":"function(doc, meta) { if (doc.type == \"trading_name_journal\") { emit( \"trading_name,\" + doc.from + \",\" + doc.currency, -doc.amount ); emit( \"trading_name,\" + doc.to + \",\" + doc.currency, doc.amount ); } }"
         },
         "account_details":{
             "map":"function(doc, meta) {
