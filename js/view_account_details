@@ -1,0 +1,27 @@
+{
+    "views":{
+        "account_details":{
+            "map":"function(doc, meta) {
+                    function clone(obj) {
+                        if (null == obj || \"object\" != typeof obj) return obj;
+                        var copy = obj.constructor();
+                        for (var attr in obj) {
+                            if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+                        }
+                        return copy;
+                    }
+                    if (meta.id.substring(0,5) != \"_sync\" && doc.type == \"trading_name_journal\" && doc.from && doc.to && typeof doc.amount != \"undefined\" && parseFloat(doc.amount) >= 0 && doc.currency && doc.timestamp) {
+                        doc.isPositive = true;
+                        doc.subject = doc.from + \" \" + doc.currency;
+                        delete(doc._sync);
+                        emit( \"trading_name,\" + doc.to + \",\" + doc.currency, doc );
+                        from = clone(doc);
+                        from.isPositive = false;
+                        from.subject = from.to + \" \" + from.currency;
+                        from.amount = -from.amount;
+                        emit( \"trading_name,\" + from.from + \",\" + from.currency, from );
+                    }
+            }"
+        }
+    }
+}
