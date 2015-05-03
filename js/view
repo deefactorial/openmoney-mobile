@@ -45,79 +45,79 @@
                     }
                 }"
         },
-         "currencies":{
-             "map":
-                 "function(doc, meta) {
-                     if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"currency\" && doc.currency && doc.steward) {
-                         emit( doc.currency, {  \"currency\": doc.currency, \"name\": doc.name} );
-                     }
-                 }"
-         },
-          "nfc_tags":{
-              "map":
-                  "function(doc, meta) {
-                      if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"beamtag\" && doc.username) {
-                          if(typeof doc.sessionID == \"undefined\") {
-                              delete(doc._sync);
-                              emit( doc.username, doc );
-                          }
-                      }
-                  }"
-          },
-           "spaces":{
-               "map":
-                   "function(doc, meta) {
-                       if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"space\" && doc.space && doc.steward) {
-                           doc.steward.forEach(function( steward ) {
-                               emit( steward, doc.space );
-                           });
-                       }
-                   }"
-           },
-            "steward_accounts":{
-                "map":
-                    "function(doc, meta) {
-                        if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"trading_name\" && doc.name && doc.currency && doc.steward) {
-                            doc.steward.forEach(function (steward) {
-                                emit( steward , \"trading_name,\" + doc.name.toLowerCase() + \",\" + doc.currency.toLowerCase() );
-                            });
+        "currencies":{
+            "map":
+                "function(doc, meta) {
+                    if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"currency\" && doc.currency && doc.steward) {
+                        emit( doc.currency, {  \"currency\": doc.currency, \"name\": doc.name} );
+                    }
+                }"
+        },
+        "nfc_tags":{
+            "map":
+                "function(doc, meta) {
+                    if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"beamtag\" && doc.username) {
+                        if(typeof doc.sessionID == \"undefined\") {
+                            delete(doc._sync);
+                            emit( doc.username, doc );
                         }
-                    }"
-            },
-             "user_tags":{
-                 "map":
-                     "function(doc, meta) {
-                         if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"beamtag\" && doc.username && typeof doc.sessionID != \"undefined\") {
-                             delete(doc._sync);
-                             emit( [ doc.username, doc.hashTag ], doc );
-                         }
-                     }"
-             },
-              "currency_accounts":{
-                  "map":
-                      "function(doc,meta) {
-                          if(meta.id.substring(0,5) != \"_sync\" && doc._deleted != true && doc.type == \"trading_name\" && doc.name && doc.currency && doc.steward) {
-                              emit( doc.currency , { \"trading_name\" : doc.name , \"currency\" : doc.currency } );
-                          }
-                      }"
-              },
-               "currency_view":{
-                   "map":
-                       "function (doc, meta) { if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"currency_view\" && doc.steward && doc.currency && !doc.archived) { doc.steward.forEach(function( steward ) { emit( steward , \"currency,\" + doc.currency ); } ); } }"
-               },
-                "space_view":{
-                    "map":
-                        "function (doc, meta) { if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"space_view\" && doc.steward && doc.space && !doc.archived) { doc.steward.forEach(function( steward ) { emit( steward , \"space,\" + doc.space ); } ); } }"
-                },
-                 "trading_name_view":{
-                     "map":
-                         "function (doc, meta) {
-                             if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"trading_name_view\" && doc.steward && doc.trading_name && doc.currency && !doc.archived) {
-                                 doc.steward.forEach(function( steward ) {
-                                     emit( steward , \"trading_name,\" + doc.trading_name.toLowerCase() + \",\" + doc.currency.toLowerCase() );
-                                 });
-                             }
-                         }"
-                 }
+                    }
+                }"
+        },
+        "spaces":{
+            "map":
+                "function(doc, meta) {
+                    if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"space\" && doc.space && doc.steward) {
+                        doc.steward.forEach(function( steward ) {
+                            emit( steward, doc.space );
+                        });
+                    }
+                }"
+        },
+        "steward_accounts":{
+            "map":
+                "function(doc, meta) {
+                    if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"trading_name\" && doc.name && doc.currency && doc.steward) {
+                        doc.steward.forEach(function (steward) {
+                            emit( steward , \"trading_name,\" + doc.name.toLowerCase() + \",\" + doc.currency.toLowerCase() );
+                        });
+                    }
+                }"
+        },
+        "user_tags":{
+            "map":
+                "function(doc, meta) {
+                    if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"beamtag\" && doc.username && typeof doc.sessionID != \"undefined\") {
+                        delete(doc._sync);
+                        emit( [ doc.username, doc.hashTag ], doc );
+                    }
+                }"
+        },
+        "currency_accounts":{
+            "map":
+                "function(doc,meta) {
+                    if(meta.id.substring(0,5) != \"_sync\" && doc._deleted != true && doc.type == \"trading_name\" && doc.name && doc.currency && doc.steward) {
+                        emit( doc.currency , { \"trading_name\" : doc.name , \"currency\" : doc.currency } );
+                    }
+                }"
+        },
+        "currency_view":{
+            "map":
+                "function (doc, meta) { if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"currency_view\" && doc.steward && doc.currency && !doc.archived) { doc.steward.forEach(function( steward ) { emit( steward , \"currency,\" + doc.currency ); } ); } }"
+        },
+        "space_view":{
+            "map":
+                "function (doc, meta) { if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"space_view\" && doc.steward && doc.space && !doc.archived) { doc.steward.forEach(function( steward ) { emit( steward , \"space,\" + doc.space ); } ); } }"
+        },
+        "trading_name_view":{
+            "map":
+                "function (doc, meta) {
+                    if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"trading_name_view\" && doc.steward && doc.trading_name && doc.currency && !doc.archived) {
+                        doc.steward.forEach(function( steward ) {
+                            emit( steward , \"trading_name,\" + doc.trading_name.toLowerCase() + \",\" + doc.currency.toLowerCase() );
+                        });
+                    }
+                }"
+        }
     }
 }
