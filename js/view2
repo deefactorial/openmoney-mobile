@@ -10,7 +10,7 @@
                     }
                 }
             }",
-            , "reduce" : "function(keys, values, rereduce) {
+            "reduce" : "function(keys, values, rereduce) {
                 var result = 0;
                 if (rereduce) {
 
