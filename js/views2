@@ -27,8 +27,8 @@
             }"
         },
         "accounts":{
-            "map":"function(doc,meta) {" +
-                "if (meta.id.substring(0,5) != \"_sync\" && doc.type == \"trading_name\" && doc.name && doc.currency && doc.steward) {
+            "map":"function(doc,meta) {
+                if (meta.id.substring(0,5) != \"_sync\" && doc.type == \"trading_name\" && doc.name && doc.currency && doc.steward) {
                     emit( {
                         trading_name : doc.name, currency : doc.currency, steward : doc.steward
                     }, \"trading_name,\" + doc.name.toLowerCase() + \",\" + doc.currency.toLowerCase() );
