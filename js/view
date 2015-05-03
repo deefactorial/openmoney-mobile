@@ -104,6 +104,10 @@
                "currency_view":{
                    "map":
                        "function (doc, meta) { if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"currency_view\" && doc.steward && doc.currency && !doc.archived) { doc.steward.forEach(function( steward ) { emit( steward , \"currency,\" + doc.currency ); } ); } }"
-               }
+               },
+                "space_view":{
+                    "map":
+                        "function (doc, meta) { if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"space_view\" && doc.steward && doc.space && !doc.archived) { doc.steward.forEach(function( steward ) { emit( steward , \"space,\" + doc.space ); } ); } }"
+                }
     }
 }
