@@ -2,13 +2,11 @@
     "views":{
         "account_balance":{
             "map":"function(doc, meta) {
-                if (doc.type == \"trading_name_journal\" && doc.from && doc.to && typeof doc.amount != \"undefined\" && doc.currency && doc.timestamp) {
-                    if (typeof doc.verified != \"undefined\" && doc.verified === false) {
+                if (doc.type == \"trading_name_journal\") {
 
-                    } else {
                         emit( \"trading_name,\" + doc.from + \",\" + doc.currency, -doc.amount );
                         emit( \"trading_name,\" + doc.to + \",\" + doc.currency, doc.amount );
-                    }
+
                 }
             }"
         },
