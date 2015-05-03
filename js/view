@@ -92,6 +92,14 @@
                              emit( [ doc.username, doc.hashTag ], doc );
                          }
                      }"
-             }
+             },
+              "currency_accounts":{
+                  "map":
+                      "function(doc,meta) {
+                          if(meta.id.substring(0,5) != \"_sync\" && doc._deleted != true && doc.type == \"trading_name\" && doc.name && doc.currency && doc.steward) {
+                              emit( doc.currency , { \"trading_name\" : doc.name , \"currency\" : doc.currency } );
+                          }
+                      }"
+              }
     }
 }
