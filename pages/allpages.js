@@ -212,7 +212,7 @@ function setLoginLogoutButton() {
     } else {
         if (SERVER_LOGIN) {
             $( "#content .openmoney-logout" ).show().off( "click" ).click( function() {
-            	//don't index views on logout
+            	//don't index views2 on logout
             	if (replication_error) {
             		navigator.notification.alert( "Your changes have not been saved to cloud, please reconnect to the internet before logging out." , function () { goIndex([])  }, "Logged out error", "OK")
             	} else {
