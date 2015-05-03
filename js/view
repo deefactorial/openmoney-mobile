@@ -1,7 +1,8 @@
 {
     "views":{
         "account_balance":{
-            "map":"function isNumeric(n) {
+            "map":"function(doc,meta) {
+                function isNumeric(n) {
                          return !isNaN(parseFloat(n)) && isFinite(n);
                      }
                 if (meta.id.substring(0,5) != \"_sync\" && doc.type == \"trading_name_journal\" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseFloat(doc.amount) >= 0 && doc.currency && doc.timestamp) {
@@ -13,7 +14,7 @@
                             emit( \"trading_name,\" + doc.to + \",\" + doc.currency, doc.amount )
                         }
                     }
-                }"
+                } }"
         },
         "account_details":{
             "map":"function(doc, meta) {
