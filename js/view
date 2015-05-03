@@ -13,7 +13,7 @@
             "reduce" : "function(keys, values, rereduce) {
                 var result = 0;
                 if (rereduce) {
-                    // do nothing
+
                 } else {
                     for ( var i = values.length - 1; i >= 0; i--) {
                         result += values[i];
