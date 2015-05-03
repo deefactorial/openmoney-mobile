@@ -52,6 +52,17 @@
                          emit( doc.currency, {  \"currency\": doc.currency, \"name\": doc.name} );
                      }
                  }"
-         }
+         },
+          "nfc_tags":{
+              "map":
+                  "function(doc, meta) {
+                      if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"beamtag\" && doc.username) {
+                          if(typeof doc.sessionID == \"undefined\") {
+                              delete(doc._sync);
+                              emit( doc.username, doc );
+                          }
+                      }
+                  }"
+          }
     }
 }
