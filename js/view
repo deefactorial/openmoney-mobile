@@ -73,6 +73,16 @@
                            });
                        }
                    }"
-           }
+           },
+            "steward_accounts":{
+                "map":
+                    "function(doc, meta) {
+                        if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"trading_name\" && doc.name && doc.currency && doc.steward) {
+                            doc.steward.forEach(function (steward) {
+                                emit( steward , \"trading_name,\" + doc.name.toLowerCase() + \",\" + doc.currency.toLowerCase() );
+                            });
+                        }
+                    }"
+            }
     }
 }
