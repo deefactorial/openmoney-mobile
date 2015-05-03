@@ -83,6 +83,15 @@
                             });
                         }
                     }"
-            }
+            },
+             "user_tags":{
+                 "map":
+                     "function(doc, meta) {
+                         if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"beamtag\" && doc.username && typeof doc.sessionID != \"undefined\") {
+                             delete(doc._sync);
+                             emit( [ doc.username, doc.hashTag ], doc );
+                         }
+                     }"
+             }
     }
 }
