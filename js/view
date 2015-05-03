@@ -44,6 +44,14 @@
                         }
                     }
                 }"
-        }
+        },
+         "currencies":{
+             "map":
+                 "function(doc, meta) {
+                     if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"currency\" && doc.currency && doc.steward) {
+                         emit( doc.currency, {  \"currency\": doc.currency, \"name\": doc.name} );
+                     }
+                 }"
+         }
     }
 }
