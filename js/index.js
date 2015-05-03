@@ -343,9 +343,63 @@ function setupConfig(done) {
 //    	    	xmlHttp.onload = callback;
 //    	    	xmlHttp.send()
     	    	
-        		log ("name" + window.config.user.name)
-        		log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } ))
-        		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
+        		console.log ("name" + window.config.user.name);
+        		console.log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } ));
+        		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+
+				//db = {
+				//	"get": function (request, data, response) {
+				//		console.log("request" + request);
+				//		jQuery.ajax({
+				//			url: url + appDbName + "/" + request,
+				//			data: data,
+				//			method: "GET",
+				//			headers: {
+				//				"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token),
+				//				"Origin": window.location.hostname
+				//			}
+				//		}).done(function(msg){
+				//			response(null,msg);
+				//		}).fail(function( jqXHR, textStatus ) {
+				//			console.log( "Request failed: " + textStatus );
+				//			response(textStatus,{});
+				//		});
+				//	},
+				//	"put": function (request, data, response) {
+				//		jQuery.ajax({
+				//			url: url + appDbName + "/" + request,
+				//			data: data,
+				//			method: "PUT",
+				//			headers: {
+				//				"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token),
+				//				"Origin": window.location.hostname
+				//			}
+				//		}).done(function(msg){
+				//			response(null,msg);
+				//		}).fail(function( jqXHR, textStatus ) {
+				//			console.log( "Request failed: " + textStatus );
+				//			response(textStatus,{});
+				//		});
+                //
+				//	},
+				//	"post": function (request, data, response) {
+				//		jQuery.ajax({
+				//			url: url + appDbName + "/" + request,
+				//			data: data,
+				//			method: "POST",
+				//			headers: {
+				//				"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token),
+				//				"Origin": window.location.hostname
+				//			}
+				//		}).done(function(msg){
+				//			response(null,msg);
+				//		}).fail(function( jqXHR, textStatus ) {
+				//			console.log( "Request failed: " + textStatus );
+				//			response(textStatus,{});
+				//		});
+				//	}
+				//};
+
         		//db = coax( { "uri": url + appDbName + "/" } );
     	    	
 //    	    	// define vars
@@ -385,11 +439,11 @@ function setupConfig(done) {
         	}
         	
 	        setupDb( db, function(err, info) {
-	        	log("setupDB:" + JSON.stringify( [ err, info ] ) ); 
+	        	console.log("setupDB:" + JSON.stringify( [ err, info ] ) );
 	            if (err) { return done( err ) }
 	            
 	            setupViews( db, function(err, views) {
-	            	log("setupviews:" + JSON.stringify( [ err, views ] ) );
+	            	console.log("setupviews:" + JSON.stringify( [ err, views ] ) );
 	                if (err) { return done( err ) }
 	                
 	                window.config = {
@@ -476,6 +530,7 @@ function setupConfig(done) {
 	            db.get( cb )
 	            
 	        } )
+
     	}
     }
 
@@ -487,11 +542,12 @@ function setupConfig(done) {
                 } )
             } )
     	} else {
-    		db.get( function(err, res, body) {
-                
+            db.get( function(err, res, body) {
+
                 db.get( cb )
-                
+
             } )
+			//db.get("",{},cb);
     	}
         
     }

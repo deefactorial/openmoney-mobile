@@ -1517,11 +1517,13 @@ function run_xhr(options) {
 		  xhr.setRequestHeader("Authorization", options.headers.authorization);
 		  //xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 	  }
-	  //if(is_cors) {
-		  //console.log("is cors:" + !! options.withCredentials);
-		  
-	  //}
+	  if(is_cors) {
+		  console.log("is cors:" + !! options.withCredentials);
+
+
+	  }
   }
+  xhr.setRequestHeader("Origin", window.location.hostname);
   xhr.withCredentials = true;
   xhr.send(options.body)
   return xhr
