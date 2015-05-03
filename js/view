@@ -2,8 +2,8 @@
     "views":{
         "account_balance":{
             "map":"function(doc, meta) {
-                if (doc.type == \"trading_name_journal\" && doc.from && doc.to && typeof doc.amount != 'undefined' && parseFloat(doc.amount) >= 0 && doc.currency && doc.timestamp) {
-                    if (typeof doc.verified != 'undefined' && doc.verified === false) {
+                if (doc.type == \"trading_name_journal\" && doc.from && doc.to && typeof doc.amount != \"undefined\" && parseFloat(doc.amount) >= 0 && doc.currency && doc.timestamp) {
+                    if (typeof doc.verified != \"undefined\" && doc.verified === false) {
 
                     } else {
                         emit( \"trading_name,\" + doc.from + \",\" + doc.currency, -doc.amount )
