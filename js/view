@@ -34,6 +34,16 @@
                     }, \"trading_name,\" + doc.name.toLowerCase() + \",\" + doc.currency.toLowerCase() );
                 }
             }"
+        },
+        "bematag":{
+            "map":
+                "function(doc, meta) {
+                    if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"beamtag\" && (doc._deleted == undefined || doc._deleted != true)) {
+                        if(typeof doc.archived == \"undefined\" || doc.archived === false ) {
+                            emit(doc.hashTag, doc.trading_names);
+                        }
+                    }
+                }"
         }
     }
 }
