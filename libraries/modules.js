@@ -1524,7 +1524,7 @@ function run_xhr(options) {
 	  }
   }
   //xhr.setRequestHeader("Origin", window.location.hostname);
-  xhr.withCredentials = true;
+  //xhr.withCredentials = true;
   xhr.send(options.body)
   return xhr
 
