@@ -90,20 +90,22 @@ function goManageCurrency(parameters){
                 if (typeof view.rows != 'undefined' && config.user != null) {
                     view.rows.forEach(function (row) {
 
-                        if (row.key.currency == id) {
-                            thisCurrenciesAccounts.rows.push(row);
-                            config.views(["account_balance", {
-                                startkey: row.id, endkey: row.id + '\uefff'//, stale : "update_after"
-                            }], function (err, balanceView) {
-                                drawContainer("#" + row.key.trading_name.replace(/\./g, "\\.") + "-" + row.key.currency.replace(/\./g, "\\."), config.t.indexBalance(balanceView));
+                        config.views2(["account_balance", {
+                            startkey: row.id, endkey: row.id + '\uefff'//, stale : "update_after"
+                        }], function (err, balanceView) {
+                            console.log("account_balance view: " + JSON.stringify( [ err, balanceView ] ) );
+                            var balance = 0;
+                            balanceView.rows.forEach(function(row){
+                                balance += row.value;
                             });
-                        }
-
+                            console.log("Received Balance for:" + row.id + " balance:" + balance);
+                            drawContainer("#" + row.doc.json.name.replace(/\./g, "\\.") + "-" + row.doc.json.currency.replace(/\./g, "\\."), config.t.indexBalance({"balance":balance}));
+                        });
                     })
                 }
 
-                console.log("accounts " + JSON.stringify(thisCurrenciesAccounts));
-                drawContainer("#currencylist", config.t.indexList(thisCurrenciesAccounts));
+                console.log("accounts " + JSON.stringify(view));
+                drawContainer("#currencylist", config.t.currencyList(view));
 
                 var response = {
                     "html": document.getElementById("content").innerHTML,

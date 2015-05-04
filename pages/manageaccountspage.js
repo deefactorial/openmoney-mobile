@@ -183,12 +183,12 @@ function goManageAccounts(parameters) {
             
             var usersAccounts = { "rows" : [] };
             view.rows.forEach( function(row) {
-            	row.doc.steward.forEach( function( steward ) {
+            	row.doc.json.steward.forEach( function( steward ) {
             		if (steward == config.user.name) {
             			usersAccounts.rows.push( row )
             		}
             	} )
-            	row.doc._id = row.doc._id.replace(/,/g,"-");
+            	//row.doc.id = row.doc.id.replace(/,/g,"-");
             	//row.doc._id = row.doc._id.replace(/\./g,":");
             } )
             
@@ -227,9 +227,9 @@ function goManageAccounts(parameters) {
 			console.log("Before Currency View: " + JSON.stringify(view) );
 
 			view.rows.forEach(function(row){
-				row.doc.steward.forEach(function(steward){
+				row.doc.json.steward.forEach(function(steward){
 					if(steward == config.user.name) {
-						row.doc.isSteward = true;
+						row.doc.json.isSteward = true;
 					}
 				})
 			});

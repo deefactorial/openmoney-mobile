@@ -118,16 +118,13 @@ limitations under the License.
             	{{trading_name}} {{currency}}
                 <div id="{{trading_name}}-{{currency}}" style="float:right;"></div>
 			{{/key}}
-            
         </li>
     {{/rows}}
     </ul>
 </div>
 </script>
 <script type="text/mustache" id="indexBalance-mu">
-    {{#rows}}
-        {{value}}
-    {{/rows}}
+    {{balance}}
 </script>
 <script type="text/mustache" id="list-mu">
 <header>
@@ -454,23 +451,23 @@ limitations under the License.
             <b>Trading Name Accounts</b>
         </li>
     {{#rows}}
-        {{#doc}}
-            <li id="{{_id}}" class="topcoat-list__item" data-id="{{_id}}">
+        {{#doc}}{{#json}}
+            <li class="topcoat-list__item" >
 
                     <div style="display:table; padding:0; margin: 0; width:100%;">
-                        <div id="{{_id}}div" data-id="{{_id}}" class="trading_names {{#archived}}archived{{/archived}}" style="width: 66.666%;display:table-cell;vertical-align: middle;">
-                            <p id="{{_id}}p" class="" data-id="{{_id}}" >{{name}} {{currency}}</p>
+                        <div data-id="trading_name-{{name}}-{{currency}}" class="trading_names {{#archived}}archived{{/archived}}" style="width: 66.666%;display:table-cell;vertical-align: middle;">
+                            <p>{{name}} {{currency}}</p>
                         </div>
                         <div  style="width: 33.333%;display:table-cell;">
                             <label class="topcoat-switch" style="z-index:1;">
-                                <input name="{{_id}}" type="checkbox" class="topcoat-switch__input tradingname_archived" value="true" {{^archived}}checked="checked"{{/archived}}>
+                                <input name="trading_name-{{name}}-{{currency}}" type="checkbox" class="topcoat-switch__input tradingname_archived" value="true" {{^archived}}checked="checked"{{/archived}}>
                                 <div class="topcoat-switch__toggle"></div>
                             </label>
                         </div>
                     </div>
 
             </li>
-        {{/doc}}
+        {{/json}}{{/doc}}
     {{/rows}}
 
     </ul>
@@ -483,7 +480,7 @@ limitations under the License.
                 <b>Currencies</b>
             </li>
         {{#rows}}
-            {{#doc}}
+            {{#doc}}{{#json}}
             <li class="topcoat-list__item currency" >
                 {{^isSteward}}
                     {{currency}} - {{name}}
@@ -502,7 +499,7 @@ limitations under the License.
                 </div>
                 {{/isSteward}}
             </li>
-            {{/doc}}
+            {{/json}}{{/doc}}
         {{/rows}}
         </ul>
 </script>
@@ -559,17 +556,31 @@ limitations under the License.
     </div>
 </div>
 </script>
+<script type="text/mustache" id="currencyList-mu">
+<div class="topcoat-list__container">
+    <ul class="topcoat-list">
+    {{#rows}}
+        <li class="om-list-name topcoat-list__item" data-id="{{id}}">
+			{{#doc}}{{#json}}
+            	{{name}} {{currency}}
+                <div id="{{name}}-{{currency}}" style="float:right;"></div>
+			{{/json}}{{/doc}}
+        </li>
+    {{/rows}}
+    </ul>
+</div>
+</script>
 <script type="text/mustache" id="spaces_list-mu">
         <ul class="topcoat-list">
             <li class="topcoat-list__header" data-id="list" style="text-align:center;padding:20px;">
                 <b>Spaces</b>
             </li>
         {{#rows}}
-            {{#doc}}
+            {{#doc}}{{#json}}
             <li class="topcoat-list__item space" data-id="{{space}}">
                 {{space}}
             </li>
-            {{/doc}}
+            {{/json}}{{/doc}}
         {{/rows}}
         </ul>
 </script>

@@ -80,7 +80,7 @@ function goList(parameters) {
 	    	}
 	        console.log( "Display Account Details:" + JSON.stringify( doc ) )
        
-            config.views( [ "account_balance", {
+            config.views2( [ "account_balance", {
                 startkey : id, endkey : id + '\uefff'
             } ], function(err, view) {
             	
@@ -89,10 +89,15 @@ function goList(parameters) {
     	    		//dbChangedJournal();
     	    		return false;
     	    	}
+
+				var balance = 0;
+				view.rows.forEach(function(row){
+					balance += row.value;
+				});
             	
                 console.log( "account_balance" + JSON.stringify( view ))
-                if (view.total_rows > 0)
-                    doc.balance = view.rows[0].value;
+                if (balance > 0)
+                    doc.balance = balance;
                 
                 drawContainer( "#list-title",  config.t.listTitle( doc )  )
                                 

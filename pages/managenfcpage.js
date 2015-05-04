@@ -28,7 +28,7 @@ function goManageNFC(parameters) {
     	
     	window.plugins.spinnerDialog.show();
         config.views( [ "nfc_tags", {
-            startkey : [ config.user.name, {} ], endkey : [ config.user.name ], descending : true, stale : "update_after"
+            startkey : config.user.name + '\uefff', endkey : config.user.name , descending : true, stale : "update_after"
         } ], function(error, view) {
         	window.plugins.spinnerDialog.hide();
             if (error) { return alert( JSON.stringify( error ) ) }

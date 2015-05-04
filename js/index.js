@@ -344,7 +344,7 @@ function setupConfig(done) {
 //    	    	xmlHttp.send()
     	    	
         		console.log ("name" + window.config.user.name);
-        		console.log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } ));
+        		console.log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ));
         		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
 
 				//db = {
@@ -449,7 +449,7 @@ function setupConfig(done) {
 	                window.config = {
 	                        site : {
 	                            syncUrl : REMOTE_SYNC_URL
-	                        }, setUser : window.config.setUser , user: window.config.user, db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views, server : url, t : t
+	                        }, setUser : window.config.setUser , user: window.config.user, db : db, destroyDatabase : destroyDb, s : coax( url ), info : info, views : views[0], views2 : views[1], server : url, t : t
 	                    };
 	                
 	                getUser( db, function(err, user) {
@@ -648,10 +648,12 @@ function setupConfig(done) {
 	        } )
 	    } else {
 	    	var design = "_design/dev_rest" ;//+ new Date().getTime();
+			var design2 = "_design/dev_rest2" ;
 	    	//query the local server for the views2 since the sync_gateway doesn't support _design docs.
 	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER +  ":4984/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
 	    	//var views2 = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" } );
-	    	cb( false , views( [ design, "_view" ] ) )
+			var viewsArray = [ views( [ design, "_view" ] ), views( [ design2, "_view" ] ) ];
+	    	cb( false , viewsArray );
 	    }
     }
 
