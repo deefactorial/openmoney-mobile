@@ -344,8 +344,8 @@ function setupConfig(done) {
 //    	    	xmlHttp.send()
     	    	
         		console.log ("name" + window.config.user.name);
-        		console.log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } ));
-        		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+        		console.log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } ));
+        		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
 
 				//db = {
 				//	"get": function (request, data, response) {
@@ -650,7 +650,7 @@ function setupConfig(done) {
 	    	var design = "_design/dev_rest" ;//+ new Date().getTime();
 			var design2 = "_design/dev_rest2" ;
 	    	//query the local server for the views2 since the sync_gateway doesn't support _design docs.
-	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER +  ":4984/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.password } } );
+	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER +  ":4984/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
 	    	//var views2 = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" } );
 			var viewsArray = [ views( [ design, "_view" ] ), views( [ design2, "_view" ] ) ];
 	    	cb( false , viewsArray );
