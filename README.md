@@ -1,14 +1,12 @@
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/deefactorial.svg)](https://saucelabs.com/u/deefactorial)
-
 # openmoney-mobile
 
 A mobile application to enable community currency trade.
 
 ## Install
 
-To run this application, you'll need the Xcode developer package, or the Android SDK, and the PhoneGap toolchain.
+To run this application, you'll need the Xcode developer package, or the Android SDK, and the Cordova toolchain.
 
-First create an empty PhoneGap app container using the [PhoneGap npm package](https://npmjs.org/package/phonegap).
+First create an empty Cordova app container using the [Cordova npm package](https://npmjs.org/package/cordova).
 
 
 ```sh
@@ -17,7 +15,7 @@ cordova create openmoney-mobile-cordova com.openmoney.mobile openmoney
 cd openmoney-mobile-cordova
 ```
 
-Now install the PhoneGap plugins required to make it run. This activates Couchbase Lite, the camera, and the InAppBrowser.
+Now install the Cordova plugins required to make it run.
 
 ```sh
 cordova plugin add https://github.com/apache/cordova-plugin-network-information.git
@@ -27,18 +25,6 @@ cordova plugin add org.apache.cordova.vibration
 cordova plugin add org.apache.cordova.splashscreen
 cordova plugin add org.apache.cordova.globalization
 cordova plugin add https://github.com/VitaliiBlagodir/cordova-plugin-datepicker.git
-```
-
-Depreciated Plugins
-
-```sh
-cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-network-information.git
-cordova plugin add https://github.com/couchbaselabs/Couchbase-Lite-PhoneGap-Plugin.git
-cordova plugin add https://github.com/deefactorial/cordova-activity-plugin.git
-cordova plugin add https://github.com/Paldom/SpinnerDialog.git
-cordova plugin add https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git
-cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git
-cordova plugin add https://github.com/apache/cordova-plugin-inappbrowser.git
 ```
 
 Now replace the generated application with the openmoney-mobile source code.
