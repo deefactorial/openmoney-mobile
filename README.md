@@ -2,6 +2,10 @@
 
 A mobile application to enable community currency trade.
 
+# Live Demo
+
+[https://cloud.openmoney.cc](https://cloud.openmoney.cc)
+
 ## Install
 
 To run this application, you'll need the Xcode developer package, or the Android SDK, and the Cordova toolchain.
