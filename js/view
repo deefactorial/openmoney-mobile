@@ -32,7 +32,7 @@
                 }
             }"
         },
-        "bematag":{
+        "bemtag":{
             "map":
                 "function(doc, meta) {
                     if(meta.id.substring(0,5) != \"_sync\" && doc.type == \"beamtag\" && (doc._deleted == undefined || doc._deleted != true)) {
