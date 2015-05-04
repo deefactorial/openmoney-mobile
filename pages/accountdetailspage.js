@@ -130,6 +130,16 @@ function goList(parameters) {
     	    	}
             	
             	window.plugins.spinnerDialog.hide();
+
+				function compare(a,b) {
+					if (a.value.timestamp > b.value.timestamp)
+						return -1;
+					if (a.value.timestamp < b.value.timestamp)
+						return 1;
+					return 0;
+				}
+
+				view.rows.sort(compare);
             	
             	view.rows.forEach( function( row ) {
             		
