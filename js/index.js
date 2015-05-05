@@ -369,7 +369,7 @@ function setupConfig(done) {
 						jQuery.ajax({
 							url: url + appDbName + "/" + request,
 							method: "GET",
-							data: data,
+							data: JSON.stringify(data),
 							dataType: "json",
 							headers: {
 								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
@@ -384,11 +384,11 @@ function setupConfig(done) {
 					"put": function (request, data , response) {
 						jQuery.ajax({
 							url: url + appDbName + "/" + request,
-							data: data,
+							data: JSON.stringify(data),
 							method: "PUT",
 							headers: {
-								'Accept': 'application/json',
-								'Content-Type': 'application/json',
+								"Accept": "application/json",
+								"Content-Type": "application/json",
 								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
 							},
 							dataType: "json"
@@ -403,11 +403,11 @@ function setupConfig(done) {
 
 						jQuery.ajax({
 							url: url + appDbName + "/" + request,
-							data: data,
+							data: JSON.stringify(data),
 							method: "POST",
 							headers: {
-								'Accept': 'application/json',
-								'Content-Type': 'application/json',
+								"Accept": "application/json",
+								"Content-Type": "application/json",
 								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
 							},
 							dataType: "json"
