@@ -39,16 +39,16 @@ function goIndex(parameters) {
     
     // when the database changes, update the UI to reflect new lists
     window.dbChangedStewardTradingNames = function() {
-    	
-    	tradingNamesViewLock = true;
-    	if(currentpage == 'Openmoney') {
+
+
+
+    	if(currentpage == 'Openmoney' && tradingNamesViewLock == false ) {
+			tradingNamesViewLock = true;
     		window.plugins.spinnerDialog.show();
     		if( typeof(config.views) == "function" ) {
     			config.views( [ "accounts", {
-					include_docs : true//, stale : "update_after"
+					include_docs : true
     	        } ], function(err, view) {
-
-
     	        	console.log("accounts view:" + JSON.stringify( view ) );
     	        	window.plugins.spinnerDialog.hide();
     	        	tradingNamesViewLock = false;
@@ -82,25 +82,25 @@ function goIndex(parameters) {
     	            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length;
     	
     	            console.log( "accounts " + JSON.stringify( thisUsersAccounts ) );
-					if(thisUsersAccounts.rows.length == 0){
-						return false;
+					if (thisUsersAccounts.rows.length != 0){
+
+						drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) );
+						//$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
+
+						var response = {
+							"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goIndex", "pageParameters" : []
+						};
+
+						updateAjaxData( response, "index.html" );
+
+						// If you click a list,
+						$( "#scrollable" ).off( "click", "li");
+						$( "#scrollable" ).on( "click", "li", function() {
+							var id = $( this ).attr( "data-id" );
+							goList( [ id ] )
+						} );
 					}
 
-    	            drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) );
-    	            //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
-    	            
-    	            var response = {
-    	            		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goIndex", "pageParameters" : []
-    	        	};
-    	            
-    	            updateAjaxData( response, "index.html" );
-    	            
-    	                // If you click a list,
-					$( "#scrollable" ).off( "click", "li");
-					$( "#scrollable" ).on( "click", "li", function() {
-    			        var id = $( this ).attr( "data-id" );
-    			        goList( [ id ] )
-    			    } );
     			    
     			    window.dbChangedStewardTradingNamesDone();
     	        } )
