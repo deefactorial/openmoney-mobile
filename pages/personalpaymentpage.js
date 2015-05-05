@@ -59,29 +59,10 @@ function goPayment(parameters) {
 					return alert(JSON.stringify(error))
 				}
 
-
-
 				thisUsersAccounts.rows.forEach(function(row){
 					otherUsersAccounts.rows.push(row);
-					//otherUsersAccounts.rows.push({key:{trading_name:row.doc.json.trading_name,currency:row.doc.json.currency}});
 				})
-				//for (var i = view.rows.length - 1; i >= 0; i--) {
-				//	//log( "row:" + JSON.stringify( view.rows[i] ) )
-				//	//log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
-				//	if (view.rows[i].key.steward.length) {
-				//		for (var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-				//			//log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
-				//			if (view.rows[i].key.steward[j] == config.user.user_id) {
-				//				thisUsersAccounts.rows.push(view.rows[i])
-				//			}
-				//		}
-				//	}
-				//}
 
-				//trading_name_view.rows.forEach(function(row){
-				//	otherusersAccounts.rows.push(row);
-				//	//otherUsersAccounts.rows.push({key:{trading_name:row.doc.json.trading_name,currency:row.doc.json.currency}});
-				//});
 
 				var payment = {"from": thisUsersAccounts, "to": otherUsersAccounts};
 
@@ -176,7 +157,7 @@ function goPayment(parameters) {
 
 
 function makePersonalPayment( doc, retry ) {
-	config.db.get("/" + doc.from, function(error, from) {
+	config.db.get(getLeadingSlash() + doc.from, function(error, from) {
         if (error) {
             if (error.status == 404 || error.error == "not_found") {
             	
@@ -217,7 +198,7 @@ function makePersonalPayment( doc, retry ) {
             	$( "#submit" ).removeAttr("disabled","disabled");
             	return false
             } 
-            config.db.get("/" + "currency," + doc.currency.toLowerCase(), function(error, currency) {
+            config.db.get(getLeadingSlash() + "currency," + doc.currency.toLowerCase(), function(error, currency) {
             	if (error) {
             		if (error.status == 404 || error.error == "not_found") {
                     	navigator.notification.alert( "Currency " + doc.currency + " does not exist!"  , function() {  }, "Error", "OK")
@@ -232,7 +213,7 @@ function makePersonalPayment( doc, retry ) {
             			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
             			$( "#submit" ).removeAttr("disabled","disabled");
             		} else {
-            			config.db.get("/" + "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase(), function(error, to) {
+            			config.db.get(getLeadingSlash() + "trading_name," + doc.to.toLowerCase() + "," + doc.currency.toLowerCase(), function(error, to) {
                             if (error) {
                             	$( "#submit" ).removeAttr("disabled","disabled");
                                 if (error.status == 404 || error.error == "not_found") {
@@ -256,15 +237,14 @@ function makePersonalPayment( doc, retry ) {
                             	return false
                             }  
                             
-                            config.db.get("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+                            config.db.get(getLeadingSlash() + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
                                 if (error) {
                                 	
                                     console.log( "Error: " + JSON.stringify( error ) );
                                     if (error.status == 404 || error.error == "not_found") {
                                         // doc does not exists
                                         console.log( "insert new trading name journal" + JSON.stringify( doc ) );
-                                        var leadingSlash = getLeadingSlash();                                        	                          
-                                        config.db.put( leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+                                        config.db.put( getLeadingSlash() + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
                                         	
                                         	if (error)
                                                 return alert("Error Posting:" + JSON.stringify( error ) );
@@ -419,7 +399,7 @@ function goTagPayment(parameters) {
 	            //doc.timestamp = doc.timestamp.toJSON()
 	            delete doc.pair;
 	            console.log( " form doc: " + JSON.stringify( doc ) );
-	            config.db.get("/" + doc.from, function(error, from) {
+	            config.db.get(getLeadingSlash() + doc.from, function(error, from) {
 	                if (error) {
 	                	$( "#submit" ).removeAttr("disabled","disabled");
 	                    if (error.status == 404 || error.error == "not_found") {
@@ -448,7 +428,7 @@ function goTagPayment(parameters) {
 	                	return false
 	                } 
 	
-	            	config.db.get("/" + "currency," + doc.currency, function(error, currency) {
+	            	config.db.get(getLeadingSlash() + "currency," + doc.currency, function(error, currency) {
 	                	if (error) {
 	                		$( "#submit" ).removeAttr("disabled","disabled");
 	                		if (error.status == 404 || error.error == "not_found") {
@@ -462,7 +442,7 @@ function goTagPayment(parameters) {
 	                			navigator.notification.alert( "Currency " + doc.currency + " has been disabled!"  , function() {  }, "Error", "OK")
 	                			$( "#submit" ).removeAttr("disabled","disabled");
 	                		} else {
-	                			config.db.get("/" + doc.to, function(error, to) {
+	                			config.db.get(getLeadingSlash() + doc.to, function(error, to) {
 	                                if (error) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                    if (error.status == 404 || error.error == "not_found") {
@@ -484,14 +464,14 @@ function goTagPayment(parameters) {
 	                                	$( "#submit" ).removeAttr("disabled","disabled");
 	                                	return false
 	                                } 
-	                                config.db.get("/" + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
+	                                config.db.get(getLeadingSlash() + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, function(error, existingdoc) {
 	                                    if (error) {
 	                                        log( "Error: " + JSON.stringify( error ) )
 	                                        if (error.status == 404 || error.error == "not_found") {
 	                                            // doc does not exists
 	                                            log( "insert new trading name journal" + JSON.stringify( doc ) )
-	                                            var leadingSlash = getLeadingSlash();
-	                                            config.db.put(leadingSlash + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+
+	                                            config.db.put(getLeadingSlash() + doc.type + "," + doc.from + "," + doc.to + "," + doc.timestamp, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 	                                                if (error)
 	                                                    return alert( JSON.stringify( error ) );
 	                                               
@@ -660,8 +640,8 @@ function goAddTradingName(parameters) {
 		        	return null;
 		        }
 			    
-			    var leadingSlash = getLeadingSlash();
-		        config.db.put(leadingSlash + doc.type + "," + config.user.name + "," + doc.trading_name.toLowerCase() + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+
+		        config.db.put(getLeadingSlash() + doc.type + "," + config.user.name + "," + doc.trading_name.toLowerCase() + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
 		   		 	if (error) {
 		   		 		if (error.status == 409 || error.error == "conflict") {
 		   		 			navigator.notification.alert( 'You have already added the trading name ' + doc.trading_name + " in currency " + doc.currency , function() {}, "Invalid Trading Name", "OK")
