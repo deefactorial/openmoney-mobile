@@ -250,7 +250,7 @@ function connectToChanges() {
 	var changes = function(err, change) {
 	    if (err) {
 	        console.log( " Changes Error: " + JSON.stringify( err ) )
-	        connectToChanges();
+	        //connectToChanges();
 	        return false;
 	    }
 	    if (change) {

@@ -61,7 +61,7 @@ function goIndex(parameters) {
     	            				thisUsersAccounts.rows.push( row );
 									console.log("get Balance for:" + row.id);
     	            				config.views2( [ "account_balance", {
-    	            			    	startkey :  row.id  , endkey :  row.id + '\uefff'//, stale : "update_after"
+    	            			    	startkey : row.id , endkey : row.id + '\uefff'
     	            			     	} ], function(err, balanceView) {
     	            						console.log("account_balance view: " + JSON.stringify( [ err, balanceView ] ) );
 											var balance = 0;

@@ -304,7 +304,7 @@ function isTradingNameArchived(id, callback) {
 	id = id.replace(/-/g,",");
 	//id = id.replace(/:/g,".");
     var result = false;
-    config.db.get( "/" + id, function(error, doc) {
+    config.db.get( getLeadingSlash() + id, function(error, doc) {
     	if (error) {
 
     	} else {
@@ -322,7 +322,7 @@ function archiveTradingName(id, callback) {
 	id = id.replace(/-/g,",");
 	//id = id.replace(/:/g,".");
     log( "Archive trading_name," + id )
-    config.db.get( "/" + id, function(error, doc) {
+    config.db.get( getLeadingSlash() + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = true;
 	        doc.archived_at = new Date().getTime();
@@ -338,7 +338,7 @@ function activateTradingName(id, callback) {
 	id = id.replace(/-/g,",");
 	id = id.replace(/:/g,".");
     log( "Activate Trading Name", id )
-    config.db.get( "/" + id, function(error, doc) {
+    config.db.get( getLeadingSlash() + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = false;
 	        doc.archived_at = new Date().getTime();
@@ -400,7 +400,7 @@ function updateTradingName(row, doc, callback) {
 //	var trading_name = {};
 //	trading_name.trading_name = row.key.trading_name;
 //	trading_name.currency = row.key.currency;
-	config.db.get("trading_name," + row.key.trading_name.toLowerCase() + "," + row.key.currency.toLowerCase(), function(error, trading_name){
+	config.db.get(getLeadingSlash() + "trading_name," + row.key.trading_name.toLowerCase() + "," + row.key.currency.toLowerCase(), function(error, trading_name){
 		if(error) { 
 			log("Could not get trading name" + JSON.stringify(error) );
 			updateTradingName(row, doc, callback);

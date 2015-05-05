@@ -209,7 +209,7 @@ window.getSyncUrl = function(callback) {
 }
 
 getLeadingSlash = function(){
-	return !window.cblite ? "" : "/";
+	return "/";
 }
 
 /*
@@ -345,60 +345,99 @@ function setupConfig(done) {
     	    	
         		console.log ("name" + window.config.user.name);
         		console.log( "coax:" + JSON.stringify( { "uri": url + appDbName + "/", "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } ));
-        		db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
+        		//db = coax( { "uri": url + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
 
-				//db = {
-				//	"get": function (request, data, response) {
-				//		console.log("request" + request);
-				//		jQuery.ajax({
-				//			url: url + appDbName + "/" + request,
-				//			data: data,
-				//			method: "GET",
-				//			headers: {
-				//				"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token),
-				//				"Origin": window.location.hostname
-				//			}
-				//		}).done(function(msg){
-				//			response(null,msg);
-				//		}).fail(function( jqXHR, textStatus ) {
-				//			console.log( "Request failed: " + textStatus );
-				//			response(textStatus,{});
-				//		});
-				//	},
-				//	"put": function (request, data, response) {
-				//		jQuery.ajax({
-				//			url: url + appDbName + "/" + request,
-				//			data: data,
-				//			method: "PUT",
-				//			headers: {
-				//				"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token),
-				//				"Origin": window.location.hostname
-				//			}
-				//		}).done(function(msg){
-				//			response(null,msg);
-				//		}).fail(function( jqXHR, textStatus ) {
-				//			console.log( "Request failed: " + textStatus );
-				//			response(textStatus,{});
-				//		});
-                //
-				//	},
-				//	"post": function (request, data, response) {
-				//		jQuery.ajax({
-				//			url: url + appDbName + "/" + request,
-				//			data: data,
-				//			method: "POST",
-				//			headers: {
-				//				"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token),
-				//				"Origin": window.location.hostname
-				//			}
-				//		}).done(function(msg){
-				//			response(null,msg);
-				//		}).fail(function( jqXHR, textStatus ) {
-				//			console.log( "Request failed: " + textStatus );
-				//			response(textStatus,{});
-				//		});
-				//	}
-				//};
+				db = {
+					"get": function (request, response) {
+						var data;
+						if(typeof request != "string") {
+							data = request[1];
+							for (var property in data) {
+								if (data.hasOwnProperty(property)) {
+									if(property == 'startkey' || property == 'endkey'){
+										data[property] = JSON.stringify(data[property]);
+									}
+
+								}
+							}
+
+							request = request[0];
+							console.log("request with data:" + request + " data:" + JSON.stringify(data));
+						}
+						data = data || {};
+						console.log("request" + request);
+						jQuery.ajax({
+							url: url + appDbName + request,
+							method: "GET",
+							data: data,
+							dataType: "json",
+							headers: {
+								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
+							}
+						}).done(function(msg){
+							response(null,msg);
+						}).fail(function( jqXHR, textStatus ) {
+							console.log( "Request failed: " + textStatus );
+							response({ error: textStatus , code: jqXHR.statusCode(), msg: jqXHR.statusText},{});
+						});
+					},
+					"put": function (request, data , response) {
+						jQuery.ajax({
+							url: url + appDbName + request,
+							data: data,
+							method: "PUT",
+							headers: {
+								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
+							}
+						}).done(function(msg){
+							response(null,msg);
+						}).fail(function( jqXHR, textStatus ) {
+							console.log( "Request failed: " + textStatus );
+							response(textStatus,{});
+						});
+
+					},
+					"post": function (request, data, response) {
+
+						jQuery.ajax({
+							url: url + appDbName + request,
+							data: data,
+							method: "POST",
+							headers: {
+								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
+							}
+						}).done(function(msg){
+							response(null,msg);
+						}).fail(function( jqXHR, textStatus ) {
+							console.log( "Request failed: " + textStatus );
+							response(textStatus,{});
+						});
+					},
+					"changes": function (opts, cb){
+						if (typeof opts === "function") {
+							cb = opts;
+							opts = {};
+						}
+						var self = this;
+						opts = opts || {};
+
+						opts.feed = "longpoll";
+						return config.db.get([ getLeadingSlash() + "_changes", opts], function(err, ok) {
+							if (err && err.code == "ETIMEDOUT") {
+								return self.changes(opts, cb); // TODO retry limit?
+							} else if (err) {
+								return cb(err);
+							}
+							console.log("changes" + JSON.stringify( ok ) )
+							ok.results.forEach(function(row){
+								cb(null, row);
+							});
+							opts.since = ok.last_seq;
+							self.changes(opts, cb);
+						});
+
+					}
+				};
 
         		//db = coax( { "uri": url + appDbName + "/" } );
     	    	
@@ -461,40 +500,24 @@ function setupConfig(done) {
 	                    
 	                    
 	                    if (typeof config.db != 'undefined') {
-	                    	config.db.extend("get", function(options, callback) {
-	                    		var self = this;
-	                    		if(!window.cblite && /^\/.*$/.test(options) ) {
-	                    			options = options.replace(/^\/(.*)$/, '$1');
-	                    		}	                    			
-	                    		return self(options, function(error, result) {
-	                    			if(error && error.code == 'ETIMEDOUT') {
-	                    				//try again
-	                    				log("ETIMEDOUT retry get");
-	                    				self(options,callback);
-	                    			} else {
-	                    				callback(error,result);
-	                    			}
-	                    		} )
-	                    	} )
-	                    	
-	                    	
+	                    	//config.db.extend("get", function(options, callback) {
+	                    	//	var self = this;
+	                    	//	if(!window.cblite && /^\/.*$/.test(options) ) {
+	                    	//		options = options.replace(/^\/(.*)$/, '$1');
+	                    	//	}
+	                    	//	return self(options, function(error, result) {
+	                    	//		if(error && error.code == 'ETIMEDOUT') {
+	                    	//			//try again
+	                    	//			log("ETIMEDOUT retry get");
+	                    	//			self(options,callback);
+	                    	//		} else {
+	                    	//			callback(error,result);
+	                    	//		}
+	                    	//	} )
+	                    	//} )
 	                    }
 	                    
-	                    //does not work yet
-	                    if (typeof config.views != 'undefined') {
-	                    	config.views.extend({}, function(options, callback) {
-	                    		var self = this;
-	                    		return self(options, function(error, result) {
-	                    			if(error && error.code == 'ETIMEDOUT') {
-	                    				//try again
-	                    				log("ETIMEDOUT retry view");
-	                    				self(options,callback);
-	                    			} else {
-	                    				callback(error,result);
-	                    			}
-	                    		} )
-	                    	} )
-	                    }
+
 	                    
 	                    if (typeof window.config.user == 'undefined' || typeof window.config.user.expires == 'undefined') {
 	                        if (SERVER_LOGIN) {
@@ -525,12 +548,12 @@ function setupConfig(done) {
 	            } )
 	        } )
     	} else {
-    		db.get( function(err, res, body) {
-	            
-	            db.get( cb )
-	            
-	        } )
-
+            //db.get( function(err, res, body) {
+	        //
+	        //    db.get( cb )
+	        //
+	        //} )
+			db.get("",cb);
     	}
     }
 
@@ -647,12 +670,23 @@ function setupConfig(done) {
 	            cb( false, db( [ design, "_view" ] ) )
 	        } )
 	    } else {
-	    	var design = "_design/dev_rest" ;//+ new Date().getTime();
-			var design2 = "_design/dev_rest2" ;
+	    	var design = getLeadingSlash() + "_design/dev_rest/_view/" ;//+ new Date().getTime();
+			//var design2 = "_design/dev_rest2" ;
+			var design2 = getLeadingSlash() + "_design/dev_rest2/_view/" ;
 	    	//query the local server for the views2 since the sync_gateway doesn't support _design docs.
-	    	var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER +  ":4984/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
+	    	//var views = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER +  ":4984/" + appDbName + "/" , "auth" : { "username" : window.config.user.name, "password": window.config.user.session_token } } );
+	    	var view = function(request, response) {
+				request[0] = design + request[0];
+				config.db.get(request,response);
+			};
+			var view2 = function(request,response) {
+				request[0] = design2 + request[0];
+				console.log("view2 request:" + request[0] + " data:" + JSON.stringify(request[1]));
+				config.db.get(request,response);
+			};
 	    	//var views2 = coax( { "uri": REMOTE_SYNC_PROTOCOL + REMOTE_SYNC_SERVER + "/" + appDbName + "/" } );
-			var viewsArray = [ views( [ design, "_view" ] ), views( [ design2, "_view" ] ) ];
+            //var viewsArray = [ view, views( [ design2, "_view"] ) ];
+			var viewsArray = [ view, view2 ];
 	    	cb( false , viewsArray );
 	    }
     }

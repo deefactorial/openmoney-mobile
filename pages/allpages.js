@@ -407,7 +407,7 @@ function doTagLookup(key, callBack) {
     if (typeof config != 'undefined' && typeof config.user != 'undefined' && typeof config.user.name != 'undefined') {
         var url = REMOTE_SERVER_TAG_LOOKUP_URL;
         var taglookup = coax( url );
-        var credentials = '{ "username" : "' + config.user.name + '", "password": "' + config.user.sessionID + '", "key": "' + key + '" }';
+        var credentials = '{ "username" : "' + config.user.name + '", "key": "' + key + '" }';
         console.log( "http " + url + " " + credentials )
         taglookup.post( JSON.parse( credentials ), function(error, result) {
             console.log( "Tag Lookup Result:" + JSON.stringify([error,result]));

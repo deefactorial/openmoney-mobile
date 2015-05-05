@@ -84,14 +84,14 @@ function goManageCurrency(parameters){
                 rows: []
             };
             config.views(["currency_accounts", {
-                startkey: id + '\uefff', endkey: id, descending: true, include_docs: true//, stale : "update_after"
+                startkey: id + '\uefff', endkey: id, descending: true, include_docs: true
             }], function (err, view) {
                 console.log("Currency Accounts view:" + JSON.stringify(view));
                 if (typeof view.rows != 'undefined' && config.user != null) {
                     view.rows.forEach(function (row) {
 
                         config.views2(["account_balance", {
-                            startkey: row.id, endkey: row.id + '\uefff'//, stale : "update_after"
+                            startkey: row.id, endkey: row.id + '\uefff'
                         }], function (err, balanceView) {
                             console.log("account_balance view: " + JSON.stringify( [ err, balanceView ] ) );
                             var balance = 0;

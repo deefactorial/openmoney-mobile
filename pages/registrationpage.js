@@ -191,7 +191,7 @@ function doServerRegistration(callBack) {
     log( "Do Server Regisrtation" );
     // check for internet connection
     if (navigator && navigator.connection) {
-        log( "connection " + navigator.connection.type )
+        console.log( "connection " + navigator.connection.type )
         if (navigator.connection.type == "none") { return callBack( {
             reason : "No network connection"
         } ) }
@@ -206,13 +206,18 @@ function doServerRegistration(callBack) {
         if( typeof config.user.email != 'undefined' ) {
         	credentials.email = config.user.email;
         }
-        log( "http " + url + " " + JSON.stringify( credentials ) );
-        $.post( url , credentials,
-        	function(result){
-        		callBack( false, result )
-        	}).fail(function( error ){        		
-        		callBack(error);
-        	},"json")
+        console.log( "http " + url + " " + JSON.stringify( credentials ) );
+		jQuery.ajax({
+			type: "POST",
+			url: url,
+			data: credentials,
+			success: function(result){
+				callBack( false, result )
+			},
+			dataType: "json"
+		}).fail(function( error ){
+			callBack(error);
+		});
 //        login.post( credentials , function(error, result) {
 //            if (error) { return callBack( error ) }
 //            log( "Server Regisration Result:" + JSON.stringify( result ) )
