@@ -1442,7 +1442,7 @@ limitations under the License.
                             <select id="to" name="to" class="om-select-dark" >
                                 <option value="cc" selected="selected">Receiver</option>
                                 {{#to}}{{#rows}}
-                                    <option value="{{#doc}}{{#json}}{{trading_name}}{{/json}}{{/doc}}">{{#doc}}{{#json}}{{trading_name}} {{currency}}{{/json}}{{/doc}}</option>
+                                    <option value="{{#doc}}{{#json}}{{name}}{{/json}}{{/doc}}">{{#doc}}{{#json}}{{name}} {{currency}}{{/json}}{{/doc}}</option>
                                 {{/rows}}{{/to}}
                             </select>
                         </div>
