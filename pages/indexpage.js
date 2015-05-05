@@ -48,9 +48,7 @@ function goIndex(parameters) {
 					include_docs : true//, stale : "update_after"
     	        } ], function(err, view) {
 
-					if(view.rows.length == 0){
-						return false;
-					}
+
     	        	console.log("accounts view:" + JSON.stringify( view ) );
     	        	window.plugins.spinnerDialog.hide();
     	        	tradingNamesViewLock = false;
@@ -84,6 +82,10 @@ function goIndex(parameters) {
     	            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length;
     	
     	            console.log( "accounts " + JSON.stringify( thisUsersAccounts ) );
+					if(thisUsersAccounts.rows.length == 0){
+						return false;
+					}
+
     	            drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) );
     	            //$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
     	            
