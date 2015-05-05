@@ -53,7 +53,7 @@ function goPayment(parameters) {
 			} ], function(error, otherUsersAccounts) {
 				window.plugins.spinnerDialog.hide();
 
-				console.log("Trading Name View:" + JSON.stringify([error, trading_name_view]));
+				console.log("Trading Name View:" + JSON.stringify([error, otherUsersAccounts]));
 
 				if (error) {
 					return alert(JSON.stringify(error))
