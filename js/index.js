@@ -384,7 +384,7 @@ function setupConfig(done) {
 					"put": function (request, data , response) {
 						jQuery.ajax({
 							url: url + appDbName + "/" + request,
-							data: JSON.parse(JSON.stringify(data)),
+							data: JSON.stringify(data),
 							method: "PUT",
 							headers: {
 								"Accept": "application/json",
@@ -404,7 +404,7 @@ function setupConfig(done) {
 
 						jQuery.ajax({
 							url: url + appDbName + "/" + request,
-							data: JSON.parse(JSON.stringify(data)),
+							data: JSON.stringify(data),
 							method: "POST",
 							headers: {
 								"Accept": "application/json",
