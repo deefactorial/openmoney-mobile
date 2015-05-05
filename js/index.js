@@ -429,20 +429,20 @@ function setupConfig(done) {
 						opts = opts || {};
 
 						opts.feed = "longpoll";
-						return config.db.get([ getLeadingSlash() + "_changes", opts], function(err, ok) {
-							if (err && err.code == "ETIMEDOUT") {
-								return self.changes(opts, cb); // TODO retry limit?
-							} else if (err) {
-								return cb(err);
-							}
-							console.log("changes" + JSON.stringify( ok ) )
-							ok.results.forEach(function(row){
-								cb(null, row);
+						if (typeof window.config.db != "undefined")
+							return window.config.db.get([ getLeadingSlash() + "_changes", opts], function(err, ok) {
+								if (err && err.code == "ETIMEDOUT") {
+									return self.changes(opts, cb); // TODO retry limit?
+								} else if (err) {
+									return cb(err);
+								}
+								console.log("changes" + JSON.stringify( ok ) )
+								ok.results.forEach(function(row){
+									cb(null, row);
+								});
+								opts.since = ok.last_seq;
+								self.changes(opts, cb);
 							});
-							opts.since = ok.last_seq;
-							self.changes(opts, cb);
-						});
-
 					}
 				};
 
