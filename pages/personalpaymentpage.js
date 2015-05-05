@@ -62,7 +62,7 @@ function goPayment(parameters) {
 
 
 				thisUsersAccounts.rows.forEach(function(row){
-					otherusersAccounts.rows.push(row);
+					otherUsersAccounts.rows.push(row);
 					//otherUsersAccounts.rows.push({key:{trading_name:row.doc.json.trading_name,currency:row.doc.json.currency}});
 				})
 				//for (var i = view.rows.length - 1; i >= 0; i--) {
