@@ -179,10 +179,11 @@ function runTests(  ){
 		            	done3();	
 		            	window.dbChangedJournalDone = function() {};
 					}
-				})
-				
-				window.dbChangedTradingNamesDone = function() {};	
+				});
+
+				window.dbChangedTradingNamesDone = function() {};
 			};
+
 		})
 	} );
 	
