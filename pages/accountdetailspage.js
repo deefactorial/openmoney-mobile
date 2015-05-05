@@ -136,6 +136,10 @@ function goList(parameters) {
 						return -1;
 					if (a.value.timestamp < b.value.timestamp)
 						return 1;
+					if (a.value.amount > b.value.amount)
+						return -1;
+					if (a.value.amount < b.value.amount)
+						return 1;
 					return 0;
 				}
 
