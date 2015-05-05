@@ -40,8 +40,9 @@ function goPayment(parameters) {
 	window.dbChangedTradingNames = function() {
 	    
 	    window.plugins.spinnerDialog.show();
-	    config.views( [ "accounts", {
-	    } ], function(error, view) {
+	    config.views( [ "steward_accounts", {
+			startkey: config.user.name, endkey: config.user.name + '\uefff'
+	    } ], function(error, thisUsersAccounts) {
 
 			if (error) {
 				return alert(JSON.stringify(error))
@@ -49,7 +50,7 @@ function goPayment(parameters) {
 
 			config.views( [ "trading_name_view", {
 				include_docs: true
-			} ], function(error, trading_name_view) {
+			} ], function(error, otherUsersAccounts) {
 				window.plugins.spinnerDialog.hide();
 
 				console.log("Trading Name View:" + JSON.stringify([error, trading_name_view]));
@@ -58,30 +59,29 @@ function goPayment(parameters) {
 					return alert(JSON.stringify(error))
 				}
 
-				var thisUsersAccounts = {
-					rows: []
-				};
 
-				var otherUsersAccounts = {
-					rows: []
- 				}
 
-				for (var i = view.rows.length - 1; i >= 0; i--) {
-					//log( "row:" + JSON.stringify( view.rows[i] ) )
-					//log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
-					if (view.rows[i].key.steward.length) {
-						for (var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
-							//log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
-							if (view.rows[i].key.steward[j] == config.user.user_id) {
-								thisUsersAccounts.rows.push(view.rows[i])
-							}
-						}
-					}
-				}
+				thisUsersAccounts.rows.forEach(function(row){
+					otherusersAccounts.rows.push(row);
+					//otherUsersAccounts.rows.push({key:{trading_name:row.doc.json.trading_name,currency:row.doc.json.currency}});
+				})
+				//for (var i = view.rows.length - 1; i >= 0; i--) {
+				//	//log( "row:" + JSON.stringify( view.rows[i] ) )
+				//	//log( "stewards:" + JSON.stringify( view.rows[i].key.steward.length ) + "Last:" + JSON.stringify( view.rows[i].key.steward[view.rows[i].key.steward.length] ) )
+				//	if (view.rows[i].key.steward.length) {
+				//		for (var j = view.rows[i].key.steward.length - 1; j >= 0; j--) {
+				//			//log( "row", view.rows[i].id, view.rows[i].key.steward[j] )
+				//			if (view.rows[i].key.steward[j] == config.user.user_id) {
+				//				thisUsersAccounts.rows.push(view.rows[i])
+				//			}
+				//		}
+				//	}
+				//}
 
-				trading_name_view.rows.forEach(function(row){
-					otherUsersAccounts.rows.push({key:{trading_name:row.doc.json.trading_name,currency:row.doc.json.currency}});
-				});
+				//trading_name_view.rows.forEach(function(row){
+				//	otherusersAccounts.rows.push(row);
+				//	//otherUsersAccounts.rows.push({key:{trading_name:row.doc.json.trading_name,currency:row.doc.json.currency}});
+				//});
 
 				var payment = {"from": thisUsersAccounts, "to": otherUsersAccounts};
 

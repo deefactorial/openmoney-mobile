@@ -1431,7 +1431,7 @@ limitations under the License.
                     <label for="from">FROM</label>
 					<select name="from" class="om-select-dark" data-native-menu="false"  >
 						{{#from}}{{#rows}}
-							<option value="{{id}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
+							<option value="{{id}}">{{#doc}}{{#json}}{{name}} {{currency}}{{/json}}{{/doc}}</option>
         				{{/rows}}{{/from}}
 					</select>
 				</li>
@@ -1442,7 +1442,7 @@ limitations under the License.
                             <select id="to" name="to" class="om-select-dark" >
                                 <option value="cc" selected="selected">Receiver</option>
                                 {{#to}}{{#rows}}
-                                    <option value="{{#key}}{{trading_name}}{{/key}}">{{#key}}{{trading_name}} {{currency}}{{/key}}</option>
+                                    <option value="{{#doc}}{{#json}}{{name}}{{/json}}{{/doc}}">{{#doc}}{{#json}}{{name}} {{currency}}{{/json}}{{/doc}}</option>
                                 {{/rows}}{{/to}}
                             </select>
                         </div>
