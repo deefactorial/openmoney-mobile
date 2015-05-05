@@ -114,10 +114,10 @@ limitations under the License.
     <ul class="topcoat-list">
     {{#rows}}
         <li class="om-list-name topcoat-list__item" data-id="{{id}}">
-			{{#key}}
-            	{{trading_name}} {{currency}}
-                <div id="{{trading_name}}-{{currency}}" style="float:right;"></div>
-			{{/key}}
+			{{#doc}}{{#json}}
+            	{{name}} {{currency}}
+                <div id="{{name}}-{{currency}}" style="float:right;"></div>
+			{{/json}}{{/doc}}
         </li>
     {{/rows}}
     </ul>
