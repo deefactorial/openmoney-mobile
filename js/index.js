@@ -388,14 +388,14 @@ function setupConfig(done) {
 							method: "PUT",
 							headers: {
 								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
-							}
+							},
+							dataType: "json"
 						}).done(function(msg){
 							response(null,msg);
 						}).fail(function( jqXHR, textStatus ) {
 							console.log( "Request failed: " + textStatus );
-							response(textStatus,{});
+							response({ error: textStatus , code: jqXHR.statusCode(), msg: jqXHR.statusText},{});
 						});
-
 					},
 					"post": function (request, data, response) {
 
@@ -405,12 +405,13 @@ function setupConfig(done) {
 							method: "POST",
 							headers: {
 								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
-							}
+							},
+							dataType: "json"
 						}).done(function(msg){
 							response(null,msg);
 						}).fail(function( jqXHR, textStatus ) {
 							console.log( "Request failed: " + textStatus );
-							response(textStatus,{});
+							response({ error: textStatus , code: jqXHR.statusCode(), msg: jqXHR.statusText},{});
 						});
 					},
 					"changes": function (opts, cb){

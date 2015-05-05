@@ -321,13 +321,12 @@ function archiveTradingName(id, callback) {
 	//id = id.replace(" ", ",");
 	id = id.replace(/-/g,",");
 	//id = id.replace(/:/g,".");
-    log( "Archive trading_name," + id )
+    console.log( "Archive trading_name," + id )
     config.db.get( getLeadingSlash() + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = true;
 	        doc.archived_at = new Date().getTime();
-	        var leadingSlash = getLeadingSlash(); 
-	        config.db.put( leadingSlash + id, doc, callback )
+	        config.db.put( getLeadingSlash() + id, doc, callback )
     	}
     } )
 }
@@ -337,13 +336,12 @@ function activateTradingName(id, callback) {
 	//id = id.replace(" ", ",")
 	id = id.replace(/-/g,",");
 	id = id.replace(/:/g,".");
-    log( "Activate Trading Name", id )
+    console.log( "Activate Trading Name", id )
     config.db.get( getLeadingSlash() + id, function(error, doc) {
     	if (!error) {
 	        doc.archived = false;
 	        doc.archived_at = new Date().getTime();
-	        var leadingSlash = getLeadingSlash(); 
-	        config.db.put( leadingSlash + id, doc, callback )
+	        config.db.put( getLeadingSlash() + id, doc, callback )
     	}
     } )
 }
