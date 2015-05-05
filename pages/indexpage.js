@@ -47,6 +47,10 @@ function goIndex(parameters) {
     			config.views( [ "accounts", {
 					include_docs : true//, stale : "update_after"
     	        } ], function(err, view) {
+
+					if(empty(view.rows)){
+						return false;
+					}
     	        	console.log("accounts view:" + JSON.stringify( view ) );
     	        	window.plugins.spinnerDialog.hide();
     	        	tradingNamesViewLock = false;
