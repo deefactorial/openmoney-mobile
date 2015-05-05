@@ -167,8 +167,8 @@ function runTests(  ){
 								
 				$("input[name='amount']").val( amount );
 				$("input[name='description']").val( "example test" );
-				$('select#to').val(window.testusername + ".cc");
-				console.log("window.testusername:" + window.testusername + ".cc");
+				$('select#to').val(window.testusername.toLowerCase() + ".cc");
+				console.log("window.testusername:" + window.testusername.toLowerCase() + ".cc");
 				
 				$.when($("#personalPayment").submit()).done(function(){
 					window.dbChangedJournalDone = function() {
