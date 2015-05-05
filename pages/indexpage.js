@@ -36,6 +36,8 @@ function goIndex(parameters) {
     setTabs();
     
     window.plugins.spinnerDialog.hide();
+
+	var tradingNamesViewLock = false;
     
     // when the database changes, update the UI to reflect new lists
     window.dbChangedStewardTradingNames = function() {
