@@ -209,7 +209,7 @@ window.getSyncUrl = function(callback) {
 }
 
 getLeadingSlash = function(){
-	return "/";
+	return "";
 }
 
 /*
@@ -367,7 +367,7 @@ function setupConfig(done) {
 						data = data || {};
 						console.log("request" + request);
 						jQuery.ajax({
-							url: url + appDbName + request,
+							url: url + appDbName + "/" + request,
 							method: "GET",
 							data: data,
 							dataType: "json",
@@ -383,7 +383,7 @@ function setupConfig(done) {
 					},
 					"put": function (request, data , response) {
 						jQuery.ajax({
-							url: url + appDbName + request,
+							url: url + appDbName + "/" + request,
 							data: data,
 							method: "PUT",
 							headers: {
@@ -400,7 +400,7 @@ function setupConfig(done) {
 					"post": function (request, data, response) {
 
 						jQuery.ajax({
-							url: url + appDbName + request,
+							url: url + appDbName + "/" + request,
 							data: data,
 							method: "POST",
 							headers: {
