@@ -38,13 +38,15 @@ function goIndex(parameters) {
     window.plugins.spinnerDialog.hide();
 
 	var tradingNamesViewLock = false;
+	var queuedbChangedStewardTradingNames = false;
     
     // when the database changes, update the UI to reflect new lists
     window.dbChangedStewardTradingNames = function() {
 
-
-
-    	if(currentpage == 'Openmoney' && tradingNamesViewLock == false ) {
+		if(tradingNamesViewLock == true ){
+			queuedbChangedStewardTradingNames = true;
+		} else
+    	if(currentpage == 'Openmoney') {
 			tradingNamesViewLock = true;
     		window.plugins.spinnerDialog.show();
     		if( typeof(config.views) == "function" ) {
@@ -54,6 +56,9 @@ function goIndex(parameters) {
     	        	console.log("accounts view:" + JSON.stringify( view ) );
     	        	window.plugins.spinnerDialog.hide();
     	        	tradingNamesViewLock = false;
+					if(queuedbChangedStewardTradingNames){
+						window.dbChangedStewardTradingNames();
+					}
     	            var thisUsersAccounts = {
     	                rows : []
     	            };
