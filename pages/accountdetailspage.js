@@ -72,7 +72,7 @@ function goList(parameters) {
     window.dbChangedJournal = function() {
     	
     	window.plugins.spinnerDialog.show();
-	    config.db.get( "/" + id, function(err, doc) {
+	    config.db.get( getLeadingSlash() + id, function(err, doc) {
 	    	if(err) { 
 	    		console.log( "Error getting " + id + " :" +JSON.stringify( err ) );
 	    		//dbChangedJournal();
@@ -169,7 +169,7 @@ function goList(parameters) {
                 
                 $( "#scrollable" ).off( "click", "li" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
-		            config.db.get( "/" + id , function (error, journal) {
+		            config.db.get( getLeadingSlash() + id , function (error, journal) {
 		            	if (error) { console.log ( JSON.stringify( error ) ) } else {
 		            		var transactionTime = new Date( journal.timestamp )
                     		var now = Date.now()
