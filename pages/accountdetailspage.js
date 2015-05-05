@@ -147,11 +147,11 @@ function goList(parameters) {
             	
             	view.rows.forEach( function( row ) {
             		
-        				console.log( "journal row:" + JSON.stringify(row) )
+        				console.log( "journal row:" + JSON.stringify(row) );
         				
-            			var transactionTime = new Date( row.value.timestamp )
+            			var transactionTime = new Date( row.value.timestamp );
                 		var now = Date.now()
-                		var elapsed = now - transactionTime.getTime()
+                		var elapsed = now - transactionTime.getTime();
                 		var displayTime = transactionTime.toLocaleDateString() ;
                 		if (elapsed < 1000 * 60 * 60 * 24) {
                 			displayTime += " " + transactionTime.toLocaleTimeString()
@@ -161,15 +161,15 @@ function goList(parameters) {
                 		row.value.verified_timestamp = new Date( row.value.verfied_timestamp ).toLocaleTimeString();            		 
             	} )
             	
-            	console.log( "account_details" + JSON.stringify( view ))
+            	console.log( "account_details" + JSON.stringify( view ));
                 
-                drawContainer( "#scrollable", config.t.listItems( view ) )
+                drawContainer( "#scrollable", config.t.listItems( view ) );
                 
                 var response = {
             		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goList", "pageParameters" : [ id ]
                 }
             	
-            	updateAjaxData( response , "account_details.html")
+            	updateAjaxData( response , "account_details.html");
                 
                 $( "#scrollable" ).off( "click", "li" ).on( "click", "li", function(e) {
 		            var id = $( this ).attr( "data-id" )
@@ -195,7 +195,7 @@ function goList(parameters) {
 			            		navigator.notification.alert( message, function() {  }, "Transaction Details:" , "OK")
 		            	}
 		            } )
-		        } )
+		        } );
 		        window.dbChangedJournalDone();
             } )
     	} )

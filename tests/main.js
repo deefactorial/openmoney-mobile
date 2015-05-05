@@ -172,8 +172,7 @@ function runTests(  ){
 				$.when($("#personalPayment").submit()).done(function(){
 					window.dbChangedJournalDone = function() {
 						
-						
-						var testvalue = $("#content div.isPositive").text();
+						var testvalue = jQuery("div#content div.what.isPositive").text();
 						var expected = amount + " cc";
 						assert.ok( testvalue == expected, "Personal Self Payment test: '" + testvalue + "' == '" + expected + "'");
 		            	done3();	
