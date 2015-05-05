@@ -167,7 +167,7 @@ function runTests(  ){
 								
 				$("input[name='amount']").val( amount );
 				$("input[name='description']").val( "example test" );
-				$('select#to').val(window.testusername + ".cc");							
+				$('select#to').val(usernamecopy + ".cc");
 				
 				$.when($("#personalPayment").submit()).done(function(){
 					window.dbChangedJournalDone = function() {
