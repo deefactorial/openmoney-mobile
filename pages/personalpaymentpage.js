@@ -40,16 +40,15 @@ function goPayment(parameters) {
 	window.dbChangedTradingNames = function() {
 	    
 	    window.plugins.spinnerDialog.show();
-	    config.views( [ "steward_accounts", {
-			startkey: config.user.name, endkey: config.user.name + '\uefff', include_docs: true
-	    } ], function(error, thisUsersAccounts) {
+	    config.views( [ "accounts", {
+			 include_docs: true
+	    } ], function(error, allAccounts) {
 
 			if (error) {
 				return alert(JSON.stringify(error))
 			}
 
 			config.views( [ "trading_name_view", {
-				include_docs: true
 			} ], function(error, otherUsersAccounts) {
 				window.plugins.spinnerDialog.hide();
 
@@ -59,10 +58,25 @@ function goPayment(parameters) {
 					return alert(JSON.stringify(error))
 				}
 
+				var thisUsersAccounts = { rows: []};
+				var toAccounts = { rows: []};
+
+				allAccounts.rows.forEach(function(row){
+					row.doc.json.steward.forEach(function(steward){
+						if(steward == config.user.name) {
+							thisUsersAccounts.rows.push(row);
+						}
+					});
+					otherUsersAccounts.rows.forEach(function(otherRow){
+						if(row.id == otherRow.value) {
+							toAccounts.rows.push(row);
+						}
+					});
+				});
+
 				thisUsersAccounts.rows.forEach(function(row){
 					otherUsersAccounts.rows.push(row);
-				})
-
+				});
 
 				var payment = {"from": thisUsersAccounts, "to": otherUsersAccounts};
 
