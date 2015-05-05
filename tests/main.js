@@ -170,7 +170,7 @@ function runTests(  ){
 				$('select#to').val(window.testusername.toLowerCase() + ".cc");
 				console.log("window.testusername:" + window.testusername.toLowerCase() + ".cc");
 				
-				$.when($("#personalPayment").submit()).done(function(){
+				$.when($("form#personal-payment").submit()).done(function(){
 					window.dbChangedJournalDone = function() {
 
 
@@ -244,7 +244,7 @@ function runTests(  ){
 									$("input[name='amount']").val( amount );
 									$("input[name='description']").val( "example test" );
 									
-									$.when($("#personalPayment").submit()).done(function(){
+									$.when($("form#personal-payment").submit()).done(function(){
 										window.dbChangedJournalDone = function() {
 											
 											var testvalue = $("#content div.isNegative").text();
