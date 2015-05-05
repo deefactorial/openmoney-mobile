@@ -75,10 +75,10 @@ function goPayment(parameters) {
 				});
 
 				thisUsersAccounts.rows.forEach(function(row){
-					otherUsersAccounts.rows.push(row);
+					toAccounts.rows.push(row);
 				});
 
-				var payment = {"from": thisUsersAccounts, "to": otherUsersAccounts};
+				var payment = {"from": thisUsersAccounts, "to": toAccounts};
 
 				var pageTitle = "Payment";
 
