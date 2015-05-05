@@ -391,6 +391,7 @@ function setupConfig(done) {
 								"Content-Type": "application/json",
 								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
 							},
+							contentType: 'application/json; charset=utf-8',
 							dataType: "json"
 						}).done(function(msg){
 							response(null,msg);
@@ -410,6 +411,7 @@ function setupConfig(done) {
 								"Content-Type": "application/json",
 								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
 							},
+							contentType: 'application/json; charset=utf-8',
 							dataType: "json"
 						}).done(function(msg){
 							response(null,msg);
