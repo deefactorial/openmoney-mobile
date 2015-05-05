@@ -48,7 +48,7 @@ function goIndex(parameters) {
 					include_docs : true//, stale : "update_after"
     	        } ], function(err, view) {
 
-					if(empty(view.rows)){
+					if(view.rows.length == 0){
 						return false;
 					}
     	        	console.log("accounts view:" + JSON.stringify( view ) );
