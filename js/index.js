@@ -387,6 +387,8 @@ function setupConfig(done) {
 							data: data,
 							method: "PUT",
 							headers: {
+								'Accept': 'application/json',
+								'Content-Type': 'application/json',
 								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
 							},
 							dataType: "json"
@@ -404,6 +406,8 @@ function setupConfig(done) {
 							data: data,
 							method: "POST",
 							headers: {
+								'Accept': 'application/json',
+								'Content-Type': 'application/json',
 								"Authorization": "Basic " + b64_enc(window.config.user.name + ':' + window.config.user.session_token)
 							},
 							dataType: "json"
