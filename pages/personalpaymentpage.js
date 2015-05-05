@@ -41,7 +41,7 @@ function goPayment(parameters) {
 	    
 	    window.plugins.spinnerDialog.show();
 	    config.views( [ "steward_accounts", {
-			startkey: config.user.name, endkey: config.user.name + '\uefff'
+			startkey: config.user.name, endkey: config.user.name + '\uefff', include_docs: true
 	    } ], function(error, thisUsersAccounts) {
 
 			if (error) {
