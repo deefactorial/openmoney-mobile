@@ -46,45 +46,35 @@ function goIndex(parameters) {
     	if(currentpage == 'Openmoney') {
 
     		window.plugins.spinnerDialog.show();
-    		if( typeof(config.views) == "function" ) {
-    			config.views( [ "accounts", {
-					include_docs : true
+    		if( typeof(config.views) == "function" && typeof config.user.name != "undefined") {
+    			config.views( [ "steward_accounts", {
+					startkey: config.user.name, endkey: config.user.name + '\uefff', include_docs : true
     	        } ], function(err, view) {
-    	        	console.log("accounts view:" + JSON.stringify( view ) );
+    	        	console.log("steward accounts view:" + JSON.stringify( view ) );
     	        	window.plugins.spinnerDialog.hide();
-    	            var thisUsersAccounts = {
-    	                rows : []
-    	            };
+
     	            
     	            if (typeof view.rows != 'undefined' && config.user != null) {
     	            	view.rows.forEach(function(row) {
-    	            		row.doc.json.steward.forEach(function(steward) {
-    	            			if(steward == config.user.name){
-    	            				thisUsersAccounts.rows.push( row );
-									console.log("get Balance for:" + row.id);
-    	            				config.views2( [ "account_balance", {
-    	            			    	startkey : row.id , endkey : row.id + '\uefff'
-    	            			     	} ], function(err, balanceView) {
-    	            						console.log("account_balance view: " + JSON.stringify( [ err, balanceView ] ) );
-											var balance = 0;
-											balanceView.rows.forEach(function(row){
-												balance += row.value;
-											});
-											console.log("Received Balance for:" + row.id + " balance:" + balance);
-    	            			    		drawContainer( "#" + row.key.trading_name.replace(/\./g,"\\.") + "-" + row.key.currency.replace(/\./g,"\\."), config.t.indexBalance( { "balance": balance } ) );
-    	            			    } );
-    	            			}
-    	            		} )
-    	            	} )
+							//console.log("get Balance for:" + row.id);
+							config.views2( [ "account_balance", {
+								startkey : row.id , endkey : row.id + '\uefff'
+								} ], function(err, balanceView) {
+									//console.log("account_balance view: " + JSON.stringify( [ err, balanceView ] ) );
+									var balance = 0;
+									balanceView.rows.forEach(function(row){
+										balance += row.value;
+									});
+									console.log("Received Balance for:" + row.id + " balance:" + balance);
+									drawContainer( "#" + row.doc.json.name.replace(/\./g,"\\.") + "-" + row.doc.json.currency.replace(/\./g,"\\."), config.t.indexBalance( { "balance": balance } ) );
+							} );
+    	            	} );
     	            }
     	
-    	            thisUsersAccounts.offset = view.offset;
-    	            thisUsersAccounts.total_rows = thisUsersAccounts.rows.length;
-    	
-    	            console.log( "accounts " + JSON.stringify( thisUsersAccounts ) );
-					if (thisUsersAccounts.rows.length != 0){
 
-						drawContainer( "#scrollable", config.t.indexList( thisUsersAccounts ) );
+					if (view.rows.length != 0){
+
+						drawContainer( "#scrollable", config.t.indexList( view ) );
 						//$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
 
 						var response = {

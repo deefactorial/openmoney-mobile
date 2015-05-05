@@ -301,13 +301,13 @@
                         }
                         channel(doc.type + channelDelimiter + space);
                         access(doc.steward, doc.type + channelDelimiter + space);
-                        access(doc.steward, "space" + channelDelimiter + space);
+                        //access(doc.steward, "space" + channelDelimiter + space);
                     } else {
                     	space = olddoc.space.toLowerCase();
                         if (doc._deleted) {
                             requireUser(olddoc.steward);
                             channel(olddoc.type + channelDelimiter + space);
-                            access(olddoc.steward, olddoc.type + channelDelimiter + space);
+                            //access(olddoc.steward, olddoc.type + channelDelimiter + space);
                         } else {
                             if (!doc.steward || !doc.currency || !doc.created ) {
                                 throw({forbidden: "Missing required properties"});
@@ -320,7 +320,7 @@
                             }
                             channel(olddoc.type + channelDelimiter + space);
                             access(doc.steward, olddoc.type + channelDelimiter + space);
-                            access(doc.steward, "space" + channelDelimiter + space);
+                            //access(doc.steward, "space" + channelDelimiter + space);
                         }
                     }
                 } else if ( (olddoc != null && olddoc.type == "currency") || (olddoc == null && doc.type == "currency") ) {
@@ -359,7 +359,7 @@
                         }
                         channel(doc.type + channelDelimiter + currency);
                         access(doc.steward, doc.type + channelDelimiter + currency);
-                        access(doc.steward, "currency" + channelDelimiter + currency);
+                        //access(doc.steward, "currency" + channelDelimiter + currency);
                     } else {
                     	currency = base64_encode( olddoc.currency );
                         if (doc._deleted) {
@@ -378,7 +378,7 @@
                             }
                             channel(olddoc.type + channelDelimiter + currency);
                             access(doc.steward, olddoc.type + channelDelimiter + currency);
-                            access(doc.steward, "currency" + channelDelimiter + currency);
+                            //access(doc.steward, "currency" + channelDelimiter + currency);
                         }
                     }
                 } else if ( (olddoc != null && olddoc.type == "trading_name_journal" ) || (olddoc == null && doc.type == "trading_name_journal") ) {
