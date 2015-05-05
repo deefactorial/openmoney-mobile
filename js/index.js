@@ -378,7 +378,7 @@ function setupConfig(done) {
 							response(null,msg);
 						}).fail(function( jqXHR, textStatus ) {
 							console.log( "Request failed: " + textStatus );
-							response({ error: textStatus , code: jqXHR.statusCode(), msg: jqXHR.statusText},{});
+							response({status: jqXHR.statusCode().status, error: jqXHR.statusCode().responseJSON.error , reason: jqXHR.statusCode().responseJSON.reason},{});
 						});
 					},
 					"put": function (request, data , response) {
