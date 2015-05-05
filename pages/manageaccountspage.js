@@ -324,6 +324,7 @@ function archiveTradingName(id, callback) {
     console.log( "Archive trading_name," + id )
     config.db.get( getLeadingSlash() + id, function(error, doc) {
     	if (!error) {
+			console.log("Archive Trading Name:" + JSON.stringify(doc));
 	        doc.archived = true;
 	        doc.archived_at = new Date().getTime();
 	        config.db.put( getLeadingSlash() + id, doc, callback )
@@ -339,6 +340,7 @@ function activateTradingName(id, callback) {
     console.log( "Activate Trading Name", id )
     config.db.get( getLeadingSlash() + id, function(error, doc) {
     	if (!error) {
+			console.log("Activate Trading Name:" + JSON.stringify(doc));
 	        doc.archived = false;
 	        doc.archived_at = new Date().getTime();
 	        config.db.put( getLeadingSlash() + id, doc, callback )
