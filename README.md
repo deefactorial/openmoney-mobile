@@ -60,6 +60,13 @@ open platforms/ios/openmoney-mobile.xcodeproj/
 
 Do note that the Xcode project is only updated by the `cordova` command line tool, so you must run `cordova run ios` or `cordova build ios` before it will pick up any changes made in the `www` directory.
 
+## Running Sauce Lab Tests Cross Browser Qunit Tests
+
+export SAUCE_USERNAME=YOUR-SAUCE-USERNAME
+export SAUCE_ACCESS_KEY=YOUR-SAUCE-API-KEY
+npm install
+grunt
+
 ## Running your own Sync Gateway server
 
 In `www/js/index.js` there is a value for `syncUrl` which is set to a remote server hosted by Couchbase as a convenience. You can easily provision your own server either by running your own instance of [Couchbase Sync Gateway](https://github.com/couchbase/sync_gateway) or by creating a server in [the experimental Couchbase cloud.](http://console.couchbasecloud.com/)

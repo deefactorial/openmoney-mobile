@@ -81,10 +81,10 @@ function goCreateAccount(parameters) {
             
             config.db.get( "/" + doc.type + "," + doc.name.toLowerCase() + "," + doc.currency, function(error, existingdoc) {
                 if (error) {
-                    log( "Error: " + JSON.stringify( error ) )
+                    console.log( "Get Trading name Error: " + JSON.stringify( error ) )
                     if (error.status == 404 || error.error == "not_found") {
                         // doc does not exists
-                        log( "insert new trading name" + JSON.stringify( doc ) )
+                        console.log( "insert new trading name" + JSON.stringify( doc ) )
                         var leadingSlash = getLeadingSlash(); 
                         config.db.put(leadingSlash + doc.type + "," + doc.name.toLowerCase() + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
                             if (error)
@@ -372,14 +372,14 @@ function goCreateAccount(parameters) {
 		                } ], function(error, spaces) {
 		            		window.plugins.spinnerDialog.hide();
 		                    if (error) { 
-		                    	log( "Errro getting spaces view: " + JSON.stringify( error ) ) 
+		                    	console.log( "Error getting spaces view: " + JSON.stringify( error ) )
 		                    	window.dbChangedCurrencies();
 		                    	return false
 		                    }
 		                    
 		                    var tradingNameDoc = { "doc": doc, "currencies" : currencies, "spaces" : spaces }
 		                    
-		                    log ("trading_name_doc : " + JSON.stringify( tradingNameDoc ) )
+		                    console.log ("trading_name_doc : " + JSON.stringify( tradingNameDoc ) )
 		
 			                drawContainer( "div#form", config.t.trading_name_form( tradingNameDoc ) )
 			                

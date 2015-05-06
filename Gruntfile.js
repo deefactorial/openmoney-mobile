@@ -2,24 +2,22 @@
 module.exports = function(grunt) {
 	grunt.loadNpmTasks( 'grunt-saucelabs' );
 
-	
-
 	grunt.initConfig( {
 		pkg : grunt.file.readJSON( 'package.json' ),
 
 		'saucelabs-qunit' : {
 			all : {
 				options : {
-					urls : [ 'https://cloud.openmoney.cc/webclient/tests.html' ], build : process.env.CI_BUILD_NUMBER, testname : 'Sauce Unit Test for openmoney',
+					urls : [ 'https://cloud.openmoney.cc/webclient/tests.html' ], build : process.env.CI_BUILD_NUMBER, testname : 'Sauce Unit Test for openmoney', pollInterval: 5000, statusCheckAttempts: 320,
 					browsers : [ { browserName : 'firefox', version : '11', platform : 'XP'},
 					             //{ browserName : 'firefox', version : '19', platform : 'XP'},
 					             { browserName : 'firefox', version : '35', platform : 'XP'},
 					             { browserName : 'chrome', version : '26', platform : 'XP'},
-					             //{ browserName : 'internet explorer', version : '8', platform : 'Windows 7'},
-					             { browserName : 'internet explorer', version : '9', platform : 'Windows 7'},
-					             { browserName : 'internet explorer', version : '10', platform : 'Windows 7'},
-					             { browserName : 'internet explorer', version : '11', platform : 'Windows 7'},
-					             { browserName : 'chrome', version : '26', platform : 'Windows 7'},
+					             { browserName : 'internet explorer', version : '8', platform : 'Windows 7'},
+					             //{ browserName : 'internet explorer', version : '9', platform : 'Windows 7'},
+					             //{ browserName : 'internet explorer', version : '10', platform : 'Windows 7'},
+					             //{ browserName : 'internet explorer', version : '11', platform : 'Windows 7'},
+					             { browserName : 'chrome', version : '27', platform : 'Windows 7'},
 					             { browserName : 'chrome', version : '39', platform : 'Windows 7'},
 					             { browserName : 'firefox', version : '11', platform : 'Windows 7'},
 					             { browserName : 'firefox', version : '35', platform : 'Windows 7'},
