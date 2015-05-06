@@ -18,7 +18,7 @@ function goCreateAccount(parameters) {
 	
 	resetChangeTrackers();
 	
-	log ("goCreateAccount(" + JSON.stringify(parameters) + ")")
+	console.log ("goCreateAccount(" + JSON.stringify(parameters) + ")");
 	
 	var doc = parameters.pop();
 	
@@ -35,7 +35,7 @@ function goCreateAccount(parameters) {
 	}
 	
     
-    log("Create view:" + JSON.stringify( view ) ) 
+    console.log("Create view:" + JSON.stringify( view ) );
 
     var pageTitle = "Create";
 	
@@ -56,12 +56,12 @@ function goCreateAccount(parameters) {
 
     $( "#content .om-index" ).off("click").click( function() {
         History.back()
-    } )
+    } );
 
-    setTabs()
+    setTabs();
     
     $( "#content form" ).off("submit").submit( function(e) {
-        e.preventDefault()
+        e.preventDefault();
         var doc = jsonform( this );
         doc.created = new Date().getTime();
         doc.steward = [ config.user.name ];
@@ -79,7 +79,7 @@ function goCreateAccount(parameters) {
             	doc.name += "." + doc.space;
             }
             
-            config.db.get( "/" + doc.type + "," + doc.name.toLowerCase() + "," + doc.currency, function(error, existingdoc) {
+            config.db.get( getLeadingSlash() + doc.type + "," + doc.name.toLowerCase() + "," + doc.currency, function(error, existingdoc) {
                 if (error) {
                     console.log( "Get Trading name Error: " + JSON.stringify( error ) )
                     if (error.status == 404 || error.error == "not_found") {
@@ -242,26 +242,25 @@ function goCreateAccount(parameters) {
 	        	if (error) {
 	        		if (error.status == 404 || error.error == "not_found") {
 	        			// insert document
-	        			var leadingSlash = getLeadingSlash(); 
-	        			config.db.put( leadingSlash + space_view.type + "," + config.user.name + "," + space_view.space.toLowerCase(), JSON.parse( JSON.stringify( space_view ) ), function( error, ok ) { 
+
+	        			config.db.put( getLeadingSlash() + space_view.type + "," + config.user.name + "," + space_view.space.toLowerCase(), JSON.parse( JSON.stringify( space_view ) ), function( error, ok ) {
 	        	   		 	if (error) { return alert( JSON.stringify( error ) ) }
 	        	   		 	setTimeout(function(){
-		        	   		 	config.db.get( "/" + doc.type + "," + doc.space.toLowerCase(), function(error, existingdoc) {
+		        	   		 	config.db.get( getLeadingSlash() + doc.type + "," + doc.space.toLowerCase(), function(error, existingdoc) {
 					                if (error) {
-					                    log( "Error: " + JSON.stringify( error ) )
+					                    console.log( "Error: " + JSON.stringify( error ) );
 					                    if (error.status == 404 || error.error == "not_found") {
 					                        // doc does not exists
-					                        log( "insert new space" + JSON.stringify( doc ) )
-					                        var leadingSlash = getLeadingSlash(); 
-					                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+					                        console.log( "insert new space" + JSON.stringify( doc ) );
+					                        config.db.put( getLeadingSlash() + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 					                            if (error)
-					                                return alert( JSON.stringify( error ) )
+					                                return alert( JSON.stringify( error ) );
 					                            
 					                            //trigger a view update
 			    	    			   		 	config.views( [ "spaces", {
 			    	    			   		        stale : "update_after"
 			    	    			   		    } ], function(error, view) {
-			    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) )
+			    	    			   		 		console.log("view update response:" + JSON.stringify( [ error , view ] ) );
 			    	    			   		 	} );
 					                                
 					                            navigator.notification.alert( "You successfully created a new space !" , function() { goManageAccounts([]) }, "New Space", "OK")
@@ -269,7 +268,7 @@ function goCreateAccount(parameters) {
 					                   
 					                        
 					                    } else {
-					                        alert( "Error: " + JSON.stringify( error ) )
+					                        alert( "Error: " + JSON.stringify( error ) );
 					                    }
 					                } else {
 					                    navigator.notification.alert( "Space already exists!"  , function() {  }, "Existing Space", "OK")
@@ -279,17 +278,17 @@ function goCreateAccount(parameters) {
 	        			} );
 	        		}
 	        	} else {
-	        		config.db.get( "/" + doc.type + "," + doc.space.toLowerCase(), function(error, existingdoc) {
+	        		config.db.get( getLeadingSlash() + doc.type + "," + doc.space.toLowerCase(), function(error, existingdoc) {
 		                if (error) {
-		                    log( "Error: " + JSON.stringify( error ) )
+		                    console.log( "Error: " + JSON.stringify( error ) );
 		                    if (error.status == 404 || error.error == "not_found") {
 		                        // doc does not exists
-		                        log( "insert new space" + JSON.stringify( doc ) )
+		                        console.log( "insert new space" + JSON.stringify( doc ) );
 		                        var leadingSlash = getLeadingSlash(); 
 		                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 		
 		                            if (error)
-		                                return alert( JSON.stringify( error ) )
+		                                return alert( JSON.stringify( error ) );
 		                                
 		                            //trigger a view update
     	    			   		 	config.views( [ "spaces", {
@@ -312,9 +311,9 @@ function goCreateAccount(parameters) {
 		                		if (steward == window.config.user.name) {
 		                			
 		                			existingdoc.defaultcurrency = doc.defaultcurrency;
-		                			log( "update space" + JSON.stringify( doc ) )
-			                        var leadingSlash = getLeadingSlash(); 
-			                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( existingdoc ) ), function(error, ok) {
+		                			console.log( "update space" + JSON.stringify( doc ) )
+
+			                        config.db.put( getLeadingSlash() + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( existingdoc ) ), function(error, ok) {
 			
 			                            if (error)
 			                                return alert( JSON.stringify( error ) )
@@ -387,16 +386,16 @@ function goCreateAccount(parameters) {
 		                    
 		                    $( "#content input[name='add']" ).off("click").click( function() {
 		                        goAddCurrency([])
-		                    } )
+		                    } );
 		                    
 		                    $( "#content input[name='addspace']" ).off("click").click( function() {
 		                        goAddSpace([])
-		                    } )
+		                    } );
 		                    
-		                } )
-		            } )
+		                } );
+		            } );
     			}
-    		}
+    		};
     		window.dbChangedCurrencies()
     		
     	} else if (type == "currency") {
@@ -407,7 +406,7 @@ function goCreateAccount(parameters) {
 	            } ], function(error, spaces) {
 	        		window.plugins.spinnerDialog.hide();
 	                if (error) { 
-	                	log( "Error getting spaces view: " + JSON.stringify( error ) ) 
+	                	console.log( "Error getting spaces view: " + JSON.stringify( error ) );
 	                	window.dbChangedSpaces();
 	                	return false;
 	                }
@@ -419,15 +418,15 @@ function goCreateAccount(parameters) {
 	                		space.selected = true;
 	                		found = true;
 	                	}
-	                } )
+	                } );
 	                
-	                var view = { "defaultspace": !found , "spaces" : spaces, "doc": doc }
+	                var view = { "defaultspace": !found , "spaces" : spaces, "doc": doc };
 	                
 	                drawContainer( "div#form", config.t.currency_form( view ))
 	                
 	        	})
         	
-    		} 
+    		};
     		window.dbChangedSpaces();
     	} else if (type == "space") {
     		
@@ -442,7 +441,7 @@ function goCreateAccount(parameters) {
 	        		
 		        		window.plugins.spinnerDialog.hide();
 		                if (error) { 
-		                	log( "Error getting spaces view: " + JSON.stringify( error ) );
+		                	console.log( "Error getting spaces view: " + JSON.stringify( error ) );
 		                	window.dbChangedSpaces();
 		                	return false;
 		                	
@@ -451,14 +450,14 @@ function goCreateAccount(parameters) {
 		                if (typeof spaces != 'undefined')
 		                spaces.rows.forEach(function (row) {
 		                	if (row.key == "cc") {
-		                		row.doc.steward.forEach(function(steward){
+		                		row.doc.json.forEach(function(steward){
 		                			if(steward == window.config.user.name) {
 		                				defaultRoot = "";
 		                			}
 		                		})
 		                	}
 		                	
-		                })
+		                });
 		                
 		                var view = {"default": defaultRoot, "currencies": currencies, "spaces" : spaces, "doc": doc }
 		                
@@ -466,17 +465,17 @@ function goCreateAccount(parameters) {
 	        		})
 	        	} )
         	
-    		}
+    		};
     		window.dbChangedSpaces();
     	}
         
         var response = {
 			"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : pageTitle, "pageFunction" : "goCreateAccount", "pageParameters" : [ doc ]
-	    }
+	    };
 	
 	    updateAjaxData( response , "create.html")
         
-    } ).change()
+    } ).change();
     
     window.plugins.spinnerDialog.hide();
 
@@ -516,7 +515,7 @@ function goAddCurrency(parameters) {
     setTabs()
     
     $( "#content form" ).off("submit").submit( function(e) {
-	    e.preventDefault()
+	    e.preventDefault();
 	    var doc = jsonform( this );
 	    doc.type = "currency_view";
 	    doc.created = new Date().getTime();
@@ -526,8 +525,8 @@ function goAddCurrency(parameters) {
         	navigator.notification.alert( 'The currency name cannot contain a space, comma or @.' , function() {}, "Invalid Currency Name", "OK")
         	return null;
         }
-        var leadingSlash = getLeadingSlash(); 
-        config.db.put( leadingSlash + doc.type + "," + config.user.name + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+
+        config.db.put( getLeadingSlash() + doc.type + "," + config.user.name + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
    		 	if (error) {
    		 		if (error.status == 409) {
    		 			navigator.notification.alert( 'You have already added the currency ' + doc.currency , function() {}, "Invalid Currency Name", "OK")
@@ -585,12 +584,12 @@ function goAddSpace(parameters) {
 	
 	$( "#content .om-index" ).off("click").click( function() {
 		History.back();
-    } )
+    } );
 
-    setTabs()
+    setTabs();
     
     $( "#content form" ).off("submit").submit( function(e) {
-	    e.preventDefault()
+	    e.preventDefault();
 	    var doc = jsonform( this );
 	    doc.type = "space_view";
 	    doc.created = new Date().getTime();
@@ -600,8 +599,8 @@ function goAddSpace(parameters) {
         	navigator.notification.alert( 'The currency name cannot contain a comma or @.' , function() {}, "Invalid Currency Name", "OK")
         	return null;
         }
-        var leadingSlash = getLeadingSlash(); 
-        config.db.put( leadingSlash + doc.type + "," + config.user.name + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) { 
+
+        config.db.put( getLeadingSlash() + doc.type + "," + config.user.name + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function( error, ok ) {
    		 	if (error) {
    		 		if (error.status == 409) {
    		 			navigator.notification.alert( 'You have already added the space ' + doc.space , function() {}, "Invalid Currency Name", "OK")
