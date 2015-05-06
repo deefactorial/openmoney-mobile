@@ -432,7 +432,9 @@ function setupConfig(done) {
 						if (typeof window.config.db != "undefined")
 							return window.config.db.get([ getLeadingSlash() + "_changes", opts], function(err, ok) {
 								if (err && err.code == "ETIMEDOUT") {
-									return self.changes(opts, cb); // TODO retry limit?
+									setTimeout(function(){
+										return self.changes(opts, cb); // TODO retry limit?
+									}, 250);
 								} else if (err) {
 									return cb(err);
 								}
