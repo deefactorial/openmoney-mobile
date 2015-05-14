@@ -85,8 +85,8 @@ function goCreateAccount(parameters) {
                     if (error.status == 404 || error.error == "not_found") {
                         // doc does not exists
                         console.log( "insert new trading name" + JSON.stringify( doc ) )
-                        var leadingSlash = getLeadingSlash(); 
-                        config.db.put(leadingSlash + doc.type + "," + doc.name.toLowerCase() + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+
+                        config.db.put(getLeadingSlash() + doc.type + "," + doc.name.toLowerCase() + "," + doc.currency, JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
                             if (error)
                                 return alert( JSON.stringify( error ) )
                             
@@ -143,23 +143,23 @@ function goCreateAccount(parameters) {
 	        	return false;
 	        }
 	        
-	        config.db.get( "/" + currency_view.type + "," + config.user.name + "," + currency_view.currency.toLowerCase(), function(error, view) {
+	        config.db.get( getLeadingSlash() + currency_view.type + "," + config.user.name + "," + currency_view.currency.toLowerCase(), function(error, view) {
 	        	if (error) {
 	        		if (error.status == 404 || error.error == "not_found") {
 	        			// insert document
-	        			var leadingSlash = getLeadingSlash(); 
-	        			config.db.put( leadingSlash + currency_view.type + "," + config.user.name + "," + currency_view.currency.toLowerCase(), JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) { 
+
+	        			config.db.put( getLeadingSlash() + currency_view.type + "," + config.user.name + "," + currency_view.currency.toLowerCase(), JSON.parse( JSON.stringify( currency_view ) ), function( error, ok ) {
 	        	   		 	if (error) { return alert( JSON.stringify( error ) ) }
 	        	   		 	//set a timeout for the sync gateway to update doc.
         	                setTimeout(function(){
-        	                	config.db.get( "/" + doc.type + "," + doc.currency.toLowerCase(), function(error, existingdoc) {
+        	                	config.db.get( getLeadingSlash() + doc.type + "," + doc.currency.toLowerCase(), function(error, existingdoc) {
     	        	                if (error) {
     	        	                    log( "Error: " + JSON.stringify( error ) )
     	        	                    if (error.status == 404 || error.error == "not_found") {
     	        	                        // doc does not exists
     	        	                        log( "insert new currency" + JSON.stringify( doc ) )
-    	        	                        var leadingSlash = getLeadingSlash(); 
-    	        	                        config.db.put( leadingSlash + doc.type + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {                	
+
+    	        	                        config.db.put( getLeadingSlash() + doc.type + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
     	        	                            if (error) { return alert( JSON.stringify( error ) ) }
     	        	                            
     	        	                            //trigger a view update
@@ -184,16 +184,16 @@ function goCreateAccount(parameters) {
 	        	        } )
 	        		}
 	        	} else {
-	        		config.db.get( "/" + doc.type + "," + doc.currency.toLowerCase(), function(error, existingdoc) {
+	        		config.db.get( getLeadingSlash() + doc.type + "," + doc.currency.toLowerCase(), function(error, existingdoc) {
     	                if (error) {
-    	                    log( "Error: " + JSON.stringify( error ) )
+    	                    console.log( "Error: " + JSON.stringify( error ) );
     	                    if (error.status == 404 || error.error == "not_found") {
     	                        // doc does not exists
-    	                        log( "insert new currency" + JSON.stringify( doc ) )
+    	                        console.log( "insert new currency" + JSON.stringify( doc ) )
     	                        
     	
-    	                        var leadingSlash = getLeadingSlash(); 
-    	                        config.db.put( leadingSlash + doc.type + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+
+    	                        config.db.put( getLeadingSlash() + doc.type + "," + doc.currency.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
     	                            if (error) { return alert( JSON.stringify( error ) ) }
     	                            
     	                            //trigger a view update
@@ -238,7 +238,7 @@ function goCreateAccount(parameters) {
         	space_view.steward = [ config.user.name ];
         	space_view.space = doc.space;
         	
-        	config.db.get( "/" + space_view.type + "," + config.user.name + "," + space_view.space.toLowerCase(), function(error, view) {
+        	config.db.get( getLeadingSlash() + space_view.type + "," + config.user.name + "," + space_view.space.toLowerCase(), function(error, view) {
 	        	if (error) {
 	        		if (error.status == 404 || error.error == "not_found") {
 	        			// insert document
@@ -284,8 +284,8 @@ function goCreateAccount(parameters) {
 		                    if (error.status == 404 || error.error == "not_found") {
 		                        // doc does not exists
 		                        console.log( "insert new space" + JSON.stringify( doc ) );
-		                        var leadingSlash = getLeadingSlash(); 
-		                        config.db.put( leadingSlash + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
+
+		                        config.db.put( getLeadingSlash() + doc.type + "," + doc.space.toLowerCase(), JSON.parse( JSON.stringify( doc ) ), function(error, ok) {
 		
 		                            if (error)
 		                                return alert( JSON.stringify( error ) );
