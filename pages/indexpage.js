@@ -53,9 +53,20 @@ function goIndex(parameters) {
     	        	console.log("steward accounts view:" + JSON.stringify( view ) );
     	        	window.plugins.spinnerDialog.hide();
 
+					var usersAccounts = { "rows" : [] };
+					if (typeof view.rows != 'undefined') {
+						view.rows.forEach(function (row) {
+							row.doc.json.steward.forEach(function (steward) {
+								if (steward == config.user.name) {
+									usersAccounts.rows.push(row)
+								}
+							})
+						});
+					}
+
     	            
-    	            if (typeof view.rows != 'undefined' && config.user != null) {
-    	            	view.rows.forEach(function(row) {
+    	            if (typeof usersAccounts.rows != 'undefined' && config.user != null) {
+						usersAccounts.rows.forEach(function(row) {
 							//console.log("get Balance for:" + row.id);
 							config.views2( [ "account_balance", {
 								startkey : row.id , endkey : row.id + '\uefff'
@@ -72,9 +83,9 @@ function goIndex(parameters) {
     	            }
     	
 
-					if (view.rows.length != 0){
+					if (usersAccounts.rows.length != 0){
 
-						drawContainer( "#scrollable", config.t.indexList( view ) );
+						drawContainer( "#scrollable", config.t.indexList( usersAccounts ) );
 						//$( "#scrollable" ).html( config.t.indexList( thisUsersAccounts ) )
 
 						var response = {
