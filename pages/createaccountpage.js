@@ -454,7 +454,7 @@ function goCreateAccount(parameters) {
 
 								console.log("row:" + JSON.stringify(row));
 								if (row.key == "cc") {
-									row.doc.steward.forEach(function (steward) {
+									row.doc.json.steward.forEach(function (steward) {
 										if (steward == window.config.user.name) {
 											defaultRoot = "";
 										}
