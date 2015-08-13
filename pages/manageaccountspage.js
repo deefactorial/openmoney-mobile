@@ -107,15 +107,15 @@ function goManageAccounts(parameters) {
 	    	//display number keypad on focus
 		    $( "#content .number").off("focus").focus( function () {
 		    	this.type = 'number';
-		    })
+		    });
 		    
 		    $( "#content .number").off("blur").blur( function () {
 		    	this.type = 'text';
-		    })
+		    });
 	    }
 		
 		$( "#content form" ).off("submit").submit( function(e) {
-			e.preventDefault() 
+			e.preventDefault();
 			
 	        var doc = jsonform( this );
 			
@@ -156,13 +156,13 @@ function goManageAccounts(parameters) {
 
     $( "#content .om-index" ).off("click").click( function() {
         History.back()
-    } )
+    } );
 
-    setTabs()
+    setTabs();
     
     $( "#content .om-create" ).off("click").click( function() {
         goCreateAccount( [ { "type" : "trading_name" } ] )
-    } )
+    } );
 	
     var accounts = false, currencies = false, spaces = false;
     
@@ -176,7 +176,7 @@ function goManageAccounts(parameters) {
         } ], function(error, view) {
     		window.plugins.spinnerDialog.hide();
             if (error) { 
-            	log( "Error getting accounts view :" + JSON.stringify( error ) ) 
+            	log( "Error getting accounts view :" + JSON.stringify( error ) );
             	window.dbChangedTradingNames();
             	return false;
             }
@@ -187,20 +187,20 @@ function goManageAccounts(parameters) {
             		if (steward == config.user.name) {
             			usersAccounts.rows.push( row )
             		}
-            	} )
+            	} );
             	//row.doc.id = row.doc.id.replace(/,/g,"-");
             	//row.doc._id = row.doc._id.replace(/\./g,":");
-            } )
+            } );
             
-            log("accounts view:" + JSON.stringify( usersAccounts ) ) 
+            log("accounts view:" + JSON.stringify( usersAccounts ) );
 
-            drawContainer( "div#accounts_list" , config.t.accounts_list( usersAccounts ) )
+            drawContainer( "div#accounts_list" , config.t.accounts_list( usersAccounts ) );
 
             var response = {
         		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : pageTitle, "pageFunction" :  "goManageAccounts", "pageParameters" : [ ]
-            }
+            };
         
-            updateAjaxData( response , "manage_accounts.html")
+            updateAjaxData( response , "manage_accounts.html");
             
             UIhandlers();
             
@@ -208,7 +208,7 @@ function goManageAccounts(parameters) {
             
         } )
     	
-    }
+    };
     window.dbChangedTradingNames();
     
     window.dbChangedCurrencies = function () {
@@ -250,7 +250,7 @@ function goManageAccounts(parameters) {
 
         } )
         
-    }
+    };
     window.dbChangedCurrencies();
     
     window.dbChangedSpaces = function () {
@@ -260,24 +260,27 @@ function goManageAccounts(parameters) {
         } ], function(error, view) {
     		window.plugins.spinnerDialog.hide();
             if (error) {
-            	log( "Error getting spaces view : " + JSON.stringify( error ) )
+            	log( "Error getting spaces view : " + JSON.stringify( error ) );
             	window.dbChangedSpaces();
             	return false;
             }
 
-            drawContainer( "div#spaces_list", config.t.spaces_list( view ) )
+            drawContainer( "div#spaces_list", config.t.spaces_list( view ) );
             
             var response = {
-        		"html" : document.getElementById( "content" ).innerHTML, "pageTitle" : currentpage, "pageFunction" : "goManageAccounts", "pageParameters" : [ ]
-            }
+				"html": document.getElementById("content").innerHTML,
+				"pageTitle": currentpage,
+				"pageFunction": "goManageAccounts",
+				"pageParameters": []
+			};
         
-            updateAjaxData( response , "manage_accounts.html")
+            updateAjaxData( response , "manage_accounts.html");
             
             spaces = true;
             
         } )
         
-    } 
+    };
     window.dbChangedSpaces();
         
     function pollComplete() {
