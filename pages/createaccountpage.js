@@ -451,8 +451,8 @@ function goCreateAccount(parameters) {
 		                var defaultRoot = "cc";
 		                if (typeof spaces != 'undefined')
 		                spaces.rows.forEach(function (row) {
-							if(typeof row != 'undefined') {
-								console.log("row:".JSON.stringify(row));
+
+								console.log("row:" + JSON.stringify(row));
 								if (row.key == "cc") {
 									row.doc.json.forEach(function (steward) {
 										if (steward == window.config.user.name) {
@@ -460,7 +460,7 @@ function goCreateAccount(parameters) {
 										}
 									})
 								}
-							}
+							
 		                	
 		                });
 		                
